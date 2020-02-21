@@ -60,8 +60,4 @@
         <file>images/breeks/9.png</file>
         <file>images/breeks/10.png</file>
     </qresource>
-    <qresource prefix="/">
-        <file>images/breeks/1.1.png</file>
-        <file>images/breeks/10.3.png</file>
-    </qresource>
 </RCC>

@@ -35,7 +35,7 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
 
   //all comands which insert smth
   if (charCounter_ <= MAX_COUNT_CHAR_) {
-    //letters
+		//letters
     if (kmModifiers == 0 || kmModifiers == Qt::ShiftModifier) {
       if ( (iKey >= Qt::Key_A && iKey <= Qt::Key_Z) ||
       (QKeySequence(iKey).toString() >= "А" && (QKeySequence(iKey).toString() <= "Я")) ) {

@@ -77,7 +77,7 @@ void MainWindow::readElementsDataFromFile(QFile &file, const int index)
   }
 
   QString data = file.readAll();
-  //13 0000000000000 Hello, World!
+	//13 0000000000000 Hello, World!
   QTextStream out(&data);
 
   int count = 0;
