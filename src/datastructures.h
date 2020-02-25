@@ -20,7 +20,6 @@ struct tagElement {
     bool condition;
     QPalette pallete;
 };
-
 namespace tag {
   const int N_COLORS = 6;
   const QColor ARR_COLORS[6] = {"#0000FF", "#FF3366", "#FFFF66", "#CC66FF", "#ECEAEC", "#66FF66"};
