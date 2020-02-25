@@ -6,6 +6,8 @@
 #include <QFileDialog>
 #include <QTextStream>
 #include <QDebug>
+#include <QtSql>
+#include <QFileInfo>
 #include <QGraphicsDropShadowEffect>
 #include <QDate>
 #include <QScrollArea>
@@ -16,6 +18,7 @@
 #include "datastructures.h"
 #include "effects.hpp"
 #include "breek.h"
+#include "loginform.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -28,6 +31,8 @@ class MainWindow : public QMainWindow
 public:
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
+
+  LoginForm *loginForm;
 
   //files of timetable
   void writeElementsDataToFile(const int index);
@@ -69,6 +74,8 @@ private slots:
 
 //adding new elements
   void on_buttonAdd_clicked();
+
+  void on_pushButton_clicked();
 
 private:
   Ui::MainWindow *ui;

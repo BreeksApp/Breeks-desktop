@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     breek.cpp \
     elementtemplate.cpp \
+    loginform.cpp \
     main.cpp \
     mainwidnow-timetable.cpp \
     mainwindow-breekszone.cpp \
@@ -39,6 +40,7 @@ SOURCES += \
 HEADERS += \
     breek.h \
     elementtemplate.h \
+    loginform.h \
     mainwindow.h \
     notetextedit.h \
     addelement.h \
@@ -49,6 +51,7 @@ HEADERS += \
     effects.hpp
 
 FORMS += \
+    loginform.ui \
     mainwindow.ui \
     addelement.ui
 

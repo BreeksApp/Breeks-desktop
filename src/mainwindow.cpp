@@ -21,6 +21,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   ui->setupUi(this);
 
+  loginForm = new LoginForm;
+  connect(loginForm, &LoginForm::firstWindow, this, &MainWindow::show); //Connect login and Mainwindow form
+
   connect(ui->buttonImage, SIGNAL(imageEnter(bool)), this, SLOT(setImageBackgroundView(bool)));
   connect(ui->buttonImage, SIGNAL(imageLeave(bool)), this, SLOT(setImageBackgroundView(bool)));
 
@@ -28,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
   setStatesFromFileLastVisit();
   setAllElementsEffects();
+
 }
 
 MainWindow::~MainWindow()
@@ -222,5 +226,8 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
 
 
 
-
-
+void MainWindow::on_pushButton_clicked()
+{
+  loginForm->show();
+  this->close();
+}

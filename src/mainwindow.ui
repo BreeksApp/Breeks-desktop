@@ -456,6 +456,19 @@
      <string/>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>200</y>
+      <width>113</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>PushButton</string>
+    </property>
+   </widget>
    <zorder>labelBackground</zorder>
    <zorder>groupBox</zorder>
    <zorder>buttonAdd</zorder>
@@ -470,6 +483,7 @@
    <zorder>buttonImage</zorder>
    <zorder>groupBoxWorkZone</zorder>
    <zorder>groupBoxBreeksDescreption</zorder>
+   <zorder>pushButton</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -477,7 +491,7 @@
      <x>0</x>
      <y>0</y>
      <width>1972</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
