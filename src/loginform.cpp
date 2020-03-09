@@ -8,7 +8,7 @@ LoginForm::LoginForm(QWidget *parent) :
   ui->setupUi(this);
 
   mydb = QSqlDatabase::addDatabase("QSQLITE"); //Choose driver for work work with SqlLite DB
-  mydb.setDatabaseName("/Users/ruby/Desktop/breeks/Breeks-App/src/BreeksInfo.db"); // Set Path to our DB file
+	mydb.setDatabaseName("/home/yaroslav/PROJECTS/Breeks-App/src/BreeksInfo.db"); // Set Path to our DB file
 
   if (!mydb.open()) {
     qDebug()<<"Failed to open DataBase";
@@ -31,7 +31,8 @@ void LoginForm::on_loginButton_clicked()
   QString password = ui->passwordLineEdit->text();
 
   QSqlQuery qry;
-  if (qry.exec("SELECT * FROM Employee WHERE Username='"+username+"' AND Password='"+password+"'")) {  //make a query to our DB to find a required user
+	//make a query to our DB to find a required user
+	if (qry.exec("SELECT * FROM Employee WHERE Username='" + username + "' AND Password='" + password + "'")) {
     int count = 0;
     while (qry.next()) {
       count ++;
@@ -44,4 +45,7 @@ void LoginForm::on_loginButton_clicked()
       ui->infoLabe->setText("Wrong username or password");
     }
   }
+	else {
+		qDebug() << "No query!";
+	}
 }
