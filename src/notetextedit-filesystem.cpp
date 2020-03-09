@@ -136,6 +136,11 @@ void NoteTextEdit::readFromFile(QFile& file)
       charFormat.setFontStrikeOut(true);
       this->textCursor().insertText(static_cast<QString>(line), charFormat);
     }
+		else if (style == '5') {
+			this->fillFontStyleVector(cursorPos, 1, this->fontStyleValue_t::Item);
+			charFormat.setFontWeight(QFont::Normal);
+			this->textCursor().insertText(static_cast<QString>(line), charFormat);
+		}
   }
   file.flush();
   file.close();

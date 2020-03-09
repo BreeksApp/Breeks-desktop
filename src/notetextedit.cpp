@@ -40,8 +40,10 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
       if ( (iKey >= Qt::Key_A && iKey <= Qt::Key_Z) ||
       (QKeySequence(iKey).toString() >= "А" && (QKeySequence(iKey).toString() <= "Я")) ) {
         QTextEdit::keyPressEvent(event); //we can't identify CapsLock that's why use base method
-
-        fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);
+				if (this->textCursor().selectedText() != "") {
+					detailsEraseCharsOfSelectedText(cursorPos);
+				}
+				fontStyleVector_.insert(this->textCursor().position() - 1, 1, fontStyleValue_t::Normal);
 
         ++charCounter_;
         return;
@@ -55,7 +57,7 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
         }
 
         this->insertPlainText(QKeySequence(iKey).toString());
-        fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);
+				fontStyleVector_.insert(this->textCursor().position() - 1, 1, fontStyleValue_t::Normal);
 
         ++charCounter_;
         return;
@@ -69,7 +71,7 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
         }
 
         this->insertPlainText(QKeySequence(iKey).toString());
-        fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);
+				fontStyleVector_.insert(this->textCursor().position() - 1, 1, fontStyleValue_t::Normal);
 
         ++charCounter_;
         return;
@@ -84,7 +86,7 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
         }
 
         this->textCursor().insertText(" ", charFormat);
-        fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);
+				fontStyleVector_.insert(this->textCursor().position() - 1, 1, fontStyleValue_t::Normal);
 
         ++charCounter_;
         break;
@@ -100,7 +102,7 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
         }
 
         this->textCursor().insertText("\t", charFormat);
-        fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);
+				fontStyleVector_.insert(this->textCursor().position() - 1, 1, fontStyleValue_t::Normal);
 
         ++charCounter_;
         break;
@@ -112,7 +114,7 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
         }
 
         this->textCursor().insertText("\n", charFormat);
-        fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);
+				fontStyleVector_.insert(this->textCursor().position() - 1, 1, fontStyleValue_t::Normal);
 
         ++charCounter_;
         break;
@@ -135,7 +137,7 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
         insertLine = insertLine.mid(0, end); //to correct work with limit of chars
 
         this->textCursor().insertText(insertLine);
-        fontStyleVector_.insert(cursorPos, insertLine.length(), fontStyleValue_t::Normal);
+				fontStyleVector_.insert(this->textCursor().position(), insertLine.length(), fontStyleValue_t::Normal);
 
         charCounter_ += insertLine.length();
       }
@@ -243,6 +245,9 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
       int last = this->textCursor().selectionEnd();
 
       for (int i = first; i < last; ++i) {
+				if (fontStyleVector_[i] == fontStyleValue_t::Item) {
+					continue;
+				}
         this->textCursor().setPosition(i);
         fontStyleVector_[i] = fontStyleValue_t::Normal;
         this->textCursor().setCharFormat(textFormat);
@@ -263,11 +268,6 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
   }
 }
 
-bool detailsDeleteItem(bool isBackSpace)
-{
-
-}
-
 void NoteTextEdit::setFontStyle(int style)
 {
   QString selectline = this->textCursor().selectedText();
@@ -280,10 +280,10 @@ void NoteTextEdit::setFontStyle(int style)
     QTextCursor c(this->textCursor());
     c.setPosition(i);
     c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor);
-    //avoid effects for point sign
-    if (c.selectedText() == pointSign_) {
+		//avoid effects for item
+		if (fontStyleVector_[c.position() - 1] == fontStyleValue_t::Item) {
       continue;
-    }
+		}
 
     if (fontStyleVector_.value(i) != fontStyleValue_t(style)) {
       fontStyleVector_[i] = fontStyleValue_t(style);
@@ -314,7 +314,7 @@ void NoteTextEdit::addTodoList()
 {
   int cursorPos = this->textCursor().position();
   QTextCharFormat charFormat; //to back Normal font style of text after Bold, Italic, Underline... words
-  charFormat.setFontWeight(QFont::Normal);
+	charFormat.setFontWeight(QFont::Normal);
 
 	//if there is selected text ---
   QTextCursor c(this->textCursor());
@@ -334,12 +334,12 @@ void NoteTextEdit::addTodoList()
   QString item = "  " + pointSign_ + " "; //2 space + point + space
   if ((c.position() == cursorPos) || (c.selectedText() == spaceLine)) {
     this->textCursor().insertText(item, charFormat);
-    fontStyleVector_.insert(cursorPos, 4, fontStyleValue_t::Normal);
+		fontStyleVector_.insert(cursorPos, 4, fontStyleValue_t::Item);
     charCounter_ += 4;
   }
   else {
     this->textCursor().insertText('\n' + item, charFormat);
-    fontStyleVector_.insert(cursorPos, 5, fontStyleValue_t::Normal);
+		fontStyleVector_.insert(cursorPos, 5, fontStyleValue_t::Item);
     charCounter_ += 5;
   }
 }

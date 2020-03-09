@@ -1,16 +1,49 @@
 #include "notetextedit.h"
 #include <QDebug>
+#include <iostream>
+#include <algorithm>
 
 void NoteTextEdit::detailsEraseCharsOfSelectedText(int& cursorPos)
 {
+	QTextCursor c = this->textCursor();
   iterator iterFirst = fontStyleVector_.begin();
-  iterFirst += this->textCursor().selectionStart();
-  int nChar = this->textCursor().selectedText().length();
+	iterFirst += c.selectionStart();
+	int nChar = c.selectedText().length();
   iterator iterLast = iterFirst + nChar;
+
+	//if some parts of item is chosen we must delete full item ---
+	while (true) {
+		if (*iterFirst == fontStyleValue_t::Item) {
+			if (iterFirst != fontStyleVector_.begin()) {
+				--iterFirst;
+				c.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor);
+				++nChar;
+			}
+			else {
+				break;
+			}
+		}
+		else if (*iterLast == fontStyleValue_t::Item) {
+			if (iterLast != fontStyleVector_.end()) {
+				++iterLast;
+				c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor);
+				++nChar;
+			}
+			else {
+				break;
+			}
+		}
+		else {
+			break;
+		}
+	}
+	//---
+
   fontStyleVector_.erase(iterFirst, iterLast);
 
   charCounter_ -= nChar;
-  cursorPos -= nChar; //this->textCursor().selectionStart();
+	cursorPos -= c.selectionStart();
+	this->setTextCursor(c);
 }
 
 void NoteTextEdit::detailsDeleteBackspaceRealization(Qt::KeyboardModifiers kmModifiers, QTextCursor::MoveOperation whereMove,
