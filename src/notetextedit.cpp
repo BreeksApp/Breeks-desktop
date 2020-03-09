@@ -252,16 +252,20 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
 
   //Backspace
   if (QKeySequence(iKey) == Qt::Key_Backspace) {
-    detailsDeleteBackspaceRealization(kmModifiers, QTextCursor::PreviousWord, cursorPos, 0, 1);
-    this->textCursor().deletePreviousChar();
+		//TODO: function for deleteing items
+		detailsDeleteBackspaceRealization(kmModifiers, QTextCursor::PreviousWord, cursorPos, 0, 1);
+		this->textCursor().deletePreviousChar();
   }
   //Delete
   else if (QKeySequence(iKey) == Qt::Key_Delete) {
     detailsDeleteBackspaceRealization(kmModifiers, QTextCursor::NextWord, cursorPos, fontStyleVector_.size());
     this->textCursor().deleteChar();
   }
+}
 
-  //writeToFile();
+bool detailsDeleteItem(bool isBackSpace)
+{
+
 }
 
 void NoteTextEdit::setFontStyle(int style)
@@ -312,18 +316,20 @@ void NoteTextEdit::addTodoList()
   QTextCharFormat charFormat; //to back Normal font style of text after Bold, Italic, Underline... words
   charFormat.setFontWeight(QFont::Normal);
 
+	//if there is selected text ---
   QTextCursor c(this->textCursor());
   c.movePosition(QTextCursor::StartOfLine, QTextCursor::KeepAnchor);
 
-  if (this->textCursor().selectedText() != "") {
-    detailsEraseCharsOfSelectedText(cursorPos);
-  }
-
+	if (this->textCursor().selectedText() != "") {
+		detailsEraseCharsOfSelectedText(cursorPos);
+	}
+	//for checking empty line
   int n = c.selectedText().length();
   QString spaceLine = "";
   for (int i = 0; i < n; ++i) {
     spaceLine += " ";
   }
+	//---
 
   QString item = "  " + pointSign_ + " "; //2 space + point + space
   if ((c.position() == cursorPos) || (c.selectedText() == spaceLine)) {

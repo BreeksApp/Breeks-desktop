@@ -71,7 +71,7 @@ private:
   const QString pointSign_ = "•";
 
   void detailsEraseCharsOfSelectedText(int& cursorPos);
-  void detailsDeleteBackspaceRealization(Qt::KeyboardModifiers kmModifiers, QTextCursor::MoveOperation whereMove,
+	void detailsDeleteBackspaceRealization(Qt::KeyboardModifiers kmModifiers, QTextCursor::MoveOperation whereMove,
         int cursorPos, int blindSpot, int a = 0);
 };
 
