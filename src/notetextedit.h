@@ -69,7 +69,7 @@ private:
   QVector< fontStyleValue_t > fontStyleVector_; //storrage of font style status of every char
   const QVector< QChar > AVAILABLE_CHARS_ = {'!', '?', '.', ',', ';', ':', '\"', '\'', '&', '*', '@', '~', '`', '#','$', '^', '/',
         '%', '(', ')', '[', ']', '{', '}', '|', '\\', '<', '>', '-', '_', '+', '='};
-  const QString pointSign_ = "•";
+	const QString pointSign_ = "•";
 
   void detailsEraseCharsOfSelectedText(int& cursorPos);
 	void detailsDeleteBackspaceRealization(Qt::KeyboardModifiers kmModifiers, QTextCursor::MoveOperation whereMove,

@@ -62,13 +62,21 @@ void NoteTextEdit::detailsDeleteBackspaceRealization(Qt::KeyboardModifiers kmMod
 
 				//for normal working Ctrl + Backspace/Delete ---
 				//delting waste spaces in the left/right
+				//special situation with item
 				QTextCursor tmpC = c;
 				while (true) {
 					if (tmpC.positionInBlock() != 0 && tmpC.position() != this->toPlainText().length()) {
 						QTextCursor::MoveOperation moveSide = (whereMove == QTextCursor::PreviousWord) ?
 									QTextCursor::Left : QTextCursor::Right;
 						tmpC.movePosition(moveSide, QTextCursor::KeepAnchor);
-						if (tmpC.selectedText()[0] == ' ' || tmpC.selectedText()[tmpC.selectedText().length()-1] == ' ') {
+						int pos = (whereMove == QTextCursor::PreviousWord) ? 0 : tmpC.selectedText().length() - 1;
+						//analize current char
+						if (tmpC.selectedText()[pos] == ' ' || tmpC.selectedText()[pos] == pointSign_) {
+							//__•!dddddddd !(_) - should not be deleted
+							if (fontStyleVector_[tmpC.selectionStart()] == fontStyleValue_t::Item &&
+									fontStyleVector_[tmpC.selectionStart() + 1] != fontStyleValue_t::Item) {
+								break;
+							}
 							c = tmpC;
 							++spaceCounter;
 							continue;
@@ -80,8 +88,6 @@ void NoteTextEdit::detailsDeleteBackspaceRealization(Qt::KeyboardModifiers kmMod
 
         iterFirst += c.selectionStart();
         iterator iterLast = iterFirst + c.selectedText().length();
-
-				//qDebug() << c.selectedText();
 
         this->setTextCursor(c);
         fontStyleVector_.erase(iterFirst, iterLast);

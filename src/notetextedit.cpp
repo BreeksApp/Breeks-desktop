@@ -137,7 +137,7 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
         insertLine = insertLine.mid(0, end); //to correct work with limit of chars
 
         this->textCursor().insertText(insertLine);
-				fontStyleVector_.insert(this->textCursor().position(), insertLine.length(), fontStyleValue_t::Normal);
+				fontStyleVector_.insert(cursorPos, insertLine.length(), fontStyleValue_t::Normal);
 
         charCounter_ += insertLine.length();
       }
