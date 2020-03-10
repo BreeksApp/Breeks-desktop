@@ -6,18 +6,33 @@
 void NoteTextEdit::detailsEraseCharsOfSelectedText(int& cursorPos)
 {
 	QTextCursor c = this->textCursor();
-  iterator iterFirst = fontStyleVector_.begin();
-	iterFirst += c.selectionStart();
+	int pos = std::min(c.selectionStart(), c.selectionEnd());
 	int nChar = c.selectedText().length();
+
+	c.movePosition(QTextCursor::Start);
+	c.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, pos);
+	c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, nChar);
+
+	qDebug() << c.selectedText();
+
+	iterator iterFirst = fontStyleVector_.begin();
+	iterFirst += c.selectionStart();
   iterator iterLast = iterFirst + nChar;
 
 	//if some parts of item is chosen we must delete full item ---
+	qDebug() << *iterFirst;
 	while (true) {
 		if (*iterFirst == fontStyleValue_t::Item) {
 			if (iterFirst != fontStyleVector_.begin()) {
 				--iterFirst;
-				c.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor);
 				++nChar;
+
+				pos = c.selectionStart() - 1;
+				c.clearSelection();
+				c.movePosition(QTextCursor::Start);
+				c.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, pos);
+				c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, nChar);
+				//qDebug() << c.selectedText();
 			}
 			else {
 				break;
@@ -101,6 +116,7 @@ void NoteTextEdit::detailsDeleteBackspaceRealization(Qt::KeyboardModifiers kmMod
     }
   }
   else {
+		qDebug() << "!";
     detailsEraseCharsOfSelectedText(cursorPos);
   }
 }
@@ -115,8 +131,17 @@ void NoteTextEdit::detailsItemCheck(int& cursorPos, bool isBS, Qt::KeyboardModif
 
 	if (cursorPos != blindSpot && fontStyleVector_[pos] == fontStyleValue_t::Item) {
 		QTextCursor c = this->textCursor();
+		QTextCursor::MoveMode selection = QTextCursor::MoveAnchor;
+		if (this->textCursor().selectedText() != "") {
+			selection = QTextCursor::KeepAnchor;
+		}
 		while (cursorPos < charCounter_ && cursorPos > 0) {
 			if (fontStyleVector_[cursorPos] == fontStyleValue_t::Item) {
+				cursorPos += i;
+				c.movePosition(moveSide, selection);
+			}
+			else {
+				//qDebug() << cursorPos << " " << fontStyleVector_[cursorPos];
 				cursorPos += i;
 				c.movePosition(moveSide, QTextCursor::MoveAnchor);
 			}
