@@ -340,8 +340,11 @@ void NoteTextEdit::addTodoList()
     charCounter_ += 4;
   }
   else {
+		qDebug("!");
     this->textCursor().insertText('\n' + item, charFormat);
-		fontStyleVector_.insert(cursorPos, 5, fontStyleValue_t::Item);
+		fontStyleVector_.insert(cursorPos, 4, fontStyleValue_t::Item);
+		fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);
+
     charCounter_ += 5;
   }
 }

@@ -13,14 +13,14 @@ void NoteTextEdit::detailsEraseCharsOfSelectedText(int& cursorPos)
 	c.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, pos);
 	c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, nChar);
 
-	qDebug() << c.selectedText();
+	//qDebug() << c.selectedText();
 
 	iterator iterFirst = fontStyleVector_.begin();
 	iterFirst += c.selectionStart();
   iterator iterLast = iterFirst + nChar;
 
 	//if some parts of item is chosen we must delete full item ---
-	qDebug() << *iterFirst;
+	//qDebug() << *iterFirst;
 	while (true) {
 		if (*iterFirst == fontStyleValue_t::Item) {
 			if (iterFirst != fontStyleVector_.begin()) {
@@ -57,7 +57,7 @@ void NoteTextEdit::detailsEraseCharsOfSelectedText(int& cursorPos)
   fontStyleVector_.erase(iterFirst, iterLast);
 
   charCounter_ -= nChar;
-	cursorPos -= c.selectionStart();
+	cursorPos -= pos;
 	this->setTextCursor(c);
 }
 
