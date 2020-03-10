@@ -74,6 +74,7 @@ private:
   void detailsEraseCharsOfSelectedText(int& cursorPos);
 	void detailsDeleteBackspaceRealization(Qt::KeyboardModifiers kmModifiers, QTextCursor::MoveOperation whereMove,
         int cursorPos, int blindSpot, int a = 0);
+	void detailsItemCheck(int& cursorPos, bool isBS, Qt::KeyboardModifiers& mod);
 };
 
 #endif // NOTE_H

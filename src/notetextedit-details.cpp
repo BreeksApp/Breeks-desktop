@@ -105,4 +105,25 @@ void NoteTextEdit::detailsDeleteBackspaceRealization(Qt::KeyboardModifiers kmMod
   }
 }
 
+void NoteTextEdit::detailsItemCheck(int& cursorPos, bool isBS, Qt::KeyboardModifiers& mod)
+{
+	QTextCursor::MoveOperation moveSide = isBS ? QTextCursor::Right : QTextCursor::Left;
+	int i = isBS ? 1 : -1;
+	int blindSpot = isBS ? 0 : this->toPlainText().length();
+
+	int pos = std::max(0, cursorPos - std::max(0, i));
+
+	if (cursorPos != blindSpot && fontStyleVector_[pos] == fontStyleValue_t::Item) {
+		QTextCursor c = this->textCursor();
+		while (cursorPos < charCounter_ && cursorPos > 0) {
+			if (fontStyleVector_[cursorPos] == fontStyleValue_t::Item) {
+				cursorPos += i;
+				c.movePosition(moveSide, QTextCursor::MoveAnchor);
+			}
+		}
+		this->setTextCursor(c);
+		mod = Qt::ControlModifier;
+	}
+}
+
 
