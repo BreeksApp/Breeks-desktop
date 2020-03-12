@@ -43,6 +43,9 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
 				if (this->textCursor().selectedText() != "") {
 					detailsEraseCharsOfSelectedText(cursorPos);
 				}
+
+				detailsItemCheckAndCanselStatus(cursorPos);
+
 				fontStyleVector_.insert(this->textCursor().position() - 1, 1, fontStyleValue_t::Normal);
 
         ++charCounter_;
@@ -55,6 +58,8 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
         if (this->textCursor().selectedText() != "") {
           detailsEraseCharsOfSelectedText(cursorPos);
         }
+
+				detailsItemCheckAndCanselStatus(cursorPos);
 
         this->insertPlainText(QKeySequence(iKey).toString());
 				fontStyleVector_.insert(this->textCursor().position() - 1, 1, fontStyleValue_t::Normal);
@@ -70,6 +75,8 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
           detailsEraseCharsOfSelectedText(cursorPos);
         }
 
+				detailsItemCheckAndCanselStatus(cursorPos);
+
         this->insertPlainText(QKeySequence(iKey).toString());
 				fontStyleVector_.insert(this->textCursor().position() - 1, 1, fontStyleValue_t::Normal);
 
@@ -80,31 +87,43 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
 
     switch (iKey) {
       //Space
-      case Qt::Key_Space :
+			case Qt::Key_Space : {
         if (this->textCursor().selectedText() != "") {
           detailsEraseCharsOfSelectedText(cursorPos);
         }
+
+				detailsItemCheckAndCanselStatus(cursorPos);
 
         this->textCursor().insertText(" ", charFormat);
 				fontStyleVector_.insert(this->textCursor().position() - 1, 1, fontStyleValue_t::Normal);
 
         ++charCounter_;
         break;
+			}
       //Tab
       case Qt::Key_Tab : {
         QString tab = "";
+				/*if (fontStyleVector_[cursorPos - 1] == fontStyleValue_t::Item) {
+
+				}
+
         for (int i = 0; i < 4; ++i) {
-          tab += " ";
-        }
+					tab += " ";
+				}*/
 
         if (this->textCursor().selectedText() != "") {
           detailsEraseCharsOfSelectedText(cursorPos);
         }
 
-        this->textCursor().insertText("\t", charFormat);
-				fontStyleVector_.insert(this->textCursor().position() - 1, 1, fontStyleValue_t::Normal);
+				for (int i = 0; i < 4; ++i) {
+					this->textCursor().insertText(" ", charFormat);
+					fontStyleVector_.insert(this->textCursor().position() - 1 + i, 1, fontStyleValue_t::Item);
+					++charCounter_;
+				}
+				//this->textCursor().insertText("\t", charFormat);
+				//fontStyleVector_.insert(this->textCursor().position() - 1, 1, fontStyleValue_t::Item);
 
-        ++charCounter_;
+				//++charCounter_;
         break;
       }
       //Return
@@ -128,6 +147,8 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
         if (this->textCursor().selectedText() != "") {
           detailsEraseCharsOfSelectedText(cursorPos);
         }
+
+				detailsItemCheckAndCanselStatus(cursorPos);
 
         QString insertLine = buffer->text();
 
@@ -201,7 +222,6 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
 
   if (kmModifiers == Qt::ControlModifier) {
     QClipboard* buffer = QApplication::clipboard();
-    //qDebug() << this->textCursor().selectedText();
     //Ctrl + C - copy
     if (QKeySequence(iKey) == Qt::Key_C) {
       QString Selectline = this->textCursor().selectedText();
@@ -217,6 +237,7 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
     //Ctrl + X - cut
     else if (QKeySequence(iKey) == Qt::Key_X) {
       detailsEraseCharsOfSelectedText(cursorPos);
+			detailsItemCheckAndCanselStatus(cursorPos);
       this->cut();
     }
     //Ctrl + 1 - Bold
@@ -258,13 +279,13 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
   //Backspace
   if (QKeySequence(iKey) == Qt::Key_Backspace) {
 		//analize item posotion if it is item
-		detailsItemCheck(cursorPos, true, kmModifiers);
+		detailsItemCheckInDeleting(cursorPos, true, kmModifiers);
 		detailsDeleteBackspaceRealization(kmModifiers, QTextCursor::PreviousWord, cursorPos, 0, 1);
 		this->textCursor().deletePreviousChar();
   }
   //Delete
   else if (QKeySequence(iKey) == Qt::Key_Delete) {
-		detailsItemCheck(cursorPos, false, kmModifiers);
+		detailsItemCheckInDeleting(cursorPos, false, kmModifiers);
     detailsDeleteBackspaceRealization(kmModifiers, QTextCursor::NextWord, cursorPos, fontStyleVector_.size());
     this->textCursor().deleteChar();
   }
@@ -340,7 +361,6 @@ void NoteTextEdit::addTodoList()
     charCounter_ += 4;
   }
   else {
-		qDebug("!");
     this->textCursor().insertText('\n' + item, charFormat);
 		fontStyleVector_.insert(cursorPos, 4, fontStyleValue_t::Item);
 		fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);

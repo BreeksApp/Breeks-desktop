@@ -1,4 +1,5 @@
 #include "notetextedit.h"
+
 #include <QDebug>
 #include <iostream>
 #include <algorithm>
@@ -116,12 +117,11 @@ void NoteTextEdit::detailsDeleteBackspaceRealization(Qt::KeyboardModifiers kmMod
     }
   }
   else {
-		qDebug() << "!";
     detailsEraseCharsOfSelectedText(cursorPos);
   }
 }
 
-void NoteTextEdit::detailsItemCheck(int& cursorPos, bool isBS, Qt::KeyboardModifiers& mod)
+void NoteTextEdit::detailsItemCheckInDeleting(int &cursorPos, bool isBS, Qt::KeyboardModifiers &mod)
 {
 	QTextCursor::MoveOperation moveSide = isBS ? QTextCursor::Right : QTextCursor::Left;
 	int i = isBS ? 1 : -1;
@@ -141,13 +141,29 @@ void NoteTextEdit::detailsItemCheck(int& cursorPos, bool isBS, Qt::KeyboardModif
 				c.movePosition(moveSide, selection);
 			}
 			else {
-				//qDebug() << cursorPos << " " << fontStyleVector_[cursorPos];
-				cursorPos += i;
-				c.movePosition(moveSide, QTextCursor::MoveAnchor);
+				break;
+				//cursorPos += i;
+				//c.movePosition(moveSide, QTextCursor::MoveAnchor);
 			}
 		}
 		this->setTextCursor(c);
 		mod = Qt::ControlModifier;
+	}
+}
+
+void NoteTextEdit::detailsItemCheckAndCanselStatus(int cursorPos)
+{
+	if (cursorPos < charCounter_ && fontStyleVector_[cursorPos] == fontStyleValue_t::Item) {
+		int i = std::max(0, cursorPos - 1);
+		while (i >= 0 && fontStyleVector_[i] == fontStyleValue_t::Item) {
+			fontStyleVector_[i] = fontStyleValue_t::Normal;
+			--i;
+		}
+		i = cursorPos;
+		while (i < charCounter_ && fontStyleVector_[i] == fontStyleValue_t::Item) {
+			fontStyleVector_[i] = fontStyleValue_t::Normal;
+			++i;
+		}
 	}
 }
 
