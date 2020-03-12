@@ -102,22 +102,17 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
 			}
       //Tab
       case Qt::Key_Tab : {
-        QString tab = "";
-				/*if (fontStyleVector_[cursorPos - 1] == fontStyleValue_t::Item) {
-
-				}
-
-        for (int i = 0; i < 4; ++i) {
-					tab += " ";
-				}*/
-
         if (this->textCursor().selectedText() != "") {
           detailsEraseCharsOfSelectedText(cursorPos);
         }
 
-				for (int i = 0; i < 4; ++i) {
+				const int tabLenght = 4;
+				int pos = std::max(0, cursorPos - 1);
+
+				for (int i = 0; i < tabLenght; ++i) {
 					this->textCursor().insertText(" ", charFormat);
-					fontStyleVector_.insert(this->textCursor().position() - 1 + i, 1, fontStyleValue_t::Item);
+					fontStyleVector_.insert(pos, 1, fontStyleValue_t::Normal);
+					++pos;
 					++charCounter_;
 				}
 				//this->textCursor().insertText("\t", charFormat);
