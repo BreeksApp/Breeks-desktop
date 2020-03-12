@@ -107,13 +107,13 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
         }
 
 				int pos = std::max(0, cursorPos - 1);
-
 				QTextCursor c = this->textCursor();
+
 				if (charCounter_ != 0 && fontStyleVector_[pos] == fontStyleValue_t::Item) {
 					QTextCursor tmp = c;
 					tmp.movePosition(QTextCursor::StartOfBlock, QTextCursor::MoveAnchor);
 					int nMove = std::min(ITEM_LENGTH, c.position() - tmp.position());
-					qDebug() << nMove;
+
 					c.movePosition(QTextCursor::Left, QTextCursor::MoveAnchor, nMove);
 				}
 
@@ -176,7 +176,7 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
 
   //Esc canceled all selection
   if (iKey == Qt::Key_Escape) {
-    this->moveCursor(QTextCursor::Left);
+		this->moveCursor(QTextCursor::Right);
     return;
   }
 
@@ -199,8 +199,21 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
   }
   //Shift + arrows
   if (kmModifiers == Qt::ShiftModifier) {
-    //it is tmp soluton, I want to reimplementate work with shift
-    QTextEdit::keyPressEvent(event);
+		if (QKeySequence(iKey) == Qt::Key_Up) {
+			QTextCursor c = this->textCursor();
+			c.movePosition(QTextCursor::StartOfBlock, QTextCursor::MoveAnchor);
+			c.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
+			this->setTextCursor(c);
+		}
+		else if (QKeySequence(iKey) == Qt::Key_Down) {
+			QTextCursor c = this->textCursor();
+			c.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
+			this->setTextCursor(c);
+		}
+		else {
+			//it is tmp soluton, I want to reimplementate work with shift
+			QTextEdit::keyPressEvent(event);
+		}
   }
 
   //Ctrl + arrows
