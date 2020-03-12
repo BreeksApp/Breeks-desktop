@@ -4,87 +4,141 @@
 
 void NoteTextEdit::readFromFile()
 {
+  QString queryString = "SELECT Notes FROM Employee WHERE Username='1'";
+  QString data;
+  QSqlQuery query;
+  query.exec(queryString);
+  while (query.next()) {
+    QSqlRecord record = query.record();
+    data = record.value(0).toString();
+  }
+
+  jDoc_ = QJsonDocument::fromJson(data.toUtf8());
+  QJsonObject jObject = jDoc_.object();
+  QJsonObject notes = jObject.value("textEdit").toObject();
+  note1_ = notes.value("note1").toObject();
+  note2_ = notes.value("note2").toObject();
+  note3_ = notes.value("note3").toObject();
+  note4_ = notes.value("note4").toObject();
+  note5_ = notes.value("note5").toObject();
+  note6_ = notes.value("note6").toObject();
+
   switch (nCurrentFile_) {
     case 1:
       nCurrentFile_ = 1;
       if (!file1_.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "FILE OPENING CRASHED";
       }
-      readFromFile(file1_);
+      readFromFile(note1_);
       break;
     case 2:
       nCurrentFile_ = 2;
       if (!file2_.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "FILE OPENING CRASHED";
       }
-      readFromFile(file2_);
+      readFromFile(note2_);
       break;
     case 3:
       nCurrentFile_ = 3;
       if (!file3_.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "FILE OPENING CRASHED";
       }
-      readFromFile(file3_);
+      readFromFile(note3_);
       break;
     case 4:
       nCurrentFile_ = 4;
       if (!file4_.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "FILE OPENING CRASHED";
       }
-      readFromFile(file4_);
+      readFromFile(note4_);
       break;
     case 5:
       nCurrentFile_ = 5;
       if (!file5_.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "FILE OPENING CRASHED";
       }
-      readFromFile(file5_);
+      readFromFile(note5_);
       break;
     case 6:
       nCurrentFile_ = 6;
       if (!file6_.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "FILE OPENING CRASHED";
       }
-      readFromFile(file6_);
+      readFromFile(note6_);
       break;
     }
 }
 
 void NoteTextEdit::writeToFile()
 {
+  QString queryString = "SELECT Notes FROM Employee WHERE Username='1'";
+  QString data;
+  QSqlQuery query;
+  query.exec(queryString);
+  while (query.next()) {
+    QSqlRecord record = query.record();
+    data = record.value(0).toString();
+  }
+
+  jDoc_ = QJsonDocument::fromJson(data.toUtf8());
+  QJsonObject jObject = jDoc_.object();
+  QJsonObject notes = jObject.value("textEdit").toObject();
+  note1_ = notes.value("note1").toObject();
+  note2_ = notes.value("note2").toObject();
+  note3_ = notes.value("note3").toObject();
+  note4_ = notes.value("note4").toObject();
+  note5_ = notes.value("note5").toObject();
+  note6_ = notes.value("note6").toObject();
+
   switch (nCurrentFile_) {
-    case 1:
+    case 1: {
       nCurrentFile_ = 1;
-      writeToFile(file1_);
+      writeToFile(note1_);
+      notes.insert("note1", note1_);
+      jObject.insert("textEdit", notes);
+      jDoc_.setObject(jObject);
+      QString strJson(jDoc_.toJson(QJsonDocument::Compact));
+      query.exec("UPDATE Employee SET Notes ='"+strJson+"' WHERE Username ='1'");
       break;
+    }
     case 2:
       nCurrentFile_ = 2;
-      writeToFile(file2_);
+      writeToFile(note2_);
       break;
     case 3:
       nCurrentFile_ = 3;
-      writeToFile(file3_);
+      writeToFile(note3_);
       break;
     case 4:
       nCurrentFile_ = 4;
-      writeToFile(file4_);
+      writeToFile(note4_);
       break;
     case 5:
       nCurrentFile_ = 5;
-      writeToFile(file5_);
+      writeToFile(note5_);
       break;
     case 6:
       nCurrentFile_ = 6;
-      writeToFile(file6_);
+      writeToFile(note6_);
       break;
     }
 }
 
-void NoteTextEdit::readFromFile(QFile& file)
+void NoteTextEdit::readFromFile(QJsonObject& object)
 {
-  QString text = file.readAll();
+  int charCount = object.value("charCount").toInt();
+  QString chars = QString::number(charCount);
+  QString charState = object.value("charState").toString();
+  QString textChar = object.value("text").toString();
+  QString info = chars;
+  info.append(" ");
+  info.append(charState);
+  info.append(" ");
+  info.append(textChar);
+  qDebug() << info;
+  //QString text = file.readAll();
   //13 0000000000000 Hello, World!
-  QTextStream out(&text);
+  QTextStream out(&info);
 
   int tmp = 0;
   out >> tmp;
@@ -107,7 +161,7 @@ void NoteTextEdit::readFromFile(QFile& file)
   for (int i = 0; i < charCounter; ++i) {
     QChar style;
     out >> style;
-    QChar line = text[i + jump];
+    QChar line = info[i + jump];
     QTextCharFormat charFormat;
     int cursorPos = this->textCursor().position();
 
@@ -137,27 +191,29 @@ void NoteTextEdit::readFromFile(QFile& file)
       this->textCursor().insertText(static_cast<QString>(line), charFormat);
     }
   }
-  file.flush();
-  file.close();
+  //file.flush();
+  //file.close();
 }
 
-void NoteTextEdit::writeToFile(QFile &file)
+void NoteTextEdit::writeToFile(QJsonObject &object)
 {
+    /*
   if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
       qDebug() << "FILE OPENING CRASHED";
   }
-  QTextStream in(&file);
+  */
+  //QTextStream in(&file);
 
+  object.insert("charCount", this->getCharCounter());
   int charCounter = this->getCharCounter();
-  in << charCounter << " ";
+  QString charState;
+  //in << charCounter << " ";
   for (int i = 0; i < charCounter; ++i) {
-    in << this->getCharStyle(i);
+    charState += QString::number(this->getCharStyle(i));
   }
-
-  QString text = this->toPlainText();
-  in << " " << text;
-  file.flush();
-  file.close();
+  object.insert("charState", charState);
+  object.insert("charCounter", charCounter);
+  object.insert("text", this->toPlainText());
 }
 
 void NoteTextEdit::setNumberCurrentFile(int n)
