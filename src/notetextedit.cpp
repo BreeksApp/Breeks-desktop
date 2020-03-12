@@ -106,19 +106,29 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
           detailsEraseCharsOfSelectedText(cursorPos);
         }
 
-				const int tabLenght = 4;
 				int pos = std::max(0, cursorPos - 1);
 
-				for (int i = 0; i < tabLenght; ++i) {
-					this->textCursor().insertText(" ", charFormat);
-					fontStyleVector_.insert(pos, 1, fontStyleValue_t::Normal);
+				QTextCursor c = this->textCursor();
+				if (charCounter_ != 0 && fontStyleVector_[pos] == fontStyleValue_t::Item) {
+					QTextCursor tmp = c;
+					tmp.movePosition(QTextCursor::StartOfBlock, QTextCursor::MoveAnchor);
+					int nMove = std::min(ITEM_LENGTH, c.position() - tmp.position());
+					qDebug() << nMove;
+					c.movePosition(QTextCursor::Left, QTextCursor::MoveAnchor, nMove);
+				}
+
+				for (int i = 0; i < TAB_LENGTH; ++i) {
+					c.insertText(" ", charFormat);
+					fontStyleVector_.insert(pos, 1, fontStyleValue_t::Item);
 					++pos;
 					++charCounter_;
 				}
-				//this->textCursor().insertText("\t", charFormat);
-				//fontStyleVector_.insert(this->textCursor().position() - 1, 1, fontStyleValue_t::Item);
 
-				//++charCounter_;
+				if (c.position() != cursorPos) {
+					c.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, ITEM_LENGTH);
+				}
+
+				this->setTextCursor(c);
         break;
       }
       //Return

@@ -70,6 +70,8 @@ private:
   const QVector< QChar > AVAILABLE_CHARS_ = {'!', '?', '.', ',', ';', ':', '\"', '\'', '&', '*', '@', '~', '`', '#','$', '^', '/',
         '%', '(', ')', '[', ']', '{', '}', '|', '\\', '<', '>', '-', '_', '+', '='};
 	const QString pointSign_ = "•";
+	const int ITEM_LENGTH = 4;
+	const int TAB_LENGTH = 6;
 
   void detailsEraseCharsOfSelectedText(int& cursorPos);
 	void detailsDeleteBackspaceRealization(Qt::KeyboardModifiers kmModifiers, QTextCursor::MoveOperation whereMove,
