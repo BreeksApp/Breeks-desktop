@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     breek.cpp \
+    databaseIO.cpp \
     elementtemplate.cpp \
     loginform.cpp \
     main.cpp \

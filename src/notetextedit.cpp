@@ -16,6 +16,7 @@ NoteTextEdit::NoteTextEdit(QWidget *parent) :
   file4_(file4Name_),
   file5_(file5Name_),
   file6_(file6Name_)
+
   //
 {
 //add saved text
@@ -336,6 +337,11 @@ void NoteTextEdit::addTodoList()
     fontStyleVector_.insert(cursorPos, 5, fontStyleValue_t::Normal);
     charCounter_ += 5;
   }
+}
+
+void NoteTextEdit::recieveUsername(const QString username)
+{
+  username_ = username;
 }
 
 //for file system

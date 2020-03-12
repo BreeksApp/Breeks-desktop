@@ -31,7 +31,8 @@ void LoginForm::on_loginButton_clicked()
   QString password = ui->passwordLineEdit->text();
 
   QSqlQuery qry;
-  if (qry.exec("SELECT * FROM Employee WHERE Username='"+username+"' AND Password='"+password+"'")) {  //make a query to our DB to find a required user
+  //make a query to our DB to find a required user
+  if (qry.exec("SELECT * FROM Employee WHERE Username='"+username+"' AND Password='"+password+"'")) {
     int count = 0;
     while (qry.next()) {
       count ++;
@@ -39,6 +40,7 @@ void LoginForm::on_loginButton_clicked()
     if (count==1) {
       this->close();
       emit firstWindow();
+      emit sendUsername(username);
     }
     else {
       ui->infoLabe->setText("Wrong username or password");

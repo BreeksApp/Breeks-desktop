@@ -47,10 +47,16 @@ public:
   void setFontStyle(int style);
   void addTodoList();
   //
+public slots:
+  void recieveUsername(const QString);
+
 private:
 //it is data storage
   void readFromFile(QJsonObject &object);
-  void writeToFile(QJsonObject &object);
+  void writeToFile(QJsonDocument &jDoc, QJsonObject &jObject, QJsonObject &notes, QJsonObject &note);
+
+  QString getDataFromDB();
+  void parseDataBase(QJsonObject &notes);
 
   int nCurrentFile_;
 
@@ -68,13 +74,15 @@ private:
   QFile file5_;
   QFile file6_;
 
-  QJsonDocument jDoc_;
   QJsonObject note1_;
   QJsonObject note2_;
   QJsonObject note3_;
   QJsonObject note4_;
   QJsonObject note5_;
   QJsonObject note6_;
+
+  QString username_;
+
  //
 
   const int MAX_COUNT_CHAR_ = 1111; //fix count of chars in the one note
