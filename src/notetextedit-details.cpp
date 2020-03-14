@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <iostream>
 #include <algorithm>
+#include <QTextCodec>
 
 void NoteTextEdit::detailsEraseCharsOfSelectedText(int& cursorPos)
 {
@@ -13,8 +14,6 @@ void NoteTextEdit::detailsEraseCharsOfSelectedText(int& cursorPos)
 	c.movePosition(QTextCursor::Start);
 	c.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, pos);
 	c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, nChar);
-
-	//qDebug() << c.selectedText();
 
 	iterator iterFirst = fontStyleVector_.begin();
 	iterFirst += c.selectionStart();
@@ -54,49 +53,54 @@ void NoteTextEdit::detailsEraseCharsOfSelectedText(int& cursorPos)
 		}
 	}
 	//---
-
   fontStyleVector_.erase(iterFirst, iterLast);
 
   charCounter_ -= nChar;
-	cursorPos -= pos;
+	cursorPos = pos;
 	this->setTextCursor(c);
 }
 
-void NoteTextEdit::detailsDeleteBackspaceRealization(Qt::KeyboardModifiers kmModifiers, QTextCursor::MoveOperation whereMove,
-			int cursorPos, int blindSpot, int a)
+void NoteTextEdit::detailsDeleteBackspaceRealization(Qt::KeyboardModifiers kmModifiers,
+			QTextCursor::MoveOperation whereMove, int cursorPos, int blindSpot, int a)
 {
-	int spaceCounter = 0;
-
 	int nSelectedChars = this->textCursor().selectedText().length();
+
 	if (nSelectedChars == 0) { //no selected text
+
 		if (cursorPos != blindSpot) {
       iterator iterFirst = fontStyleVector_.begin();
 
       if (kmModifiers == Qt::ControlModifier) {
-        QTextCursor c = this->textCursor();
-        c.movePosition(whereMove, QTextCursor::KeepAnchor);
-
+				QTextCursor c = this->textCursor();
 				//for normal working Ctrl + Backspace/Delete ---
 				//delting waste spaces in the left/right
 				//special situation with item
-				QTextCursor tmpC = c;
+				QTextCursor::MoveOperation moveSide = (whereMove == QTextCursor::PreviousWord) ?
+							QTextCursor::Left : QTextCursor::Right;
+				c.movePosition(moveSide, QTextCursor::KeepAnchor);
+
+				int i = (whereMove == QTextCursor::PreviousWord) ? 1 : -1;
+
 				while (true) {
-					if (tmpC.positionInBlock() != 0 && tmpC.position() != this->toPlainText().length()) {
-						QTextCursor::MoveOperation moveSide = (whereMove == QTextCursor::PreviousWord) ?
-									QTextCursor::Left : QTextCursor::Right;
-						tmpC.movePosition(moveSide, QTextCursor::KeepAnchor);
-						int pos = (whereMove == QTextCursor::PreviousWord) ? 0 : tmpC.selectedText().length() - 1;
-						//analize current char
-						if (tmpC.selectedText()[pos] == ' ' || tmpC.selectedText()[pos] == pointSign_) {
-							//__•!dddddddd !(_) - should not be deleted
-							if (fontStyleVector_[tmpC.selectionStart()] == fontStyleValue_t::Item &&
-									fontStyleVector_[tmpC.selectionStart() + 1] != fontStyleValue_t::Item) {
-								break;
-							}
-							c = tmpC;
-							++spaceCounter;
-							continue;
+					int pos = (whereMove == QTextCursor::PreviousWord) ? 0 : c.selectedText().length() - 1;
+
+					if (c.positionInBlock() != 0 && c.position() != charCounter_) {
+						int posInVectorEnd = std::min(c.position() + i, charCounter_ - 1);
+
+						if ( (fontStyleVector_[std::max(0, c.position() - 1)] != fontStyleValue_t::Item ||
+									fontStyleVector_[posInVectorEnd] != fontStyleValue_t::Item) &&
+								c.selectedText().length() != 1 &&
+								(	(c.selectedText()[pos] != ' ' && c.selectedText()[pos + i] == ' ') ||
+									(c.selectedText()[pos] == ' ' && c.selectedText()[pos + i] != ' ') )) {
+							int selectionLength = c.selectedText().length() - 1;
+							c.clearSelection();
+							c.setPosition(this->textCursor().position());
+							c.movePosition(moveSide, QTextCursor::KeepAnchor, selectionLength);
+
+							break;
 						}
+						c.movePosition(moveSide, QTextCursor::KeepAnchor);
+						continue;
 					}
 					break;
 				}
@@ -142,8 +146,6 @@ void NoteTextEdit::detailsItemCheckInDeleting(int &cursorPos, bool isBS, Qt::Key
 			}
 			else {
 				break;
-				//cursorPos += i;
-				//c.movePosition(moveSide, QTextCursor::MoveAnchor);
 			}
 		}
 		this->setTextCursor(c);

@@ -39,16 +39,15 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
     if (kmModifiers == 0 || kmModifiers == Qt::ShiftModifier) {
       if ( (iKey >= Qt::Key_A && iKey <= Qt::Key_Z) ||
       (QKeySequence(iKey).toString() >= "А" && (QKeySequence(iKey).toString() <= "Я")) ) {
-        QTextEdit::keyPressEvent(event); //we can't identify CapsLock that's why use base method
+				QTextEdit::keyPressEvent(event); //we can't identify CapsLock that's why use base method
 				if (this->textCursor().selectedText() != "") {
 					detailsEraseCharsOfSelectedText(cursorPos);
 				}
-
 				detailsItemCheckAndCanselStatus(cursorPos);
 
-				fontStyleVector_.insert(this->textCursor().position() - 1, 1, fontStyleValue_t::Normal);
-
+				fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);
         ++charCounter_;
+
         return;
       }
     }
@@ -62,28 +61,30 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
 				detailsItemCheckAndCanselStatus(cursorPos);
 
         this->insertPlainText(QKeySequence(iKey).toString());
-				fontStyleVector_.insert(this->textCursor().position() - 1, 1, fontStyleValue_t::Normal);
+				fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);
 
         ++charCounter_;
         return;
       }
     }
     //special chars
-    for (QChar i : AVAILABLE_CHARS_){
-      if (QKeySequence(iKey).toString() == i) {
-        if (this->textCursor().selectedText() != "") {
-          detailsEraseCharsOfSelectedText(cursorPos);
-        }
+		if (kmModifiers == 0 || kmModifiers == Qt::ShiftModifier) {
+			for (QChar i : AVAILABLE_CHARS_){
+				if (QKeySequence(iKey).toString() == i) {
+					if (this->textCursor().selectedText() != "") {
+						detailsEraseCharsOfSelectedText(cursorPos);
+					}
 
-				detailsItemCheckAndCanselStatus(cursorPos);
+					detailsItemCheckAndCanselStatus(cursorPos);
 
-        this->insertPlainText(QKeySequence(iKey).toString());
-				fontStyleVector_.insert(this->textCursor().position() - 1, 1, fontStyleValue_t::Normal);
+					this->insertPlainText(QKeySequence(iKey).toString());
+					fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);
 
-        ++charCounter_;
-        return;
-      }
-    }
+					++charCounter_;
+					return;
+				}
+			}
+		}
 
     switch (iKey) {
       //Space
@@ -95,26 +96,28 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
 				detailsItemCheckAndCanselStatus(cursorPos);
 
         this->textCursor().insertText(" ", charFormat);
-				fontStyleVector_.insert(this->textCursor().position() - 1, 1, fontStyleValue_t::Normal);
+				fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);
 
         ++charCounter_;
-        break;
+				return;
 			}
       //Tab
       case Qt::Key_Tab : {
         if (this->textCursor().selectedText() != "") {
           detailsEraseCharsOfSelectedText(cursorPos);
         }
+				//detailsItemCheckAndCanselStatus(cursorPos);
 
-				int pos = std::max(0, cursorPos - 1);
+				int pos = cursorPos;
 				QTextCursor c = this->textCursor();
 
-				if (charCounter_ != 0 && fontStyleVector_[pos] == fontStyleValue_t::Item) {
+				if (charCounter_ != 0 && fontStyleVector_[std::max(0, pos - 1)] == fontStyleValue_t::Item) {
 					QTextCursor tmp = c;
 					tmp.movePosition(QTextCursor::StartOfBlock, QTextCursor::MoveAnchor);
 					int nMove = std::min(ITEM_LENGTH, c.position() - tmp.position());
 
 					c.movePosition(QTextCursor::Left, QTextCursor::MoveAnchor, nMove);
+					pos = c.position();
 				}
 
 				for (int i = 0; i < TAB_LENGTH; ++i) {
@@ -138,15 +141,28 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
         }
 
         this->textCursor().insertText("\n", charFormat);
-				fontStyleVector_.insert(this->textCursor().position() - 1, 1, fontStyleValue_t::Normal);
-
+				fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);
         ++charCounter_;
+
         break;
     }
 
     if (kmModifiers == Qt::ControlModifier) {
+			//Ctrl + d - dash
+			if (QKeySequence(iKey) == Qt::Key_D ||QKeySequence(iKey).toString() == "В") {
+				if (this->textCursor().selectedText() != "") {
+					detailsEraseCharsOfSelectedText(cursorPos);
+				}
+				detailsItemCheckAndCanselStatus(cursorPos);
+
+				this->insertPlainText("—");
+				fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);
+				++charCounter_;
+
+				return;
+			}
       //Ctrl + V - paste
-      if (QKeySequence(iKey) == Qt::Key_V) {
+			else if (QKeySequence(iKey) == Qt::Key_V) {
         QClipboard* buffer = QApplication::clipboard();
 
         if (this->textCursor().selectedText() != "") {
@@ -167,12 +183,16 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
 
         charCounter_ += insertLine.length();
       }
-      //Ctrl + 6 - add TODO list
-      else if (QKeySequence(iKey) == Qt::Key_6) {
-        addTodoList();
+			//Ctrl + p - add to-do-list with point
+			else if (QKeySequence(iKey) == Qt::Key_P || QKeySequence(iKey).toString() == "З") {
+				addTodoList(pointSign_);
       }
+			//Ctrl + '-' - add to-do-list with minus
+			else if (QKeySequence(iKey) == Qt::Key_Minus) {
+				addTodoList(minusSign_);
+			}
     }
-  }
+	}
 
   //Esc canceled all selection
   if (iKey == Qt::Key_Escape) {
@@ -214,6 +234,7 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
 			//it is tmp soluton, I want to reimplementate work with shift
 			QTextEdit::keyPressEvent(event);
 		}
+		return;
   }
 
   //Ctrl + arrows
@@ -258,24 +279,24 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
 			detailsItemCheckAndCanselStatus(cursorPos);
       this->cut();
     }
-    //Ctrl + 1 - Bold
-    else if (QKeySequence(iKey) == Qt::Key_1) {
+		//Ctrl + b - Bold
+		else if (QKeySequence(iKey) == Qt::Key_B || QKeySequence(iKey).toString() == "И") {
       setFontStyle(fontStyleValue_t::Bold);
     }
-    //Ctrl + 2 - Italic
-    else if (QKeySequence(iKey) == Qt::Key_2) {
+		//Ctrl + i - Italic
+		else if (QKeySequence(iKey) == Qt::Key_I || QKeySequence(iKey).toString() == "Ш") {
       setFontStyle(fontStyleValue_t::Italic);
     }
-    //Ctrl + 3 - Underline
-    else if (QKeySequence(iKey) == Qt::Key_3) {
+		//Ctrl + u - Underline
+		else if (QKeySequence(iKey) == Qt::Key_U || QKeySequence(iKey).toString() == "Г") {
       setFontStyle(fontStyleValue_t::Underline);
     }
-    //Ctrl + 4 - Strike
-    else if (QKeySequence(iKey) == Qt::Key_4) {
+		//Ctrl + s - Strike
+		else if (QKeySequence(iKey) == Qt::Key_S || QKeySequence(iKey).toString() == "Ы") {
       setFontStyle(fontStyleValue_t::Strike);
     }
-    //Ctrl + 5 - Normal
-    else if (QKeySequence(iKey) == Qt::Key_5) {
+		//Ctrl + n - Normal
+		else if (QKeySequence(iKey) == Qt::Key_N || QKeySequence(iKey).toString() == "Т") {
       QString selectline = this->textCursor().selectedText();
       QTextCharFormat textFormat;
       textFormat.setFontWeight(QFont::Normal);
@@ -316,9 +337,9 @@ void NoteTextEdit::setFontStyle(int style)
 
   int first = this->textCursor().selectionStart();
   int last = this->textCursor().selectionEnd();
+	QTextCursor c(this->textCursor());
 
   for (int i = first; i < last; ++i) {
-    QTextCursor c(this->textCursor());
     c.setPosition(i);
     c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor);
 		//avoid effects for item
@@ -353,6 +374,11 @@ void NoteTextEdit::setFontStyle(int style)
 
 void NoteTextEdit::addTodoList()
 {
+	addTodoList(pointSign_);
+}
+
+void NoteTextEdit::addTodoList(const QString itemSign)
+{
   int cursorPos = this->textCursor().position();
   QTextCharFormat charFormat; //to back Normal font style of text after Bold, Italic, Underline... words
 	charFormat.setFontWeight(QFont::Normal);
@@ -372,7 +398,7 @@ void NoteTextEdit::addTodoList()
   }
 	//---
 
-  QString item = "  " + pointSign_ + " "; //2 space + point + space
+	QString item = "  " + itemSign + " "; //2 space + point + space
   if ((c.position() == cursorPos) || (c.selectedText() == spaceLine)) {
     this->textCursor().insertText(item, charFormat);
 		fontStyleVector_.insert(cursorPos, 4, fontStyleValue_t::Item);

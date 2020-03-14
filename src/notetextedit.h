@@ -39,7 +39,7 @@ public:
   int getCharCounter() const;
 
   void setFontStyle(int style);
-  void addTodoList();
+	void addTodoList();
   //
 private:
 //it is data storage
@@ -69,9 +69,14 @@ private:
   QVector< fontStyleValue_t > fontStyleVector_; //storrage of font style status of every char
   const QVector< QChar > AVAILABLE_CHARS_ = {'!', '?', '.', ',', ';', ':', '\"', '\'', '&', '*', '@', '~', '`', '#','$', '^', '/',
         '%', '(', ')', '[', ']', '{', '}', '|', '\\', '<', '>', '-', '_', '+', '='};
+
 	const QString pointSign_ = "•";
+	const QString minusSign_ = "-";
+
 	const int ITEM_LENGTH = 4;
-	const int TAB_LENGTH = 6;
+	const int TAB_LENGTH = 5;
+
+	void addTodoList(const QString itemSign);
 
   void detailsEraseCharsOfSelectedText(int& cursorPos);
 	void detailsDeleteBackspaceRealization(Qt::KeyboardModifiers kmModifiers, QTextCursor::MoveOperation whereMove,
