@@ -229,8 +229,6 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
   }
 }
 
-
-
 void MainWindow::on_pushButton_clicked()
 {
   loginForm_->show();

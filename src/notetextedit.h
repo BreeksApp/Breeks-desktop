@@ -37,7 +37,9 @@ public:
     Bold,      // = 1
     Italic,    // = 2
     Underline, // = 3
-    Strike     // = 4
+		Strike,    // = 4
+		Item,      // = 5
+		Star			 // = 6
   };
   using iterator = QVector< fontStyleValue_t >::iterator;
 
@@ -47,7 +49,7 @@ public:
   int getCharCounter() const;
 
   void setFontStyle(int style);
-  void addTodoList();
+	void addTodoList();
   //
 public slots:
   void recieveUsername(const QString);
@@ -76,11 +78,20 @@ private:
   QVector< fontStyleValue_t > fontStyleVector_; //storrage of font style status of every char
   const QVector< QChar > AVAILABLE_CHARS_ = {'!', '?', '.', ',', ';', ':', '\"', '\'', '&', '*', '@', '~', '`', '#','$', '^', '/',
         '%', '(', ')', '[', ']', '{', '}', '|', '\\', '<', '>', '-', '_', '+', '='};
-  const QString pointSign_ = "•";
+
+	const QString pointSign_ = "•";
+	const QString minusSign_ = "-";
+
+	const int ITEM_LENGTH = 4;
+	const int TAB_LENGTH = 5;
+
+	void addTodoList(const QString itemSign);
 
   void detailsEraseCharsOfSelectedText(int& cursorPos);
-  void detailsDeleteBackspaceRealization(Qt::KeyboardModifiers kmModifiers, QTextCursor::MoveOperation whereMove,
+	void detailsDeleteBackspaceRealization(Qt::KeyboardModifiers kmModifiers, QTextCursor::MoveOperation whereMove,
         int cursorPos, int blindSpot, int a = 0);
+	void detailsItemCheckInDeleting(int& cursorPos, bool isBS, Qt::KeyboardModifiers& mod);
+	void detailsItemCheckAndCanselStatus(int cursorPose);
 };
 
 #endif // NOTE_H
