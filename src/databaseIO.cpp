@@ -260,6 +260,19 @@ void NoteTextEdit::readFromDB(const int currentFile)
         charFormat.setFontStrikeOut(true);
         this->textCursor().insertText(static_cast<QString>(line), charFormat);
       }
+      else if (style == '5') {
+        this->fillFontStyleVector(cursorPos, 1, this->fontStyleValue_t::Item);
+        charFormat.setFontWeight(QFont::Normal);
+        this->textCursor().insertText(static_cast<QString>(line), charFormat);
+      }
+      else if (style == '6') {
+        this->fillFontStyleVector(cursorPos, 1, this->fontStyleValue_t::Star);
+        //charFormat.setFontWeight(QFont::Normal);
+        QString color = "#ff3366";
+        QString html = "<font color=" + color + ">*</font>";
+        this->setTextColor(QColor(0, 0, 0));
+        this->textCursor().insertHtml(html);
+      }
     }
 }
 
