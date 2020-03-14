@@ -13,6 +13,8 @@
 #include <QJsonValue>
 #include <QByteArray>
 #include <QtSql>
+#include "filesystem.h"
+#include "datastructures.h"
 
 class NoteTextEdit : public QTextEdit
 {
@@ -23,10 +25,10 @@ public:
   void keyPressEvent(QKeyEvent *event);
 
   //for work with file system, definition in filesystem.cpp
-  void readFromFile();
-  void writeToFile();
+  void readFromDB(const int currentFile);
+  void writeToDB(const int currentFile);
   void setNumberCurrentFile(int n);
-  int getNumberCurrentFile() const;
+  int getNumberCurrentFile();
   //
 
   //for work with char styles
@@ -52,27 +54,9 @@ public slots:
 
 private:
 //it is data storage
-  void readFromFile(QJsonObject &object);
-  void writeToFile(QJsonDocument &jDoc, QJsonObject &jObject, QJsonObject &notes, QJsonObject &note);
-
-  QString getDataFromDB();
-  void parseDataBase(QJsonObject &notes);
-
   int nCurrentFile_;
 
-  const QString file1Name_ = "noteStorage_1.txt";
-  const QString file2Name_ = "noteStorage_2.txt";
-  const QString file3Name_ = "noteStorage_3.txt";
-  const QString file4Name_ = "noteStorage_4.txt";
-  const QString file5Name_ = "noteStorage_5.txt";
-  const QString file6Name_ = "noteStorage_6.txt";
-
-  QFile file1_;
-  QFile file2_;
-  QFile file3_;
-  QFile file4_;
-  QFile file5_;
-  QFile file6_;
+  NoteInfo noteInfoForWrite_;
 
   QJsonObject note1_;
   QJsonObject note2_;
@@ -82,6 +66,7 @@ private:
   QJsonObject note6_;
 
   QString username_;
+  QString noteInfoForRead_;
 
  //
 

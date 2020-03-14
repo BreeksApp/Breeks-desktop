@@ -19,6 +19,7 @@ SOURCES += \
     breek.cpp \
     databaseIO.cpp \
     elementtemplate.cpp \
+    filesystem.cpp \
     loginform.cpp \
     main.cpp \
     mainwidnow-timetable.cpp \
@@ -41,6 +42,7 @@ SOURCES += \
 HEADERS += \
     breek.h \
     elementtemplate.h \
+    filesystem.h \
     loginform.h \
     mainwindow.h \
     notetextedit.h \
