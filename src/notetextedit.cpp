@@ -191,6 +191,18 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
 			else if (QKeySequence(iKey) == Qt::Key_Minus) {
 				addTodoList(minusSign_);
 			}
+			else if (QKeySequence(iKey) == Qt::Key_W || QKeySequence(iKey).toString() == "Ц") {
+				QTextCursor c = this->textCursor();
+				c.movePosition(QTextCursor::StartOfBlock);
+				int pos = std::max(0, c.position() - 1);
+
+				QString color = "#ff3366";
+				QString html = "<font color=" + color + ">*</font>";
+				c.insertHtml(html);
+				this->setTextColor(QColor(0, 0, 0));
+				fontStyleVector_.insert(pos, 1, fontStyleValue_t::Star);
+				++charCounter_;
+			}
     }
 	}
 

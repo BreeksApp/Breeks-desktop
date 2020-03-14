@@ -87,7 +87,7 @@ void NoteTextEdit::detailsDeleteBackspaceRealization(Qt::KeyboardModifiers kmMod
 					if (c.positionInBlock() != 0 && c.position() != charCounter_) {
 						int posInVectorEnd = std::min(c.position() + i, charCounter_ - 1);
 
-						if ( (fontStyleVector_[std::max(0, c.position() - 1)] != fontStyleValue_t::Item ||
+						if ( (fontStyleVector_[c.position()] != fontStyleValue_t::Item ||
 									fontStyleVector_[posInVectorEnd] != fontStyleValue_t::Item) &&
 								c.selectedText().length() != 1 &&
 								(	(c.selectedText()[pos] != ' ' && c.selectedText()[pos + i] == ' ') ||
@@ -99,8 +99,13 @@ void NoteTextEdit::detailsDeleteBackspaceRealization(Qt::KeyboardModifiers kmMod
 
 							break;
 						}
-						c.movePosition(moveSide, QTextCursor::KeepAnchor);
-						continue;
+						if (fontStyleVector_[c.position() - 1] != fontStyleValue_t::Star) {
+							c.movePosition(moveSide, QTextCursor::KeepAnchor);
+							continue;
+						}
+						else {
+							break;
+						}
 					}
 					break;
 				}
@@ -161,7 +166,7 @@ void NoteTextEdit::detailsItemCheckAndCanselStatus(int cursorPos)
 			fontStyleVector_[i] = fontStyleValue_t::Normal;
 			--i;
 		}
-		i = cursorPos;
+		i = cursorPos == 0 ? cursorPos + 1 : cursorPos;
 		while (i < charCounter_ && fontStyleVector_[i] == fontStyleValue_t::Item) {
 			fontStyleVector_[i] = fontStyleValue_t::Normal;
 			++i;

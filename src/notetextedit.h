@@ -29,7 +29,8 @@ public:
     Italic,    // = 2
     Underline, // = 3
 		Strike,    // = 4
-		Item       // = 5
+		Item,      // = 5
+		Star			 // = 6
   };
   using iterator = QVector< fontStyleValue_t >::iterator;
 
