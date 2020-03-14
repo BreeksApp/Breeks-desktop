@@ -6,6 +6,15 @@
 #include <QGridLayout>
 #include <Qt>
 #include <QKeyEvent>
+#include <QFile>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonValue>
+#include <QByteArray>
+#include <QtSql>
+#include "filesystem.h"
+#include "datastructures.h"
 
 class NoteTextEdit : public QTextEdit
 {
@@ -16,10 +25,10 @@ public:
   void keyPressEvent(QKeyEvent *event);
 
   //for work with file system, definition in filesystem.cpp
-  void readFromFile();
-  void writeToFile();
+  void readFromDB(const int currentFile);
+  void writeToDB(const int currentFile);
   void setNumberCurrentFile(int n);
-  int getNumberCurrentFile() const;
+  int getNumberCurrentFile();
   //
 
   //for work with char styles
@@ -42,26 +51,25 @@ public:
   void setFontStyle(int style);
 	void addTodoList();
   //
+public slots:
+  void recieveUsername(const QString);
+
 private:
 //it is data storage
-  void readFromFile(QFile &file);
-  void writeToFile(QFile &file);
-
   int nCurrentFile_;
 
-  const QString file1Name_ = "noteStorage_1.txt";
-  const QString file2Name_ = "noteStorage_2.txt";
-  const QString file3Name_ = "noteStorage_3.txt";
-  const QString file4Name_ = "noteStorage_4.txt";
-  const QString file5Name_ = "noteStorage_5.txt";
-  const QString file6Name_ = "noteStorage_6.txt";
+  NoteInfo noteInfoForWrite_;
 
-  QFile file1_;
-  QFile file2_;
-  QFile file3_;
-  QFile file4_;
-  QFile file5_;
-  QFile file6_;
+  QJsonObject note1_;
+  QJsonObject note2_;
+  QJsonObject note3_;
+  QJsonObject note4_;
+  QJsonObject note5_;
+  QJsonObject note6_;
+
+  QString username_;
+  QString noteInfoForRead_;
+
  //
 
   const int MAX_COUNT_CHAR_ = 1111; //fix count of chars in the one note

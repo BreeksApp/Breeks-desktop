@@ -11,22 +11,23 @@ class LoginForm;
 
 class LoginForm : public QWidget
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit LoginForm(QWidget *parent = nullptr);
-    ~LoginForm();
+  explicit LoginForm(QWidget *parent = nullptr);
+  ~LoginForm();
 
 signals:
-    void firstWindow();
+  void firstWindow();
+  void sendUsername(const QString);
 
 private slots:
 
-    void on_loginButton_clicked();
+  void on_loginButton_clicked();
 
 private:
-    Ui::LoginForm *ui;
-    QSqlDatabase mydb;
+  Ui::LoginForm *ui;
+  QSqlDatabase mydb;
 };
 
 #endif // LOGINFORM_H

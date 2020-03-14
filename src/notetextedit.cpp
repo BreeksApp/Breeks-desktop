@@ -7,19 +7,11 @@
 #include "notetextedit.h"
 
 NoteTextEdit::NoteTextEdit(QWidget *parent) :
-  QTextEdit(parent),
-  //initialize file system
-  nCurrentFile_(1),
-  file1_(file1Name_),
-  file2_(file2Name_),
-  file3_(file3Name_),
-  file4_(file4Name_),
-  file5_(file5Name_),
-  file6_(file6Name_)
-  //
+  QTextEdit(parent)
 {
 //add saved text
-  readFromFile();
+  nCurrentFile_ = 1;
+  readFromDB(nCurrentFile_);
 }
 
 //We want to create our Text editor with special functions and hot-keys
@@ -423,6 +415,11 @@ void NoteTextEdit::addTodoList(const QString itemSign)
 
     charCounter_ += 5;
   }
+}
+
+void NoteTextEdit::recieveUsername(const QString username)
+{
+  username_ = username;
 }
 
 //for file system

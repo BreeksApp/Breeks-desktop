@@ -55,7 +55,7 @@ void MainWindow::noteChangePage(const int n)
 {
   ui->note->setNumberCurrentFile(n);
   ui->note->clear();
-  ui->note->readFromFile();
+  ui->note->readFromDB(ui->note->getNumberCurrentFile());
 }
 
 //-------------------------BUTTONS-------------------------
@@ -87,7 +87,7 @@ void MainWindow::on_buttonAddTodoList_clicked()
 
 void MainWindow::on_buttonPage1_clicked()
 {
-  ui->note->writeToFile();
+  ui->note->writeToDB(ui->note->getNumberCurrentFile());
 
   const int nButton = 1;
   noteMakePageButtonSelectable(ui->buttonPage1);
@@ -97,7 +97,7 @@ void MainWindow::on_buttonPage1_clicked()
 }
 void MainWindow::on_buttonPage2_clicked()
 {
-  ui->note->writeToFile();
+  ui->note->writeToDB(ui->note->getNumberCurrentFile());
 
   const int nButton = 2;
   noteMakePageButtonSelectable(ui->buttonPage2);
@@ -107,7 +107,7 @@ void MainWindow::on_buttonPage2_clicked()
 }
 void MainWindow::on_buttonPage3_clicked()
 {
-  ui->note->writeToFile();
+  ui->note->writeToDB(ui->note->getNumberCurrentFile());
 
   const int nButton = 3;
   noteMakePageButtonSelectable(ui->buttonPage3);
@@ -117,7 +117,7 @@ void MainWindow::on_buttonPage3_clicked()
 }
 void MainWindow::on_buttonPage4_clicked()
 {
-  ui->note->writeToFile();
+  ui->note->writeToDB(ui->note->getNumberCurrentFile());
 
   const int nButton = 4;
   noteMakePageButtonSelectable(ui->buttonPage4);
@@ -127,7 +127,7 @@ void MainWindow::on_buttonPage4_clicked()
 }
 void MainWindow::on_buttonPage5_clicked()
 {
-  ui->note->writeToFile();
+  ui->note->writeToDB(ui->note->getNumberCurrentFile());
 
   const int nButton = 5;
   noteMakePageButtonSelectable(ui->buttonPage5);
@@ -137,7 +137,7 @@ void MainWindow::on_buttonPage5_clicked()
 }
 void MainWindow::on_buttonPage6_clicked()
 {
-  ui->note->writeToFile();
+  ui->note->writeToDB(ui->note->getNumberCurrentFile());
 
   const int nButton = 6;
   noteMakePageButtonSelectable(ui->buttonPage6);

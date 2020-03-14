@@ -21,8 +21,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   ui->setupUi(this);
 
-  loginForm = new LoginForm;
-  connect(loginForm, &LoginForm::firstWindow, this, &MainWindow::show); //Connect login and Mainwindow form
+  loginForm_ = new LoginForm;
+  connect(loginForm_, SIGNAL(firstWindow()), this, SLOT(recieveUsername())); //Connect login and Mainwindow form
+
+  connect(loginForm_, SIGNAL(sendUsername(const QString)), ui->note, SLOT(recieveUsername(const QString))); //Send username to TextEdit
 
   connect(ui->buttonImage, SIGNAL(imageEnter(bool)), this, SLOT(setImageBackgroundView(bool)));
   connect(ui->buttonImage, SIGNAL(imageLeave(bool)), this, SLOT(setImageBackgroundView(bool)));
@@ -31,12 +33,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
   setStatesFromFileLastVisit();
   setAllElementsEffects();
-
 }
 
 MainWindow::~MainWindow()
 {
-  ui->note->writeToFile();
+  ui->note->writeToDB(ui->note->getNumberCurrentFile());
 
   for (int i = 0; i < 6; ++i) {
     writeElementsDataToFile(i);
@@ -194,7 +195,12 @@ void MainWindow::recieveDayAndElementIndex(const int dayElementIndex, const int 
 
 void MainWindow::recieveDayAndElementIndexAndTagColor(const int dayIndex, const int elementIndex, const QPalette color)
 {
-  arrDaysData_[dayIndex][elementIndex].palette = color;
+    arrDaysData_[dayIndex][elementIndex].palette = color;
+}
+
+void MainWindow::recieveUsername()
+{
+  this->show();
 }
 
 void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
@@ -218,7 +224,6 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
 
         arrBreeksZones_[zoneIndex].arrBreeks[dayIndex - 1]->setFocus();
         workZoneScrollArea_->ensureVisible(arrBreeksZones_[zoneIndex].arrBreeks[dayIndex - 1]->pos().x() - 250, 0);
-
       }
     }
   }
@@ -226,6 +231,6 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
 
 void MainWindow::on_pushButton_clicked()
 {
-  loginForm->show();
+  loginForm_->show();
   this->close();
 }

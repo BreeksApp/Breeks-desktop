@@ -32,7 +32,7 @@ public:
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
 
-  LoginForm *loginForm;
+  LoginForm *loginForm_;
 
   //files of timetable
   void writeElementsDataToFile(const int index);
@@ -50,6 +50,7 @@ public slots:
 
   void recieveDayAndElementIndex(const int, const int);
   void recieveDayAndElementIndexAndTagColor(const int, const int, const QPalette);
+  void recieveUsername();
 
   void moveBreek(int, int, bool);
 
@@ -76,6 +77,9 @@ private slots:
   void on_buttonAdd_clicked();
 
   void on_pushButton_clicked();
+
+signals:
+  void sendUsername(const QString);
 
 private:
   Ui::MainWindow *ui;
