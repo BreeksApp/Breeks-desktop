@@ -1,5 +1,8 @@
-#ifndef NOTE_H
-#define NOTE_H
+#ifndef TEXT_EDIT_H
+#define TEXT_EDIT_H
+
+#include "filesystem.h"
+#include "datastructures.h"
 
 #include <QWidget>
 #include <QTextEdit>
@@ -13,20 +16,19 @@
 #include <QJsonValue>
 #include <QByteArray>
 #include <QtSql>
-#include "filesystem.h"
-#include "datastructures.h"
 
-class NoteTextEdit : public QTextEdit
+class GenTextEdit : public QTextEdit
 {
   Q_OBJECT
 public:
-  explicit NoteTextEdit(QWidget *parent = nullptr);
+	explicit GenTextEdit(QWidget *parent = nullptr);
 
   void keyPressEvent(QKeyEvent *event);
 
   //for work with file system, definition in filesystem.cpp
   void readFromDB(const int currentFile);
   void writeToDB(const int currentFile);
+
   void setNumberCurrentFile(int n);
   int getNumberCurrentFile();
   //
@@ -56,9 +58,11 @@ public slots:
 
 private:
 //it is data storage
-  int nCurrentFile_;
+	QString username_;
 
-  NoteInfo noteInfoForWrite_;
+  int nCurrentFile_;
+	NoteInfo textInfoForWrite_;
+	QString textInfoForRead_;
 
   QJsonObject note1_;
   QJsonObject note2_;
@@ -66,10 +70,6 @@ private:
   QJsonObject note4_;
   QJsonObject note5_;
   QJsonObject note6_;
-
-  QString username_;
-  QString noteInfoForRead_;
-
  //
 
   const int MAX_COUNT_CHAR_ = 1111; //fix count of chars in the one note
@@ -94,4 +94,4 @@ private:
 	void detailsItemCheckAndCanselStatus(int cursorPose);
 };
 
-#endif // NOTE_H
+#endif // TEXT_EDIT

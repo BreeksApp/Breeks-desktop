@@ -30,6 +30,6 @@ void MainWindow::setAllElementsColor()
 
 void MainWindow::setAllElementsShadow()
 {
-  effects::setElementShadow<NoteTextEdit>(ui->note);
+	effects::setElementShadow<GenTextEdit>(ui->note);
   effects::setElementShadow<QLabel>(ui->labelImageBackground);
 }

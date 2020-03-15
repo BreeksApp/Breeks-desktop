@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "notetextedit.h"
+#include "gentextedit.h"
 #include <QDebug>
 
 
@@ -194,21 +194,21 @@ void MainWindow::writeElementsDataToFile(QFile &file, const int index)
 
 //----------------------TextEdit IO--------------------------------
 
-void NoteTextEdit::setNumberCurrentFile(int n)
+void GenTextEdit::setNumberCurrentFile(int n)
 {
   if (n >= 1 && n <= 6) {
     nCurrentFile_ = n;
   }
 }
-int NoteTextEdit::getNumberCurrentFile()
+int GenTextEdit::getNumberCurrentFile()
 {
   return nCurrentFile_;
 }
 
-void NoteTextEdit::readFromDB(const int currentFile)
+void GenTextEdit::readFromDB(const int currentFile)
 {
-    noteInfoForRead_ = filesystem::readTextEdidFromDB(currentFile);
-    QTextStream out(&noteInfoForRead_);
+		textInfoForRead_ = filesystem::readTextEdidFromDB(currentFile);
+		QTextStream out(&textInfoForRead_);
 
     int tmp = 0;
     out >> tmp;
@@ -231,7 +231,7 @@ void NoteTextEdit::readFromDB(const int currentFile)
     for (int i = 0; i < charCounter; ++i) {
       QChar style;
       out >> style;
-      QChar line = noteInfoForRead_[i + jump];
+			QChar line = textInfoForRead_[i + jump];
       QTextCharFormat charFormat;
       int cursorPos = this->textCursor().position();
 
@@ -276,7 +276,7 @@ void NoteTextEdit::readFromDB(const int currentFile)
     }
 }
 
-void NoteTextEdit::writeToDB(const int currentFile)
+void GenTextEdit::writeToDB(const int currentFile)
 {
   NoteInfo info;
   info.charCount = this->getCharCounter();
@@ -285,10 +285,6 @@ void NoteTextEdit::writeToDB(const int currentFile)
     info.charState += QString::number(this->getCharStyle(i));
   }
   info.text = this->toPlainText();
-
-  qDebug() << info.text;
-  qDebug() << info.charState;
-  qDebug() << info.charCount;
 
   filesystem::writeTextEditToDB(info, currentFile);
 }

@@ -27,17 +27,15 @@ SOURCES += \
     mainwindow-effects.cpp \
     mainwindow.cpp \
     mainwindow-note.cpp \
-    notetextedit-details.cpp \
-    notetextedit.cpp \
-    notetextedit-filesystem.cpp \
     addelement.cpp \
     textnewelement.cpp \
     imagehover.cpp \
     addbuttonhover.cpp \
-    mainwindow-filesystem.cpp \
     mainwindow-image.cpp \
     mainwindow-addelement.cpp \
-    mainwindow-workzone.cpp
+    mainwindow-workzone.cpp \
+    gentextedit.cpp \
+    gentextedit-details.cpp
 
 HEADERS += \
     breek.h \
@@ -45,13 +43,13 @@ HEADERS += \
     filesystem.h \
     loginform.h \
     mainwindow.h \
-    notetextedit.h \
     addelement.h \
     textnewelement.h \
     imagehover.h \
     addbuttonhover.h \
     datastructures.h \
-    effects.hpp
+    effects.hpp \
+    gentextedit.h
 
 FORMS += \
     loginform.ui \

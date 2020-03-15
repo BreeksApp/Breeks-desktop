@@ -4,9 +4,9 @@
 #include <QClipboard>
 #include <algorithm>
 
-#include "notetextedit.h"
+#include "gentextedit.h"
 
-NoteTextEdit::NoteTextEdit(QWidget *parent) :
+GenTextEdit::GenTextEdit(QWidget *parent) :
   QTextEdit(parent)
 {
 //add saved text
@@ -16,7 +16,7 @@ NoteTextEdit::NoteTextEdit(QWidget *parent) :
 
 //We want to create our Text editor with special functions and hot-keys
 //that is why we override keyPressEvent()
-void NoteTextEdit::keyPressEvent(QKeyEvent *event)
+void GenTextEdit::keyPressEvent(QKeyEvent *event)
 {
   int iKey = event->key();
   Qt::KeyboardModifiers kmModifiers = event->modifiers();
@@ -334,7 +334,7 @@ void NoteTextEdit::keyPressEvent(QKeyEvent *event)
   }
 }
 
-void NoteTextEdit::setFontStyle(int style)
+void GenTextEdit::setFontStyle(int style)
 {
   QString selectline = this->textCursor().selectedText();
   QTextCharFormat textFormat;
@@ -376,12 +376,11 @@ void NoteTextEdit::setFontStyle(int style)
   }
 }
 
-void NoteTextEdit::addTodoList()
+void GenTextEdit::addTodoList()
 {
 	addTodoList(pointSign_);
 }
-
-void NoteTextEdit::addTodoList(const QString itemSign)
+void GenTextEdit::addTodoList(const QString itemSign)
 {
   int cursorPos = this->textCursor().position();
   QTextCharFormat charFormat; //to back Normal font style of text after Bold, Italic, Underline... words
@@ -417,17 +416,17 @@ void NoteTextEdit::addTodoList(const QString itemSign)
   }
 }
 
-void NoteTextEdit::recieveUsername(const QString username)
+//for file system
+void GenTextEdit::recieveUsername(const QString username) //SLOT
 {
-  username_ = username;
+	username_ = username;
 }
 
-//for file system
-void NoteTextEdit::fillFontStyleVector(int cursorPos, int count, int style)
+void GenTextEdit::fillFontStyleVector(int cursorPos, int count, int style)
 {
   fontStyleVector_.insert(cursorPos, count, fontStyleValue_t(style));
 }
-int NoteTextEdit::getCharStyle(int index) const
+int GenTextEdit::getCharStyle(int index) const
 {
   if (index < 0 || index >= charCounter_) {
     qDebug() << "Index is out of range!";
@@ -436,11 +435,11 @@ int NoteTextEdit::getCharStyle(int index) const
   return fontStyleVector_[index];
 }
 
-void NoteTextEdit::setCharCounter(int value)
+void GenTextEdit::setCharCounter(int value)
 {
   charCounter_ = value;
 }
-int NoteTextEdit::getCharCounter() const
+int GenTextEdit::getCharCounter() const
 {
   return charCounter_;
 }

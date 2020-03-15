@@ -7,11 +7,8 @@ QJsonObject filesystem::note4_;
 QJsonObject filesystem::note5_;
 QJsonObject filesystem::note6_;
 
-
 filesystem::filesystem()
-{
-
-}
+{}
 
 QString filesystem::getDataFromDB()
 {
@@ -23,6 +20,7 @@ QString filesystem::getDataFromDB()
     QSqlRecord record = query.record();
     data = record.value(0).toString();
   }
+
   return data;
 }
 
@@ -95,7 +93,6 @@ QString filesystem::readNote(QJsonObject& object)
 
 QString filesystem::readTextEdidFromDB(const int currentFile)
 {
-
   QJsonDocument jDoc = QJsonDocument::fromJson(getDataFromDB().toUtf8());
   QJsonObject jObject = jDoc.object();
   QJsonObject notes = jObject.value("textEdit").toObject();

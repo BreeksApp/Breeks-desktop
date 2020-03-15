@@ -1,11 +1,11 @@
-#include "notetextedit.h"
-
 #include <QDebug>
 #include <iostream>
 #include <algorithm>
 #include <QTextCodec>
 
-void NoteTextEdit::detailsEraseCharsOfSelectedText(int& cursorPos)
+#include "gentextedit.h"
+
+void GenTextEdit::detailsEraseCharsOfSelectedText(int& cursorPos)
 {
 	QTextCursor c = this->textCursor();
 	int pos = std::min(c.selectionStart(), c.selectionEnd());
@@ -60,7 +60,7 @@ void NoteTextEdit::detailsEraseCharsOfSelectedText(int& cursorPos)
 	this->setTextCursor(c);
 }
 
-void NoteTextEdit::detailsDeleteBackspaceRealization(Qt::KeyboardModifiers kmModifiers,
+void GenTextEdit::detailsDeleteBackspaceRealization(Qt::KeyboardModifiers kmModifiers,
 			QTextCursor::MoveOperation whereMove, int cursorPos, int blindSpot, int a)
 {
 	int nSelectedChars = this->textCursor().selectedText().length();
@@ -130,7 +130,7 @@ void NoteTextEdit::detailsDeleteBackspaceRealization(Qt::KeyboardModifiers kmMod
   }
 }
 
-void NoteTextEdit::detailsItemCheckInDeleting(int &cursorPos, bool isBS, Qt::KeyboardModifiers &mod)
+void GenTextEdit::detailsItemCheckInDeleting(int &cursorPos, bool isBS, Qt::KeyboardModifiers &mod)
 {
 	QTextCursor::MoveOperation moveSide = isBS ? QTextCursor::Right : QTextCursor::Left;
 	int i = isBS ? 1 : -1;
@@ -158,7 +158,7 @@ void NoteTextEdit::detailsItemCheckInDeleting(int &cursorPos, bool isBS, Qt::Key
 	}
 }
 
-void NoteTextEdit::detailsItemCheckAndCanselStatus(int cursorPos)
+void GenTextEdit::detailsItemCheckAndCanselStatus(int cursorPos)
 {
 	if (cursorPos < charCounter_ && fontStyleVector_[cursorPos] == fontStyleValue_t::Item) {
 		int i = std::max(0, cursorPos - 1);

@@ -4,7 +4,7 @@
 #include "QScrollBar"
 
 #include "mainwindow.h"
-#include "notetextedit.h"
+#include "gentextedit.h"
 #include "addelement.h"
 #include "elementtemplate.h"
 

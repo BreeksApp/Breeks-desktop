@@ -1,7 +1,7 @@
 #include <QDebug>
 
 #include "textnewelement.h"
-#include "notetextedit.h"
+#include "gentextedit.h"
 
 TextNewElement::TextNewElement(QWidget *parent) :
   QTextEdit(parent),

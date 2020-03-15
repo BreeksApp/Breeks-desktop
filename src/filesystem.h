@@ -13,7 +13,7 @@
 #include <QJsonValue>
 #include <QByteArray>
 #include <QtSql>
-#include "notetextedit.h"
+#include "gentextedit.h"
 #include "datastructures.h"
 
 class filesystem
@@ -36,7 +36,6 @@ private:
   static QJsonObject note4_;
   static QJsonObject note5_;
   static QJsonObject note6_;
-
 };
 
 #endif // FILESYSTEM_H
