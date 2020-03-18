@@ -102,6 +102,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 
 				int pos = cursorPos;
 				QTextCursor c = this->textCursor();
+				bool isItem = false;
 
 				if (charCounter_ != 0 && fontStyleVector_[std::max(0, pos - 1)] == fontStyleValue_t::Item) {
 					QTextCursor tmp = c;
@@ -110,6 +111,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 
 					c.movePosition(QTextCursor::Left, QTextCursor::MoveAnchor, nMove);
 					pos = c.position();
+					isItem = true;
 				}
 
 				for (int i = 0; i < TAB_LENGTH; ++i) {
@@ -119,7 +121,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 					++charCounter_;
 				}
 
-				if (c.position() != cursorPos) {
+				if (isItem) {
 					c.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, ITEM_LENGTH);
 				}
 

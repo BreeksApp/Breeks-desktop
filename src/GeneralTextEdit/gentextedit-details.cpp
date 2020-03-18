@@ -20,7 +20,6 @@ void GenTextEdit::detailsEraseCharsOfSelectedText(int& cursorPos)
   iterator iterLast = iterFirst + nChar;
 
 	//if some parts of item is chosen we must delete full item ---
-	//qDebug() << *iterFirst;
 	while (true) {
 		if (*iterFirst == fontStyleValue_t::Item) {
 			if (iterFirst != fontStyleVector_.begin()) {
@@ -32,7 +31,6 @@ void GenTextEdit::detailsEraseCharsOfSelectedText(int& cursorPos)
 				c.movePosition(QTextCursor::Start);
 				c.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, pos);
 				c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, nChar);
-				//qDebug() << c.selectedText();
 			}
 			else {
 				break;
@@ -53,6 +51,7 @@ void GenTextEdit::detailsEraseCharsOfSelectedText(int& cursorPos)
 		}
 	}
 	//---
+
   fontStyleVector_.erase(iterFirst, iterLast);
 
   charCounter_ -= nChar;
@@ -66,19 +65,17 @@ void GenTextEdit::detailsDeleteBackspaceRealization(Qt::KeyboardModifiers kmModi
 	int nSelectedChars = this->textCursor().selectedText().length();
 
 	if (nSelectedChars == 0) { //no selected text
-
 		if (cursorPos != blindSpot) {
       iterator iterFirst = fontStyleVector_.begin();
 
       if (kmModifiers == Qt::ControlModifier) {
 				QTextCursor c = this->textCursor();
+
 				//for normal working Ctrl + Backspace/Delete ---
-				//delting waste spaces in the left/right
-				//special situation with item
+				//special situation with item for Backspace and Delete
 				QTextCursor::MoveOperation moveSide = (whereMove == QTextCursor::PreviousWord) ?
 							QTextCursor::Left : QTextCursor::Right;
 				c.movePosition(moveSide, QTextCursor::KeepAnchor);
-
 				int i = (whereMove == QTextCursor::PreviousWord) ? 1 : -1;
 
 				while (true) {
@@ -86,11 +83,13 @@ void GenTextEdit::detailsDeleteBackspaceRealization(Qt::KeyboardModifiers kmModi
 
 					if (c.positionInBlock() != 0 && c.position() != charCounter_) {
 						int posInVectorEnd = std::min(c.position() + i, charCounter_ - 1);
-
+						/* 1) _innnnnn or nnnnnn_i - cursor on item ('_' - cursor)
+							 2) selected text != 0
+							 3) a_ or _a - cursor on first char ('_' - space) */
 						if ( (fontStyleVector_[c.position()] != fontStyleValue_t::Item ||
 									fontStyleVector_[posInVectorEnd] != fontStyleValue_t::Item) &&
-								c.selectedText().length() != 1 &&
-								(	(c.selectedText()[pos] != ' ' && c.selectedText()[pos + i] == ' ') ||
+									c.selectedText().length() != 1 &&
+									( (c.selectedText()[pos] != ' ' && c.selectedText()[pos + i] == ' ') ||
 									(c.selectedText()[pos] == ' ' && c.selectedText()[pos + i] != ' ') )) {
 							int selectionLength = c.selectedText().length() - 1;
 							c.clearSelection();
@@ -109,7 +108,7 @@ void GenTextEdit::detailsDeleteBackspaceRealization(Qt::KeyboardModifiers kmModi
 					}
 					break;
 				}
-				//---
+				//end of while()
 
         iterFirst += c.selectionStart();
         iterator iterLast = iterFirst + c.selectedText().length();

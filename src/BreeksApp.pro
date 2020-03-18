@@ -34,8 +34,8 @@ SOURCES += \
     mainwindow-image.cpp \
     mainwindow-addelement.cpp \
     mainwindow-workzone.cpp \
-    gentextedit.cpp \
-    gentextedit-details.cpp
+    GeneralTextEdit/gentextedit.cpp \
+    GeneralTextEdit/gentextedit-details.cpp
 
 HEADERS += \
     breek.h \

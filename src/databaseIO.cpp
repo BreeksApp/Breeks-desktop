@@ -95,7 +95,7 @@ void MainWindow::readElementsDataFromFile(QFile &file, const int index)
     }
     else {
       arr[i] = true;
-    };
+    }
   }
 
   int h = 0, m = 0, s = 0;

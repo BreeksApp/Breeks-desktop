@@ -98,7 +98,7 @@ QString filesystem::readTextEdidFromDB(const int currentFile)
   QJsonObject notes = jObject.value("textEdit").toObject();
 
   parseDataBase(notes);
-  //qDebug() << nCurrentFile_;
+
   switch (currentFile) {
     case 1:
       return readNote(note1_);
@@ -112,8 +112,10 @@ QString filesystem::readTextEdidFromDB(const int currentFile)
       return readNote(note5_);
     case 6:
       return readNote(note6_);
+
+    default:
+      return "";
     }
-  return "";
 }
 
 

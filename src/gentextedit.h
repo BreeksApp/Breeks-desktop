@@ -87,9 +87,9 @@ private:
 
 	void addTodoList(const QString itemSign);
 
-  void detailsEraseCharsOfSelectedText(int& cursorPos);
+	void detailsEraseCharsOfSelectedText(int& cursorPos);
 	void detailsDeleteBackspaceRealization(Qt::KeyboardModifiers kmModifiers, QTextCursor::MoveOperation whereMove,
-        int cursorPos, int blindSpot, int a = 0);
+				int cursorPos, int blindSpot, int a = 0);
 	void detailsItemCheckInDeleting(int& cursorPos, bool isBS, Qt::KeyboardModifiers& mod);
 	void detailsItemCheckAndCanselStatus(int cursorPose);
 };
