@@ -193,7 +193,6 @@ void MainWindow::writeElementsDataToFile(QFile &file, const int index)
 }
 
 //----------------------TextEdit IO--------------------------------
-
 void GenTextEdit::setNumberCurrentFile(int n)
 {
   if (n >= 1 && n <= 6) {
@@ -269,7 +268,7 @@ void GenTextEdit::readFromDB(const int currentFile)
         this->fillFontStyleVector(cursorPos, 1, this->fontStyleValue_t::Star);
         //charFormat.setFontWeight(QFont::Normal);
         QString color = "#ff3366";
-        QString html = "<font color=" + color + ">*</font>";
+        QString html = "<font color=" + color + ">" + warrningSign_ + "</font>";
         this->setTextColor(QColor(0, 0, 0));
         this->textCursor().insertHtml(html);
       }

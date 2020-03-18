@@ -88,6 +88,7 @@ QString filesystem::readNote(QJsonObject& object)
   info.append(charState);
   info.append(" ");
   info.append(textChar);
+
   return info;
 }
 

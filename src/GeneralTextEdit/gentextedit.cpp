@@ -32,11 +32,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
       if ( (iKey >= Qt::Key_A && iKey <= Qt::Key_Z) ||
       (QKeySequence(iKey).toString() >= "А" && (QKeySequence(iKey).toString() <= "Я")) ) {
 				QTextEdit::keyPressEvent(event); //we can't identify CapsLock that's why use base method
-				if (this->textCursor().selectedText() != "") {
-					detailsEraseCharsOfSelectedText(cursorPos);
-				}
-				detailsItemCheckAndCanselStatus(cursorPos);
-
+				detailsCheckSelectionAndItem(cursorPos);
 				fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);
         ++charCounter_;
 
@@ -46,12 +42,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
     //numbers
     if (kmModifiers == 0) {
       if (iKey >= Qt::Key_0 && iKey <= Qt::Key_9) {
-        if (this->textCursor().selectedText() != "") {
-          detailsEraseCharsOfSelectedText(cursorPos);
-        }
-
-				detailsItemCheckAndCanselStatus(cursorPos);
-
+        detailsCheckSelectionAndItem(cursorPos);
         this->insertPlainText(QKeySequence(iKey).toString());
 				fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);
 
@@ -63,12 +54,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 		if (kmModifiers == 0 || kmModifiers == Qt::ShiftModifier) {
 			for (QChar i : AVAILABLE_CHARS_){
 				if (QKeySequence(iKey).toString() == i) {
-					if (this->textCursor().selectedText() != "") {
-						detailsEraseCharsOfSelectedText(cursorPos);
-					}
-
-					detailsItemCheckAndCanselStatus(cursorPos);
-
+					detailsCheckSelectionAndItem(cursorPos);
 					this->insertPlainText(QKeySequence(iKey).toString());
 					fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);
 
@@ -81,12 +67,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
     switch (iKey) {
       //Space
 			case Qt::Key_Space : {
-        if (this->textCursor().selectedText() != "") {
-          detailsEraseCharsOfSelectedText(cursorPos);
-        }
-
-				detailsItemCheckAndCanselStatus(cursorPos);
-
+				detailsCheckSelectionAndItem(cursorPos);
         this->textCursor().insertText(" ", charFormat);
 				fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);
 
@@ -96,9 +77,8 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
       //Tab
       case Qt::Key_Tab : {
         if (this->textCursor().selectedText() != "") {
-          detailsEraseCharsOfSelectedText(cursorPos);
+          detailsEraseSelectedText(cursorPos);
         }
-				//detailsItemCheckAndCanselStatus(cursorPos);
 
 				int pos = cursorPos;
 				QTextCursor c = this->textCursor();
@@ -126,28 +106,22 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 				}
 
 				this->setTextCursor(c);
-        break;
+				return;
       }
       //Return
       case Qt::Key_Return :
-        if (this->textCursor().selectedText() != "") {
-          detailsEraseCharsOfSelectedText(cursorPos);
-        }
-
+        detailsCheckSelectionAndItem(cursorPos);
         this->textCursor().insertText("\n", charFormat);
 				fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);
         ++charCounter_;
 
-        break;
+      return;
     }
 
     if (kmModifiers == Qt::ControlModifier) {
 			//Ctrl + d - dash
 			if (QKeySequence(iKey) == Qt::Key_D ||QKeySequence(iKey).toString() == "В") {
-				if (this->textCursor().selectedText() != "") {
-					detailsEraseCharsOfSelectedText(cursorPos);
-				}
-				detailsItemCheckAndCanselStatus(cursorPos);
+				detailsCheckSelectionAndItem(cursorPos);
 
 				this->insertPlainText("—");
 				fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);
@@ -157,14 +131,9 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 			}
       //Ctrl + V - paste
 			else if (QKeySequence(iKey) == Qt::Key_V) {
+				detailsCheckSelectionAndItem(cursorPos);
+
         QClipboard* buffer = QApplication::clipboard();
-
-        if (this->textCursor().selectedText() != "") {
-          detailsEraseCharsOfSelectedText(cursorPos);
-        }
-
-				detailsItemCheckAndCanselStatus(cursorPos);
-
         QString insertLine = buffer->text();
 
         int first = insertLine.length();
@@ -176,27 +145,35 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 				fontStyleVector_.insert(cursorPos, insertLine.length(), fontStyleValue_t::Normal);
 
         charCounter_ += insertLine.length();
+        return;
       }
 			//Ctrl + p - add to-do-list with point
 			else if (QKeySequence(iKey) == Qt::Key_P || QKeySequence(iKey).toString() == "З") {
 				addTodoList(pointSign_);
+				return;
       }
 			//Ctrl + '-' - add to-do-list with minus
 			else if (QKeySequence(iKey) == Qt::Key_Minus) {
 				addTodoList(minusSign_);
+				return;
 			}
 			//Ctrl + W - add red star
-			else if (QKeySequence(iKey) == Qt::Key_Q || QKeySequence(iKey).toString() == "Ц") {
+			else if (QKeySequence(iKey) == Qt::Key_W || QKeySequence(iKey).toString() == "Ц") {
 				QTextCursor c = this->textCursor();
 				c.movePosition(QTextCursor::StartOfBlock);
 				int pos = c.position();
 
 				QString color = "#ff3366";
-				QString html = "<font color=" + color + ">*</font>";
+				QString html = "<font color=" + color + ">" + warrningSign_ + "</font>";
 				c.insertHtml(html);
-				this->setTextColor(QColor(0, 0, 0));
 				fontStyleVector_.insert(pos, 1, fontStyleValue_t::Star);
-				++charCounter_;
+
+				this->setTextColor(QColor(0, 0, 0));
+				c.insertText(" ");
+				fontStyleVector_.insert(++pos, 1, fontStyleValue_t::Normal);
+
+				charCounter_ += 2;
+				return;
 			}
     }
 	}
@@ -282,8 +259,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
     }
     //Ctrl + X - cut
     else if (QKeySequence(iKey) == Qt::Key_X) {
-      detailsEraseCharsOfSelectedText(cursorPos);
-			detailsItemCheckAndCanselStatus(cursorPos);
+      detailsCheckSelectionAndItem(cursorPos);
       this->cut();
     }
 		//Ctrl + b - Bold
@@ -325,124 +301,14 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
   //Backspace
   if (QKeySequence(iKey) == Qt::Key_Backspace) {
 		//analize item posotion if it is item
-		detailsItemCheckInDeleting(cursorPos, true, kmModifiers);
-		detailsDeleteBackspaceRealization(kmModifiers, QTextCursor::PreviousWord, cursorPos, 0, 1);
+		detailsCheckItemPosInDeleting(cursorPos, true, kmModifiers);
+		deleteRealization(kmModifiers, QTextCursor::PreviousWord, cursorPos, 0, 1);
 		this->textCursor().deletePreviousChar();
   }
   //Delete
   else if (QKeySequence(iKey) == Qt::Key_Delete) {
-		detailsItemCheckInDeleting(cursorPos, false, kmModifiers);
-    detailsDeleteBackspaceRealization(kmModifiers, QTextCursor::NextWord, cursorPos, fontStyleVector_.size());
+    detailsCheckItemPosInDeleting(cursorPos, false, kmModifiers);
+    deleteRealization(kmModifiers, QTextCursor::NextWord, cursorPos, fontStyleVector_.size());
     this->textCursor().deleteChar();
   }
-}
-
-void GenTextEdit::setFontStyle(int style)
-{
-  QString selectline = this->textCursor().selectedText();
-  QTextCharFormat textFormat;
-
-  int first = this->textCursor().selectionStart();
-  int last = this->textCursor().selectionEnd();
-	QTextCursor c(this->textCursor());
-
-  for (int i = first; i < last; ++i) {
-    c.setPosition(i);
-    c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor);
-		//avoid effects for item
-		if (fontStyleVector_[c.position() - 1] == fontStyleValue_t::Item) {
-      continue;
-		}
-
-    if (fontStyleVector_.value(i) != fontStyleValue_t(style)) {
-      fontStyleVector_[i] = fontStyleValue_t(style);
-      switch (style) {
-        case fontStyleValue_t::Bold:
-          textFormat.setFontWeight(QFont::Bold);
-          break;
-        case fontStyleValue_t::Italic :
-          textFormat.setFontItalic(true);
-          break;
-        case fontStyleValue_t::Underline :
-          textFormat.setFontUnderline(true);
-          break;
-        case fontStyleValue_t::Strike :
-          textFormat.setFontStrikeOut(true);
-          break;
-      }
-    }
-    else {
-      fontStyleVector_[i] = fontStyleValue_t::Normal;
-      textFormat.setFontWeight(QFont::Normal);
-    }
-    c.setCharFormat(textFormat);
-  }
-}
-
-void GenTextEdit::addTodoList()
-{
-	addTodoList(pointSign_);
-}
-void GenTextEdit::addTodoList(const QString itemSign)
-{
-  int cursorPos = this->textCursor().position();
-  QTextCharFormat charFormat; //to back Normal font style of text after Bold, Italic, Underline... words
-	charFormat.setFontWeight(QFont::Normal);
-
-	//if there is selected text ---
-  QTextCursor c(this->textCursor());
-  c.movePosition(QTextCursor::StartOfLine, QTextCursor::KeepAnchor);
-
-	if (this->textCursor().selectedText() != "") {
-		detailsEraseCharsOfSelectedText(cursorPos);
-	}
-	//for checking empty line
-  int n = c.selectedText().length();
-  QString spaceLine = "";
-  for (int i = 0; i < n; ++i) {
-    spaceLine += " ";
-  }
-	//---
-
-	QString item = "  " + itemSign + " "; //2 space + point + space
-  if ((c.position() == cursorPos) || (c.selectedText() == spaceLine)) {
-    this->textCursor().insertText(item, charFormat);
-		fontStyleVector_.insert(cursorPos, 4, fontStyleValue_t::Item);
-    charCounter_ += 4;
-  }
-  else {
-    this->textCursor().insertText('\n' + item, charFormat);
-		fontStyleVector_.insert(cursorPos, 4, fontStyleValue_t::Item);
-		fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);
-
-    charCounter_ += 5;
-  }
-}
-
-//for file system
-void GenTextEdit::recieveUsername(const QString username) //SLOT
-{
-	username_ = username;
-}
-
-void GenTextEdit::fillFontStyleVector(int cursorPos, int count, int style)
-{
-  fontStyleVector_.insert(cursorPos, count, fontStyleValue_t(style));
-}
-int GenTextEdit::getCharStyle(int index) const
-{
-  if (index < 0 || index >= charCounter_) {
-    qDebug() << "Index is out of range!";
-    return 0;
-  }
-  return fontStyleVector_[index];
-}
-
-void GenTextEdit::setCharCounter(int value)
-{
-  charCounter_ = value;
-}
-int GenTextEdit::getCharCounter() const
-{
-  return charCounter_;
 }

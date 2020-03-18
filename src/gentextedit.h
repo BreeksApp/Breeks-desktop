@@ -81,17 +81,24 @@ private:
 
 	const QString pointSign_ = "•";
 	const QString minusSign_ = "-";
+	const QString warrningSign_ = "❐";
 
 	const int ITEM_LENGTH = 4;
 	const int TAB_LENGTH = 5;
 
+//keys-realization
+	void deleteRealization(Qt::KeyboardModifiers kmModifiers, QTextCursor::MoveOperation whereMove,
+				int cursorPos, int blindSpot, int a = 0);
 	void addTodoList(const QString itemSign);
 
-	void detailsEraseCharsOfSelectedText(int& cursorPos);
-	void detailsDeleteBackspaceRealization(Qt::KeyboardModifiers kmModifiers, QTextCursor::MoveOperation whereMove,
-				int cursorPos, int blindSpot, int a = 0);
-	void detailsItemCheckInDeleting(int& cursorPos, bool isBS, Qt::KeyboardModifiers& mod);
-	void detailsItemCheckAndCanselStatus(int cursorPose);
+//details... - smth like namespace details
+	void detailsEraseSelectedText(int& cursorPos);
+	//if cursor in the middle of item and we are going to push Bs/del we should delete full item
+	void detailsCheckItemPosInDeleting(int& cursorPos, bool isBS, Qt::KeyboardModifiers& mod);
+	//if we write smth in the middle of item, we won't have the item it will become a regular text
+	void detailsCheckItemAndCanselStatus(int cursorPos);
+
+	void detailsCheckSelectionAndItem(int cursorPos); //to unite common checkers
 };
 
 #endif // TEXT_EDIT

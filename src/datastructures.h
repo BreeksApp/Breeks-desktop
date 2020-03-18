@@ -11,6 +11,7 @@ struct CharStyle {
   bool strikeOut;
   bool item;
   bool star;
+  QString sColor;
 };
 
 struct ElementData {
