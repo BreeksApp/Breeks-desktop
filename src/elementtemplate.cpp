@@ -62,7 +62,7 @@ void ElementTemplate::enterEvent(QEvent *event)
 
   deleteButton_->setEnabled(true);
   deleteButton_->setFlat(false);
-  deleteButton_->setStyleSheet("border-image:url(:/images/images/recycle-bin.png)");
+  deleteButton_->setStyleSheet("border-image:url(:/Images/Images/recycle-bin.png)");
 
   settingsButton_->setEnabled(true);
   settingsButton_->setFlat(false);

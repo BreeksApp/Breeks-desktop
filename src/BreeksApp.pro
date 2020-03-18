@@ -17,9 +17,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     breek.cpp \
-    databaseIO.cpp \
+    FileSystem/databaseIO.cpp \
     elementtemplate.cpp \
-    filesystem.cpp \
+    FileSystem/filesystem.cpp \
     loginform.cpp \
     main.cpp \
     mainwidnow-timetable.cpp \
@@ -62,7 +62,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    recources.qrc
+    resources.qrc
 
 DISTFILES += \
   images/breeks/1.1.png \

@@ -131,7 +131,7 @@ private:
 
 //information about IMAGE
   QString currentImageName_;
-  const QString defaultImageName_ = ":/images/images/sharik.jpg";
+  const QString defaultImageName_ = ":/Images/Images/sharik.jpg";
 
   bool openImageFromDisk(const QString& imageName);
   void setImage(const QString& imageName);

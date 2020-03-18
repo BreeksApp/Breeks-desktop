@@ -12,8 +12,8 @@ public:
   void leaveEvent(QEvent *);
 
 private:
-  const QString styleSheetDefault = "border-image:url(:/images/images/addButtonDefault.png)";
-  const QString styleSheetHover = "border-image:url(:/images/images/addButtonHover.png)";
+  const QString styleSheetDefault = "border-image:url(:/Images/Images/addButtonDefault.png)";
+  const QString styleSheetHover = "border-image:url(:/Images/Images/addButtonHover.png)";
 };
 
 #endif // ADDBUTTONHOVER_H

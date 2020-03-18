@@ -4,6 +4,15 @@
 #include "QString"
 #include "QPalette"
 
+struct CharStyle {
+  bool bold;
+  bool italic;
+  bool underline;
+  bool strikeOut;
+  bool item;
+  bool star;
+};
+
 struct ElementData {
   QString text;
   QPalette palette;

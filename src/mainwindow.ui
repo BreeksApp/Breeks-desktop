@@ -77,7 +77,7 @@
      <enum>Qt::TabFocus</enum>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-image:url(:/images/images/addButtonDefault.png);</string>
+     <string notr="true">border-image:url(:/Images/Images/addButtonDefault.png);</string>
     </property>
     <property name="text">
      <string/>
@@ -124,7 +124,7 @@
      <enum>Qt::ClickFocus</enum>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-image:url(:/images/images/NoteBackground.png);</string>
+     <string notr="true">border-image:url(:/Images/Images/NoteBackground.png);</string>
     </property>
    </widget>
    <widget class="QPushButton" name="buttonPage6">
@@ -459,10 +459,10 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>200</y>
-      <width>113</width>
-      <height>111</height>
+      <x>170</x>
+      <y>350</y>
+      <width>81</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="text">

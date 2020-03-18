@@ -36,11 +36,11 @@ void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
   breeksZone->breekText->setFont(font);
 
   breeksZone->breeksDescriptionLayout->addWidget(breeksZone->buttonBreekDays, 0, 2);
-  breeksZone->buttonBreekDays->setStyleSheet("border-image:url(:/images/images/calendar-and-clock.png)");
+  breeksZone->buttonBreekDays->setStyleSheet("border-image:url(:/Images/Images/calendar-and-clock.png)");
   //connect(breeksZone->buttonBreekDays, SIGNAL(clicked()), , SLOT())
 
   breeksZone->breeksDescriptionLayout->addWidget(breeksZone->buttonDelete, 1, 2);
-  breeksZone->buttonDelete->setStyleSheet("border-image:url(:/images/images/recycle-bin.png)");
+  breeksZone->buttonDelete->setStyleSheet("border-image:url(:/Images/Images/recycle-bin.png)");
 
   QHBoxLayout *days = new QHBoxLayout;
   days->setContentsMargins(0, 0, 0, 0);
@@ -93,7 +93,7 @@ void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
 
   for (int i = 1; i < EMOJI_COUNT; ++i) {
     for (int j = 1; j < 5; ++j) {
-      QString sAdress = ":/images/images/breeks/" + QString::number(i) + "." + QString::number(j) + ".png";
+      QString sAdress = ":/Images/Images/Breeks/" + QString::number(i) + "." + QString::number(j) + ".png";
 
       //qDebug() << sAdress;
       switch (j) {

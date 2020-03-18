@@ -185,10 +185,11 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 			else if (QKeySequence(iKey) == Qt::Key_Minus) {
 				addTodoList(minusSign_);
 			}
-			else if (QKeySequence(iKey) == Qt::Key_W || QKeySequence(iKey).toString() == "Ц") {
+			//Ctrl + W - add red star
+			else if (QKeySequence(iKey) == Qt::Key_Q || QKeySequence(iKey).toString() == "Ц") {
 				QTextCursor c = this->textCursor();
 				c.movePosition(QTextCursor::StartOfBlock);
-				int pos = std::max(0, c.position() - 1);
+				int pos = c.position();
 
 				QString color = "#ff3366";
 				QString html = "<font color=" + color + ">*</font>";

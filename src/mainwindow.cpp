@@ -64,7 +64,7 @@ void MainWindow::on_buttonAdd_clicked()
   const int y = ui->buttonAdd->pos().y() + b;
   addForm->move(x, y);
 
-  ui->buttonAdd->setStyleSheet("border-image:url(:/images/images/addButtonHover.png)");
+  ui->buttonAdd->setStyleSheet("border-image:url(:/Images/Images/addButtonHover.png)");
 }
 
 void MainWindow::recieveTimeTableZoneData(bool *daysCheck, const int arrSize, ElementData newElement)
