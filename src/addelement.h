@@ -40,8 +40,8 @@ private slots:
   void on_pushButtonBreeksZone_clicked();
 
 signals:
-  void sendTimeTableZoneData(bool *, const int, ElementData);
-  void sendBreeksZoneData(bool *, const int, BreeksData);
+  void sendTimeTableZoneData(bool *, const int, elementData_t);
+  void sendBreeksZoneData(bool *, const int, breeksData_t);
 
 private:
   Ui::AddElement *ui;

@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     GeneralTextEdit/gentextedit-get-set.cpp \
     GeneralTextEdit/gentextedit-keys-realization.cpp \
+    GeneralTextEdit/gentextedit-write-read.cpp \
     breek.cpp \
     FileSystem/databaseIO.cpp \
     elementtemplate.cpp \

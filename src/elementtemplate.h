@@ -53,7 +53,7 @@ private:
   int elementIndex_;
 
   const int TAGS_COUNT = 6;
-  tagElement arrTags_[6];
+  tagElement_t arrTags_[6];
 
 signals:
   void sendDayAndElementIndex(const int dayIndex, const int elementIndex);

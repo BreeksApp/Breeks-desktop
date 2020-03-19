@@ -21,11 +21,12 @@ class filesystem
 public:
   filesystem();
   static QString readTextEdidFromDB(const int currentFile);
-  static void writeTextEditToDB(NoteInfo &info, const int currentFile);
+  static void writeTextEditToDB(textInfo_t &info, const int currentFile);
 
 private:
   static QString getDataFromDB();
-  static void pushDataToDB(QJsonDocument &jDoc, QJsonObject &jObject, QJsonObject &notes, QJsonObject &note, NoteInfo &info, const int currentFile);
+  static void pushDataToDB(QJsonDocument &jDoc, QJsonObject &jObject, QJsonObject &notes, QJsonObject &note,
+                           textInfo_t &info, const int currentFile);
 
   static void parseDataBase(QJsonObject &notes);
   static QString readNote(QJsonObject& object);

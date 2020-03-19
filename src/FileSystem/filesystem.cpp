@@ -24,7 +24,7 @@ QString filesystem::getDataFromDB()
   return data;
 }
 
-void filesystem::writeTextEditToDB(NoteInfo &info, const int currentFile)
+void filesystem::writeTextEditToDB(textInfo_t &info, const int currentFile)
 {
   QJsonDocument jDoc = QJsonDocument::fromJson(getDataFromDB().toUtf8());
   QJsonObject jObject = jDoc.object();
@@ -54,7 +54,7 @@ void filesystem::writeTextEditToDB(NoteInfo &info, const int currentFile)
     }
 }
 
-void filesystem::pushDataToDB(QJsonDocument &jDoc, QJsonObject &jObject, QJsonObject &notes, QJsonObject &note, NoteInfo &info, const int currentFile)
+void filesystem::pushDataToDB(QJsonDocument &jDoc, QJsonObject &jObject, QJsonObject &notes, QJsonObject &note, textInfo_t &info, const int currentFile)
 {
   note.insert("charCount", info.charCount);
   note.insert("charState", info.charState);

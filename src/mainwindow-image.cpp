@@ -28,7 +28,7 @@ void MainWindow::setImage(const QString& imageName)
 }
 
 //image like button
-void MainWindow::on_buttonImage_clicked()
+/*void MainWindow::on_buttonImage_clicked()
 {
   setImageBackgroundView(true);
 
@@ -36,11 +36,11 @@ void MainWindow::on_buttonImage_clicked()
 
   if (openImageFromDisk(newImageName)) {
     setImage(newImageName);
-    writeDataToFileLastVisit();
+    //writeDataToFileLastVisit();
   }
 
   setImageBackgroundView(false);
-}
+}*/
 
 void MainWindow::setImageBackgroundView(bool status)
 {

@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include <QScrollArea>
 
-void MainWindow::buildTimeTable()
+/*void MainWindow::buildTimeTable()
 {
   bigWidgetInWorkZone_->setFixedSize(WORK_ZONE_BIG_WIDGET_WIDTH, bigWidgetHeight_);
 
@@ -182,4 +182,4 @@ void MainWindow::setDaysStructure()
     arrDays_[i].helpLayout->addLayout(arrDays_[i].layoutDayElements);
     arrDays_[i].layoutDayElements->setContentsMargins(5, 0, 0, 0);
   }
-}
+}*/

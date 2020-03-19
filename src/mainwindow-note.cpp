@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 
-void MainWindow::noteMakePageButtonSelectable(QPushButton *button)
+/*void MainWindow::noteMakePageButtonSelectable(QPushButton *button)
 {
   //set previous button in default state
   switch (ui->note->getNumberCurrentFile()) {
@@ -144,4 +144,4 @@ void MainWindow::on_buttonPage6_clicked()
   noteChangePage(nButton);
 
   writeDataToFileLastVisit();
-}
+}*/

@@ -43,10 +43,10 @@ public slots:
   void setImageBackgroundView(bool);
 
 //slot to set data which was pronted and selected by user in AddElement form for Time Table Zone
-  void recieveTimeTableZoneData(bool *, const int, ElementData);
+  void recieveTimeTableZoneData(bool *, const int, elementData_t);
 
 //slot to set data which was pronted and selected by user in AddElement form for Breeks Zone
-  void recieveBreeksZoneData(bool *, const int, BreeksData);
+  void recieveBreeksZoneData(bool *, const int, breeksData_t);
 
   void recieveDayAndElementIndex(const int, const int);
   void recieveDayAndElementIndexAndTagColor(const int, const int, const QPalette);
@@ -57,7 +57,7 @@ public slots:
 private slots:
 //note
   //buttons to work with text
-  void on_buttonMakeBold_clicked();
+  /*void on_buttonMakeBold_clicked();
   void on_buttonMakeItalic_clicked();
   void on_buttonMakeUnderline_clicked();
   void on_buttonMakeStrike_clicked();
@@ -76,7 +76,7 @@ private slots:
 //adding new elements
   void on_buttonAdd_clicked();
 
-  void on_pushButton_clicked();
+  void on_pushButton_clicked();*/
 
 signals:
   void sendUsername(const QString);
@@ -106,8 +106,8 @@ private:
   QFile fileFri_;
   QFile fileSat_;
 
-  using iterType = QVector<ElementData>::iterator;
-  QVector<ElementData> arrDaysData_[6]; //conteiner with elements data by days
+  using iterType = QVector<elementData_t>::iterator;
+  QVector<elementData_t> arrDaysData_[6]; //conteiner with elements data by days
 
   void writeElementsDataToFile(QFile &file, const int index);
   void readElementsDataFromFile(QFile &file, const int index);
@@ -184,7 +184,7 @@ private:
   day_t arrDays_[6];
 
 
-  int addNewElementToArray(const ElementData& newElement, const int index);
+  int addNewElementToArray(const elementData_t& newElement, const int index);
   void addNewElementToLayout(const int index, const int newElementIndex);
 //------------------
 

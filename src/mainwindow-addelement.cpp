@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 
-int MainWindow::addNewElementToArray(const ElementData& newElement, const int index)
+int MainWindow::addNewElementToArray(const elementData_t& newElement, const int index)
 {
   if (arrDaysData_[index].size() == 0) {
     arrDaysData_[index].push_back(newElement);

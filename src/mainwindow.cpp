@@ -10,14 +10,14 @@
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
-  ui(new Ui::MainWindow),
-  fileLastVisit_(fileLastVisitName_),
-  fileMon_(fileMonName_),
-  fileTue_(fileTueName_),
-  fileWed_(fileWedName_),
-  fileThu_(fileThuName_),
-  fileFri_(fileFriName_),
-  fileSat_(fileSatName_)
+  ui(new Ui::MainWindow)
+  //fileLastVisit_(fileLastVisitName_),
+  //fileMon_(fileMonName_),
+  //fileTue_(fileTueName_),
+  //fileWed_(fileWedName_),
+  //fileThu_(fileThuName_),
+  //fileFri_(fileFriName_),
+  //fileSat_(fileSatName_)
 {
   ui->setupUi(this);
 
@@ -26,27 +26,27 @@ MainWindow::MainWindow(QWidget *parent) :
 
   connect(loginForm_, SIGNAL(sendUsername(const QString)), ui->note, SLOT(recieveUsername(const QString))); //Send username to TextEdit
 
-  connect(ui->buttonImage, SIGNAL(imageEnter(bool)), this, SLOT(setImageBackgroundView(bool)));
-  connect(ui->buttonImage, SIGNAL(imageLeave(bool)), this, SLOT(setImageBackgroundView(bool)));
+  //connect(ui->buttonImage, SIGNAL(imageEnter(bool)), this, SLOT(setImageBackgroundView(bool)));
+  //connect(ui->buttonImage, SIGNAL(imageLeave(bool)), this, SLOT(setImageBackgroundView(bool)));
 
-  setWorkZone();
+  //setWorkZone();
 
-  setStatesFromFileLastVisit();
-  setAllElementsEffects();
+  //setStatesFromFileLastVisit();
+  //setAllElementsEffects();
 }
 
 MainWindow::~MainWindow()
 {
-  ui->note->writeToDB(ui->note->getNumberCurrentFile());
+  //ui->note->writeToDB(ui->note->getNumberCurrentFile());
 
   for (int i = 0; i < 6; ++i) {
-    writeElementsDataToFile(i);
+    //writeElementsDataToFile(i);
   }
 
   delete ui;
 }
 
-void MainWindow::on_buttonAdd_clicked()
+/*void MainWindow::on_buttonAdd_clicked()
 {
   AddElement *addForm = new AddElement(ui->buttonAdd);//have to reset stylesheet in form destuctor
   addForm->setAttribute(Qt::WA_DeleteOnClose);
@@ -65,9 +65,9 @@ void MainWindow::on_buttonAdd_clicked()
   addForm->move(x, y);
 
   ui->buttonAdd->setStyleSheet("border-image:url(:/Images/Images/addButtonHover.png)");
-}
+}*/
 
-void MainWindow::recieveTimeTableZoneData(bool *daysCheck, const int arrSize, ElementData newElement)
+void MainWindow::recieveTimeTableZoneData(bool *daysCheck, const int arrSize, elementData_t newElement)
 {
   for (int i = 0; i < arrSize; i++) {
     if (daysCheck[i] == true) {
@@ -92,7 +92,7 @@ void MainWindow::recieveTimeTableZoneData(bool *daysCheck, const int arrSize, El
   }
 }
 
-void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, BreeksData newElement)
+void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, breeksData_t newElement)
 {
 //if we arleady have breeks zone with this name
   for (breeksZone_t &value : arrBreeksZones_) {
@@ -229,8 +229,8 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
   }
 }
 
-void MainWindow::on_pushButton_clicked()
+/*void MainWindow::on_pushButton_clicked()
 {
   loginForm_->show();
   this->close();
-}
+}*/

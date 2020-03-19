@@ -138,7 +138,7 @@ void AddElement::on_buttonAdd_clicked()
   }
 
   if (timeTableZoneCondition_ == true) {
-    ElementData newElement;
+    elementData_t newElement;
 
     newElement.text = text;
 
@@ -166,7 +166,7 @@ void AddElement::on_buttonAdd_clicked()
     emit sendTimeTableZoneData(daysCheck_, DAYS_CHECK_COUNT, newElement);
   }
   else if (breeksZoneCondition_ == true) {
-    BreeksData newElement;
+    breeksData_t newElement;
     newElement.text = text;
     newElement.nEmoji = currentEmoji;
 

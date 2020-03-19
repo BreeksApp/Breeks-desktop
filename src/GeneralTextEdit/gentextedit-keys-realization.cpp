@@ -1,14 +1,14 @@
 #include "gentextedit.h"
 
 //---------BACKSPACE / DELETE
-void GenTextEdit::deleteRealization(Qt::KeyboardModifiers kmModifiers, QTextCursor::MoveOperation whereMove,
-																					 int cursorPos, int blindSpot, int a)
+void GenTextEdit::deleteRealization(const Qt::KeyboardModifiers kmModifiers, const QTextCursor::MoveOperation whereMove,
+																					 int& cursorPos, const int blindSpot, const int a)
 {
 	int nSelectedChars = this->textCursor().selectedText().length();
 
 	if (nSelectedChars == 0) { //no selected text
 		if (cursorPos != blindSpot) {
-			iterator iterFirst = fontStyleVector_.begin();
+			iterator iterFirst = charStyleVector_.begin();
 
 			if (kmModifiers == Qt::ControlModifier) {
 				QTextCursor c = this->textCursor();
@@ -27,10 +27,10 @@ void GenTextEdit::deleteRealization(Qt::KeyboardModifiers kmModifiers, QTextCurs
 						int posInVectorEnd = std::min(c.position() + i, charCounter_ - 1);
 						/* 1) _innnnnn or nnnnnn_i - cursor on item ('_' - cursor)
 							 2) selected text != 0
-							 3) a_ or _a - cursor on first char ('_' - space) */
-						if ( (fontStyleVector_[c.position()] != fontStyleValue_t::Item ||
-									fontStyleVector_[posInVectorEnd] != fontStyleValue_t::Item) &&
-									c.selectedText().length() != 1 &&
+							 3) a_bc or ab_c - cursor on [pos] char ('_' - space) */
+						if ( (charStyleVector_[c.position()].item == false ||
+									charStyleVector_[posInVectorEnd].item == false) &&
+									c.selectedText().length() > 2 &&
 									( (c.selectedText()[pos] != ' ' && c.selectedText()[pos + i] == ' ') ||
 									(c.selectedText()[pos] == ' ' && c.selectedText()[pos + i] != ' ') )) {
 							int selectionLength = c.selectedText().length() - 1;
@@ -40,12 +40,9 @@ void GenTextEdit::deleteRealization(Qt::KeyboardModifiers kmModifiers, QTextCurs
 
 							break;
 						}
-						if (fontStyleVector_[c.position() - 1] != fontStyleValue_t::Star) {
+						else {
 							c.movePosition(moveSide, QTextCursor::KeepAnchor);
 							continue;
-						}
-						else {
-							break;
 						}
 					}
 					break;
@@ -56,12 +53,12 @@ void GenTextEdit::deleteRealization(Qt::KeyboardModifiers kmModifiers, QTextCurs
         iterator iterLast = iterFirst + c.selectedText().length();
 
         this->setTextCursor(c);
-        fontStyleVector_.erase(iterFirst, iterLast);
+        charStyleVector_.erase(iterFirst, iterLast);
         charCounter_ -= c.selectedText().length();
       }
       else {
         iterFirst += this->textCursor().position() - a;
-        fontStyleVector_.erase(iterFirst);
+        charStyleVector_.erase(iterFirst);
         --charCounter_;
       }
     }
@@ -98,26 +95,26 @@ void GenTextEdit::addTodoList(const QString itemSign)
 	//---
 
   QString item = "  " + itemSign + " "; //2 space + point + space
+  charStyle_t ch;
+  detailsSetCharStyle(ch, charStyle::Item);
+
   if ((c.position() == cursorPos) || (c.selectedText() == spaceLine)) {
     this->textCursor().insertText(item, charFormat);
-    fontStyleVector_.insert(cursorPos, 4, fontStyleValue_t::Item);
+    charStyleVector_.insert(cursorPos, 4, ch);
     charCounter_ += 4;
   }
   else {
     this->textCursor().insertText('\n' + item, charFormat);
-    fontStyleVector_.insert(cursorPos, 4, fontStyleValue_t::Item);
-    fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);
-
+    charStyleVector_.insert(cursorPos, 4, ch);
+    detailsSetCharStyle(ch, charStyle::Normal);
+    charStyleVector_.insert(cursorPos, 1, ch);
     charCounter_ += 5;
   }
 }
 
 //---------SET STYLE FOR CHAR
-void GenTextEdit::setFontStyle(int style)
-{
-  QString selectline = this->textCursor().selectedText();
-  QTextCharFormat textFormat;
-
+void GenTextEdit::setCharStyle(const int style)
+{  
   int first = this->textCursor().selectionStart();
   int last = this->textCursor().selectionEnd();
   QTextCursor c(this->textCursor());
@@ -126,31 +123,27 @@ void GenTextEdit::setFontStyle(int style)
     c.setPosition(i);
     c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor);
     //avoid effects for item
-    if (fontStyleVector_[c.position() - 1] == fontStyleValue_t::Item) {
+    if (charStyleVector_[c.position() - 1].item == true) {
       continue;
     }
 
-    if (fontStyleVector_.value(i) != fontStyleValue_t(style)) {
-      fontStyleVector_[i] = fontStyleValue_t(style);
-      switch (style) {
-        case fontStyleValue_t::Bold:
-          textFormat.setFontWeight(QFont::Bold);
-          break;
-        case fontStyleValue_t::Italic :
-          textFormat.setFontItalic(true);
-          break;
-        case fontStyleValue_t::Underline :
-          textFormat.setFontUnderline(true);
-          break;
-        case fontStyleValue_t::Strike :
-          textFormat.setFontStrikeOut(true);
-          break;
-      }
+    detailsSetCharStyle(charStyleVector_[i], style);
+    QTextCharFormat textFormat;
+    textFormat.setFontWeight(QFont::Normal);
+
+    if (charStyleVector_[i].bold == true) {
+      textFormat.setFontWeight(QFont::Bold);
     }
-    else {
-      fontStyleVector_[i] = fontStyleValue_t::Normal;
-      textFormat.setFontWeight(QFont::Normal);
+    if (charStyleVector_[i].italic == true) {
+      textFormat.setFontItalic(true);
     }
+    if (charStyleVector_[i].underline == true) {
+      textFormat.setFontUnderline(true);
+    }
+    if (charStyleVector_[i].strike == true) {
+      textFormat.setFontStrikeOut(true);
+    }
+
     c.setCharFormat(textFormat);
   }
 }

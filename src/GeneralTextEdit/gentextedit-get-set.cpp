@@ -1,16 +1,26 @@
 #include "gentextedit.h"
 
-void GenTextEdit::recieveUsername(const QString username) //SLOT
+/*void GenTextEdit::recieveUsername(const QString username) //SLOT
 {
   username_ = username;
 }
 
-void GenTextEdit::fillFontStyleVector(int cursorPos, int count, int style)
+int GenTextEdit::getNumberCurrentFile()
+{
+  return nCurrentFile_;
+}
+void GenTextEdit::setNumberCurrentFile(const int n)
+{
+  if (n >= 1 && n <= 6) {
+    nCurrentFile_ = n;
+  }
+}
+
+void GenTextEdit::fillFontStyleVector(const int cursorPos, const int count, const int style)
 {
   fontStyleVector_.insert(cursorPos, count, fontStyleValue_t(style));
 }
-
-int GenTextEdit::getCharStyle(int index) const
+int GenTextEdit::getCharStyle(const int index) const
 {
   if (index < 0 || index >= charCounter_) {
     qDebug() << "Index is out of range!";
@@ -19,12 +29,11 @@ int GenTextEdit::getCharStyle(int index) const
   return fontStyleVector_[index];
 }
 
-void GenTextEdit::setCharCounter(int value)
-{
-  charCounter_ = value;
-}
-
 int GenTextEdit::getCharCounter() const
 {
   return charCounter_;
 }
+void GenTextEdit::setCharCounter(int value)
+{
+  charCounter_ = value;
+}*/

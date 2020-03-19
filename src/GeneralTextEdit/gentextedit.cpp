@@ -11,7 +11,8 @@ GenTextEdit::GenTextEdit(QWidget *parent) :
 {
 //add saved text
   nCurrentFile_ = 1;
-  readFromDB(nCurrentFile_);
+  charCounter_ = 0;
+  //readFromDB(nCurrentFile_);
 }
 
 //We want to create our Text editor with special functions and hot-keys
@@ -25,17 +26,21 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
   QTextCharFormat charFormat; //to back Normal font style of text after Bold, Italic, Underline... words
   charFormat.setFontWeight(QFont::Normal);
 
+  charStyle_t ch;
+  detailsSetCharStyle(ch);
+
   //all comands which insert smth
   if (charCounter_ <= MAX_COUNT_CHAR_) {
 		//letters
     if (kmModifiers == 0 || kmModifiers == Qt::ShiftModifier) {
       if ( (iKey >= Qt::Key_A && iKey <= Qt::Key_Z) ||
       (QKeySequence(iKey).toString() >= "А" && (QKeySequence(iKey).toString() <= "Я")) ) {
-				QTextEdit::keyPressEvent(event); //we can't identify CapsLock that's why use base method
-				detailsCheckSelectionAndItem(cursorPos);
-				fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);
-        ++charCounter_;
+        detailsCheckSelectionAndItem(cursorPos);
+				charStyleVector_.insert(cursorPos, 1, ch);
 
+				QTextEdit::keyPressEvent(event); //we can't identify CapsLock that's why use base method
+
+        ++charCounter_;
         return;
       }
     }
@@ -44,7 +49,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
       if (iKey >= Qt::Key_0 && iKey <= Qt::Key_9) {
         detailsCheckSelectionAndItem(cursorPos);
         this->insertPlainText(QKeySequence(iKey).toString());
-				fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);
+        charStyleVector_.insert(cursorPos, 1, ch);
 
         ++charCounter_;
         return;
@@ -56,7 +61,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 				if (QKeySequence(iKey).toString() == i) {
 					detailsCheckSelectionAndItem(cursorPos);
 					this->insertPlainText(QKeySequence(iKey).toString());
-					fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);
+					charStyleVector_.insert(cursorPos, 1, ch);
 
 					++charCounter_;
 					return;
@@ -69,7 +74,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 			case Qt::Key_Space : {
 				detailsCheckSelectionAndItem(cursorPos);
         this->textCursor().insertText(" ", charFormat);
-				fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);
+        charStyleVector_.insert(cursorPos, 1, ch);
 
         ++charCounter_;
 				return;
@@ -84,7 +89,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 				QTextCursor c = this->textCursor();
 				bool isItem = false;
 
-				if (charCounter_ != 0 && fontStyleVector_[std::max(0, pos - 1)] == fontStyleValue_t::Item) {
+				if (charCounter_ != 0 && charStyleVector_[std::max(0, pos - 1)].item == true) {
 					QTextCursor tmp = c;
 					tmp.movePosition(QTextCursor::StartOfBlock, QTextCursor::MoveAnchor);
 					int nMove = std::min(ITEM_LENGTH, c.position() - tmp.position());
@@ -93,10 +98,10 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 					pos = c.position();
 					isItem = true;
 				}
-
+				detailsSetCharStyle(ch, charStyle::Item);
 				for (int i = 0; i < TAB_LENGTH; ++i) {
 					c.insertText(" ", charFormat);
-					fontStyleVector_.insert(pos, 1, fontStyleValue_t::Item);
+					charStyleVector_.insert(pos, 1, ch);
 					++pos;
 					++charCounter_;
 				}
@@ -112,7 +117,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
       case Qt::Key_Return :
         detailsCheckSelectionAndItem(cursorPos);
         this->textCursor().insertText("\n", charFormat);
-				fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);
+        charStyleVector_.insert(cursorPos, 1, ch);
         ++charCounter_;
 
       return;
@@ -124,7 +129,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 				detailsCheckSelectionAndItem(cursorPos);
 
 				this->insertPlainText("—");
-				fontStyleVector_.insert(cursorPos, 1, fontStyleValue_t::Normal);
+				charStyleVector_.insert(cursorPos, 1, ch);
 				++charCounter_;
 
 				return;
@@ -142,7 +147,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
         insertLine = insertLine.mid(0, end); //to correct work with limit of chars
 
         this->textCursor().insertText(insertLine);
-				fontStyleVector_.insert(cursorPos, insertLine.length(), fontStyleValue_t::Normal);
+        charStyleVector_.insert(cursorPos, insertLine.length(), ch);
 
         charCounter_ += insertLine.length();
         return;
@@ -166,11 +171,13 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 				QString color = "#ff3366";
 				QString html = "<font color=" + color + ">" + warrningSign_ + "</font>";
 				c.insertHtml(html);
-				fontStyleVector_.insert(pos, 1, fontStyleValue_t::Star);
+				detailsSetCharStyle(ch, charStyle::Star);
+				charStyleVector_.insert(pos, 1, ch);
 
 				this->setTextColor(QColor(0, 0, 0));
 				c.insertText(" ");
-				fontStyleVector_.insert(++pos, 1, fontStyleValue_t::Normal);
+				detailsSetCharStyle(ch);
+				charStyleVector_.insert(++pos, 1, ch);
 
 				charCounter_ += 2;
 				return;
@@ -264,19 +271,19 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
     }
 		//Ctrl + b - Bold
 		else if (QKeySequence(iKey) == Qt::Key_B || QKeySequence(iKey).toString() == "И") {
-      setFontStyle(fontStyleValue_t::Bold);
+			setCharStyle(charStyle::Bold);
     }
 		//Ctrl + i - Italic
 		else if (QKeySequence(iKey) == Qt::Key_I || QKeySequence(iKey).toString() == "Ш") {
-      setFontStyle(fontStyleValue_t::Italic);
+			setCharStyle(charStyle::Italic);
     }
 		//Ctrl + u - Underline
 		else if (QKeySequence(iKey) == Qt::Key_U || QKeySequence(iKey).toString() == "Г") {
-      setFontStyle(fontStyleValue_t::Underline);
+			setCharStyle(charStyle::Underline);
     }
 		//Ctrl + s - Strike
 		else if (QKeySequence(iKey) == Qt::Key_S || QKeySequence(iKey).toString() == "Ы") {
-      setFontStyle(fontStyleValue_t::Strike);
+			setCharStyle(charStyle::Strike);
     }
 		//Ctrl + n - Normal
 		else if (QKeySequence(iKey) == Qt::Key_N || QKeySequence(iKey).toString() == "Т") {
@@ -288,11 +295,11 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
       int last = this->textCursor().selectionEnd();
 
       for (int i = first; i < last; ++i) {
-				if (fontStyleVector_[i] == fontStyleValue_t::Item) {
+        if (charStyleVector_[i].item == true) {
 					continue;
 				}
         this->textCursor().setPosition(i);
-        fontStyleVector_[i] = fontStyleValue_t::Normal;
+        detailsSetCharStyle(charStyleVector_[i]);
         this->textCursor().setCharFormat(textFormat);
       }
     }
@@ -308,7 +315,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
   //Delete
   else if (QKeySequence(iKey) == Qt::Key_Delete) {
     detailsCheckItemPosInDeleting(cursorPos, false, kmModifiers);
-    deleteRealization(kmModifiers, QTextCursor::NextWord, cursorPos, fontStyleVector_.size());
+    deleteRealization(kmModifiers, QTextCursor::NextWord, cursorPos, charStyleVector_.size());
     this->textCursor().deleteChar();
   }
 }

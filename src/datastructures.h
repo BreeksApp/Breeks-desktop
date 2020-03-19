@@ -4,29 +4,29 @@
 #include "QString"
 #include "QPalette"
 
-struct CharStyle {
+struct charStyle_t {
   bool bold;
   bool italic;
   bool underline;
-  bool strikeOut;
+  bool strike;
   bool item;
   bool star;
-  QString sColor;
+  //QString sColor;
 };
 
-struct ElementData {
+struct elementData_t {
   QString text;
   QPalette palette;
   QString timeStart;
   QString timeEnd;
 };
 
-struct BreeksData {
+struct breeksData_t {
   QString text;
   int nEmoji;
 };
 
-struct tagElement {
+struct tagElement_t {
   bool condition;
   QPalette pallete;
 };
@@ -35,7 +35,7 @@ namespace tag {
   const QColor ARR_COLORS[6] = {"#0000FF", "#FF3366", "#FFFF66", "#CC66FF", "#ECEAEC", "#66FF66"};
 }
 
-struct NoteInfo {
+struct textInfo_t {
   int charCount;
   QString charState;
   QString text;
