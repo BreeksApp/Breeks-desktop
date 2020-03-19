@@ -23,13 +23,11 @@ void GenTextEdit::deleteRealization(const Qt::KeyboardModifiers kmModifiers, con
 				while (true) {
 					int pos = (whereMove == QTextCursor::PreviousWord) ? 0 : c.selectedText().length() - 1;
 
-					if (c.positionInBlock() != 0 && c.position() != charCounter_) {
-						int posInVectorEnd = std::min(c.position() + i, charCounter_ - 1);
+					if (c.positionInBlock() != 0 && c.position() <= charCounter_) {
 						/* 1) _innnnnn or nnnnnn_i - cursor on item ('_' - cursor)
 							 2) selected text != 0
 							 3) a_bc or ab_c - cursor on [pos] char ('_' - space) */
-						if ( (charStyleVector_[c.position()].item == false ||
-									charStyleVector_[posInVectorEnd].item == false) &&
+						if ( (charStyleVector_[std::min(c.position() + i, charCounter_ - 1)].item == false) &&
 									c.selectedText().length() > 2 &&
 									( (c.selectedText()[pos] != ' ' && c.selectedText()[pos + i] == ' ') ||
 									(c.selectedText()[pos] == ' ' && c.selectedText()[pos + i] != ' ') )) {
@@ -37,7 +35,9 @@ void GenTextEdit::deleteRealization(const Qt::KeyboardModifiers kmModifiers, con
 							c.clearSelection();
 							c.setPosition(this->textCursor().position());
 							c.movePosition(moveSide, QTextCursor::KeepAnchor, selectionLength);
-
+							break;
+						}
+						else if (charStyleVector_[c.position() - 1].star == true || c.position() == charCounter_) {
 							break;
 						}
 						else {
@@ -106,10 +106,46 @@ void GenTextEdit::addTodoList(const QString itemSign)
   else {
     this->textCursor().insertText('\n' + item, charFormat);
     charStyleVector_.insert(cursorPos, 4, ch);
-    detailsSetCharStyle(ch, charStyle::Normal);
+		detailsSetCharStyle(ch, charStyle::Normal);
     charStyleVector_.insert(cursorPos, 1, ch);
     charCounter_ += 5;
   }
+}
+
+//---------TAB
+void GenTextEdit::tabRealization(int& cursorPos)
+{
+	QTextCharFormat charFormat;
+	charFormat.setFontWeight(QFont::Normal);
+	charStyle_t ch;
+	detailsSetCharStyle(ch);
+
+	int pos = cursorPos;
+	QTextCursor c = this->textCursor();
+	bool isItem = false;
+
+	if (charCounter_ != 0 && charStyleVector_[std::max(0, pos - 1)].item == true) {
+		QTextCursor tmp = c;
+		tmp.movePosition(QTextCursor::StartOfBlock, QTextCursor::MoveAnchor);
+		int nMove = std::min(ITEM_LENGTH, c.position() - tmp.position());
+
+		c.movePosition(QTextCursor::Left, QTextCursor::MoveAnchor, nMove);
+		pos = c.position();
+		isItem = true;
+	}
+	detailsSetCharStyle(ch, charStyle::Item);
+	for (int i = 0; i < TAB_LENGTH; ++i) {
+		c.insertText(" ", charFormat);
+		charStyleVector_.insert(pos, 1, ch);
+		++pos;
+		++charCounter_;
+	}
+
+	if (isItem) {
+		c.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, ITEM_LENGTH);
+	}
+
+	this->setTextCursor(c);
 }
 
 //---------SET STYLE FOR CHAR

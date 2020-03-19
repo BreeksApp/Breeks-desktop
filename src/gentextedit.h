@@ -83,12 +83,13 @@ private:
 	const QString warrningSign_ = "❐";
 
 	const int ITEM_LENGTH = 4;
-	const int TAB_LENGTH = 5;
+	const int TAB_LENGTH = 4;
 
 //keys-realization.cpp
 	void deleteRealization(const Qt::KeyboardModifiers kmModifiers, const QTextCursor::MoveOperation whereMove,
 				int& cursorPos, const int blindSpot, const int a = 0);
 	void addTodoList(const QString itemSign);
+	void tabRealization(int& cursorPos);
 
 //details.cpp - smth like namespace details
 	void detailsEraseSelectedText(int& cursorPos);

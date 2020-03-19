@@ -70,47 +70,22 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 		}
 
     switch (iKey) {
-      //Space
+		 //Space
 			case Qt::Key_Space : {
 				detailsCheckSelectionAndItem(cursorPos);
-        this->textCursor().insertText(" ", charFormat);
-        charStyleVector_.insert(cursorPos, 1, ch);
+				this->textCursor().insertText(" ", charFormat);
+				charStyleVector_.insert(cursorPos, 1, ch);
 
-        ++charCounter_;
+				++charCounter_;
 				return;
 			}
-      //Tab
-      case Qt::Key_Tab : {
-        if (this->textCursor().selectedText() != "") {
-          detailsEraseSelectedText(cursorPos);
+		 //Tab
+			case Qt::Key_Tab : {
+				if (this->textCursor().selectedText() != "") {
+					detailsEraseSelectedText(cursorPos);
         }
+				tabRealization(cursorPos);
 
-				int pos = cursorPos;
-				QTextCursor c = this->textCursor();
-				bool isItem = false;
-
-				if (charCounter_ != 0 && charStyleVector_[std::max(0, pos - 1)].item == true) {
-					QTextCursor tmp = c;
-					tmp.movePosition(QTextCursor::StartOfBlock, QTextCursor::MoveAnchor);
-					int nMove = std::min(ITEM_LENGTH, c.position() - tmp.position());
-
-					c.movePosition(QTextCursor::Left, QTextCursor::MoveAnchor, nMove);
-					pos = c.position();
-					isItem = true;
-				}
-				detailsSetCharStyle(ch, charStyle::Item);
-				for (int i = 0; i < TAB_LENGTH; ++i) {
-					c.insertText(" ", charFormat);
-					charStyleVector_.insert(pos, 1, ch);
-					++pos;
-					++charCounter_;
-				}
-
-				if (isItem) {
-					c.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, ITEM_LENGTH);
-				}
-
-				this->setTextCursor(c);
 				return;
       }
       //Return
@@ -120,7 +95,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
         charStyleVector_.insert(cursorPos, 1, ch);
         ++charCounter_;
 
-      return;
+				return;
     }
 
     if (kmModifiers == Qt::ControlModifier) {
@@ -175,11 +150,11 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 				charStyleVector_.insert(pos, 1, ch);
 
 				this->setTextColor(QColor(0, 0, 0));
-				c.insertText(" ");
+				/*c.insertText(" ");
 				detailsSetCharStyle(ch);
-				charStyleVector_.insert(++pos, 1, ch);
+				charStyleVector_.insert(++pos, 1, ch);*/
 
-				charCounter_ += 2;
+				charCounter_ += 1;
 				return;
 			}
     }
@@ -287,7 +262,6 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
     }
 		//Ctrl + n - Normal
 		else if (QKeySequence(iKey) == Qt::Key_N || QKeySequence(iKey).toString() == "Т") {
-      QString selectline = this->textCursor().selectedText();
       QTextCharFormat textFormat;
       textFormat.setFontWeight(QFont::Normal);
 
