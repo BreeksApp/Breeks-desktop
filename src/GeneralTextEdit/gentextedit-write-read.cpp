@@ -2,84 +2,77 @@
 
 void GenTextEdit::readFromDB(const int currentFile)
 {
-		QString textInfo = filesystem::readTextEdidFromDB(currentFile);
-		QTextStream out(&textInfo);
+  charStyleVector_.clear();
+  QJsonObject textInfo = filesystem::readTextEdidFromDB(currentFile);
+  QJsonArray jChars = textInfo.value("charStyleVEctor").toArray();
+  QString text = textInfo.value("text").toString();
 
-    int tmp = 0;
-    out >> tmp;
-    int charCounter = tmp;
+  QTextStream out(&text);
+  QChar tmpChar;
 
-    this->setCharCounter(charCounter);
-    int lengthCharCounter = 0;
-    while (tmp != 0) {
-      ++lengthCharCounter;
-      tmp /= 10;
+  charCounter_ = jChars.size();
+
+  for (int i = 0; i < charCounter_; i++ ) {
+    charStyle_t ch;
+    QTextCharFormat charFormat;
+    QJsonObject jChar = jChars[i].toObject();
+    bool boldStatus = jChar.value("bold").toBool();
+    bool italicStatus = jChar.value("italic").toBool();
+    bool itemStatus = jChar.value("item").toBool();
+    bool starStatus = jChar.value("star").toBool();
+    bool strikeStatus = jChar.value("strike").toBool();
+    bool underlineStatus = jChar.value("underline").toBool();
+    QString color = jChar.value("sColor").toString();
+
+    if (boldStatus == true) {
+      detailsSetCharStyle(ch, 1);
+      charFormat.setFontWeight(QFont::Bold);
+    }
+    if (italicStatus == true) {
+      detailsSetCharStyle(ch, 2);
+      charFormat.setFontItalic(true);
+    }
+    if (underlineStatus == true) {
+      detailsSetCharStyle(ch, 3);
+      charFormat.setFontUnderline(true);
+    }
+    if (strikeStatus == true) {
+      detailsSetCharStyle(ch, 4);
+      charFormat.setFontStrikeOut(true);
+    }
+    if (itemStatus == true) {
+      detailsSetCharStyle(ch, 5);
+      charFormat.setFontWeight(QFont::Normal);
+    }
+    if (starStatus == true) {
+      detailsSetCharStyle(ch, 6);
+      charFormat.setFontWeight(QFont::Normal);
     }
 
-    QChar ch;
-    out >> ch; //read waste space
-    //jump - for correct access to text chars
-    int jump = lengthCharCounter + 2 + charCounter;
-
-    //write fontStyle in vector
-    //and write to TextEdit text with itself font format
-    for (int i = 0; i < charCounter; ++i) {
-      QChar style;
-      out >> style;
-      QChar line = textInfo[i + jump];
-      QTextCharFormat charFormat;
-      int cursorPos = this->textCursor().position();
-
-      if (style == '0') {
-				this->fillFontStyleVector(cursorPos, 1, this->charStyle::Normal);
-        charFormat.setFontWeight(QFont::Normal);
-        this->textCursor().insertText(static_cast<QString>(line), charFormat);
-      }
-      else if (style == '1') {
-				this->fillFontStyleVector(cursorPos, 1, this->charStyle::Bold);
-        charFormat.setFontWeight(QFont::Bold);
-        this->textCursor().insertText(static_cast<QString>(line), charFormat);
-      }
-      else if (style == '2') {
-				this->fillFontStyleVector(cursorPos, 1, this->charStyle::Italic);
-        charFormat.setFontItalic(true);
-        this->textCursor().insertText(static_cast<QString>(line), charFormat);
-      }
-      else if (style == '3') {
-				this->fillFontStyleVector(cursorPos, 1, this->charStyle::Underline);
-        charFormat.setFontUnderline(true);
-        this->textCursor().insertText(static_cast<QString>(line), charFormat);
-      }
-      else if (style == '4') {
-				this->fillFontStyleVector(cursorPos, 1, this->charStyle::Strike);
-        charFormat.setFontStrikeOut(true);
-        this->textCursor().insertText(static_cast<QString>(line), charFormat);
-      }
-      else if (style == '5') {
-				this->fillFontStyleVector(cursorPos, 1, this->charStyle::Item);
-        charFormat.setFontWeight(QFont::Normal);
-        this->textCursor().insertText(static_cast<QString>(line), charFormat);
-      }
-      else if (style == '6') {
-				this->fillFontStyleVector(cursorPos, 1, this->charStyle::Star);
-        //charFormat.setFontWeight(QFont::Normal);
-        QString color = "#ff3366";
-        QString html = "<font color=" + color + ">" + warrningSign_ + "</font>";
-        this->setTextColor(QColor(0, 0, 0));
-        this->textCursor().insertHtml(html);
-      }
-    }
+    ch.sColor = color;
+    int cursorPos = this->textCursor().position();
+    this->fillCharStyleVector(cursorPos, 1, ch);
+    out >> tmpChar;
+    this->textCursor().insertText(static_cast<QString>(tmpChar), charFormat);
+  }
 }
 
 void GenTextEdit::writeToDB(const int currentFile)
 {
   textInfo_t info;
-  info.charCount = this->getCharCounter();
-  QString charState;
-  for (int i = 0; i < info.charCount; ++i) {
-    info.charState += QString::number(this->getCharStyle(i));
+  QJsonArray jChars;
+  foreach(charStyle_t ch, charStyleVector_) {
+    QJsonObject jChar;
+    jChar.insert("bold", ch.bold);
+    jChar.insert("italic", ch.italic);
+    jChar.insert("item", ch.item);
+    jChar.insert("sColor", ch.sColor);
+    jChar.insert("star", ch.star);
+    jChar.insert("strike", ch.strike);
+    jChar.insert("underline", ch.underline);
+    info.jArr.push_back(jChar);
   }
-  info.text = this->toPlainText();
 
+  info.text = this->toPlainText();
   filesystem::writeTextEditToDB(info, currentFile);
 }

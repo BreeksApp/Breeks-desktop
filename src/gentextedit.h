@@ -46,7 +46,7 @@ public:
 	using iterator = QVector< charStyle_t >::iterator;
 
 //in ...-get-set.cpp
-	void fillFontStyleVector(const int cursorPos, const int count = 1, const int style = 0);
+    void fillCharStyleVector(int cursorPos, int count, charStyle_t ch);
   int getCharStyle(const int index) const;
   void setCharCounter(const int value);
 	int getCharCounter() const;

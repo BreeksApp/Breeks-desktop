@@ -31,7 +31,6 @@ void filesystem::writeTextEditToDB(textInfo_t &info, const int currentFile)
   QJsonObject notes = jObject.value("textEdit").toObject();
 
   parseDataBase(notes);
-
   switch (currentFile) {
     case 1:
       pushDataToDB(jDoc, jObject, notes, note1_, info, currentFile);
@@ -56,8 +55,7 @@ void filesystem::writeTextEditToDB(textInfo_t &info, const int currentFile)
 
 void filesystem::pushDataToDB(QJsonDocument &jDoc, QJsonObject &jObject, QJsonObject &notes, QJsonObject &note, textInfo_t &info, const int currentFile)
 {
-  note.insert("charCount", info.charCount);
-  note.insert("charState", info.charState);
+  note.insert("charStyleVEctor", info.jArr);
   note.insert("text", info.text);
 
   notes.insert("note" + QString::number(currentFile), note);
@@ -77,22 +75,7 @@ void filesystem::parseDataBase(QJsonObject &notes)
   note6_ = notes.value("note6").toObject();
 }
 
-QString filesystem::readNote(QJsonObject& object)
-{
-  int charCount = object.value("charCount").toInt();
-  QString chars = QString::number(charCount);
-  QString charState = object.value("charState").toString();
-  QString textChar = object.value("text").toString();
-  QString info = chars;
-  info.append(" ");
-  info.append(charState);
-  info.append(" ");
-  info.append(textChar);
-
-  return info;
-}
-
-QString filesystem::readTextEdidFromDB(const int currentFile)
+QJsonObject filesystem::readTextEdidFromDB(const int currentFile)
 {
   QJsonDocument jDoc = QJsonDocument::fromJson(getDataFromDB().toUtf8());
   QJsonObject jObject = jDoc.object();
@@ -102,21 +85,19 @@ QString filesystem::readTextEdidFromDB(const int currentFile)
 
   switch (currentFile) {
     case 1:
-      return readNote(note1_);
+      return note1_;
     case 2:
-      return readNote(note2_);
+      return note2_;
     case 3:
-      return readNote(note3_);
+      return note3_;
     case 4:
-      return readNote(note4_);
+      return note4_;
     case 5:
-      return readNote(note5_);
+      return note5_;
     case 6:
-      return readNote(note6_);
+      return note6_;
 
-    default:
-      return "";
-    }
+  }
 }
 
 

@@ -20,7 +20,7 @@ class filesystem
 {
 public:
   filesystem();
-  static QString readTextEdidFromDB(const int currentFile);
+  static QJsonObject readTextEdidFromDB(const int currentFile);
   static void writeTextEditToDB(textInfo_t &info, const int currentFile);
 
 private:
@@ -29,7 +29,6 @@ private:
                            textInfo_t &info, const int currentFile);
 
   static void parseDataBase(QJsonObject &notes);
-  static QString readNote(QJsonObject& object);
 
   static QJsonObject note1_;
   static QJsonObject note2_;

@@ -3,6 +3,13 @@
 
 #include "QString"
 #include "QPalette"
+#include <QFile>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonValue>
+#include <QByteArray>
+#include <QtSql>
 
 struct charStyle_t {
   bool bold;
@@ -11,7 +18,7 @@ struct charStyle_t {
   bool strike;
   bool item;
   bool star;
-  //QString sColor;
+  QString sColor;
 };
 
 struct elementData_t {
@@ -20,7 +27,7 @@ struct elementData_t {
   QString timeStart;
   QString timeEnd;
 };
-
+\
 struct breeksData_t {
   QString text;
   int nEmoji;
@@ -36,8 +43,7 @@ namespace tag {
 }
 
 struct textInfo_t {
-  int charCount;
-  QString charState;
+  QJsonArray jArr;
   QString text;
 };
 

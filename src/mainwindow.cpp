@@ -37,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-	ui->note->writeToDB(ui->note->getNumberCurrentFile());
+  ui->note->writeToDB(ui->note->getNumberCurrentFile());
 
   for (int i = 0; i < 6; ++i) {
 		writeElementsDataToFile(i);

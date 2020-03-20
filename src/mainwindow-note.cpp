@@ -104,6 +104,7 @@ void MainWindow::on_buttonPage2_clicked()
   noteChangePage(nButton);
 
   writeDataToFileLastVisit();
+
 }
 void MainWindow::on_buttonPage3_clicked()
 {

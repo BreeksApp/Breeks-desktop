@@ -16,17 +16,18 @@ void GenTextEdit::setNumberCurrentFile(const int n)
   }
 }
 
-void GenTextEdit::fillFontStyleVector(const int cursorPos, const int count, const int style)
+void GenTextEdit::fillCharStyleVector(int cursorPos, int count, charStyle_t ch)
 {
-	charStyleVector_.insert(cursorPos, count, fontStyleValue_t(style));
+  charStyleVector_.insert(cursorPos, count, ch);
 }
+
 int GenTextEdit::getCharStyle(const int index) const
 {
   if (index < 0 || index >= charCounter_) {
     qDebug() << "Index is out of range!";
     return 0;
   }
-	return charStyleVector_[index];
+    //return charStyleVector_[index];
 }
 
 int GenTextEdit::getCharCounter() const
