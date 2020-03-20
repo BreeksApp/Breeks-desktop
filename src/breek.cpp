@@ -79,7 +79,7 @@ void Breek::changeBreekState()
   }
 
   updateEmoji(emoji);
-  //this->setFlat(!this->isFlat());
+	//this->setFlat(!this->isFlat());
 }
 
 void Breek::updateEmoji(const QString& emoji)

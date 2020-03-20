@@ -1,6 +1,6 @@
 #include "gentextedit.h"
 
-/*void GenTextEdit::readFromDB(const int currentFile)
+void GenTextEdit::readFromDB(const int currentFile)
 {
 		QString textInfo = filesystem::readTextEdidFromDB(currentFile);
 		QTextStream out(&textInfo);
@@ -31,37 +31,37 @@
       int cursorPos = this->textCursor().position();
 
       if (style == '0') {
-        this->fillFontStyleVector(cursorPos, 1, this->fontStyleValue_t::Normal);
+				this->fillFontStyleVector(cursorPos, 1, this->charStyle::Normal);
         charFormat.setFontWeight(QFont::Normal);
         this->textCursor().insertText(static_cast<QString>(line), charFormat);
       }
       else if (style == '1') {
-        this->fillFontStyleVector(cursorPos, 1, this->fontStyleValue_t::Bold);
+				this->fillFontStyleVector(cursorPos, 1, this->charStyle::Bold);
         charFormat.setFontWeight(QFont::Bold);
         this->textCursor().insertText(static_cast<QString>(line), charFormat);
       }
       else if (style == '2') {
-        this->fillFontStyleVector(cursorPos, 1, this->fontStyleValue_t::Italic);
+				this->fillFontStyleVector(cursorPos, 1, this->charStyle::Italic);
         charFormat.setFontItalic(true);
         this->textCursor().insertText(static_cast<QString>(line), charFormat);
       }
       else if (style == '3') {
-        this->fillFontStyleVector(cursorPos, 1, this->fontStyleValue_t::Underline);
+				this->fillFontStyleVector(cursorPos, 1, this->charStyle::Underline);
         charFormat.setFontUnderline(true);
         this->textCursor().insertText(static_cast<QString>(line), charFormat);
       }
       else if (style == '4') {
-        this->fillFontStyleVector(cursorPos, 1, this->fontStyleValue_t::Strike);
+				this->fillFontStyleVector(cursorPos, 1, this->charStyle::Strike);
         charFormat.setFontStrikeOut(true);
         this->textCursor().insertText(static_cast<QString>(line), charFormat);
       }
       else if (style == '5') {
-        this->fillFontStyleVector(cursorPos, 1, this->fontStyleValue_t::Item);
+				this->fillFontStyleVector(cursorPos, 1, this->charStyle::Item);
         charFormat.setFontWeight(QFont::Normal);
         this->textCursor().insertText(static_cast<QString>(line), charFormat);
       }
       else if (style == '6') {
-        this->fillFontStyleVector(cursorPos, 1, this->fontStyleValue_t::Star);
+				this->fillFontStyleVector(cursorPos, 1, this->charStyle::Star);
         //charFormat.setFontWeight(QFont::Normal);
         QString color = "#ff3366";
         QString html = "<font color=" + color + ">" + warrningSign_ + "</font>";
@@ -82,4 +82,4 @@ void GenTextEdit::writeToDB(const int currentFile)
   info.text = this->toPlainText();
 
   filesystem::writeTextEditToDB(info, currentFile);
-}*/
+}

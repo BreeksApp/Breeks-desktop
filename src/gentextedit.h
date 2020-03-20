@@ -26,11 +26,11 @@ public:
   void keyPressEvent(QKeyEvent *event);
 
   //for work with file system, definition in filesystem.cpp
-  /*void readFromDB(const int currentFile);
+	void readFromDB(const int currentFile);
   void writeToDB(const int currentFile);
 
   void setNumberCurrentFile(const int n);
-  int getNumberCurrentFile();*/
+	int getNumberCurrentFile();
   //
 
   //for work with char styles
@@ -46,10 +46,10 @@ public:
 	using iterator = QVector< charStyle_t >::iterator;
 
 //in ...-get-set.cpp
-  /*void fillFontStyleVector(const int cursorPos, const int count = 1, const int style = 0);
+	void fillFontStyleVector(const int cursorPos, const int count = 1, const int style = 0);
   int getCharStyle(const int index) const;
   void setCharCounter(const int value);
-  int getCharCounter() const;*/
+	int getCharCounter() const;
 
 //in ...-keys-realization.cpp
 	void setCharStyle(const int style);

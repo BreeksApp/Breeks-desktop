@@ -84,7 +84,7 @@ void AddElement::setAllElementsEffects()
   }
   arrTags_[TAGS_COUNT - 1].condition = true;
   currentTagPalette_.setColor(QPalette::Button, tag::ARR_COLORS[TAGS_COUNT - 1]/*green*/);
-  //effects::setElementColor(ui->buttonTag, currentTagPalette_);
+	effects::setElementColor(ui->buttonTag, currentTagPalette_);
   //
 
   //EMOJI
@@ -173,7 +173,7 @@ void AddElement::on_buttonAdd_clicked()
     emit sendBreeksZoneData(daysCheck_, DAYS_CHECK_COUNT, newElement);
   }
 
-  //returnButtonsInitialCondition();
+	returnButtonsInitialCondition();
   this->close();
 }
 
@@ -283,7 +283,7 @@ void AddElement::on_pushButtonTimeTableZone_clicked()
     ui->timeStart->show();
     ui->timeEnd->show();
   }
-  /*else {
+	else {
     effects::setElementColor(ui->pushButtonTimeTableZone, paletteDefaultElement_);
     effects::setElementColor(ui->pushButtonBreeksZone, paletteSelectedElement_);
 
@@ -292,7 +292,7 @@ void AddElement::on_pushButtonTimeTableZone_clicked()
 
     ui->timeStart->hide();
     ui->timeEnd->hide();
-  }*/
+	}
 }
 
 void AddElement::on_pushButtonBreeksZone_clicked()

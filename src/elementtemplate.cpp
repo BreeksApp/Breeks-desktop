@@ -15,7 +15,7 @@ ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
   settingsButton_->setFlat(true);
 
   deleteButton_ = new QPushButton;
-  //deleteButton_->setStyleSheet("border-image:url(:/images/images/recycle-bin.png)");
+	//deleteButton_->setStyleSheet("border-image:url(:/images/images/recycle-bin.png)");
   deleteButton_->setEnabled(false);
   deleteButton_->setFlat(true);
 

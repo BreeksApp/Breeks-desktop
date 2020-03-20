@@ -28,6 +28,6 @@ void MainWindow::setWorkZone()
   layOut->addWidget(workZoneScrollArea_);
   ui->groupBoxWorkZone->setLayout(layOut);
 
-  //buildTimeTable();
+	buildTimeTable();
   buildBreeksDescriptionZone();
 }

@@ -9,7 +9,7 @@ void MainWindow::setAllElementsEffects()
   setAllElementsColor();
   setAllElementsShadow();
 
-  //noteMakePageButtonSelectable(ui->note->getNumberCurrentFile());
+	noteMakePageButtonSelectable(ui->note->getNumberCurrentFile());
 }
 
 void MainWindow::setAllElementsColor()

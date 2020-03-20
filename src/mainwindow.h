@@ -57,7 +57,7 @@ public slots:
 private slots:
 //note
   //buttons to work with text
-  /*void on_buttonMakeBold_clicked();
+	void on_buttonMakeBold_clicked();
   void on_buttonMakeItalic_clicked();
   void on_buttonMakeUnderline_clicked();
   void on_buttonMakeStrike_clicked();
@@ -76,7 +76,7 @@ private slots:
 //adding new elements
   void on_buttonAdd_clicked();
 
-  void on_pushButton_clicked();*/
+	void on_pushButton_clicked();
 
 signals:
   void sendUsername(const QString);
@@ -214,7 +214,7 @@ private:
   QString arrEmojiDroped[11];
   QString arrEmojiProcess[11];
 
-  //void setEmoji(const QString emoji);
+	void setEmoji(const QString emoji);
 
   void allocateMemoryForBreeks(breeksZone_t *breeksZone);
   void setBreeksZone(breeksZone_t *breeksZone);

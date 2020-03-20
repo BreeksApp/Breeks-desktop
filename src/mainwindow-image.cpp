@@ -28,7 +28,7 @@ void MainWindow::setImage(const QString& imageName)
 }
 
 //image like button
-/*void MainWindow::on_buttonImage_clicked()
+void MainWindow::on_buttonImage_clicked()
 {
   setImageBackgroundView(true);
 
@@ -40,7 +40,7 @@ void MainWindow::setImage(const QString& imageName)
   }
 
   setImageBackgroundView(false);
-}*/
+}
 
 void MainWindow::setImageBackgroundView(bool status)
 {

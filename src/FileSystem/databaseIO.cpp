@@ -5,7 +5,7 @@
 
 //--------------------TimeTable IO-----------------------(
 // Doesn't work with DB yet
-/*void MainWindow::setStatesFromFileLastVisit()
+void MainWindow::setStatesFromFileLastVisit()
 {
   if (!fileLastVisit_.open(QIODevice::ReadOnly | QIODevice::Text)) {
     qDebug() << "FILE LAST_VISIT OPENING CRASHED";
@@ -42,12 +42,12 @@ void MainWindow::writeDataToFileLastVisit()
   }
   QTextStream out(&fileLastVisit_);
 
-  /*const int nNotePage = ui->note->getNumberCurrentFile();
+	const int nNotePage = ui->note->getNumberCurrentFile();
   out << nNotePage << " ";
 
-  out << currentImageName_;*/
+	out << currentImageName_;
 
-/*  fileLastVisit_.flush();
+	fileLastVisit_.flush();
   fileLastVisit_.close();
 }
 
@@ -82,7 +82,7 @@ void MainWindow::readElementsDataFromFile(QFile &file, const int index)
   }
 
   QString data = file.readAll();
-    //13 0000000000000 Hello, World!
+	//13 0000000000000 Hello, World!
   QTextStream out(&data);
 
   int count = 0;
@@ -190,7 +190,7 @@ void MainWindow::writeElementsDataToFile(QFile &file, const int index)
 
   file.flush();
   file.close();
-}*/
+}
 
 //----------------------TextEdit IO--------------------------------
 

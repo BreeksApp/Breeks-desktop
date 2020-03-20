@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 
-/*void MainWindow::noteMakePageButtonSelectable(QPushButton *button)
+void MainWindow::noteMakePageButtonSelectable(QPushButton *button)
 {
   //set previous button in default state
   switch (ui->note->getNumberCurrentFile()) {
@@ -61,22 +61,22 @@ void MainWindow::noteChangePage(const int n)
 //-------------------------BUTTONS-------------------------
 void MainWindow::on_buttonMakeBold_clicked()
 {
-  ui->note->setFontStyle(ui->note->fontStyleValue_t::Bold);
+	ui->note->setCharStyle(ui->note->charStyle::Bold);
   //ui->note->writeToFile();
 }
 void MainWindow::on_buttonMakeItalic_clicked()
 {
-  ui->note->setFontStyle(ui->note->fontStyleValue_t::Italic);
+	ui->note->setCharStyle(ui->note->charStyle::Italic);
   //ui->note->writeToFile();
 }
 void MainWindow::on_buttonMakeUnderline_clicked()
 {
-  ui->note->setFontStyle(ui->note->fontStyleValue_t::Underline);
+	ui->note->setCharStyle(ui->note->charStyle::Underline);
   //ui->note->writeToFile();
 }
 void MainWindow::on_buttonMakeStrike_clicked()
 {
-  ui->note->setFontStyle(ui->note->fontStyleValue_t::Strike);
+	ui->note->setCharStyle(ui->note->charStyle::Strike);
   //ui->note->writeToFile();
 }
 void MainWindow::on_buttonAddTodoList_clicked()
@@ -144,4 +144,4 @@ void MainWindow::on_buttonPage6_clicked()
   noteChangePage(nButton);
 
   writeDataToFileLastVisit();
-}*/
+}
