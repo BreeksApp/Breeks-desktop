@@ -31,22 +31,22 @@ void MainWindow::noteMakePageButtonSelectable(int nPage)
 {
   switch (nPage) {
     case 1 :
-     effects::setElementColor<QPushButton>(ui->buttonPage1, paletteSelectedPageButton_);
+			effects::setElementColor<QPushButton>(ui->buttonPage1, paletteSelectedPageButton_);
       break;
     case 2 :
-     effects::setElementColor<QPushButton>(ui->buttonPage2, paletteSelectedPageButton_);
+			effects::setElementColor<QPushButton>(ui->buttonPage2, paletteSelectedPageButton_);
       break;
     case 3 :
-     effects::setElementColor<QPushButton>(ui->buttonPage3, paletteSelectedPageButton_);
+			effects::setElementColor<QPushButton>(ui->buttonPage3, paletteSelectedPageButton_);
       break;
     case 4 :
-     effects::setElementColor<QPushButton>(ui->buttonPage4, paletteSelectedPageButton_);
+			effects::setElementColor<QPushButton>(ui->buttonPage4, paletteSelectedPageButton_);
       break;
     case 5 :
-     effects::setElementColor< QPushButton >(ui->buttonPage5, paletteSelectedPageButton_);
+			effects::setElementColor< QPushButton >(ui->buttonPage5, paletteSelectedPageButton_);
       break;
     case 6 :
-     effects::setElementColor<QPushButton>(ui->buttonPage6, paletteSelectedPageButton_);
+			effects::setElementColor<QPushButton>(ui->buttonPage6, paletteSelectedPageButton_);
       break;
   }
 }

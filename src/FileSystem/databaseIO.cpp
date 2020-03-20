@@ -191,6 +191,3 @@ void MainWindow::writeElementsDataToFile(QFile &file, const int index)
   file.flush();
   file.close();
 }
-
-//----------------------TextEdit IO--------------------------------
-

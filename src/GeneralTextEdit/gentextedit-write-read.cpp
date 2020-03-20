@@ -2,54 +2,58 @@
 
 void GenTextEdit::readFromDB(const int currentFile)
 {
-  charStyleVector_.clear();
   QJsonObject textInfo = filesystem::readTextEdidFromDB(currentFile);
-  QJsonArray jChars = textInfo.value("charStyleVEctor").toArray();
+	QJsonArray jChars = textInfo.value("charStyleVector").toArray();
   QString text = textInfo.value("text").toString();
 
-  QTextStream out(&text);
-  QChar tmpChar;
-
+	charStyleVector_.clear();
   charCounter_ = jChars.size();
 
-  for (int i = 0; i < charCounter_; i++ ) {
-    charStyle_t ch;
-    QTextCharFormat charFormat;
-    QJsonObject jChar = jChars[i].toObject();
+	QTextStream out(&text);
+	QChar tmpChar;
+	charStyle_t ch;
+	QTextCharFormat charFormat;
+
+	for (int i = 0; i < charCounter_; ++i) {
+		detailsSetCharStyle(ch);
+		charFormat.setFontWeight(QFont::Normal);
+
+		QJsonObject jChar = jChars[i].toObject();
+
     bool boldStatus = jChar.value("bold").toBool();
     bool italicStatus = jChar.value("italic").toBool();
+		bool underlineStatus = jChar.value("underline").toBool();
+		bool strikeStatus = jChar.value("strike").toBool();
     bool itemStatus = jChar.value("item").toBool();
     bool starStatus = jChar.value("star").toBool();
-    bool strikeStatus = jChar.value("strike").toBool();
-    bool underlineStatus = jChar.value("underline").toBool();
     QString color = jChar.value("sColor").toString();
 
     if (boldStatus == true) {
-      detailsSetCharStyle(ch, 1);
+			detailsSetCharStyle(ch, charStyle::Bold);
       charFormat.setFontWeight(QFont::Bold);
     }
     if (italicStatus == true) {
-      detailsSetCharStyle(ch, 2);
+			detailsSetCharStyle(ch, charStyle::Italic);
       charFormat.setFontItalic(true);
     }
     if (underlineStatus == true) {
-      detailsSetCharStyle(ch, 3);
+			detailsSetCharStyle(ch, charStyle::Underline);
       charFormat.setFontUnderline(true);
     }
     if (strikeStatus == true) {
-      detailsSetCharStyle(ch, 4);
+			detailsSetCharStyle(ch, charStyle::Strike);
       charFormat.setFontStrikeOut(true);
     }
     if (itemStatus == true) {
-      detailsSetCharStyle(ch, 5);
+			detailsSetCharStyle(ch, charStyle::Item);
       charFormat.setFontWeight(QFont::Normal);
     }
     if (starStatus == true) {
-      detailsSetCharStyle(ch, 6);
+			detailsSetCharStyle(ch, charStyle::Star);
       charFormat.setFontWeight(QFont::Normal);
     }
-
     ch.sColor = color;
+
     int cursorPos = this->textCursor().position();
     this->fillCharStyleVector(cursorPos, 1, ch);
     out >> tmpChar;
@@ -61,16 +65,17 @@ void GenTextEdit::writeToDB(const int currentFile)
 {
   textInfo_t info;
   QJsonArray jChars;
-  foreach(charStyle_t ch, charStyleVector_) {
+
+	foreach(charStyle_t ch, charStyleVector_) {
     QJsonObject jChar;
     jChar.insert("bold", ch.bold);
     jChar.insert("italic", ch.italic);
-    jChar.insert("item", ch.item);
-    jChar.insert("sColor", ch.sColor);
-    jChar.insert("star", ch.star);
-    jChar.insert("strike", ch.strike);
-    jChar.insert("underline", ch.underline);
-    info.jArr.push_back(jChar);
+		jChar.insert("underline", ch.underline);
+		jChar.insert("strike", ch.strike);
+		jChar.insert("item", ch.item);
+		jChar.insert("star", ch.star);
+		jChar.insert("sColor", ch.sColor);
+		info.jArr.push_back(jChar);
   }
 
   info.text = this->toPlainText();

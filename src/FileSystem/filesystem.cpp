@@ -13,9 +13,10 @@ filesystem::filesystem()
 QString filesystem::getDataFromDB()
 {
   QString queryString = "SELECT Notes FROM Employee WHERE Username='1'";
-  QString data;
   QSqlQuery query;
   query.exec(queryString);
+	QString data;
+
   while (query.next()) {
     QSqlRecord record = query.record();
     data = record.value(0).toString();
@@ -31,6 +32,7 @@ void filesystem::writeTextEditToDB(textInfo_t &info, const int currentFile)
   QJsonObject notes = jObject.value("textEdit").toObject();
 
   parseDataBase(notes);
+
   switch (currentFile) {
     case 1:
       pushDataToDB(jDoc, jObject, notes, note1_, info, currentFile);
@@ -53,9 +55,10 @@ void filesystem::writeTextEditToDB(textInfo_t &info, const int currentFile)
     }
 }
 
-void filesystem::pushDataToDB(QJsonDocument &jDoc, QJsonObject &jObject, QJsonObject &notes, QJsonObject &note, textInfo_t &info, const int currentFile)
+void filesystem::pushDataToDB(QJsonDocument &jDoc, QJsonObject &jObject, QJsonObject &notes, QJsonObject &note,
+															textInfo_t &info, const int currentFile)
 {
-  note.insert("charStyleVEctor", info.jArr);
+	note.insert("charStyleVector", info.jArr);
   note.insert("text", info.text);
 
   notes.insert("note" + QString::number(currentFile), note);
@@ -84,19 +87,21 @@ QJsonObject filesystem::readTextEdidFromDB(const int currentFile)
   parseDataBase(notes);
 
   switch (currentFile) {
-    case 1:
+		case 1 :
       return note1_;
-    case 2:
+		case 2 :
       return note2_;
-    case 3:
+		case 3 :
       return note3_;
-    case 4:
+		case 4 :
       return note4_;
-    case 5:
+		case 5 :
       return note5_;
-    case 6:
+		case 6 :
       return note6_;
 
+		/*default :
+			return  note1_;*/
   }
 }
 
