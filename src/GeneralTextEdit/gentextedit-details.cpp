@@ -145,10 +145,12 @@ void GenTextEdit::detailsSetCharStyle(charStyle_t &ch, const int style)
   else if (style == charStyle::Item) {
     ch.item = true;
 		ch.star = false;
+		ch.sColor = colors::black;
   }
   else if (style == charStyle::Star) {
 		ch.item = false;
     ch.star = true;
+		ch.sColor = colors::red;
   }
 }
 

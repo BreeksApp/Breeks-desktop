@@ -71,7 +71,7 @@ private:
   QJsonObject note6_;
  //
 
-  const int MAX_COUNT_CHAR_ = 1111; //fix count of chars in the one note
+	const int MAX_COUNT_CHAR_ = 999; //fix count of chars in the one note
   int charCounter_;
 
   QVector< charStyle_t > charStyleVector_; //storrage of font style status of every char

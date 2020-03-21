@@ -25,7 +25,7 @@
    <property name="title">
     <string/>
    </property>
-   <widget class="TextNewElement" name="text">
+   <widget class="GenTextEdit" name="text">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -228,9 +228,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>TextNewElement</class>
+   <class>GenTextEdit</class>
    <extends>QTextEdit</extends>
-   <header>textnewelement.h</header>
+   <header location="global">gentextedit.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

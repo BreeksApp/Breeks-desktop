@@ -1,8 +1,8 @@
 #ifndef ELEMENTTEMPLATE_H
 #define ELEMENTTEMPLATE_H
 
-#include <textnewelement.h>
-#include <datastructures.h>
+#include "gentextedit.h"
+#include "datastructures.h"
 
 #include <QWidget>
 #include <QGroupBox>
@@ -45,7 +45,7 @@ private:
   QPushButton *deleteButton_;
 
   QGridLayout *elementLayout_;
-  TextNewElement *text_;
+	GenTextEdit *text_;
   QLineEdit *timeStart_;
   QLineEdit *timeEnd_;
 

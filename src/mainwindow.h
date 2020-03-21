@@ -15,6 +15,7 @@
 
 #include "ui_mainwindow.h"
 #include "elementtemplate.h"
+#include "textnewelement.h"
 #include "datastructures.h"
 #include "effects.hpp"
 #include "breek.h"

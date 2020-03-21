@@ -7,9 +7,11 @@
 #include "gentextedit.h"
 
 GenTextEdit::GenTextEdit(QWidget *parent) :
-  QTextEdit(parent)
+	QTextEdit(parent)
 {
 //add saved text
+	this->setTextColor(QColor(0, 0, 0));
+
   nCurrentFile_ = 1;
   charCounter_ = 0;
 	readFromDB(nCurrentFile_);
@@ -141,22 +143,6 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 				addTodoList(minusSign_);
 				return;
 			}
-			//Ctrl + W - add red star
-			else if (QKeySequence(iKey) == Qt::Key_W || QKeySequence(iKey).toString() == "Ц") {
-				QTextCursor c = this->textCursor();
-				c.movePosition(QTextCursor::StartOfBlock);
-				int pos = c.position();
-
-				QString color = "#ff3366";
-				QString html = "<font color=" + color + ">" + warrningSign_ + "</font>";
-				c.insertHtml(html);
-				detailsSetCharStyle(ch, charStyle::Star);
-				charStyleVector_.insert(pos, 1, ch);
-				this->setTextColor(QColor(0, 0, 0));
-
-				charCounter_ += 1;
-				return;
-			}
     }
 	}
 
@@ -185,17 +171,6 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
   }
   //Shift + arrows
   if (kmModifiers == Qt::ShiftModifier) {
-		/*if (QKeySequence(iKey) == Qt::Key_Up) {
-			QTextCursor c = this->textCursor();
-			c.movePosition(QTextCursor::StartOfBlock, QTextCursor::MoveAnchor);
-			c.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
-			this->setTextCursor(c);
-		}
-		else if (QKeySequence(iKey) == Qt::Key_Down) {
-			QTextCursor c = this->textCursor();
-			c.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
-			this->setTextCursor(c);
-		}*/
 		//it is tmp soluton, I want to reimplementate work with shift
 		QTextEdit::keyPressEvent(event);
 		return;

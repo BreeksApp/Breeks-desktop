@@ -96,6 +96,7 @@ void GenTextEdit::addTodoList(const QString itemSign)
 
   QString item = "  " + itemSign + " "; //2 space + point + space
   charStyle_t ch;
+	detailsSetCharStyle(ch);
   detailsSetCharStyle(ch, charStyle::Item);
 
   if ((c.position() == cursorPos) || (c.selectedText() == spaceLine)) {
