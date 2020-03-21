@@ -20,6 +20,10 @@ struct charStyle_t {
   bool star;
   QString sColor;
 };
+namespace colors {
+	const QString black = "#000000";
+	const QString red = "#FF3366";
+};
 
 struct elementData_t {
   QString text;

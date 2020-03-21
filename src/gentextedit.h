@@ -101,6 +101,10 @@ private:
 	void detailsCheckSelectionAndItem(int& cursorPos); //to unite common checkers
 
 	void detailsSetCharStyle(charStyle_t& ch, const int style = charStyle::Normal);
+	void detailsSetCharStyle(charStyle_t& ch, const int style, int& status);
+	void detailsSetBoolByStatus(bool& a, int& status);
+
+	void detailsSetCharStyleByNeighbours(charStyle_t& ch, const int index);
 };
 
 #endif // TEXT_EDIT

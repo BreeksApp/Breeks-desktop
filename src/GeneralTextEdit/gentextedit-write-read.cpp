@@ -12,10 +12,10 @@ void GenTextEdit::readFromDB(const int currentFile)
 	QTextStream out(&text);
 	QChar tmpChar;
 	charStyle_t ch;
-	QTextCharFormat charFormat;
 
 	for (int i = 0; i < charCounter_; ++i) {
 		detailsSetCharStyle(ch);
+		QTextCharFormat charFormat;
 		charFormat.setFontWeight(QFont::Normal);
 
 		QJsonObject jChar = jChars[i].toObject();

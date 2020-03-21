@@ -12,7 +12,7 @@ GenTextEdit::GenTextEdit(QWidget *parent) :
 //add saved text
   nCurrentFile_ = 1;
   charCounter_ = 0;
-  //readFromDB(nCurrentFile_);
+	readFromDB(nCurrentFile_);
 }
 
 //We want to create our Text editor with special functions and hot-keys
@@ -36,6 +36,8 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
       if ( (iKey >= Qt::Key_A && iKey <= Qt::Key_Z) ||
       (QKeySequence(iKey).toString() >= "А" && (QKeySequence(iKey).toString() <= "Я")) ) {
         detailsCheckSelectionAndItem(cursorPos);
+
+				detailsSetCharStyleByNeighbours(ch, cursorPos);
 				charStyleVector_.insert(cursorPos, 1, ch);
 
 				QTextEdit::keyPressEvent(event); //we can't identify CapsLock that's why use base method
@@ -49,6 +51,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
       if (iKey >= Qt::Key_0 && iKey <= Qt::Key_9) {
         detailsCheckSelectionAndItem(cursorPos);
         this->insertPlainText(QKeySequence(iKey).toString());
+				detailsSetCharStyleByNeighbours(ch, cursorPos);
         charStyleVector_.insert(cursorPos, 1, ch);
 
         ++charCounter_;
@@ -61,6 +64,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 				if (QKeySequence(iKey).toString() == i) {
 					detailsCheckSelectionAndItem(cursorPos);
 					this->insertPlainText(QKeySequence(iKey).toString());
+					detailsSetCharStyleByNeighbours(ch, cursorPos);
 					charStyleVector_.insert(cursorPos, 1, ch);
 
 					++charCounter_;
@@ -148,11 +152,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 				c.insertHtml(html);
 				detailsSetCharStyle(ch, charStyle::Star);
 				charStyleVector_.insert(pos, 1, ch);
-
 				this->setTextColor(QColor(0, 0, 0));
-				/*c.insertText(" ");
-				detailsSetCharStyle(ch);
-				charStyleVector_.insert(++pos, 1, ch);*/
 
 				charCounter_ += 1;
 				return;
@@ -185,7 +185,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
   }
   //Shift + arrows
   if (kmModifiers == Qt::ShiftModifier) {
-		if (QKeySequence(iKey) == Qt::Key_Up) {
+		/*if (QKeySequence(iKey) == Qt::Key_Up) {
 			QTextCursor c = this->textCursor();
 			c.movePosition(QTextCursor::StartOfBlock, QTextCursor::MoveAnchor);
 			c.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
@@ -195,11 +195,9 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 			QTextCursor c = this->textCursor();
 			c.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
 			this->setTextCursor(c);
-		}
-		else {
-			//it is tmp soluton, I want to reimplementate work with shift
-			QTextEdit::keyPressEvent(event);
-		}
+		}*/
+		//it is tmp soluton, I want to reimplementate work with shift
+		QTextEdit::keyPressEvent(event);
 		return;
   }
 

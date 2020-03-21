@@ -128,9 +128,10 @@ void GenTextEdit::detailsSetCharStyle(charStyle_t &ch, const int style)
     ch.strike = false;
     ch.item = false;
     ch.star = false;
+		ch.sColor = colors::black;
   }
   else if (style == charStyle::Bold) {
-    ch.bold = !ch.bold;
+		ch.bold = !ch.bold;
   }
   else if (style == charStyle::Italic) {
     ch.italic = !ch.italic;
@@ -149,5 +150,69 @@ void GenTextEdit::detailsSetCharStyle(charStyle_t &ch, const int style)
 		ch.item = false;
     ch.star = true;
   }
+}
+
+void GenTextEdit::detailsSetCharStyle(charStyle_t &ch, const int style, int& status)
+{
+	if (style == charStyle::Normal) {
+		ch.bold = false;
+		ch.italic = false;
+		ch.underline = false;
+		ch.strike = false;
+		ch.item = false;
+		ch.star = false;
+		ch.sColor = colors::black;
+	}
+	else if (style == charStyle::Bold) {
+		detailsSetBoolByStatus(ch.bold, status);
+	}
+	else if (style == charStyle::Italic) {
+		detailsSetBoolByStatus(ch.italic, status);
+	}
+	else if (style == charStyle::Underline) {
+		detailsSetBoolByStatus(ch.underline, status);
+	}
+	else if (style == charStyle::Strike) {
+		detailsSetBoolByStatus(ch.strike, status);
+	}
+	else if (style == charStyle::Item) {
+		ch.item = true;
+		ch.star = false;
+	}
+	else if (style == charStyle::Star) {
+		ch.item = false;
+		ch.star = true;
+	}
+}
+void GenTextEdit::detailsSetBoolByStatus(bool &a, int &status)
+{
+	if (status == 2) {
+		a = !a;
+		status = a == true ? 1 : 0;
+	}
+	else {
+		a = status == 1 ? true : false;
+	}
+}
+
+void GenTextEdit::detailsSetCharStyleByNeighbours(charStyle_t &ch, int indexRight)
+{
+	if (charCounter_ == 0) {
+		return;
+	}
+	//index of right neighbour (cursorPos)
+	if (indexRight >= charCounter_) {
+		indexRight = charCounter_ - 1;
+	}
+	if (indexRight < 0) {
+		indexRight = 0;
+	}
+	
+	int indexLeft = std::max(0, indexRight - 1);
+
+	ch.bold = charStyleVector_[indexLeft].bold & charStyleVector_[indexRight].bold;
+	ch.italic = charStyleVector_[indexLeft].italic & charStyleVector_[indexRight].italic;
+	ch.underline = charStyleVector_[indexLeft].underline & charStyleVector_[indexRight].underline;
+	ch.strike = charStyleVector_[indexLeft].strike & charStyleVector_[indexRight].strike;
 }
 

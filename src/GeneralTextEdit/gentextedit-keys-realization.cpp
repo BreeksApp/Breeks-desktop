@@ -154,16 +154,18 @@ void GenTextEdit::setCharStyle(const int style)
   int first = this->textCursor().selectionStart();
   int last = this->textCursor().selectionEnd();
   QTextCursor c(this->textCursor());
+	int status = 2;
 
   for (int i = first; i < last; ++i) {
     c.setPosition(i);
     c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor);
     //avoid effects for item
-    if (charStyleVector_[c.position() - 1].item == true) {
+		if (charStyleVector_[c.position() - 1].item == true ||
+					charStyleVector_[c.position() - 1].star == true) {
       continue;
     }
 
-    detailsSetCharStyle(charStyleVector_[i], style);
+		detailsSetCharStyle(charStyleVector_[i], style, status);
     QTextCharFormat textFormat;
     textFormat.setFontWeight(QFont::Normal);
 
