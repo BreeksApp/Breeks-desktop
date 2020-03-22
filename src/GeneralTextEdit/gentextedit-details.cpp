@@ -216,6 +216,9 @@ void GenTextEdit::detailsSetCharStyleByNeighbours(charStyle_t &ch, int indexRigh
 	ch.italic = charStyleVector_[indexLeft].italic & charStyleVector_[indexRight].italic;
 	ch.underline = charStyleVector_[indexLeft].underline & charStyleVector_[indexRight].underline;
 	ch.strike = charStyleVector_[indexLeft].strike & charStyleVector_[indexRight].strike;
+
+	ch.sColor = charStyleVector_[indexRight].sColor == "" ?
+				charStyleVector_[indexLeft].sColor : charStyleVector_[indexRight].sColor;
 }
 
 void GenTextEdit::detailsColorText(QTextCursor c, const QString color)

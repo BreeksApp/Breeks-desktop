@@ -35,6 +35,7 @@ void GenTextEdit::deleteSmth(const Qt::KeyboardModifiers kmModifiers, const QTex
 							c.clearSelection();
 							c.setPosition(this->textCursor().position());
 							c.movePosition(moveSide, QTextCursor::KeepAnchor, selectionLength);
+
 							break;
 						}
 						else if (charStyleVector_[c.position() - 1].star == true || c.position() == charCounter_) {
