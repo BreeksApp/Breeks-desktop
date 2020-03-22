@@ -9,11 +9,11 @@
 GenTextEdit::GenTextEdit(QWidget *parent) :
 	QTextEdit(parent)
 {
-//add saved text
 	this->setTextColor(QColor(0, 0, 0));
 
   nCurrentFile_ = 1;
   charCounter_ = 0;
+	//add saved text
 	readFromDB(nCurrentFile_);
 }
 
@@ -79,10 +79,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 		 //Space
 			case Qt::Key_Space : {
 				detailsCheckSelectionAndItem(cursorPos);
-				this->textCursor().insertText(" ", charFormat);
-				charStyleVector_.insert(cursorPos, 1, ch);
-
-				++charCounter_;
+				addSpace(cursorPos);
 				return;
 			}
 		 //Tab
@@ -90,7 +87,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 				if (this->textCursor().selectedText() != "") {
 					detailsEraseSelectedText(cursorPos);
         }
-				tabRealization(cursorPos);
+				addTab(cursorPos);
 
 				return;
       }
@@ -141,6 +138,36 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 			//Ctrl + '-' - add to-do-list with minus
 			else if (QKeySequence(iKey) == Qt::Key_Minus) {
 				addTodoList(minusSign_);
+				return;
+			}
+			//Ctrl + w - add red star
+			else if (QKeySequence(iKey) == Qt::Key_W || QKeySequence(iKey).toString() == "Ц") {
+				addStar();
+				return;
+			}
+			//Ctrl + g - highlight in green
+			else if (QKeySequence(iKey) == Qt::Key_G || QKeySequence(iKey).toString() == "П") {
+				colorText(colors::green);
+				return;
+			}
+			//Ctrl + l - lavender
+			else if (QKeySequence(iKey) == Qt::Key_L || QKeySequence(iKey).toString() == "Д") {
+				colorText(colors::lavender);
+				return;
+			}
+			//Ctrl + m - marina
+			else if (QKeySequence(iKey) == Qt::Key_M || QKeySequence(iKey).toString() == "Ь") {
+				colorText(colors::marina);
+				return;
+			}
+			//Ctrl + o - orange
+			else if (QKeySequence(iKey) == Qt::Key_O || QKeySequence(iKey).toString() == "Щ") {
+				colorText(colors::orange);
+				return;
+			}
+			//Ctrl + r - red
+			else if (QKeySequence(iKey) == Qt::Key_R || QKeySequence(iKey).toString() == "К") {
+				colorText(colors::red);
 				return;
 			}
     }
@@ -256,13 +283,13 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
   if (QKeySequence(iKey) == Qt::Key_Backspace) {
 		//analize item posotion if it is item
 		detailsCheckItemPosInDeleting(cursorPos, true, kmModifiers);
-		deleteRealization(kmModifiers, QTextCursor::PreviousWord, cursorPos, 0, 1);
+		deleteSmth(kmModifiers, QTextCursor::PreviousWord, cursorPos, 0, 1);
 		this->textCursor().deletePreviousChar();
   }
   //Delete
   else if (QKeySequence(iKey) == Qt::Key_Delete) {
     detailsCheckItemPosInDeleting(cursorPos, false, kmModifiers);
-    deleteRealization(kmModifiers, QTextCursor::NextWord, cursorPos, charStyleVector_.size());
+		deleteSmth(kmModifiers, QTextCursor::NextWord, cursorPos, charStyleVector_.size());
     this->textCursor().deleteChar();
   }
 }

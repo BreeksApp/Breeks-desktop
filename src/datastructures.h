@@ -20,9 +20,13 @@ struct charStyle_t {
   bool star;
   QString sColor;
 };
-namespace colors {
-	const QString black = "#000000";
-	const QString red = "#FF3366";
+namespace colors { //#ade9ff is breeks color
+	const QString nocolor = "";
+	const QString green = "#bfffb5";
+	const QString lavender = "#dcbeee";
+	const QString marina = "#bcd9ef";
+	const QString orange = "#ffc88e";
+	const QString red = "#ff9d95";
 };
 
 struct elementData_t {
