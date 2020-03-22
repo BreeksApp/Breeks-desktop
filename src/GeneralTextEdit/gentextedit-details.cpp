@@ -128,7 +128,7 @@ void GenTextEdit::detailsSetCharStyle(charStyle_t &ch, const int style)
     ch.strike = false;
     ch.item = false;
     ch.star = false;
-		ch.sColor = colors::black;
+		ch.sColor = colors::nocolor;
   }
   else if (style == charStyle::Bold) {
 		ch.bold = !ch.bold;
@@ -145,12 +145,12 @@ void GenTextEdit::detailsSetCharStyle(charStyle_t &ch, const int style)
   else if (style == charStyle::Item) {
     ch.item = true;
 		ch.star = false;
-		ch.sColor = colors::black;
+		ch.sColor = colors::nocolor;
   }
   else if (style == charStyle::Star) {
 		ch.item = false;
     ch.star = true;
-		ch.sColor = colors::red;
+		ch.sColor = colors::marina;
   }
 }
 
@@ -163,7 +163,7 @@ void GenTextEdit::detailsSetCharStyle(charStyle_t &ch, const int style, int& sta
 		ch.strike = false;
 		ch.item = false;
 		ch.star = false;
-		ch.sColor = colors::black;
+		ch.sColor = colors::nocolor;
 	}
 	else if (style == charStyle::Bold) {
 		detailsSetBoolByStatus(ch.bold, status);
@@ -216,5 +216,16 @@ void GenTextEdit::detailsSetCharStyleByNeighbours(charStyle_t &ch, int indexRigh
 	ch.italic = charStyleVector_[indexLeft].italic & charStyleVector_[indexRight].italic;
 	ch.underline = charStyleVector_[indexLeft].underline & charStyleVector_[indexRight].underline;
 	ch.strike = charStyleVector_[indexLeft].strike & charStyleVector_[indexRight].strike;
+
+	ch.sColor = charStyleVector_[indexRight].sColor == "" ?
+				charStyleVector_[indexLeft].sColor : charStyleVector_[indexRight].sColor;
 }
 
+void GenTextEdit::detailsColorText(QTextCursor c, const QString color)
+{
+	if (c.hasSelection() && color != "") {
+		QTextCharFormat fmt;
+		fmt.setBackground(QColor(color));
+		c.setCharFormat(fmt);
+	}
+}

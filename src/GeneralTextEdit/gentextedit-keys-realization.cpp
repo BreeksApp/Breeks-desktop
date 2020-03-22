@@ -1,7 +1,7 @@
 #include "gentextedit.h"
 
 //---------BACKSPACE / DELETE
-void GenTextEdit::deleteRealization(const Qt::KeyboardModifiers kmModifiers, const QTextCursor::MoveOperation whereMove,
+void GenTextEdit::deleteSmth(const Qt::KeyboardModifiers kmModifiers, const QTextCursor::MoveOperation whereMove,
 																					 int& cursorPos, const int blindSpot, const int a)
 {
 	int nSelectedChars = this->textCursor().selectedText().length();
@@ -35,6 +35,7 @@ void GenTextEdit::deleteRealization(const Qt::KeyboardModifiers kmModifiers, con
 							c.clearSelection();
 							c.setPosition(this->textCursor().position());
 							c.movePosition(moveSide, QTextCursor::KeepAnchor, selectionLength);
+
 							break;
 						}
 						else if (charStyleVector_[c.position() - 1].star == true || c.position() == charCounter_) {
@@ -113,8 +114,32 @@ void GenTextEdit::addTodoList(const QString itemSign)
   }
 }
 
+//---------WARRNING
+void GenTextEdit::addStar()
+{
+	charStyle_t ch;
+	detailsSetCharStyle(ch);
+	QTextCursor c = this->textCursor();
+	c.movePosition(QTextCursor::StartOfBlock);
+	int pos = c.position();
+
+	QTextCharFormat fmt;
+	fmt.setBackground(QColor(colors::marina));
+	c.insertHtml(warrningSign_);
+	c.movePosition(QTextCursor::StartOfBlock, QTextCursor::KeepAnchor);
+	c.setCharFormat(fmt);
+	//if some stars we need only one space
+	if ((charCounter_ == 0) || (charStyleVector_[std::min(pos, charCounter_ - 1)].star == false &&
+				charStyleVector_[std::min(pos, charCounter_ - 1)].item == false)) {
+		addSpace(c.position());
+	}
+	detailsSetCharStyle(ch, charStyle::Star);
+	charStyleVector_.insert(pos, 1, ch);
+	charCounter_ += 1;
+}
+
 //---------TAB
-void GenTextEdit::tabRealization(int& cursorPos)
+void GenTextEdit::addTab(const int cursorPos)
 {
 	QTextCharFormat charFormat;
 	charFormat.setFontWeight(QFont::Normal);
@@ -147,6 +172,20 @@ void GenTextEdit::tabRealization(int& cursorPos)
 	}
 
 	this->setTextCursor(c);
+}
+
+//---------SPACE
+void GenTextEdit::addSpace(const int cursorPos)
+{
+	QTextCharFormat charFormat;
+	charFormat.setFontWeight(QFont::Normal);
+	charStyle_t ch;
+	detailsSetCharStyle(ch);
+
+	this->textCursor().insertText(" ", charFormat);
+	charStyleVector_.insert(cursorPos, 1, ch);
+
+	++charCounter_;
 }
 
 //---------SET STYLE FOR CHAR
@@ -185,4 +224,20 @@ void GenTextEdit::setCharStyle(const int style)
 
     c.setCharFormat(textFormat);
   }
+}
+
+//---------COLOR TEXT
+void GenTextEdit::colorText(const QString color)
+{
+	QTextCursor c = this->textCursor();
+
+	if (c.hasSelection() && color != "") {
+		QTextCharFormat fmt;
+		fmt.setBackground(QColor(color));
+		c.setCharFormat(fmt);
+
+		for (int i = c.selectionStart(); i < c.selectionEnd(); ++i) {
+			charStyleVector_[i].sColor = color;
+		}
+	}
 }

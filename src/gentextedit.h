@@ -46,7 +46,7 @@ public:
 	using iterator = QVector< charStyle_t >::iterator;
 
 //in ...-get-set.cpp
-    void fillCharStyleVector(int cursorPos, int count, charStyle_t ch);
+	void fillCharStyleVector(int cursorPos, int count, charStyle_t ch);
   int getCharStyle(const int index) const;
   void setCharCounter(const int value);
 	int getCharCounter() const;
@@ -86,10 +86,13 @@ private:
 	const int TAB_LENGTH = 4;
 
 //keys-realization.cpp
-	void deleteRealization(const Qt::KeyboardModifiers kmModifiers, const QTextCursor::MoveOperation whereMove,
-				int& cursorPos, const int blindSpot, const int a = 0);
 	void addTodoList(const QString itemSign);
-	void tabRealization(int& cursorPos);
+	void addStar();
+	void addTab(const int cursorPos);
+	void addSpace(const int cursorPos);
+	void deleteSmth(const Qt::KeyboardModifiers kmModifiers, const QTextCursor::MoveOperation whereMove,
+				int& cursorPos, const int blindSpot, const int a = 0);
+	void colorText(const QString color);
 
 //details.cpp - smth like namespace details
 	void detailsEraseSelectedText(int& cursorPos);
@@ -105,6 +108,7 @@ private:
 	void detailsSetBoolByStatus(bool& a, int& status);
 
 	void detailsSetCharStyleByNeighbours(charStyle_t& ch, const int index);
+	void detailsColorText(QTextCursor c, const QString color);
 };
 
 #endif // TEXT_EDIT
