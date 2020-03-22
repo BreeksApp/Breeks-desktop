@@ -21,7 +21,7 @@ void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
 
     connect(breeksZone->arrBreeks[i], SIGNAL(moveBreek(int, int, bool)), this, SLOT(moveBreek(int, int, bool)));
   }
-  //
+
   //-----DeSCRIPTION ZONE-----
   breeksZone->breeksDescriptionGroupBox->setFixedSize(270, groupBoxHeight);
 
