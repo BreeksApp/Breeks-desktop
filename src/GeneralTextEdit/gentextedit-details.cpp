@@ -43,6 +43,12 @@ void GenTextEdit::detailsEraseSelectedText(int &cursorPos)
 		}
 	}
 	//---
+//Add command in UndoRedoBuffer
+	commandInfo_t command;
+	setCommandInfo(command, command::deleteStr, iterFirst - charStyleVector_.begin(), c.selectedText());
+	undoRedoBuffer->pushUndoCommand(command);
+//
+
 	charStyleVector_.erase(iterFirst, iterLast);
 
   charCounter_ -= nChar;
@@ -194,6 +200,22 @@ void GenTextEdit::detailsSetBoolByStatus(bool &a, int &status)
 	}
 	else {
 		a = status == 1 ? true : false;
+	}
+}
+
+void GenTextEdit::detailsSetFormatFields(QTextCharFormat &fmt, const charStyle_t ch)
+{
+	if (ch.bold == true) {
+		fmt.setFontWeight(QFont::Bold);
+	}
+	if (ch.italic == true) {
+		fmt.setFontItalic(true);
+	}
+	if (ch.underline == true) {
+		fmt.setFontUnderline(true);
+	}
+	if (ch.strike == true) {
+		fmt.setFontStrikeOut(true);
 	}
 }
 
