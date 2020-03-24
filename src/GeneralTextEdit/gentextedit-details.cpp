@@ -222,25 +222,44 @@ void GenTextEdit::detailsSetFormatFields(QTextCharFormat &fmt, const charStyle_t
 void GenTextEdit::detailsSetCharStyleByNeighbours(charStyle_t &ch, int indexRight)
 {
 	if (charCounter_ == 0) {
+		ch = globCh;
 		return;
 	}
+
+	int *indexLeft = &indexRight;
 	//index of right neighbour (cursorPos)
 	if (indexRight >= charCounter_) {
-		indexRight = charCounter_ - 1;
+		indexRight = std::max(0, charCounter_ - 1);
 	}
-	if (indexRight < 0) {
+	else if (indexRight < 0) {
 		indexRight = 0;
 	}
+	else {
+		*indexLeft = std::max(0, indexRight - 1);
+	}
 	
-	int indexLeft = std::max(0, indexRight - 1);
-
-	ch.bold = charStyleVector_[indexLeft].bold & charStyleVector_[indexRight].bold;
-	ch.italic = charStyleVector_[indexLeft].italic & charStyleVector_[indexRight].italic;
-	ch.underline = charStyleVector_[indexLeft].underline & charStyleVector_[indexRight].underline;
-	ch.strike = charStyleVector_[indexLeft].strike & charStyleVector_[indexRight].strike;
+	ch.bold = charStyleVector_[*indexLeft].bold | charStyleVector_[indexRight].bold | globCh.bold;
+	ch.italic = charStyleVector_[*indexLeft].italic | charStyleVector_[indexRight].italic | globCh.italic;
+	ch.underline = charStyleVector_[*indexLeft].underline | charStyleVector_[indexRight].underline | globCh.underline;
+	ch.strike = charStyleVector_[*indexLeft].strike | charStyleVector_[indexRight].strike | globCh.strike;
 
 	ch.sColor = charStyleVector_[indexRight].sColor == "" ?
-				charStyleVector_[indexLeft].sColor : charStyleVector_[indexRight].sColor;
+				charStyleVector_[*indexLeft].sColor : charStyleVector_[indexRight].sColor;
+}
+
+void GenTextEdit::detailsSetCharStyleByIndex(const charStyle_t &ch, const int index)
+{
+	QTextCursor c = this->textCursor();
+	c.setPosition(index);
+	c.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor);
+
+	QTextCharFormat fmt;
+	detailsSetFormatFields(fmt, ch);
+	if (ch.sColor != "") {
+		fmt.setBackground(QColor(ch.sColor));
+	}
+
+	c.setCharFormat(fmt);
 }
 
 void GenTextEdit::detailsColorText(QTextCursor c, const QString color)
@@ -280,7 +299,7 @@ void GenTextEdit::detailsUndoRedoDeleteText(const commandInfo_t &command)
 {
 	QTextCursor c = this->textCursor();
 	c.setPosition(command.pos);
-	c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, command.pos + command.text.length());
+	c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, command.text.length());
 	c.deleteChar();
 
 	iterator itBegin = charStyleVector_.begin();

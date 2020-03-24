@@ -239,8 +239,9 @@ void GenTextEdit::setCharStyle(const int style, const bool forBuffer)
       continue;
     }
 
-		detailsSetCharStyle(charStyleVector_[i], style, status);
-    QTextCharFormat textFormat;
+		detailsSetCharStyle(charStyleVector_[i], style, status); //set new style
+
+		QTextCharFormat textFormat;
     textFormat.setFontWeight(QFont::Normal);
 
 		detailsSetFormatFields(textFormat, charStyleVector_[i]);

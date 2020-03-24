@@ -82,6 +82,8 @@ private:
   const QVector< QChar > AVAILABLE_CHARS_ = {'!', '?', '.', ',', ';', ':', '\"', '\'', '&', '*', '@', '~', '`', '#','$', '^', '/',
         '%', '(', ')', '[', ']', '{', '}', '|', '\\', '<', '>', '-', '_', '+', '='};
 
+	charStyle_t globCh;
+
 	const QString dashSign_ = "—";
 	const QString pointSign_ = "•";
 	const QString minusSign_ = "-";
@@ -117,6 +119,8 @@ private:
 	void detailsSetFormatFields(QTextCharFormat& fmt, const charStyle_t ch);
 
 	void detailsSetCharStyleByNeighbours(charStyle_t& ch, const int index);
+	void detailsSetCharStyleByIndex(const charStyle_t& ch, const int index);
+
 	void detailsColorText(QTextCursor c, const QString color);
 
 	void detailsUndoRedoInsertText(const commandInfo_t& command);

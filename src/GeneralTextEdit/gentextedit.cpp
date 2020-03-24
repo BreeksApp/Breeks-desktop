@@ -16,6 +16,8 @@ GenTextEdit::GenTextEdit(QWidget *parent) :
   charCounter_ = 0;
 	//add saved text
 	readFromDB(nCurrentFile_);
+
+	detailsSetCharStyle(globCh);
 }
 
 //We want to create our Text editor with special functions and hot-keys
@@ -47,6 +49,8 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 
 				QTextEdit::keyPressEvent(event); //we can't identify CapsLock that's why use base method
 
+				detailsSetCharStyleByIndex(ch, cursorPos + 1);
+
         ++charCounter_;
 			//Add coommand to UndoRefoBuffer
 				const QString text = (kmModifiers != 0 ?
@@ -62,8 +66,10 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
       if (iKey >= Qt::Key_0 && iKey <= Qt::Key_9) {
         detailsCheckSelectionAndItem(cursorPos);
         this->insertPlainText(QKeySequence(iKey).toString());
+
 				detailsSetCharStyleByNeighbours(ch, cursorPos);
         charStyleVector_.insert(cursorPos, 1, ch);
+				detailsSetCharStyleByIndex(ch, cursorPos + 1);
 
         ++charCounter_;
 			//Add coommand to UndoRefoBuffer
@@ -79,8 +85,11 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 				if (QKeySequence(iKey).toString() == i) {
 					detailsCheckSelectionAndItem(cursorPos);
 					this->insertPlainText(QKeySequence(iKey).toString());
+
 					detailsSetCharStyleByNeighbours(ch, cursorPos);
 					charStyleVector_.insert(cursorPos, 1, ch);
+					detailsSetCharStyleByIndex(ch, cursorPos + 1);
+
 
 					++charCounter_;
 				//Add coommand to UndoRefoBuffer
@@ -260,23 +269,44 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 		}
 		//Ctrl + b - Bold
 		else if (QKeySequence(iKey) == Qt::Key_B || QKeySequence(iKey).toString() == "И") {
-			setCharStyle(charStyle::Bold);
+			if (this->textCursor().hasSelection()) {
+				setCharStyle(charStyle::Bold);
+			}
+			else {
+				detailsSetCharStyle(globCh, charStyle::Bold);
+			}
 		}
 		//Ctrl + i - Italic
 		else if (QKeySequence(iKey) == Qt::Key_I || QKeySequence(iKey).toString() == "Ш") {
-			setCharStyle(charStyle::Italic);
+			if (this->textCursor().hasSelection()) {
+				setCharStyle(charStyle::Italic);
+			}
+			else {
+				detailsSetCharStyle(globCh, charStyle::Italic);
+			}
 		}
 		//Ctrl + u - Underline
 		else if (QKeySequence(iKey) == Qt::Key_U || QKeySequence(iKey).toString() == "Г") {
-			setCharStyle(charStyle::Underline);
+			if (this->textCursor().hasSelection()) {
+				setCharStyle(charStyle::Underline);
+			}
+			else {
+				detailsSetCharStyle(globCh, charStyle::Underline);
+			}
 		}
 		//Ctrl + s - Strike
 		else if (QKeySequence(iKey) == Qt::Key_S || QKeySequence(iKey).toString() == "Ы") {
-			setCharStyle(charStyle::Strike);
+			if (this->textCursor().hasSelection()) {
+				setCharStyle(charStyle::Strike);
+			}
+			else {
+				detailsSetCharStyle(globCh, charStyle::Strike);
+			}
 		}
 		//Ctrl + n - Normal
 		else if (QKeySequence(iKey) == Qt::Key_N || QKeySequence(iKey).toString() == "Т") {
 			makeCharNormal();
+			detailsSetCharStyle(globCh);
 		}
 		//Ctrl + g - highlight in green
 		else if (QKeySequence(iKey) == Qt::Key_G || QKeySequence(iKey).toString() == "П") {
