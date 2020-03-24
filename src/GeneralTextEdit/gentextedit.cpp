@@ -9,12 +9,15 @@
 GenTextEdit::GenTextEdit(QWidget *parent) :
 	QTextEdit(parent)
 {
-	this->setTextColor(QColor(0, 0, 0));
+	undoRedoBuffer = new UndoRedoText;
 
+	this->setTextColor(QColor(0, 0, 0));
   nCurrentFile_ = 1;
   charCounter_ = 0;
 	//add saved text
 	readFromDB(nCurrentFile_);
+
+	detailsSetCharStyle(globCh);
 }
 
 //We want to create our Text editor with special functions and hot-keys
@@ -31,6 +34,8 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
   charStyle_t ch;
   detailsSetCharStyle(ch);
 
+	commandInfo_t command;
+
   //all comands which insert smth
   if (charCounter_ <= MAX_COUNT_CHAR_) {
 		//letters
@@ -44,7 +49,15 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 
 				QTextEdit::keyPressEvent(event); //we can't identify CapsLock that's why use base method
 
+				detailsSetCharStyleByIndex(ch, cursorPos + 1);
+
         ++charCounter_;
+			//Add coommand to UndoRefoBuffer
+				const QString text = (kmModifiers != 0 ?
+							QKeySequence(iKey).toString() : QKeySequence(iKey).toString().toLower());
+				setCommandInfo(command, command::insertStr, cursorPos, text);
+				undoRedoBuffer->pushUndoCommand(command);
+			//
         return;
       }
     }
@@ -53,10 +66,16 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
       if (iKey >= Qt::Key_0 && iKey <= Qt::Key_9) {
         detailsCheckSelectionAndItem(cursorPos);
         this->insertPlainText(QKeySequence(iKey).toString());
+
 				detailsSetCharStyleByNeighbours(ch, cursorPos);
         charStyleVector_.insert(cursorPos, 1, ch);
+				detailsSetCharStyleByIndex(ch, cursorPos + 1);
 
         ++charCounter_;
+			//Add coommand to UndoRefoBuffer
+				setCommandInfo(command, command::insertStr, cursorPos, QKeySequence(iKey).toString());
+				undoRedoBuffer->pushUndoCommand(command);
+			//
         return;
       }
     }
@@ -66,10 +85,17 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 				if (QKeySequence(iKey).toString() == i) {
 					detailsCheckSelectionAndItem(cursorPos);
 					this->insertPlainText(QKeySequence(iKey).toString());
+
 					detailsSetCharStyleByNeighbours(ch, cursorPos);
 					charStyleVector_.insert(cursorPos, 1, ch);
+					detailsSetCharStyleByIndex(ch, cursorPos + 1);
+
 
 					++charCounter_;
+				//Add coommand to UndoRefoBuffer
+					setCommandInfo(command, command::insertStr, cursorPos, QKeySequence(iKey).toString());
+					undoRedoBuffer->pushUndoCommand(command);
+				//
 					return;
 				}
 			}
@@ -80,6 +106,10 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 			case Qt::Key_Space : {
 				detailsCheckSelectionAndItem(cursorPos);
 				addSpace(cursorPos);
+			//Add coommand to UndoRefoBuffer
+				setCommandInfo(command, command::insertStr, cursorPos, " ");
+				undoRedoBuffer->pushUndoCommand(command);
+			//
 				return;
 			}
 		 //Tab
@@ -96,20 +126,32 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
         detailsCheckSelectionAndItem(cursorPos);
         this->textCursor().insertText("\n", charFormat);
         charStyleVector_.insert(cursorPos, 1, ch);
-        ++charCounter_;
-
+				++charCounter_;
+			//Add coommand to UndoRefoBuffer
+				setCommandInfo(command, command::insertStr, cursorPos, "\n");
+				undoRedoBuffer->pushUndoCommand(command);
+			//
 				return;
     }
 
     if (kmModifiers == Qt::ControlModifier) {
+			//Ctrl + z
+			if (QKeySequence(iKey) == Qt::Key_Z) {
+				undoCommand();
+			}
+			else if (QKeySequence(iKey) == Qt::Key_Y) {
+				redoCommand();
+			}
 			//Ctrl + d - dash
-			if (QKeySequence(iKey) == Qt::Key_D ||QKeySequence(iKey).toString() == "В") {
+			else if (QKeySequence(iKey) == Qt::Key_D ||QKeySequence(iKey).toString() == "В") {
 				detailsCheckSelectionAndItem(cursorPos);
-
-				this->insertPlainText("—");
+				this->insertPlainText(dashSign_);
 				charStyleVector_.insert(cursorPos, 1, ch);
 				++charCounter_;
-
+			//Add coommand to UndoRefoBuffer
+				setCommandInfo(command, command::insertStr, cursorPos, dashSign_);
+				undoRedoBuffer->pushUndoCommand(command);
+			//
 				return;
 			}
       //Ctrl + V - paste
@@ -128,8 +170,14 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
         charStyleVector_.insert(cursorPos, insertLine.length(), ch);
 
         charCounter_ += insertLine.length();
+
+			//Add coommand to UndoRefoBuffer
+				setCommandInfo(command, command::insertStr, cursorPos, insertLine);
+				undoRedoBuffer->pushUndoCommand(command);
+			//
+
         return;
-      }
+			}
 			//Ctrl + p - add to-do-list with point
 			else if (QKeySequence(iKey) == Qt::Key_P || QKeySequence(iKey).toString() == "З") {
 				addTodoList(pointSign_);
@@ -143,31 +191,6 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 			//Ctrl + w - add red star
 			else if (QKeySequence(iKey) == Qt::Key_W || QKeySequence(iKey).toString() == "Ц") {
 				addStar();
-				return;
-			}
-			//Ctrl + g - highlight in green
-			else if (QKeySequence(iKey) == Qt::Key_G || QKeySequence(iKey).toString() == "П") {
-				colorText(colors::green);
-				return;
-			}
-			//Ctrl + l - lavender
-			else if (QKeySequence(iKey) == Qt::Key_L || QKeySequence(iKey).toString() == "Д") {
-				colorText(colors::lavender);
-				return;
-			}
-			//Ctrl + m - marina
-			else if (QKeySequence(iKey) == Qt::Key_M || QKeySequence(iKey).toString() == "Ь") {
-				colorText(colors::marina);
-				return;
-			}
-			//Ctrl + o - orange
-			else if (QKeySequence(iKey) == Qt::Key_O || QKeySequence(iKey).toString() == "Щ") {
-				colorText(colors::orange);
-				return;
-			}
-			//Ctrl + r - red
-			else if (QKeySequence(iKey) == Qt::Key_R || QKeySequence(iKey).toString() == "К") {
-				colorText(colors::red);
 				return;
 			}
     }
@@ -239,44 +262,77 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
       this->selectAll();
       return;
     }
-    //Ctrl + X - cut
-    else if (QKeySequence(iKey) == Qt::Key_X) {
-      detailsCheckSelectionAndItem(cursorPos);
-      this->cut();
-    }
+		//Ctrl + X - cut
+		else if (QKeySequence(iKey) == Qt::Key_X) {
+			detailsCheckSelectionAndItem(cursorPos); //work with UndoRedoBuffer in that function
+			this->cut();
+		}
 		//Ctrl + b - Bold
 		else if (QKeySequence(iKey) == Qt::Key_B || QKeySequence(iKey).toString() == "И") {
-			setCharStyle(charStyle::Bold);
-    }
+			if (this->textCursor().hasSelection()) {
+				setCharStyle(charStyle::Bold);
+			}
+			else {
+				detailsSetCharStyle(globCh, charStyle::Bold);
+			}
+		}
 		//Ctrl + i - Italic
 		else if (QKeySequence(iKey) == Qt::Key_I || QKeySequence(iKey).toString() == "Ш") {
-			setCharStyle(charStyle::Italic);
-    }
+			if (this->textCursor().hasSelection()) {
+				setCharStyle(charStyle::Italic);
+			}
+			else {
+				detailsSetCharStyle(globCh, charStyle::Italic);
+			}
+		}
 		//Ctrl + u - Underline
 		else if (QKeySequence(iKey) == Qt::Key_U || QKeySequence(iKey).toString() == "Г") {
-			setCharStyle(charStyle::Underline);
-    }
+			if (this->textCursor().hasSelection()) {
+				setCharStyle(charStyle::Underline);
+			}
+			else {
+				detailsSetCharStyle(globCh, charStyle::Underline);
+			}
+		}
 		//Ctrl + s - Strike
 		else if (QKeySequence(iKey) == Qt::Key_S || QKeySequence(iKey).toString() == "Ы") {
-			setCharStyle(charStyle::Strike);
-    }
+			if (this->textCursor().hasSelection()) {
+				setCharStyle(charStyle::Strike);
+			}
+			else {
+				detailsSetCharStyle(globCh, charStyle::Strike);
+			}
+		}
 		//Ctrl + n - Normal
 		else if (QKeySequence(iKey) == Qt::Key_N || QKeySequence(iKey).toString() == "Т") {
-      QTextCharFormat textFormat;
-      textFormat.setFontWeight(QFont::Normal);
-
-      int first = this->textCursor().selectionStart();
-      int last = this->textCursor().selectionEnd();
-
-      for (int i = first; i < last; ++i) {
-        if (charStyleVector_[i].item == true) {
-					continue;
-				}
-        this->textCursor().setPosition(i);
-        detailsSetCharStyle(charStyleVector_[i]);
-        this->textCursor().setCharFormat(textFormat);
-      }
-    }
+			makeCharNormal();
+			detailsSetCharStyle(globCh);
+		}
+		//Ctrl + g - highlight in green
+		else if (QKeySequence(iKey) == Qt::Key_G || QKeySequence(iKey).toString() == "П") {
+			colorText(colors::green);
+			return;
+		}
+		//Ctrl + l - lavender
+		else if (QKeySequence(iKey) == Qt::Key_L || QKeySequence(iKey).toString() == "Д") {
+			colorText(colors::lavender);
+			return;
+		}
+		//Ctrl + m - marina
+		else if (QKeySequence(iKey) == Qt::Key_M || QKeySequence(iKey).toString() == "Ь") {
+			colorText(colors::marina);
+			return;
+		}
+		//Ctrl + o - orange
+		else if (QKeySequence(iKey) == Qt::Key_O || QKeySequence(iKey).toString() == "Щ") {
+			colorText(colors::orange);
+			return;
+		}
+		//Ctrl + r - red
+		else if (QKeySequence(iKey) == Qt::Key_R || QKeySequence(iKey).toString() == "К") {
+			colorText(colors::red);
+			return;
+		}
   }
 
   //Backspace

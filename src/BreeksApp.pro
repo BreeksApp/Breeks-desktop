@@ -38,7 +38,8 @@ SOURCES += \
     mainwindow-addelement.cpp \
     mainwindow-workzone.cpp \
     GeneralTextEdit/gentextedit.cpp \
-    GeneralTextEdit/gentextedit-details.cpp
+    GeneralTextEdit/gentextedit-details.cpp \
+    undoredotext.cpp
 
 HEADERS += \
     breek.h \
@@ -52,7 +53,8 @@ HEADERS += \
     addbuttonhover.h \
     datastructures.h \
     effects.hpp \
-    gentextedit.h
+    gentextedit.h \
+    undoredotext.h
 
 FORMS += \
     loginform.ui \

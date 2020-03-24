@@ -53,12 +53,25 @@ void GenTextEdit::deleteSmth(const Qt::KeyboardModifiers kmModifiers, const QTex
         iterFirst += c.selectionStart();
         iterator iterLast = iterFirst + c.selectedText().length();
 
+				//Add command in UndoRedoBuffer
+					commandInfo_t command;
+					setCommandInfo(command, command::deleteStr, iterFirst - charStyleVector_.begin(), c.selectedText());
+					undoRedoBuffer->pushUndoCommand(command);
+				//
+
         this->setTextCursor(c);
         charStyleVector_.erase(iterFirst, iterLast);
         charCounter_ -= c.selectedText().length();
       }
       else {
         iterFirst += this->textCursor().position() - a;
+				//Add command in UndoRedoBuffer
+					commandInfo_t command;
+					const int pos = iterFirst - charStyleVector_.begin();
+					const QString text = this->toPlainText().at(pos);
+					setCommandInfo(command, command::deleteStr, pos, text);
+					undoRedoBuffer->pushUndoCommand(command);
+				//
         charStyleVector_.erase(iterFirst);
         --charCounter_;
       }
@@ -106,12 +119,18 @@ void GenTextEdit::addTodoList(const QString itemSign)
     charCounter_ += 4;
   }
   else {
-    this->textCursor().insertText('\n' + item, charFormat);
+		item = '\n' + item;
+		this->textCursor().insertText(item, charFormat);
     charStyleVector_.insert(cursorPos, 4, ch);
 		detailsSetCharStyle(ch, charStyle::Normal);
     charStyleVector_.insert(cursorPos, 1, ch);
     charCounter_ += 5;
   }
+	//Add coommand to UndoRefoBuffer
+	commandInfo_t command;
+		setCommandInfo(command, command::insertStr, cursorPos, item);
+		undoRedoBuffer->pushUndoCommand(command);
+	//
 }
 
 //---------WARRNING
@@ -128,13 +147,22 @@ void GenTextEdit::addStar()
 	c.insertHtml(warrningSign_);
 	c.movePosition(QTextCursor::StartOfBlock, QTextCursor::KeepAnchor);
 	c.setCharFormat(fmt);
+	QString insertStr = warrningSign_; //for Ctrl + z
 	//if some stars we need only one space
 	if ((charCounter_ == 0) || (charStyleVector_[std::min(pos, charCounter_ - 1)].star == false &&
 				charStyleVector_[std::min(pos, charCounter_ - 1)].item == false)) {
 		addSpace(c.position());
+		insertStr += ' ';
 	}
 	detailsSetCharStyle(ch, charStyle::Star);
 	charStyleVector_.insert(pos, 1, ch);
+
+	//Add command to UndoRedoBuffer
+	commandInfo_t command;
+	setCommandInfo(command, command::insertStr, pos, insertStr);
+	undoRedoBuffer->pushUndoCommand(command);
+	//
+
 	charCounter_ += 1;
 }
 
@@ -170,7 +198,13 @@ void GenTextEdit::addTab(const int cursorPos)
 	if (isItem) {
 		c.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, ITEM_LENGTH);
 	}
-
+//Add command to UndoRedoBuffer
+	commandInfo_t command;
+	QString sTab;
+	sTab.insert(TAB_LENGTH, " ");
+	setCommandInfo(command, command::insertStr, cursorPos, sTab);
+	undoRedoBuffer->pushUndoCommand(command);
+//
 	this->setTextCursor(c);
 }
 
@@ -189,7 +223,7 @@ void GenTextEdit::addSpace(const int cursorPos)
 }
 
 //---------SET STYLE FOR CHAR
-void GenTextEdit::setCharStyle(const int style)
+void GenTextEdit::setCharStyle(const int style, const bool forBuffer)
 {  
   int first = this->textCursor().selectionStart();
   int last = this->textCursor().selectionEnd();
@@ -205,39 +239,146 @@ void GenTextEdit::setCharStyle(const int style)
       continue;
     }
 
-		detailsSetCharStyle(charStyleVector_[i], style, status);
-    QTextCharFormat textFormat;
+		detailsSetCharStyle(charStyleVector_[i], style, status); //set new style
+
+		QTextCharFormat textFormat;
     textFormat.setFontWeight(QFont::Normal);
 
-    if (charStyleVector_[i].bold == true) {
-      textFormat.setFontWeight(QFont::Bold);
-    }
-    if (charStyleVector_[i].italic == true) {
-      textFormat.setFontItalic(true);
-    }
-    if (charStyleVector_[i].underline == true) {
-      textFormat.setFontUnderline(true);
-    }
-    if (charStyleVector_[i].strike == true) {
-      textFormat.setFontStrikeOut(true);
-    }
-
+		detailsSetFormatFields(textFormat, charStyleVector_[i]);
+		if (charStyleVector_[i].sColor != "") {
+			textFormat.setBackground(QColor(charStyleVector_[i].sColor));
+		}
     c.setCharFormat(textFormat);
   }
+	if (!forBuffer) { //because that function is also used for change style by Ctrl + z
+		//Add coommand to UndoRefoBuffer
+		commandInfo_t command;
+		setCommandInfo(command, command::changeStyle, first, QString::number(style), last - first);
+		undoRedoBuffer->pushUndoCommand(command);
+		//
+	}
 }
 
 //---------COLOR TEXT
-void GenTextEdit::colorText(const QString color)
+void GenTextEdit::colorText(const QString color, const bool forBuffer)
 {
 	QTextCursor c = this->textCursor();
 
 	if (c.hasSelection() && color != "") {
-		QTextCharFormat fmt;
-		fmt.setBackground(QColor(color));
-		c.setCharFormat(fmt);
+		const int first = c.selectionStart();
+		const int last = c.selectionEnd();
 
-		for (int i = c.selectionStart(); i < c.selectionEnd(); ++i) {
+		for (int i = first; i < last; ++i) {
+			QTextCharFormat fmt;
+			fmt.setBackground(QColor(color));
+			detailsSetFormatFields(fmt, charStyleVector_[i]);
+
+			c.setCharFormat(fmt);
 			charStyleVector_[i].sColor = color;
 		}
+
+		if (!forBuffer) {
+		//Add coommand to UndoRefoBuffer
+			commandInfo_t command;
+			setCommandInfo(command, command::changeColor, first, color, last - first);
+			undoRedoBuffer->pushUndoCommand(command);
+		}
+	}
+}
+
+//---------Ctrl + z
+void GenTextEdit::undoCommand()
+{
+	if (!undoRedoBuffer->isUndoEmpty()) {
+		commandInfo_t command;
+		undoRedoBuffer->popUndoCommand(command);
+		this->textCursor().clearSelection();
+		QTextCursor c = this->textCursor();
+		c.setPosition(command.pos);
+
+		if (command.commandName == command::insertStr) {
+			detailsUndoRedoDeleteText(command);
+		}
+		else if (command.commandName == command::deleteStr) {
+			detailsUndoRedoInsertText(command);
+		}
+		else if (command.commandName == command::changeStyle) {
+			detailsUndoRedoEffects(command, true);
+		}
+		else if (command.commandName == command::changeColor) {
+			c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, command.charStyleVector.size());
+			this->setTextCursor(c);
+			makeCharNormal();
+		}
+
+		undoRedoBuffer->pushRedoCommand(command);
+	}
+
+	return;
+}
+void GenTextEdit::setCommandInfo(commandInfo_t& command, const enum command commandName,
+																 const int pos, const QString text, int length)
+{
+	command.commandName = commandName;
+	command.pos = pos;
+	command.text = text;
+
+	if (length == -1) {
+		length = text.length();
+	}
+
+	for (int i = 0; i < length; ++i) {
+		command.charStyleVector.push_back(charStyleVector_[pos + i]);
+	}
+}
+
+//---------Ctrl + y
+void GenTextEdit::redoCommand()
+{
+	if (!undoRedoBuffer->isRedoEmpty()) {
+		commandInfo_t command;
+		undoRedoBuffer->popRedoCommand(command);
+		this->textCursor().clearSelection();
+		QTextCursor c = this->textCursor();
+		c.setPosition(command.pos);
+
+		if (command.commandName == command::insertStr) {
+			detailsUndoRedoInsertText(command);
+		}
+		else if (command.commandName == command::deleteStr) {
+			detailsUndoRedoDeleteText(command);
+		}
+		else if (command.commandName == command::changeStyle) {
+			detailsUndoRedoEffects(command);
+		}
+		else if (command.commandName == command::changeColor) {
+			c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, command.charStyleVector.size());
+			this->setTextCursor(c);
+			const QString sColor = command.text;
+			colorText(sColor);
+		}
+
+		undoRedoBuffer->pushUndoCommand(command);
+	}
+
+	return;
+}
+
+//---------Ctrl + n
+void GenTextEdit::makeCharNormal()
+{
+	QTextCharFormat textFormat;
+	textFormat.setFontWeight(QFont::Normal);
+
+	int first = this->textCursor().selectionStart();
+	int last = this->textCursor().selectionEnd();
+
+	for (int i = first; i < last; ++i) {
+		if (charStyleVector_[i].item == true) {
+			continue;
+		}
+		this->textCursor().setPosition(i);
+		detailsSetCharStyle(charStyleVector_[i]);
+		this->textCursor().setCharFormat(textFormat);
 	}
 }

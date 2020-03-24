@@ -25,8 +25,8 @@ public:
 
 private:
   static QString getDataFromDB();
-  static void pushDataToDB(QJsonDocument &jDoc, QJsonObject &jObject, QJsonObject &notes, QJsonObject &note,
-                           textInfo_t &info, const int currentFile);
+	static void pushDataToDB(QJsonDocument &jDoc, QJsonObject &jObject, QJsonObject &notes,
+													 QJsonObject &note, textInfo_t &info, const int currentFile);
 
   static void parseDataBase(QJsonObject &notes);
 
