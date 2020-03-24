@@ -99,7 +99,8 @@ private:
 				int& cursorPos, const int blindSpot, const int a = 0);
 	void colorText(const QString color, const bool forBuffer = false);
 	void makeCharNormal();
-	//void colorText(QTextCursor& c, const QString color);
+	void undoCommand();
+	void redoCommand();
 
 //details.cpp - smth like namespace details
 	void detailsEraseSelectedText(int& cursorPos);
@@ -117,6 +118,10 @@ private:
 
 	void detailsSetCharStyleByNeighbours(charStyle_t& ch, const int index);
 	void detailsColorText(QTextCursor c, const QString color);
+
+	void detailsUndoRedoInsertText(const commandInfo_t& command);
+	void detailsUndoRedoDeleteText(const commandInfo_t& command);
+	void detailsUndoRedoEffects(const commandInfo_t& command, const bool flag = false);
 };
 
 #endif // TEXT_EDIT

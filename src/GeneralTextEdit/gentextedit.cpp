@@ -126,47 +126,12 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
     }
 
     if (kmModifiers == Qt::ControlModifier) {
+			//Ctrl + z
 			if (QKeySequence(iKey) == Qt::Key_Z) {
-				if (!undoRedoBuffer->isUndoEmpty()) {
-					commandInfo_t command;
-					undoRedoBuffer->popUndoCommand(command);
-					this->textCursor().clearSelection();
-
-					if (command.commandName == command::insertStr) {
-						QTextCursor c = this->textCursor();
-						c.setPosition(command.pos);
-						c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, command.pos + command.text.length());
-						c.deleteChar();
-						iterator itBegin = charStyleVector_.begin();
-						itBegin += command.pos;
-						iterator itEnd = itBegin + command.text.length();
-						charStyleVector_.erase(itBegin, itEnd);
-						charCounter_ -= command.text.length();
-					}
-					if (command.commandName == command::deleteStr) {
-						QTextCursor c = this->textCursor();
-						c.setPosition(command.pos);
-						c.insertText(command.text);
-						for (int i = 0; i < command.charStyleVector.size(); ++i) {
-							charStyleVector_.insert(command.pos + i, command.charStyleVector[i]);
-							++charCounter_;
-						}
-					}
-
-					QTextCursor c = this->textCursor();
-					c.setPosition(command.pos);
-					c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, command.charStyleVector.size());
-					this->setTextCursor(c);
-
-					if (command.commandName == command::changeStyle) {
-						const int style = command.text.toInt();
-						setCharStyle(style, true);
-					}
-					if (command.commandName == command::changeColor) {
-						makeCharNormal();
-					}
-				}
-				return;
+				undoCommand();
+			}
+			else if (QKeySequence(iKey) == Qt::Key_Y) {
+				redoCommand();
 			}
 			//Ctrl + d - dash
 			else if (QKeySequence(iKey) == Qt::Key_D ||QKeySequence(iKey).toString() == "В") {

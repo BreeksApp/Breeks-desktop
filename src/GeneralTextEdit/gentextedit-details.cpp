@@ -251,3 +251,53 @@ void GenTextEdit::detailsColorText(QTextCursor c, const QString color)
 		c.setCharFormat(fmt);
 	}
 }
+
+void GenTextEdit::detailsUndoRedoInsertText(const commandInfo_t &command)
+{
+	QTextCursor c = this->textCursor();
+	c.setPosition(command.pos);
+	c.insertText(command.text);
+
+	for (int i = 0; i < command.charStyleVector.size(); ++i) {
+		c.setPosition(command.pos + i);
+		c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor);
+		charStyleVector_.insert(command.pos + i, command.charStyleVector[i]);
+		//set effects
+		QTextCharFormat fmt;
+		fmt.setFontWeight(QFont::Normal);
+		detailsSetFormatFields(fmt, charStyleVector_[command.pos + i]);
+		if (charStyleVector_[i].sColor != "") {
+			fmt.setBackground(QColor(charStyleVector_[command.pos + i].sColor));
+		}
+		c.setCharFormat(fmt);
+		c.clearSelection();
+
+		++charCounter_;
+	}
+}
+
+void GenTextEdit::detailsUndoRedoDeleteText(const commandInfo_t &command)
+{
+	QTextCursor c = this->textCursor();
+	c.setPosition(command.pos);
+	c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, command.pos + command.text.length());
+	c.deleteChar();
+
+	iterator itBegin = charStyleVector_.begin();
+	itBegin += command.pos;
+	iterator itEnd = itBegin + command.text.length();
+	charStyleVector_.erase(itBegin, itEnd);
+
+	charCounter_ -= command.text.length();
+}
+
+void GenTextEdit::detailsUndoRedoEffects(const commandInfo_t &command, const bool flag)
+{
+	QTextCursor c = this->textCursor();
+	c.setPosition(command.pos);
+	c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, command.charStyleVector.size());
+	this->setTextCursor(c);
+
+	const int style = command.text.toInt();
+	setCharStyle(style, flag);
+}

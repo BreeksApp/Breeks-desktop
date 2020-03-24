@@ -286,6 +286,35 @@ void GenTextEdit::colorText(const QString color, const bool forBuffer)
 }
 
 //---------Ctrl + z
+void GenTextEdit::undoCommand()
+{
+	if (!undoRedoBuffer->isUndoEmpty()) {
+		commandInfo_t command;
+		undoRedoBuffer->popUndoCommand(command);
+		this->textCursor().clearSelection();
+		QTextCursor c = this->textCursor();
+		c.setPosition(command.pos);
+
+		if (command.commandName == command::insertStr) {
+			detailsUndoRedoDeleteText(command);
+		}
+		else if (command.commandName == command::deleteStr) {
+			detailsUndoRedoInsertText(command);
+		}
+		else if (command.commandName == command::changeStyle) {
+			detailsUndoRedoEffects(command, true);
+		}
+		else if (command.commandName == command::changeColor) {
+			c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, command.charStyleVector.size());
+			this->setTextCursor(c);
+			makeCharNormal();
+		}
+
+		undoRedoBuffer->pushRedoCommand(command);
+	}
+
+	return;
+}
 void GenTextEdit::setCommandInfo(commandInfo_t& command, const enum command commandName,
 																 const int pos, const QString text, int length)
 {
@@ -302,6 +331,39 @@ void GenTextEdit::setCommandInfo(commandInfo_t& command, const enum command comm
 	}
 }
 
+//---------Ctrl + y
+void GenTextEdit::redoCommand()
+{
+	if (!undoRedoBuffer->isRedoEmpty()) {
+		commandInfo_t command;
+		undoRedoBuffer->popRedoCommand(command);
+		this->textCursor().clearSelection();
+		QTextCursor c = this->textCursor();
+		c.setPosition(command.pos);
+
+		if (command.commandName == command::insertStr) {
+			detailsUndoRedoInsertText(command);
+		}
+		else if (command.commandName == command::deleteStr) {
+			detailsUndoRedoDeleteText(command);
+		}
+		else if (command.commandName == command::changeStyle) {
+			detailsUndoRedoEffects(command);
+		}
+		else if (command.commandName == command::changeColor) {
+			c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, command.charStyleVector.size());
+			this->setTextCursor(c);
+			const QString sColor = command.text;
+			colorText(sColor);
+		}
+
+		undoRedoBuffer->pushUndoCommand(command);
+	}
+
+	return;
+}
+
+//---------Ctrl + n
 void GenTextEdit::makeCharNormal()
 {
 	QTextCharFormat textFormat;

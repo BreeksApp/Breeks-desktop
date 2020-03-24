@@ -29,8 +29,13 @@ public:
 	void pushUndoCommand(const commandInfo_t command);
 	void popUndoCommand(commandInfo_t& command);
 
+	bool isRedoEmpty();
+	void pushRedoCommand(const commandInfo_t command);
+	void popRedoCommand(commandInfo_t& command);
+
 private:
-	QStack<commandInfo_t> undoStack;
+	QStack< commandInfo_t > undoStack;
+	QStack< commandInfo_t > redoStack;
 };
 
 #endif // UNDOREDOTEXT_H
