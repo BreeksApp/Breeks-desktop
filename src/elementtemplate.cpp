@@ -19,7 +19,7 @@ ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
   deleteButton_->setEnabled(false);
   deleteButton_->setFlat(true);
 
-  text_ = new GenTextEdit;
+  text_ = new TimetableTextEdit;
 
   timeStart_ = new QLineEdit;
   timeEnd_ = new QLineEdit;

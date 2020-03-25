@@ -14,7 +14,7 @@ GenTextEdit::GenTextEdit(QWidget *parent) :
 
   nCurrentFile_ = 1;
   charCounter_ = 0;
-  //readFromDB(nCurrentFile_);
+  readFromDB(nCurrentFile_);
 
 }
 

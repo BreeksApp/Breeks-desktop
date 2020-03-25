@@ -40,7 +40,7 @@ MainWindow::~MainWindow()
   ui->note->writeToDB(ui->note->getNumberCurrentFile());
 
   for (int i = 0; i < 6; ++i) {
-		writeElementsDataToFile(i);
+        //writeElementsDataToFile(i);
   }
 
   delete ui;
@@ -90,7 +90,7 @@ elementData_t MainWindow::recieveTimeTableZoneData(bool *daysCheck, const int ar
       arrDays_[i].labelElementsCount->setText(QString::number(arrDays_[i].elementsCount));
     }
   }
-  return newElement;
+    return newElement;
 }
 
 void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, breeksData_t newElement)

@@ -45,7 +45,7 @@ private:
   QPushButton *deleteButton_;
 
   QGridLayout *elementLayout_;
-  GenTextEdit *text_;
+  TimetableTextEdit *text_;
   QLineEdit *timeStart_;
   QLineEdit *timeEnd_;
 

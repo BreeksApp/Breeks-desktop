@@ -25,7 +25,7 @@ void MainWindow::buildTimeTable()
   //build a day
   setDaysStructure();
   for (int i = 0; i < DAYS_COUNT; ++i) {
-    readElementsDataFromFile(i);
+   //readElementsDataFromFile(i);
   }
   setDayInfo();
 }
