@@ -29,6 +29,8 @@ public:
   void setDayAndElementIndex(const int dayIndex, const int elementIndex);
   void setElementIndex(const int index);
 
+  QVector<charStyle_t> getCharStyleVector();
+
   QString getText() const;
   QPalette getColor() const;
 

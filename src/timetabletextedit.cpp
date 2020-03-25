@@ -1,8 +1,14 @@
 #include "timetabletextedit.h"
 
-TimetableTextEdit::TimetableTextEdit()
+TimetableTextEdit::TimetableTextEdit(QWidget *parent)
+        :GenTextEdit(parent)
 {
-
+  this->clearCharStyleVector();
+  for (charStyle_t ch: this->getCharStyleVector()) {
+      qDebug() <<ch.bold;
+  }
+  this->clear();
+  this->setCharCounter(0);
 }
 
 void TimetableTextEdit::fillCharsAndSetText(QString text, const QJsonArray jArr)
@@ -15,7 +21,7 @@ void TimetableTextEdit::fillCharsAndSetText(QString text, const QJsonArray jArr)
   QChar tmpChar;
   charStyle_t ch;
  //qDebug() << text;
- qDebug() << jArr;
+ //qDebug() << jArr;
   for (int i = 0; i < this->getCharCounter(); ++i) {
     detailsSetCharStyle(ch);
     QTextCharFormat charFormat;
@@ -57,7 +63,8 @@ void TimetableTextEdit::fillCharsAndSetText(QString text, const QJsonArray jArr)
     }
     ch.sColor = color;
 
-    this->fillCharStyleVector(ch);
+    int cursorPos = this->textCursor().position();
+    this->fillCharStyleVector(cursorPos, 1, ch);
     out >> tmpChar;
     this->textCursor().insertText(static_cast<QString>(tmpChar), charFormat);
     }

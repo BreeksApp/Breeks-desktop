@@ -126,7 +126,12 @@ void ElementTemplate::setDayAndElementIndex(const int dayIndex, const int elemen
 
 void ElementTemplate::setElementIndex(const int index)
 {
-  elementIndex_ = index;
+    elementIndex_ = index;
+}
+
+QVector<charStyle_t> ElementTemplate::getCharStyleVector()
+{
+ return text_->getCharStyleVector();
 }
 
 void ElementTemplate::changeTagColor()

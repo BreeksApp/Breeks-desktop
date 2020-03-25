@@ -40,7 +40,7 @@ MainWindow::~MainWindow()
   ui->note->writeToDB(ui->note->getNumberCurrentFile());
 
   for (int i = 0; i < 6; ++i) {
-        //writeElementsDataToFile(i);
+        writeElementsDataToFile(i);
   }
 
   delete ui;

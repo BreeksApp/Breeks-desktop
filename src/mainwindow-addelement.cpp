@@ -60,6 +60,7 @@ void MainWindow::addNewElementToLayout(const int index, const int newElementInde
   for (int j = 0; j < arrDays_[index].elementsCount; ++j) {
     //create new element object
     ElementTemplate *elem = new ElementTemplate;
+    qDebug() <<arrDaysData_[index][j].text;
 
     elem->setText(arrDaysData_[index][j].text, jArr);
     elem->setTime(arrDaysData_[index][j].timeStart, arrDaysData_[index][j].timeEnd);

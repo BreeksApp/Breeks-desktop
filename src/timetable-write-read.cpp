@@ -133,6 +133,7 @@ void MainWindow::writeElementsDataToFile(const int index)
     ElementTemplate *a = qobject_cast<ElementTemplate*>(arrDays_[index].layoutDayElements->itemAt(i)->widget());
     arrDaysData_[index][i].text = a->getText();
     arrDaysData_[index][i].palette = a->getColor();
+    arrDaysData_[index][i].charStyleVector = a->getCharStyleVector();
   }
 
   //write data to file

@@ -10,8 +10,9 @@ GenTextEdit::GenTextEdit(QWidget *parent) :
 	QTextEdit(parent)
 {
 //add saved text
-	this->setTextColor(QColor(0, 0, 0));
+  this->setTextColor(QColor(0, 0, 0));
 
+  qDebug("!!");
   nCurrentFile_ = 1;
   charCounter_ = 0;
   readFromDB(nCurrentFile_);
@@ -57,6 +58,20 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 				detailsSetCharStyleByNeighbours(ch, cursorPos);
         charStyleVector_.insert(cursorPos, 1, ch);
 
+        QJsonArray arr;
+        foreach(charStyle_t ch, charStyleVector_) {
+        QJsonObject jChar;
+        jChar.insert("bold", ch.bold);
+        jChar.insert("italic", ch.italic);
+            jChar.insert("underline", ch.underline);
+            jChar.insert("strike", ch.strike);
+            jChar.insert("item", ch.item);
+            jChar.insert("star", ch.star);
+            jChar.insert("sColor", ch.sColor);
+            arr.push_back(jChar);
+      }
+
+        qDebug() << arr;
         ++charCounter_;
         return;
       }
