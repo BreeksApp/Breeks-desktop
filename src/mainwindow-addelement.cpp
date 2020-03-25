@@ -43,7 +43,7 @@ int MainWindow::addNewElementToArray(const elementData_t& newElement, const int 
   return newElementIndex;
 }
 
-void MainWindow::addNewElementToLayout(const int index, const int newElementIndex)
+void MainWindow::addNewElementToLayout(const int index, const int newElementIndex, const QJsonArray jArr)
 {
   //clear layout
   for (int j = 0; j < arrDays_[index].elementsCount; ++j) {
@@ -60,7 +60,8 @@ void MainWindow::addNewElementToLayout(const int index, const int newElementInde
   for (int j = 0; j < arrDays_[index].elementsCount; ++j) {
     //create new element object
     ElementTemplate *elem = new ElementTemplate;
-    elem->setText(arrDaysData_[index][j].text);
+
+    elem->setText(arrDaysData_[index][j].text, jArr);
     elem->setTime(arrDaysData_[index][j].timeStart, arrDaysData_[index][j].timeEnd);
     elem->setPalette(arrDaysData_[index][j].palette);
     elem->setDayAndElementIndex(index, j);

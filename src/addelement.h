@@ -40,7 +40,7 @@ private slots:
   void on_pushButtonBreeksZone_clicked();
 
 signals:
-  void sendTimeTableZoneData(bool *, const int, elementData_t);
+  void sendTimeTableZoneData(bool *, const int, elementData_t, QJsonArray);
   void sendBreeksZoneData(bool *, const int, breeksData_t);
 
 private:

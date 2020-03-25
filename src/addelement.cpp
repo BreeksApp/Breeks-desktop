@@ -162,8 +162,11 @@ void AddElement::on_buttonAdd_clicked()
     newElement.timeEnd.remove(5, 3);
 
     newElement.palette = ui->buttonTag->palette();
+    newElement.charStyleVector = ui->text->getCharStyleVector();
 
-    emit sendTimeTableZoneData(daysCheck_, DAYS_CHECK_COUNT, newElement);
+    QJsonArray arr;
+
+    emit sendTimeTableZoneData(daysCheck_, DAYS_CHECK_COUNT, newElement, arr);
   }
   else if (breeksZoneCondition_ == true) {
     breeksData_t newElement;

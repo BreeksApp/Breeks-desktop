@@ -38,7 +38,9 @@ SOURCES += \
     mainwindow-addelement.cpp \
     mainwindow-workzone.cpp \
     GeneralTextEdit/gentextedit.cpp \
-    GeneralTextEdit/gentextedit-details.cpp
+    GeneralTextEdit/gentextedit-details.cpp \
+    timetable-write-read.cpp \
+    timetabletextedit.cpp
 
 HEADERS += \
     breek.h \
@@ -52,7 +54,8 @@ HEADERS += \
     addbuttonhover.h \
     datastructures.h \
     effects.hpp \
-    gentextedit.h
+    gentextedit.h \
+    timetabletextedit.h
 
 FORMS += \
     loginform.ui \

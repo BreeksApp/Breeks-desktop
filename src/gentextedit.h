@@ -26,11 +26,15 @@ public:
   void keyPressEvent(QKeyEvent *event);
 
   //for work with file system, definition in filesystem.cpp
-	void readFromDB(const int currentFile);
+  void readFromDB(const int currentFile);
   void writeToDB(const int currentFile);
 
   void setNumberCurrentFile(const int n);
-	int getNumberCurrentFile();
+  int getNumberCurrentFile();
+
+  void clearCharStyleVector();
+
+  QVector<charStyle_t> getCharStyleVector();
   //
 
   //for work with char styles
@@ -47,6 +51,7 @@ public:
 
 //in ...-get-set.cpp
     void fillCharStyleVector(int cursorPos, int count, charStyle_t ch);
+    void fillCharStyleVector(charStyle_t ch);
   int getCharStyle(const int index) const;
   void setCharCounter(const int value);
 	int getCharCounter() const;
@@ -55,6 +60,11 @@ public:
 	void setCharStyle(const int style);
 	void addTodoList();
 
+    static void detailsSetCharStyle(charStyle_t& ch, const int style = charStyle::Normal);
+    static void detailsSetCharStyle(charStyle_t& ch, const int style, int& status);
+    static void detailsSetBoolByStatus(bool& a, int& status);
+
+    void fillCharsAndSetText(QString text, const QJsonArray jArr);
 public slots:
   void recieveUsername(const QString);
 
@@ -99,10 +109,6 @@ private:
 	//if we write smth in the middle of item, we won't have the item it will become a regular text
 	void detailsCheckItemAndCanselStatus(int& cursorPos);
 	void detailsCheckSelectionAndItem(int& cursorPos); //to unite common checkers
-
-	void detailsSetCharStyle(charStyle_t& ch, const int style = charStyle::Normal);
-	void detailsSetCharStyle(charStyle_t& ch, const int style, int& status);
-	void detailsSetBoolByStatus(bool& a, int& status);
 
 	void detailsSetCharStyleByNeighbours(charStyle_t& ch, const int index);
 };

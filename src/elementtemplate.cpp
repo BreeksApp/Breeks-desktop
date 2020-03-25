@@ -19,7 +19,7 @@ ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
   deleteButton_->setEnabled(false);
   deleteButton_->setFlat(true);
 
-	text_ = new GenTextEdit;
+  text_ = new GenTextEdit;
 
   timeStart_ = new QLineEdit;
   timeEnd_ = new QLineEdit;
@@ -84,9 +84,9 @@ void ElementTemplate::leaveEvent(QEvent *event)
   QWidget::leaveEvent(event);
 }
 
-void ElementTemplate::setText(QString text)
+void ElementTemplate::setText(QString text, const QJsonArray jArr)
 {
-  text_->setText(text);
+  text_->fillCharsAndSetText(text, jArr);
 }
 
 void ElementTemplate::setTime(QString timeStart, QString timeEnd)

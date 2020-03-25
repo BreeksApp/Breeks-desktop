@@ -7,7 +7,17 @@ void GenTextEdit::recieveUsername(const QString username) //SLOT
 
 int GenTextEdit::getNumberCurrentFile()
 {
-  return nCurrentFile_;
+    return nCurrentFile_;
+}
+
+void GenTextEdit::clearCharStyleVector()
+{
+  charStyleVector_.clear();
+}
+
+QVector<charStyle_t> GenTextEdit::getCharStyleVector()
+{
+    return charStyleVector_;
 }
 void GenTextEdit::setNumberCurrentFile(const int n)
 {
@@ -18,7 +28,12 @@ void GenTextEdit::setNumberCurrentFile(const int n)
 
 void GenTextEdit::fillCharStyleVector(int cursorPos, int count, charStyle_t ch)
 {
-  charStyleVector_.insert(cursorPos, count, ch);
+    charStyleVector_.insert(cursorPos, count, ch);
+}
+
+void GenTextEdit::fillCharStyleVector(charStyle_t ch)
+{
+   charStyleVector_.push_back(ch);
 }
 
 int GenTextEdit::getCharStyle(const int index) const

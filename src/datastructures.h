@@ -30,6 +30,8 @@ struct elementData_t {
   QPalette palette;
   QString timeStart;
   QString timeEnd;
+  QString color;
+  QVector<charStyle_t> charStyleVector;
 };
 \
 struct breeksData_t {
@@ -50,6 +52,7 @@ struct textInfo_t {
   QJsonArray jArr;
   QString text;
 };
+
 
 
 #endif // DATASTRUCTURES_H

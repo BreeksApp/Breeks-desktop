@@ -14,7 +14,8 @@ GenTextEdit::GenTextEdit(QWidget *parent) :
 
   nCurrentFile_ = 1;
   charCounter_ = 0;
-	readFromDB(nCurrentFile_);
+  //readFromDB(nCurrentFile_);
+
 }
 
 //We want to create our Text editor with special functions and hot-keys

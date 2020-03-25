@@ -10,11 +10,10 @@ QJsonObject filesystem::note6_;
 filesystem::filesystem()
 {}
 
-QString filesystem::getDataFromDB()
+QString filesystem::getDataFromDB(QString queryStr)
 {
-  QString queryString = "SELECT Notes FROM Employee WHERE Username='1'";
   QSqlQuery query;
-  query.exec(queryString);
+  query.exec(queryStr);
 	QString data;
 
   while (query.next()) {
@@ -27,38 +26,58 @@ QString filesystem::getDataFromDB()
 
 void filesystem::writeTextEditToDB(textInfo_t &info, const int currentFile)
 {
-  QJsonDocument jDoc = QJsonDocument::fromJson(getDataFromDB().toUtf8());
+  QJsonDocument jDoc = QJsonDocument::fromJson(getDataFromDB("SELECT Notes FROM Employee WHERE Username='1'").toUtf8());
   QJsonObject jObject = jDoc.object();
   QJsonObject notes = jObject.value("textEdit").toObject();
 
-  parseDataBase(notes);
+  parseDataBaseTextEdit(notes);
 
   switch (currentFile) {
     case 1:
-      pushDataToDB(jDoc, jObject, notes, note1_, info, currentFile);
+      pushDataToDBTextEdit(jDoc, jObject, notes, note1_, info, currentFile);
       break;
     case 2:
-      pushDataToDB(jDoc, jObject, notes, note2_, info, currentFile);
+      pushDataToDBTextEdit(jDoc, jObject, notes, note2_, info, currentFile);
       break;
     case 3:
-      pushDataToDB(jDoc, jObject, notes, note3_, info, currentFile);
+      pushDataToDBTextEdit(jDoc, jObject, notes, note3_, info, currentFile);
       break;
     case 4:
-      pushDataToDB(jDoc, jObject, notes, note4_, info, currentFile);
+      pushDataToDBTextEdit(jDoc, jObject, notes, note4_, info, currentFile);
       break;
     case 5:
-      pushDataToDB(jDoc, jObject, notes, note5_, info, currentFile);
+      pushDataToDBTextEdit(jDoc, jObject, notes, note5_, info, currentFile);
       break;
     case 6:
-      pushDataToDB(jDoc, jObject, notes, note6_, info, currentFile);
+      pushDataToDBTextEdit(jDoc, jObject, notes, note6_, info, currentFile);
       break;
-    }
+  }
 }
 
-void filesystem::pushDataToDB(QJsonDocument &jDoc, QJsonObject &jObject, QJsonObject &notes, QJsonObject &note,
+QJsonArray filesystem::readTimeTableFromDB(const int index)
+{
+  QJsonDocument jDoc = QJsonDocument::fromJson(getDataFromDB("SELECT TimeTable FROM Employee WHERE Username='1'").toUtf8());
+  QJsonObject jObject = jDoc.object();
+  QJsonObject timeTable = jObject.value("timeTable").toObject();
+  QJsonArray day = timeTable.value("day" + QString::number(index + 1)).toArray();
+  return  day;
+}
+
+void filesystem::writeTimeTableToDB(QJsonArray &jDayElements, const int index)
+{
+  QJsonDocument jDoc = QJsonDocument::fromJson(getDataFromDB("SELECT TimeTable FROM Employee WHERE Username='1'").toUtf8());
+  QJsonObject jObject = jDoc.object();
+  QJsonObject timeTable = jObject.value("timeTable").toObject();
+
+  jDoc.setObject(timeTable);
+  QString strJson(jDoc.toJson(QJsonDocument::Compact));
+  pushDataToDBTimeTable(jDoc, jObject, timeTable, jDayElements, index);
+}
+
+void filesystem::pushDataToDBTextEdit(QJsonDocument &jDoc, QJsonObject &jObject, QJsonObject &notes, QJsonObject &note,
 															textInfo_t &info, const int currentFile)
 {
-	note.insert("charStyleVector", info.jArr);
+  note.insert("charStyleVector", info.jArr);
   note.insert("text", info.text);
 
   notes.insert("note" + QString::number(currentFile), note);
@@ -68,7 +87,18 @@ void filesystem::pushDataToDB(QJsonDocument &jDoc, QJsonObject &jObject, QJsonOb
   QSqlQuery query("UPDATE Employee SET Notes ='"+strJson+"' WHERE Username ='1'");
 }
 
-void filesystem::parseDataBase(QJsonObject &notes)
+void filesystem::pushDataToDBTimeTable(QJsonDocument &jDoc, QJsonObject &jObject, QJsonObject &timeTable,
+                                                            QJsonArray &jDayElements, const int index)
+{
+  timeTable.insert("day" + QString::number(index + 1), jDayElements);
+  jObject.insert("timeTable", timeTable);
+  jDoc.setObject(jObject);
+
+  QString strJson(jDoc.toJson(QJsonDocument::Compact));
+  QSqlQuery query("UPDATE Employee SET TimeTable ='"+strJson+"' WHERE Username ='1'");
+}
+
+void filesystem::parseDataBaseTextEdit(QJsonObject &notes)
 {
   note1_ = notes.value("note1").toObject();
   note2_ = notes.value("note2").toObject();
@@ -80,11 +110,11 @@ void filesystem::parseDataBase(QJsonObject &notes)
 
 QJsonObject filesystem::readTextEdidFromDB(const int currentFile)
 {
-  QJsonDocument jDoc = QJsonDocument::fromJson(getDataFromDB().toUtf8());
+  QJsonDocument jDoc = QJsonDocument::fromJson(getDataFromDB("SELECT Notes FROM Employee WHERE Username='1'").toUtf8());
   QJsonObject jObject = jDoc.object();
   QJsonObject notes = jObject.value("textEdit").toObject();
 
-  parseDataBase(notes);
+  parseDataBaseTextEdit(notes);
 
   switch (currentFile) {
 		case 1 :
