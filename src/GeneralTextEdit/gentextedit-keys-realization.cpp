@@ -167,7 +167,7 @@ void GenTextEdit::addStar()
 }
 
 //---------TAB
-void GenTextEdit::addTab(const int cursorPos)
+void GenTextEdit::addTab(int& cursorPos)
 {
 	QTextCharFormat charFormat;
 	charFormat.setFontWeight(QFont::Normal);
@@ -190,8 +190,8 @@ void GenTextEdit::addTab(const int cursorPos)
 	detailsSetCharStyle(ch, charStyle::Item);
 	for (int i = 0; i < TAB_LENGTH; ++i) {
 		c.insertText(" ", charFormat);
-		charStyleVector_.insert(pos, 1, ch);
-		++pos;
+		charStyleVector_.insert(pos + i, 1, ch);
+		//++pos;
 		++charCounter_;
 	}
 
@@ -200,12 +200,41 @@ void GenTextEdit::addTab(const int cursorPos)
 	}
 //Add command to UndoRedoBuffer
 	commandInfo_t command;
-	QString sTab;
-	sTab.insert(TAB_LENGTH, " ");
-	setCommandInfo(command, command::insertStr, cursorPos, sTab);
+	QString sTab = "";
+	sTab.insert(TAB_LENGTH - 1, " ");
+	setCommandInfo(command, command::insertStr, pos, sTab, TAB_LENGTH);
 	undoRedoBuffer->pushUndoCommand(command);
 //
 	this->setTextCursor(c);
+}
+
+//---------BackTab
+void GenTextEdit::backTab(int &cursorPos)
+{
+	QTextCursor c = this->textCursor();
+	c.clearSelection();
+	c.movePosition(QTextCursor::StartOfBlock);
+	c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, TAB_LENGTH);
+
+	QString sTab = "";
+	sTab.insert(TAB_LENGTH - 1, " ");
+
+	if (c.selectedText() == sTab) {
+		this->setTextCursor(c);
+		iterator iterLast = charStyleVector_.begin() + c.position();
+		iterator iterFirst = iterLast - TAB_LENGTH;
+	//Add command to UndoRedoBuffer
+		commandInfo_t command;
+		setCommandInfo(command, command::deleteStr, c.position() - TAB_LENGTH, sTab, TAB_LENGTH);
+		undoRedoBuffer->pushUndoCommand(command);
+	//
+		charStyleVector_.erase(iterFirst, iterLast);
+		charCounter_ -= TAB_LENGTH;
+		c.deleteChar();
+
+		c.setPosition(cursorPos - TAB_LENGTH);
+		this->setTextCursor(c);
+	}
 }
 
 //---------SPACE

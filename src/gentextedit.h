@@ -95,7 +95,8 @@ private:
 //keys-realization.cpp
 	void addTodoList(const QString itemSign);
 	void addStar();
-	void addTab(const int cursorPos);
+	void addTab(int& cursorPos);
+	void backTab(int& cursorPos);
 	void addSpace(const int cursorPos);
 	void deleteSmth(const Qt::KeyboardModifiers kmModifiers, const QTextCursor::MoveOperation whereMove,
 				int& cursorPos, const int blindSpot, const int a = 0);

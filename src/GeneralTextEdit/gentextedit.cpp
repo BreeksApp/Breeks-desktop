@@ -26,7 +26,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 {
   int iKey = event->key();
   Qt::KeyboardModifiers kmModifiers = event->modifiers();
-  int cursorPos = this->textCursor().position();
+  int cursorPos = this->textCursor().position();	
 
   QTextCharFormat charFormat; //to back Normal font style of text after Bold, Italic, Underline... words
   charFormat.setFontWeight(QFont::Normal);
@@ -121,6 +121,10 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 
 				return;
       }
+			case Qt::Key_Backtab : {
+				backTab(cursorPos);
+				return;
+			}
       //Return
       case Qt::Key_Return :
         detailsCheckSelectionAndItem(cursorPos);
@@ -221,9 +225,11 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
   }
   //Shift + arrows
   if (kmModifiers == Qt::ShiftModifier) {
-		//it is tmp soluton, I want to reimplementate work with shift
-		QTextEdit::keyPressEvent(event);
-		return;
+		if (iKey == Qt::UpArrow || iKey == Qt::DownArrow || iKey == Qt::RightArrow || iKey == Qt::LeftArrow) {
+			//it is tmp soluton, I want to reimplementate work with shift
+			QTextEdit::keyPressEvent(event);
+			return;
+		}
   }
 
   //Ctrl + arrows

@@ -7,6 +7,10 @@
 
 void GenTextEdit::detailsEraseSelectedText(int &cursorPos)
 {
+	if (!this->textCursor().hasSelection()) {
+		return;
+	}
+
 	QTextCursor c = this->textCursor();
 	int pos = std::min(c.selectionStart(), c.selectionEnd());
 	int nChar = c.selectedText().length();
@@ -15,8 +19,7 @@ void GenTextEdit::detailsEraseSelectedText(int &cursorPos)
 	c.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, pos);
 	c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, nChar);
 
-	iterator iterFirst = charStyleVector_.begin();
-	iterFirst += c.selectionStart();
+	iterator iterFirst = charStyleVector_.begin() + c.selectionStart();
   iterator iterLast = iterFirst + nChar;
 
 	//if some parts of item is chosen we must delete full item ---
