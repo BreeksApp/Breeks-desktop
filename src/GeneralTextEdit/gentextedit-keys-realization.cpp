@@ -309,6 +309,7 @@ void GenTextEdit::undoCommand()
 			c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, command.charStyleVector.size());
 			this->setTextCursor(c);
 			makeCharNormal();
+			//this->moveCursor(QTextCursor::Right);
 		}
 
 		undoRedoBuffer->pushRedoCommand(command);
@@ -356,6 +357,7 @@ void GenTextEdit::redoCommand()
 			this->setTextCursor(c);
 			const QString sColor = command.text;
 			colorText(sColor);
+			//this->moveCursor(QTextCursor::Right);
 		}
 
 		undoRedoBuffer->pushUndoCommand(command);

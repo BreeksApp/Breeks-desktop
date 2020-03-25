@@ -319,4 +319,6 @@ void GenTextEdit::detailsUndoRedoEffects(const commandInfo_t &command, const boo
 
 	const int style = command.text.toInt();
 	setCharStyle(style, flag);
+
+	this->moveCursor(QTextCursor::Right);
 }

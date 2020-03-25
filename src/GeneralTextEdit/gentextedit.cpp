@@ -136,10 +136,10 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 
     if (kmModifiers == Qt::ControlModifier) {
 			//Ctrl + z
-			if (QKeySequence(iKey) == Qt::Key_Z) {
+			if (QKeySequence(iKey) == Qt::Key_Z || QKeySequence(iKey).toString() == "Я") {
 				undoCommand();
 			}
-			else if (QKeySequence(iKey) == Qt::Key_Y) {
+			else if (QKeySequence(iKey) == Qt::Key_Y || QKeySequence(iKey).toString() == "Н") {
 				redoCommand();
 			}
 			//Ctrl + d - dash
@@ -307,30 +307,36 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 		else if (QKeySequence(iKey) == Qt::Key_N || QKeySequence(iKey).toString() == "Т") {
 			makeCharNormal();
 			detailsSetCharStyle(globCh);
+			return;
 		}
 		//Ctrl + g - highlight in green
 		else if (QKeySequence(iKey) == Qt::Key_G || QKeySequence(iKey).toString() == "П") {
 			colorText(colors::green);
+			this->moveCursor(QTextCursor::Right);
 			return;
 		}
 		//Ctrl + l - lavender
 		else if (QKeySequence(iKey) == Qt::Key_L || QKeySequence(iKey).toString() == "Д") {
 			colorText(colors::lavender);
+			this->moveCursor(QTextCursor::Right);
 			return;
 		}
 		//Ctrl + m - marina
 		else if (QKeySequence(iKey) == Qt::Key_M || QKeySequence(iKey).toString() == "Ь") {
 			colorText(colors::marina);
+			this->moveCursor(QTextCursor::Right);
 			return;
 		}
 		//Ctrl + o - orange
 		else if (QKeySequence(iKey) == Qt::Key_O || QKeySequence(iKey).toString() == "Щ") {
 			colorText(colors::orange);
+			this->moveCursor(QTextCursor::Right);
 			return;
 		}
 		//Ctrl + r - red
 		else if (QKeySequence(iKey) == Qt::Key_R || QKeySequence(iKey).toString() == "К") {
 			colorText(colors::red);
+			this->moveCursor(QTextCursor::Right);
 			return;
 		}
   }
