@@ -123,9 +123,9 @@ private:
 	void detailsCheckItemAndCanselStatus(int& cursorPos);
 	void detailsCheckSelectionAndItem(int& cursorPos); //to unite common checkers
 
-	void detailsSetCharStyle(charStyle_t& ch, const int style = charStyle::Normal);
-	void detailsSetCharStyle(charStyle_t& ch, const int style, int& status);
-	void detailsSetBoolByStatus(bool& a, int& status);
+    static void detailsSetCharStyle(charStyle_t& ch, const int style = charStyle::Normal);
+    static void detailsSetCharStyle(charStyle_t& ch, const int style, int& status);
+    static void detailsSetBoolByStatus(bool& a, int& status);
 	void detailsSetFormatFields(QTextCharFormat& fmt, const charStyle_t ch);
 
 	void detailsSetCharStyleByNeighbours(charStyle_t& ch, const int index);

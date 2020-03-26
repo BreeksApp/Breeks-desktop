@@ -257,8 +257,8 @@ void GenTextEdit::fillCharsAndSetText(QString text, const QJsonArray jArr)
           charFormat.setFontWeight(QFont::Normal);
       }
       ch.sColor = color;
-
-      this->fillCharStyleVector(ch);
+      int cursorPos = this->textCursor().position();
+      this->fillCharStyleVector(cursorPos, 1, ch);
       out >> tmpChar;
       this->textCursor().insertText(static_cast<QString>(tmpChar), charFormat);
       }
