@@ -254,6 +254,7 @@ void GenTextEdit::fillCharsAndSetText(QString text, const QJsonArray jArr)
       out >> tmpChar;
       this->textCursor().insertText(static_cast<QString>(tmpChar), charFormat);
       }
+
 }
 
 void GenTextEdit::detailsSetCharStyleByNeighbours(charStyle_t &ch, int indexRight)
