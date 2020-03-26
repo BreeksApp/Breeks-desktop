@@ -8,7 +8,7 @@ LoginForm::LoginForm(QWidget *parent) :
   ui->setupUi(this);
 
   mydb = QSqlDatabase::addDatabase("QSQLITE"); //Choose driver for work work with SqlLite DB
-        mydb.setDatabaseName("/Users/ruby/Desktop/c++/Breeks-App/src/BreeksInfo.db"); // Set Path to our DB file
+				mydb.setDatabaseName("/home/yaroslav/PROJECTS/Breeks-App/src/FileSystem/BreeksInfo.db"); // Set Path to our DB file
 
   if (!mydb.open()) {
     qDebug()<<"Failed to open DataBase";

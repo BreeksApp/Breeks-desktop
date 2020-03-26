@@ -26,7 +26,7 @@ SOURCES += \
     loginform.cpp \
     main.cpp \
     mainwidnow-timetable.cpp \
-    mainwindow-breekszone.cpp \
+    mainwindow-Breekszone.cpp \
     mainwindow-effects.cpp \
     mainwindow.cpp \
     mainwindow-note.cpp \
@@ -40,7 +40,7 @@ SOURCES += \
     GeneralTextEdit/gentextedit.cpp \
     GeneralTextEdit/gentextedit-details.cpp \
     timetable-write-read.cpp \
-    timetabletextedit.cpp
+    timetabletextedit.cpp \
     undoredotext.cpp
 
 HEADERS += \
@@ -56,7 +56,7 @@ HEADERS += \
     datastructures.h \
     effects.hpp \
     gentextedit.h \
-    timetabletextedit.h
+    timetabletextedit.h \
     undoredotext.h
 
 FORMS += \
@@ -70,47 +70,47 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    resources.qrc
+  resources.qrc
 
 DISTFILES += \
-  images/breeks/1.1.png \
-    images/breeks/1.1.png \
-    images/breeks/1.2.png \
-    images/breeks/1.3.png \
-    images/breeks/1.4.png \
-    images/breeks/2.1.png \
-    images/breeks/2.2.png \
-    images/breeks/2.3.png \
-    images/breeks/2.4.png \
-    images/breeks/3.1.png \
-    images/breeks/3.2.png \
-    images/breeks/3.3.png \
-    images/breeks/3.4.png \
-    images/breeks/4.1.png \
-    images/breeks/4.2.png \
-    images/breeks/4.3.png \
-    images/breeks/4.4.png \
-    images/breeks/5.1.png \
-    images/breeks/5.2.png \
-    images/breeks/5.3.png \
-    images/breeks/5.4.png \
-    images/breeks/6.1.png \
-    images/breeks/6.2.png \
-    images/breeks/6.3.png \
-    images/breeks/6.4.png \
-    images/breeks/7.1.png \
-    images/breeks/7.2.png \
-    images/breeks/7.3.png \
-    images/breeks/7.4.png \
-    images/breeks/8.1.png \
-    images/breeks/8.2.png \
-    images/breeks/8.3.png \
-    images/breeks/8.4.png \
-    images/breeks/9.1.png \
-    images/breeks/9.2.png \
-    images/breeks/9.3.png \
-    images/breeks/9.4.png \
-    images/breeks/10.1.png \
-    images/breeks/10.2.png \
-    images/breeks/10.3.png \
-    images/breeks/10.4.png
+  Images/Breeks/1.1.png \
+    Images/Breeks/1.1.png \
+    Images/Breeks/1.2.png \
+    Images/Breeks/1.3.png \
+    Images/Breeks/1.4.png \
+    Images/Breeks/2.1.png \
+    Images/Breeks/2.2.png \
+    Images/Breeks/2.3.png \
+    Images/Breeks/2.4.png \
+    Images/Breeks/3.1.png \
+    Images/Breeks/3.2.png \
+    Images/Breeks/3.3.png \
+    Images/Breeks/3.4.png \
+    Images/Breeks/4.1.png \
+    Images/Breeks/4.2.png \
+    Images/Breeks/4.3.png \
+    Images/Breeks/4.4.png \
+    Images/Breeks/5.1.png \
+    Images/Breeks/5.2.png \
+    Images/Breeks/5.3.png \
+    Images/Breeks/5.4.png \
+    Images/Breeks/6.1.png \
+    Images/Breeks/6.2.png \
+    Images/Breeks/6.3.png \
+    Images/Breeks/6.4.png \
+    Images/Breeks/7.1.png \
+    Images/Breeks/7.2.png \
+    Images/Breeks/7.3.png \
+    Images/Breeks/7.4.png \
+    Images/Breeks/8.1.png \
+    Images/Breeks/8.2.png \
+    Images/Breeks/8.3.png \
+    Images/Breeks/8.4.png \
+    Images/Breeks/9.1.png \
+    Images/Breeks/9.2.png \
+    Images/Breeks/9.3.png \
+    Images/Breeks/9.4.png \
+    Images/Breeks/10.1.png \
+    Images/Breeks/10.2.png \
+    Images/Breeks/10.3.png \
+    Images/Breeks/10.4.png
