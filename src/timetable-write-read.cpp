@@ -2,56 +2,6 @@
 #include "gentextedit.h"
 #include <QDebug>
 
-
-//--------------------TimeTable IO-----------------------(
-// Doesn't work with DB yet
-void MainWindow::setStatesFromFileLastVisit()
-{
-  if (!fileLastVisit_.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    qDebug() << "FILE LAST_VISIT OPENING CRASHED";
-  }
-  QString text = fileLastVisit_.readAll();
-  QTextStream stream(&text);
-
-  int nLastNotePage = 1;
-  int iTmp = 0;
-  stream >> iTmp;
-  if (iTmp >= 1 && iTmp <= 6) {
-    nLastNotePage = iTmp;
-  }
-  noteChangePage(nLastNotePage);
-
-  QString imageName = defaultImageName_;
-  QString sTmp = "";
-  stream >> sTmp;
-  if (QString::compare(sTmp, defaultImageName_) != 0) {
-    if (openImageFromDisk(sTmp)) {
-      imageName = sTmp;
-    }
-  }
-  setImage(imageName);
-
-  fileLastVisit_.flush();
-  fileLastVisit_.close();
-}
-
-void MainWindow::writeDataToFileLastVisit()
-{
-  if (!fileLastVisit_.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
-    qDebug() << "FILE LAST_VISIT OPENING CRASHED";
-  }
-  QTextStream out(&fileLastVisit_);
-
-    const int nNotePage = ui->note->getNumberCurrentFile();
-  out << nNotePage << " ";
-
-    out << currentImageName_;
-
-    fileLastVisit_.flush();
-  fileLastVisit_.close();
-}
-
-
 void MainWindow::readElementsDataFromFile(const int index)
 {
 
@@ -66,11 +16,9 @@ void MainWindow::readElementsDataFromFile(const int index)
   }
 
   QJsonArray day = filesystem::readTimeTableFromDB(index);
-  //qDebug() << day;
-  //qDebug() << "#";
   for (QJsonValue elem: day) {
     QJsonObject jElem = elem.toObject();
-    //qDebug() << jElem;
+
     elementData_t elemData;
     elemData.text = jElem.value("text").toString();
     QColor color(jElem.value("color").toString());
@@ -78,52 +26,16 @@ void MainWindow::readElementsDataFromFile(const int index)
     elemData.timeStart = jElem.value("timeStart").toString();
     elemData.timeEnd = jElem.value("timeEnd").toString();
 
-
     QJsonArray jChars = jElem.value("charStyleVector").toArray();
-
     charStyle_t ch;
+    QTextCharFormat charFormat;
 
     foreach (QJsonValue jCharr, jChars) {
       QJsonObject jChar = jCharr.toObject();
-      GenTextEdit::detailsSetCharStyle(ch);
-      bool boldStatus = jChar.value("bold").toBool();
-      bool italicStatus = jChar.value("italic").toBool();
-      bool underlineStatus = jChar.value("underline").toBool();
-      bool strikeStatus = jChar.value("strike").toBool();
-      bool itemStatus = jChar.value("item").toBool();
-      bool starStatus = jChar.value("star").toBool();
-      QString color = jChar.value("sColor").toString();
-
-      if (boldStatus == true) {
-             GenTextEdit::detailsSetCharStyle(ch, charStyle::Bold);
-      }
-      if (italicStatus == true) {
-             GenTextEdit::detailsSetCharStyle(ch, charStyle::Italic);
-      }
-      if (underlineStatus == true) {
-             GenTextEdit::detailsSetCharStyle(ch, charStyle::Underline);
-      }
-      if (strikeStatus == true) {
-             GenTextEdit::detailsSetCharStyle(ch, charStyle::Strike);
-      }
-      if (itemStatus == true) {
-             GenTextEdit::detailsSetCharStyle(ch, charStyle::Item);
-      }
-      if (starStatus == true) {
-             GenTextEdit::detailsSetCharStyle(ch, charStyle::Star);
-      }
-      ch.sColor = color;
-
+      GenTextEdit::setStylesToChar(ch, charFormat, jChar);
       elemData.charStyleVector.push_back(ch);
     }
-    //qDebug() <<elemData.text;
-    //qDebug() <<elemData.color;
-    //qDebug() <<elemData.timeEnd;
-    //qDebug() <<elemData.timeStart;
-    //qDebug() <<elemData.charStyleVector;
-    //qDebug() <<jChars;
-
-    recieveTimeTableZoneData(arr, DAYS_COUNT, elemData, jChars);
+    recieveTimeTableZoneData(arr, DAYS_COUNT, elemData);
   }
 }
 
@@ -134,6 +46,7 @@ void MainWindow::writeElementsDataToFile(const int index)
     arrDaysData_[index][i].text = a->getText();
     arrDaysData_[index][i].palette = a->getColor();
     arrDaysData_[index][i].charStyleVector = a->getCharStyleVector();
+     //qDebug()<< a->getCharStyleVector().size();
   }
 
   //write data to file

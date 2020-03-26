@@ -130,8 +130,8 @@ QJsonObject filesystem::readTextEdidFromDB(const int currentFile)
 		case 6 :
       return note6_;
 
-		/*default :
-			return  note1_;*/
+  default :
+    return  note1_;
   }
 }
 

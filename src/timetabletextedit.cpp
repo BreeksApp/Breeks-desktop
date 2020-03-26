@@ -4,69 +4,42 @@ TimetableTextEdit::TimetableTextEdit(QWidget *parent)
         :GenTextEdit(parent)
 {
   this->clearCharStyleVector();
-  for (charStyle_t ch: this->getCharStyleVector()) {
-      qDebug() <<ch.bold;
-  }
   this->clear();
   this->setCharCounter(0);
 }
 
-void TimetableTextEdit::fillCharsAndSetText(QString text, const QJsonArray jArr)
+void TimetableTextEdit::fillCharsAndSetText(QString text, const QVector<charStyle_t>& arr)
 {
   this->clearCharStyleVector();
-  this->setCharCounter(jArr.size());
+  this->setCharCounter(arr.size());
+
+  QJsonArray jArr;
+
+  for (charStyle_t ch: arr) {
+    QJsonObject jChar;
+    jChar.insert("bold", ch.bold);
+    jChar.insert("italic", ch.italic);
+    jChar.insert("underline", ch.underline);
+    jChar.insert("strike", ch.strike);
+    jChar.insert("item", ch.item);
+    jChar.insert("star", ch.star);
+    jChar.insert("sColor", ch.sColor);
+    jArr.push_back(jChar);
+  }
 
   QTextStream out(&text);
-\
   QChar tmpChar;
   charStyle_t ch;
- //qDebug() << text;
- //qDebug() << jArr;
+  QTextCharFormat charFormat;
+
   for (int i = 0; i < this->getCharCounter(); ++i) {
-    detailsSetCharStyle(ch);
-    QTextCharFormat charFormat;
-    charFormat.setFontWeight(QFont::Normal);
-
     QJsonObject jChar = jArr[i].toObject();
-
-    bool boldStatus = jChar.value("bold").toBool();
-    bool italicStatus = jChar.value("italic").toBool();
-    bool underlineStatus = jChar.value("underline").toBool();
-    bool strikeStatus = jChar.value("strike").toBool();
-    bool itemStatus = jChar.value("item").toBool();
-    bool starStatus = jChar.value("star").toBool();
-    QString color = jChar.value("sColor").toString();
-
-    if (boldStatus == true) {
-        detailsSetCharStyle(ch, charStyle::Bold);
-        charFormat.setFontWeight(QFont::Bold);
-    }
-    if (italicStatus == true) {
-        detailsSetCharStyle(ch, charStyle::Italic);
-        charFormat.setFontItalic(true);
-    }
-    if (underlineStatus == true) {
-        detailsSetCharStyle(ch, charStyle::Underline);
-        charFormat.setFontUnderline(true);
-    }
-    if (strikeStatus == true) {
-        detailsSetCharStyle(ch, charStyle::Strike);
-        charFormat.setFontStrikeOut(true);
-    }
-      if (itemStatus == true) {
-        detailsSetCharStyle(ch, charStyle::Item);
-        charFormat.setFontWeight(QFont::Normal);
-    }
-      if (starStatus == true) {
-        detailsSetCharStyle(ch, charStyle::Star);
-        charFormat.setFontWeight(QFont::Normal);
-    }
-    ch.sColor = color;
-
+    charFormat.setFontWeight(QFont::Normal);
+    GenTextEdit::setStylesToChar(ch, charFormat, jChar);
     int cursorPos = this->textCursor().position();
     this->fillCharStyleVector(cursorPos, 1, ch);
     out >> tmpChar;
     this->textCursor().insertText(static_cast<QString>(tmpChar), charFormat);
-    }
+  }
 }
 

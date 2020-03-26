@@ -164,21 +164,7 @@ void AddElement::on_buttonAdd_clicked()
     newElement.palette = ui->buttonTag->palette();
     newElement.charStyleVector = ui->text->getCharStyleVector();
 
-    QJsonArray arr;
-
-    for (charStyle_t ch: newElement.charStyleVector) {
-      QJsonObject jChar;
-      jChar.insert("bold", ch.bold);
-      jChar.insert("italic", ch.italic);
-      jChar.insert("underline", ch.underline);
-      jChar.insert("strike", ch.strike);
-      jChar.insert("item", ch.item);
-      jChar.insert("star", ch.star);
-      jChar.insert("sColor", ch.sColor);
-      arr.push_back(jChar);
-    }
-
-    emit sendTimeTableZoneData(daysCheck_, DAYS_CHECK_COUNT, newElement, arr);
+    emit sendTimeTableZoneData(daysCheck_, DAYS_CHECK_COUNT, newElement);
   }
   else if (breeksZoneCondition_ == true) {
     breeksData_t newElement;

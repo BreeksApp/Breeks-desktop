@@ -5,8 +5,8 @@
 class TimetableTextEdit : public GenTextEdit
 {
 public:
-    TimetableTextEdit(QWidget *parent = nullptr);
-    void fillCharsAndSetText(QString text, const QJsonArray jArr);
+  TimetableTextEdit(QWidget *parent = nullptr);
+  void fillCharsAndSetText(QString text, const QVector<charStyle_t>& arr);
 };
 
 #endif // TIMETABLETEXTEDIT_H

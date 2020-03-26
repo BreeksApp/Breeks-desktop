@@ -52,6 +52,8 @@ public:
 //in ...-get-set.cpp
     void fillCharStyleVector(int cursorPos, int count, charStyle_t ch);
     void fillCharStyleVector(charStyle_t ch);
+
+  static void setStylesToChar(charStyle_t& ch, QTextCharFormat& charFormat, const QJsonObject jChar);
   int getCharStyle(const int index) const;
   void setCharCounter(const int value);
 	int getCharCounter() const;

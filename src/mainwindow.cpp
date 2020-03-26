@@ -52,8 +52,8 @@ void MainWindow::on_buttonAdd_clicked()
   addForm->setAttribute(Qt::WA_DeleteOnClose);
 
   //signal to move info from creating element form to new element on timetable
-  connect(addForm, SIGNAL(sendTimeTableZoneData(bool*, const int, elementData_t, QJsonArray)),
-        this, SLOT(recieveTimeTableZoneData(bool*, const int, elementData_t, QJsonArray)));
+  connect(addForm, SIGNAL(sendTimeTableZoneData(bool*, const int, elementData_t)),
+        this, SLOT(recieveTimeTableZoneData(bool*, const int, elementData_t)));
   connect(addForm, SIGNAL(sendBreeksZoneData(bool*, const int, breeksData_t)),
         this, SLOT(recieveBreeksZoneData(bool*, const int, breeksData_t)));
 
@@ -67,7 +67,7 @@ void MainWindow::on_buttonAdd_clicked()
   ui->buttonAdd->setStyleSheet("border-image:url(:/Images/Images/addButtonHover.png)");
 }
 
-elementData_t MainWindow::recieveTimeTableZoneData(bool *daysCheck, const int arrSize, elementData_t newElement, QJsonArray jArr)
+void MainWindow::recieveTimeTableZoneData(bool *daysCheck, const int arrSize, elementData_t newElement)
 {
   for (int i = 0; i < arrSize; i++) {
     if (daysCheck[i] == true) {
@@ -79,7 +79,7 @@ elementData_t MainWindow::recieveTimeTableZoneData(bool *daysCheck, const int ar
       arrDays_[i].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[i].groupBoxElementsHeight);
 
       //add new element to layout
-      addNewElementToLayout(i, newElementIndex, jArr);
+      addNewElementToLayout(i, newElementIndex);
 
       //TODO solve the problem with bad auto moving
       /*if ((arrDays_[i].elementsCount % 6) == 0) {
@@ -90,7 +90,6 @@ elementData_t MainWindow::recieveTimeTableZoneData(bool *daysCheck, const int ar
       arrDays_[i].labelElementsCount->setText(QString::number(arrDays_[i].elementsCount));
     }
   }
-    return newElement;
 }
 
 void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, breeksData_t newElement)

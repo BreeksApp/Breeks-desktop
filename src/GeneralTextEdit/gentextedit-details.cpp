@@ -207,7 +207,7 @@ void GenTextEdit::fillCharsAndSetText(QString text, const QJsonArray jArr)
     QChar tmpChar;
     charStyle_t ch;
    //qDebug() << text;
-   qDebug() << jArr;
+
     for (int i = 0; i < this->getCharCounter(); ++i) {
       detailsSetCharStyle(ch);
       QTextCharFormat charFormat;

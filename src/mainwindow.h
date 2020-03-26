@@ -44,7 +44,7 @@ public slots:
   void setImageBackgroundView(bool);
 
 //slot to set data which was pronted and selected by user in AddElement form for Time Table Zone
-  elementData_t recieveTimeTableZoneData(bool *, const int, elementData_t, QJsonArray jArr);
+  void recieveTimeTableZoneData(bool *, const int, elementData_t);
 
 //slot to set data which was pronted and selected by user in AddElement form for Breeks Zone
   void recieveBreeksZoneData(bool *, const int, breeksData_t);
@@ -198,7 +198,7 @@ private:
 
 
   int addNewElementToArray(const elementData_t& newElement, const int index);
-  void addNewElementToLayout(const int index, const int newElementIndex, const QJsonArray jArr);
+  void addNewElementToLayout(const int index, const int newElementIndex);
 //------------------
 
                         //---------BREEKSZONE---------

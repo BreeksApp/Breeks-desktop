@@ -84,9 +84,9 @@ void ElementTemplate::leaveEvent(QEvent *event)
   QWidget::leaveEvent(event);
 }
 
-void ElementTemplate::setText(QString text, const QJsonArray jArr)
+void ElementTemplate::setText(QString text, const QVector<charStyle_t>& charArr)
 {
-  text_->fillCharsAndSetText(text, jArr);
+  text_->fillCharsAndSetText(text, charArr);
 }
 
 void ElementTemplate::setTime(QString timeStart, QString timeEnd)
