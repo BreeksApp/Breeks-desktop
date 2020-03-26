@@ -249,7 +249,8 @@ void GenTextEdit::fillCharsAndSetText(QString text, const QJsonArray jArr)
       }
       ch.sColor = color;
 
-      this->fillCharStyleVector(ch);
+      int cursorPos = this->textCursor().position();
+      this->fillCharStyleVector(cursorPos, 1, ch);
       out >> tmpChar;
       this->textCursor().insertText(static_cast<QString>(tmpChar), charFormat);
       }

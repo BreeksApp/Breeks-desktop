@@ -51,7 +51,6 @@ public:
 
 //in ...-get-set.cpp
     void fillCharStyleVector(int cursorPos, int count, charStyle_t ch);
-    void fillCharStyleVector(charStyle_t ch);
 
   static void setStylesToChar(charStyle_t& ch, QTextCharFormat& charFormat, const QJsonObject jChar);
   int getCharStyle(const int index) const;
@@ -61,10 +60,6 @@ public:
 //in ...-keys-realization.cpp
 	void setCharStyle(const int style);
 	void addTodoList();
-
-    static void detailsSetCharStyle(charStyle_t& ch, const int style = charStyle::Normal);
-    static void detailsSetCharStyle(charStyle_t& ch, const int style, int& status);
-    static void detailsSetBoolByStatus(bool& a, int& status);
 
     void fillCharsAndSetText(QString text, const QJsonArray jArr);
 public slots:
@@ -111,6 +106,9 @@ private:
 	//if we write smth in the middle of item, we won't have the item it will become a regular text
 	void detailsCheckItemAndCanselStatus(int& cursorPos);
 	void detailsCheckSelectionAndItem(int& cursorPos); //to unite common checkers
+    static void detailsSetCharStyle(charStyle_t& ch, const int style = charStyle::Normal);
+    static void detailsSetCharStyle(charStyle_t& ch, const int style, int& status);
+    static void detailsSetBoolByStatus(bool& a, int& status);
 
 	void detailsSetCharStyleByNeighbours(charStyle_t& ch, const int index);
 };
