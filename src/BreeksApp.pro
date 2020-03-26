@@ -39,6 +39,8 @@ SOURCES += \
     mainwindow-workzone.cpp \
     GeneralTextEdit/gentextedit.cpp \
     GeneralTextEdit/gentextedit-details.cpp \
+    timetable-write-read.cpp \
+    timetabletextedit.cpp
     undoredotext.cpp
 
 HEADERS += \
@@ -54,6 +56,7 @@ HEADERS += \
     datastructures.h \
     effects.hpp \
     gentextedit.h \
+    timetabletextedit.h
     undoredotext.h
 
 FORMS += \

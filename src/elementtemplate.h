@@ -1,7 +1,7 @@
 #ifndef ELEMENTTEMPLATE_H
 #define ELEMENTTEMPLATE_H
 
-#include "gentextedit.h"
+#include "timetabletextedit.h"
 #include "datastructures.h"
 
 #include <QWidget>
@@ -22,12 +22,14 @@ public:
   void enterEvent(QEvent *event);
   void leaveEvent(QEvent *event);
 
-  void setText(QString text);
+  void setText(QString text, const QVector<charStyle_t>& charArr);
   void setTime(QString timeStart, QString timeEnd);
   void setPalette(const QPalette palette);
 
   void setDayAndElementIndex(const int dayIndex, const int elementIndex);
   void setElementIndex(const int index);
+
+  QVector<charStyle_t> getCharStyleVector();
 
   QString getText() const;
   QPalette getColor() const;
@@ -45,7 +47,7 @@ private:
   QPushButton *deleteButton_;
 
   QGridLayout *elementLayout_;
-	GenTextEdit *text_;
+  TimetableTextEdit *text_;
   QLineEdit *timeStart_;
   QLineEdit *timeEnd_;
 

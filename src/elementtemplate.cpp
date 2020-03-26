@@ -19,7 +19,7 @@ ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
   deleteButton_->setEnabled(false);
   deleteButton_->setFlat(true);
 
-	text_ = new GenTextEdit;
+  text_ = new TimetableTextEdit;
 
   timeStart_ = new QLineEdit;
   timeEnd_ = new QLineEdit;
@@ -84,9 +84,9 @@ void ElementTemplate::leaveEvent(QEvent *event)
   QWidget::leaveEvent(event);
 }
 
-void ElementTemplate::setText(QString text)
+void ElementTemplate::setText(QString text, const QVector<charStyle_t>& charArr)
 {
-  text_->setText(text);
+  text_->fillCharsAndSetText(text, charArr);
 }
 
 void ElementTemplate::setTime(QString timeStart, QString timeEnd)
@@ -126,7 +126,12 @@ void ElementTemplate::setDayAndElementIndex(const int dayIndex, const int elemen
 
 void ElementTemplate::setElementIndex(const int index)
 {
-  elementIndex_ = index;
+    elementIndex_ = index;
+}
+
+QVector<charStyle_t> ElementTemplate::getCharStyleVector()
+{
+ return text_->getCharStyleVector();
 }
 
 void ElementTemplate::changeTagColor()

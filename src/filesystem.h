@@ -23,12 +23,19 @@ public:
   static QJsonObject readTextEdidFromDB(const int currentFile);
   static void writeTextEditToDB(textInfo_t &info, const int currentFile);
 
-private:
-  static QString getDataFromDB();
-	static void pushDataToDB(QJsonDocument &jDoc, QJsonObject &jObject, QJsonObject &notes,
-													 QJsonObject &note, textInfo_t &info, const int currentFile);
+  static QJsonArray readTimeTableFromDB(const int index);
+  static void writeTimeTableToDB(QJsonArray &JDayElements, const int index);
 
-  static void parseDataBase(QJsonObject &notes);
+private:
+  static QString getDataFromDB(QString queryStr);
+
+  static void pushDataToDBTextEdit(QJsonDocument &jDoc, QJsonObject &jObject, QJsonObject &notes, QJsonObject &note,
+                           textInfo_t &info, const int currentFile);
+  static void pushDataToDBTimeTable(QJsonDocument &jDoc, QJsonObject &jObject, QJsonObject &timeTable,
+                                    QJsonArray &JDayElements, const int index);
+
+  static void parseDataBaseTextEdit(QJsonObject &notes);
+  static void parseDataBaseTimeTable(QJsonObject &timeTable);
 
   static QJsonObject note1_;
   static QJsonObject note2_;

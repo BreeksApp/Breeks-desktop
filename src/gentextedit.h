@@ -27,11 +27,15 @@ public:
   void keyPressEvent(QKeyEvent *event);
 
   //for work with file system, definition in filesystem.cpp
-	void readFromDB(const int currentFile);
+  void readFromDB(const int currentFile);
   void writeToDB(const int currentFile);
 
   void setNumberCurrentFile(const int n);
-	int getNumberCurrentFile();
+  int getNumberCurrentFile();
+
+  void clearCharStyleVector();
+
+  QVector<charStyle_t> getCharStyleVector();
   //
 
   //for work with char styles
@@ -47,7 +51,10 @@ public:
 	using iterator = QVector< charStyle_t >::iterator;
 
 //in ...-get-set.cpp
-	void fillCharStyleVector(int cursorPos, int count, charStyle_t ch);
+  void fillCharStyleVector(int cursorPos, int count, charStyle_t ch);
+
+  static void setStylesToChar(charStyle_t& ch, QTextCharFormat& charFormat, const QJsonObject jChar);
+
   int getCharStyle(const int index) const;
   void setCharCounter(const int value);
 	int getCharCounter() const;
@@ -56,6 +63,8 @@ public:
 	void setCharStyle(const int style, const bool forBuffer = false);
 	void addTodoList();
 
+  void fillCharsAndSetText(QString text, const QJsonArray jArr);
+  
 public slots:
   void recieveUsername(const QString);
 

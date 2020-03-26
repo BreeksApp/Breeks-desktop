@@ -36,8 +36,8 @@ public:
   LoginForm *loginForm_;
 
   //files of timetable
-  void writeElementsDataToFile(const int index);
-  void readElementsDataFromFile(const int index);
+  //void writeElementsDataToFile(const int index);
+  //void readElementsDataFromFile(const int index);
 
 public slots:
 //to underline image
@@ -79,6 +79,8 @@ private slots:
 
 	void on_pushButton_clicked();
 
+    void on_pushButton_2_clicked();
+
 signals:
   void sendUsername(const QString);
 
@@ -110,8 +112,8 @@ private:
   using iterType = QVector<elementData_t>::iterator;
   QVector<elementData_t> arrDaysData_[6]; //conteiner with elements data by days
 
-  void writeElementsDataToFile(QFile &file, const int index);
-  void readElementsDataFromFile(QFile &file, const int index);
+  void writeElementsDataToFile(const int index);
+  void readElementsDataFromFile(const int index);
 //
 
 //work with effects
@@ -151,6 +153,16 @@ private:
     Friday,
     Saturday
   };
+
+  enum charStyle {
+    Normal,    // = 0
+    Bold,      // = 1
+    Italic,    // = 2
+    Underline, // = 3
+        Strike,    // = 4
+        Item,      // = 5
+        Star			 // = 6
+    };
 
   struct day_t {
     QGroupBox *groupBoxDay;

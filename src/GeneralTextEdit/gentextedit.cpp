@@ -69,6 +69,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 
 				detailsSetCharStyleByNeighbours(ch, cursorPos);
         charStyleVector_.insert(cursorPos, 1, ch);
+
 				detailsSetCharStyleByIndex(ch, cursorPos + 1);
 
         ++charCounter_;

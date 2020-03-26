@@ -40,7 +40,7 @@ MainWindow::~MainWindow()
   ui->note->writeToDB(ui->note->getNumberCurrentFile());
 
   for (int i = 0; i < 6; ++i) {
-		writeElementsDataToFile(i);
+        writeElementsDataToFile(i);
   }
 
   delete ui;
@@ -52,10 +52,10 @@ void MainWindow::on_buttonAdd_clicked()
   addForm->setAttribute(Qt::WA_DeleteOnClose);
 
   //signal to move info from creating element form to new element on timetable
-  connect(addForm, SIGNAL(sendTimeTableZoneData(bool*, const int, ElementData)),
-        this, SLOT(recieveTimeTableZoneData(bool*, const int, ElementData)));
-  connect(addForm, SIGNAL(sendBreeksZoneData(bool*, const int, BreeksData)),
-        this, SLOT(recieveBreeksZoneData(bool*, const int, BreeksData)));
+  connect(addForm, SIGNAL(sendTimeTableZoneData(bool*, const int, elementData_t)),
+        this, SLOT(recieveTimeTableZoneData(bool*, const int, elementData_t)));
+  connect(addForm, SIGNAL(sendBreeksZoneData(bool*, const int, breeksData_t)),
+        this, SLOT(recieveBreeksZoneData(bool*, const int, breeksData_t)));
 
   addForm->show();
   const int a = -25;
@@ -233,4 +233,11 @@ void MainWindow::on_pushButton_clicked()
 {
   loginForm_->show();
   this->close();
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    for (int i = 0; i < 6; ++i) {
+          writeElementsDataToFile(i);
+    }
 }
