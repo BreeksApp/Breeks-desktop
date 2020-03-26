@@ -43,6 +43,9 @@
     <property name="cursor" stdset="0">
      <cursorShape>IBeamCursor</cursorShape>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::TabFocus</enum>
+    </property>
    </widget>
    <widget class="QPushButton" name="buttonAdd">
     <property name="geometry">

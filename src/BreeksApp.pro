@@ -41,6 +41,7 @@ SOURCES += \
     GeneralTextEdit/gentextedit-details.cpp \
     timetable-write-read.cpp \
     timetabletextedit.cpp
+    undoredotext.cpp
 
 HEADERS += \
     breek.h \
@@ -56,6 +57,7 @@ HEADERS += \
     effects.hpp \
     gentextedit.h \
     timetabletextedit.h
+    undoredotext.h
 
 FORMS += \
     loginform.ui \

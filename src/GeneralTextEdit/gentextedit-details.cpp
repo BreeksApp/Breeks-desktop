@@ -7,6 +7,10 @@
 
 void GenTextEdit::detailsEraseSelectedText(int &cursorPos)
 {
+	if (!this->textCursor().hasSelection()) {
+		return;
+	}
+
 	QTextCursor c = this->textCursor();
 	int pos = std::min(c.selectionStart(), c.selectionEnd());
 	int nChar = c.selectedText().length();
@@ -15,8 +19,7 @@ void GenTextEdit::detailsEraseSelectedText(int &cursorPos)
 	c.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, pos);
 	c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, nChar);
 
-	iterator iterFirst = charStyleVector_.begin();
-	iterFirst += c.selectionStart();
+	iterator iterFirst = charStyleVector_.begin() + c.selectionStart();
   iterator iterLast = iterFirst + nChar;
 
 	//if some parts of item is chosen we must delete full item ---
@@ -43,6 +46,12 @@ void GenTextEdit::detailsEraseSelectedText(int &cursorPos)
 		}
 	}
 	//---
+//Add command in UndoRedoBuffer
+	commandInfo_t command;
+	setCommandInfo(command, command::deleteStr, iterFirst - charStyleVector_.begin(), c.selectedText());
+	undoRedoBuffer->pushUndoCommand(command);
+//
+
 	charStyleVector_.erase(iterFirst, iterLast);
 
   charCounter_ -= nChar;
@@ -128,7 +137,7 @@ void GenTextEdit::detailsSetCharStyle(charStyle_t &ch, const int style)
     ch.strike = false;
     ch.item = false;
     ch.star = false;
-		ch.sColor = colors::black;
+		ch.sColor = colors::nocolor;
   }
   else if (style == charStyle::Bold) {
 		ch.bold = !ch.bold;
@@ -145,12 +154,12 @@ void GenTextEdit::detailsSetCharStyle(charStyle_t &ch, const int style)
   else if (style == charStyle::Item) {
     ch.item = true;
 		ch.star = false;
-		ch.sColor = colors::black;
+		ch.sColor = colors::nocolor;
   }
   else if (style == charStyle::Star) {
 		ch.item = false;
     ch.star = true;
-		ch.sColor = colors::red;
+		ch.sColor = colors::marina;
   }
 }
 
@@ -163,7 +172,7 @@ void GenTextEdit::detailsSetCharStyle(charStyle_t &ch, const int style, int& sta
 		ch.strike = false;
 		ch.item = false;
 		ch.star = false;
-		ch.sColor = colors::black;
+		ch.sColor = colors::nocolor;
 	}
 	else if (style == charStyle::Bold) {
 		detailsSetBoolByStatus(ch.bold, status);
@@ -255,24 +264,122 @@ void GenTextEdit::fillCharsAndSetText(QString text, const QJsonArray jArr)
       }
 }
 
+void GenTextEdit::detailsSetFormatFields(QTextCharFormat &fmt, const charStyle_t ch)
+{
+	if (ch.bold == true) {
+		fmt.setFontWeight(QFont::Bold);
+	}
+	if (ch.italic == true) {
+		fmt.setFontItalic(true);
+	}
+	if (ch.underline == true) {
+		fmt.setFontUnderline(true);
+	}
+	if (ch.strike == true) {
+		fmt.setFontStrikeOut(true);
+	}
+}
+
 void GenTextEdit::detailsSetCharStyleByNeighbours(charStyle_t &ch, int indexRight)
 {
 	if (charCounter_ == 0) {
+		ch = globCh;
 		return;
 	}
+
+	int *indexLeft = &indexRight;
 	//index of right neighbour (cursorPos)
 	if (indexRight >= charCounter_) {
-		indexRight = charCounter_ - 1;
+		indexRight = std::max(0, charCounter_ - 1);
 	}
-	if (indexRight < 0) {
+	else if (indexRight < 0) {
 		indexRight = 0;
 	}
+	else {
+		*indexLeft = std::max(0, indexRight - 1);
+	}
 	
-	int indexLeft = std::max(0, indexRight - 1);
+	ch.bold = charStyleVector_[*indexLeft].bold | charStyleVector_[indexRight].bold | globCh.bold;
+	ch.italic = charStyleVector_[*indexLeft].italic | charStyleVector_[indexRight].italic | globCh.italic;
+	ch.underline = charStyleVector_[*indexLeft].underline | charStyleVector_[indexRight].underline | globCh.underline;
+	ch.strike = charStyleVector_[*indexLeft].strike | charStyleVector_[indexRight].strike | globCh.strike;
 
-	ch.bold = charStyleVector_[indexLeft].bold & charStyleVector_[indexRight].bold;
-	ch.italic = charStyleVector_[indexLeft].italic & charStyleVector_[indexRight].italic;
-	ch.underline = charStyleVector_[indexLeft].underline & charStyleVector_[indexRight].underline;
-	ch.strike = charStyleVector_[indexLeft].strike & charStyleVector_[indexRight].strike;
+	ch.sColor = charStyleVector_[indexRight].sColor == "" ?
+				charStyleVector_[*indexLeft].sColor : charStyleVector_[indexRight].sColor;
 }
 
+void GenTextEdit::detailsSetCharStyleByIndex(const charStyle_t &ch, const int index)
+{
+	QTextCursor c = this->textCursor();
+	c.setPosition(index);
+	c.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor);
+
+	QTextCharFormat fmt;
+	detailsSetFormatFields(fmt, ch);
+	if (ch.sColor != "") {
+		fmt.setBackground(QColor(ch.sColor));
+	}
+
+	c.setCharFormat(fmt);
+}
+
+void GenTextEdit::detailsColorText(QTextCursor c, const QString color)
+{
+	if (c.hasSelection() && color != "") {
+		QTextCharFormat fmt;
+		fmt.setBackground(QColor(color));
+		c.setCharFormat(fmt);
+	}
+}
+
+void GenTextEdit::detailsUndoRedoInsertText(const commandInfo_t &command)
+{
+	QTextCursor c = this->textCursor();
+	c.setPosition(command.pos);
+	c.insertText(command.text);
+
+	for (int i = 0; i < command.charStyleVector.size(); ++i) {
+		c.setPosition(command.pos + i);
+		c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor);
+		charStyleVector_.insert(command.pos + i, command.charStyleVector[i]);
+		//set effects
+		QTextCharFormat fmt;
+		fmt.setFontWeight(QFont::Normal);
+		detailsSetFormatFields(fmt, charStyleVector_[command.pos + i]);
+		if (charStyleVector_[i].sColor != "") {
+			fmt.setBackground(QColor(charStyleVector_[command.pos + i].sColor));
+		}
+		c.setCharFormat(fmt);
+		c.clearSelection();
+
+		++charCounter_;
+	}
+}
+
+void GenTextEdit::detailsUndoRedoDeleteText(const commandInfo_t &command)
+{
+	QTextCursor c = this->textCursor();
+	c.setPosition(command.pos);
+	c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, command.text.length());
+	c.deleteChar();
+
+	iterator itBegin = charStyleVector_.begin();
+	itBegin += command.pos;
+	iterator itEnd = itBegin + command.text.length();
+	charStyleVector_.erase(itBegin, itEnd);
+
+	charCounter_ -= command.text.length();
+}
+
+void GenTextEdit::detailsUndoRedoEffects(const commandInfo_t &command, const bool flag)
+{
+	QTextCursor c = this->textCursor();
+	c.setPosition(command.pos);
+	c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, command.charStyleVector.size());
+	this->setTextCursor(c);
+
+	const int style = command.text.toInt();
+	setCharStyle(style, flag);
+
+	this->moveCursor(QTextCursor::Right);
+}
