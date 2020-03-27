@@ -122,6 +122,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 
 				return;
       }
+			//Shift + Tab
 			case Qt::Key_Backtab : {
 				backTab(cursorPos);
 				return;
@@ -225,8 +226,9 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
     }
   }
   //Shift + arrows
-  if (kmModifiers == Qt::ShiftModifier) {
-		if (iKey == Qt::UpArrow || iKey == Qt::DownArrow || iKey == Qt::RightArrow || iKey == Qt::LeftArrow) {
+	if (kmModifiers == Qt::ShiftModifier || kmModifiers == (Qt::ShiftModifier | Qt::ControlModifier)) {
+		if (QKeySequence(iKey) == Qt::Key_Up || QKeySequence(iKey) == Qt::Key_Down ||
+					QKeySequence(iKey) == Qt::Key_Right || QKeySequence(iKey) == Qt::Key_Left) {
 			//it is tmp soluton, I want to reimplementate work with shift
 			QTextEdit::keyPressEvent(event);
 			return;
