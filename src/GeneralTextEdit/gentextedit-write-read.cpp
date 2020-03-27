@@ -22,6 +22,10 @@ void GenTextEdit::readFromDB(const int currentFile)
     this->fillCharStyleVector(cursorPos, 1, ch);
     out >> tmpChar;
     this->textCursor().insertText(static_cast<QString>(tmpChar), charFormat);
+
+		QTextCursor c = this->textCursor();
+		c.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor);
+		detailsColorText(c, ch.sColor);
   }
 }
 

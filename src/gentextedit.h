@@ -3,6 +3,7 @@
 
 #include "filesystem.h"
 #include "datastructures.h"
+#include "undoredotext.h"
 
 #include <QWidget>
 #include <QTextEdit>
@@ -50,22 +51,30 @@ public:
 	using iterator = QVector< charStyle_t >::iterator;
 
 //in ...-get-set.cpp
-    void fillCharStyleVector(int cursorPos, int count, charStyle_t ch);
+
+  void fillCharStyleVector(int cursorPos, int count, charStyle_t ch);
+
 
   static void setStylesToChar(charStyle_t& ch, QTextCharFormat& charFormat, const QJsonObject jChar);
+
   int getCharStyle(const int index) const;
   void setCharCounter(const int value);
 	int getCharCounter() const;
 
 //in ...-keys-realization.cpp
-	void setCharStyle(const int style);
+	void setCharStyle(const int style, const bool forBuffer = false);
 	void addTodoList();
 
-    void fillCharsAndSetText(QString text, const QJsonArray jArr);
+  void fillCharsAndSetText(QString text, const QJsonArray jArr);
+  
+
 public slots:
   void recieveUsername(const QString);
 
 private:
+	UndoRedoText *undoRedoBuffer;
+	void setCommandInfo(commandInfo_t& command, const enum command commandName, const int pos, const QString text, int lenght = -1);
+
 //it is data storage
 	QString username_;
   int nCurrentFile_;
@@ -85,6 +94,9 @@ private:
   const QVector< QChar > AVAILABLE_CHARS_ = {'!', '?', '.', ',', ';', ':', '\"', '\'', '&', '*', '@', '~', '`', '#','$', '^', '/',
         '%', '(', ')', '[', ']', '{', '}', '|', '\\', '<', '>', '-', '_', '+', '='};
 
+	charStyle_t globCh;
+
+	const QString dashSign_ = "—";
 	const QString pointSign_ = "•";
 	const QString minusSign_ = "-";
 	const QString warrningSign_ = "❐";
@@ -93,10 +105,17 @@ private:
 	const int TAB_LENGTH = 4;
 
 //keys-realization.cpp
-	void deleteRealization(const Qt::KeyboardModifiers kmModifiers, const QTextCursor::MoveOperation whereMove,
-				int& cursorPos, const int blindSpot, const int a = 0);
 	void addTodoList(const QString itemSign);
-	void tabRealization(int& cursorPos);
+	void addStar();
+	void addTab(int& cursorPos);
+	void backTab(int& cursorPos);
+	void addSpace(const int cursorPos);
+	void deleteSmth(const Qt::KeyboardModifiers kmModifiers, const QTextCursor::MoveOperation whereMove,
+				int& cursorPos, const int blindSpot, const int a = 0);
+	void colorText(const QString color, const bool forBuffer = false);
+	void makeCharNormal();
+	void undoCommand();
+	void redoCommand();
 
 //details.cpp - smth like namespace details
 	void detailsEraseSelectedText(int& cursorPos);
@@ -110,7 +129,19 @@ private:
     static void detailsSetCharStyle(charStyle_t& ch, const int style, int& status);
     static void detailsSetBoolByStatus(bool& a, int& status);
 
+    static void detailsSetCharStyle(charStyle_t& ch, const int style = charStyle::Normal);
+    static void detailsSetCharStyle(charStyle_t& ch, const int style, int& status);
+    static void detailsSetBoolByStatus(bool& a, int& status);
+	void detailsSetFormatFields(QTextCharFormat& fmt, const charStyle_t ch);
+
 	void detailsSetCharStyleByNeighbours(charStyle_t& ch, const int index);
+	void detailsSetCharStyleByIndex(const charStyle_t& ch, const int index);
+
+	void detailsColorText(QTextCursor c, const QString color);
+
+	void detailsUndoRedoInsertText(const commandInfo_t& command);
+	void detailsUndoRedoDeleteText(const commandInfo_t& command);
+	void detailsUndoRedoEffects(const commandInfo_t& command, const bool flag = false);
 };
 
 #endif // TEXT_EDIT
