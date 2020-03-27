@@ -6,6 +6,7 @@ TimetableTextEdit::TimetableTextEdit(QWidget *parent)
   this->clearCharStyleVector();
   this->clear();
   this->setCharCounter(0);
+  qDebug("!");
 }
 
 void TimetableTextEdit::fillCharsAndSetText(QString text, const QVector<charStyle_t>& arr)

@@ -44,7 +44,7 @@
      <cursorShape>IBeamCursor</cursorShape>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::TabFocus</enum>
+     <enum>Qt::ClickFocus</enum>
     </property>
    </widget>
    <widget class="QPushButton" name="buttonAdd">
@@ -148,8 +148,8 @@
      <rect>
       <x>175</x>
       <y>30</y>
-      <width>30</width>
-      <height>30</height>
+      <width>31</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="focusPolicy">
