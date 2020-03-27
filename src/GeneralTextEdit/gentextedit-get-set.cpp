@@ -31,6 +31,7 @@ void GenTextEdit::fillCharStyleVector(int cursorPos, int count, charStyle_t ch)
     charStyleVector_.insert(cursorPos, count, ch);
 }
 
+
 void GenTextEdit::setStylesToChar(charStyle_t& ch, QTextCharFormat& charFormat, const QJsonObject jChar)
 {
   GenTextEdit::detailsSetCharStyle(ch);

@@ -51,7 +51,9 @@ public:
 	using iterator = QVector< charStyle_t >::iterator;
 
 //in ...-get-set.cpp
+
   void fillCharStyleVector(int cursorPos, int count, charStyle_t ch);
+
 
   static void setStylesToChar(charStyle_t& ch, QTextCharFormat& charFormat, const QJsonObject jChar);
 
@@ -65,6 +67,7 @@ public:
 
   void fillCharsAndSetText(QString text, const QJsonArray jArr);
   
+
 public slots:
   void recieveUsername(const QString);
 
@@ -122,6 +125,9 @@ private:
 	//if we write smth in the middle of item, we won't have the item it will become a regular text
 	void detailsCheckItemAndCanselStatus(int& cursorPos);
 	void detailsCheckSelectionAndItem(int& cursorPos); //to unite common checkers
+    static void detailsSetCharStyle(charStyle_t& ch, const int style = charStyle::Normal);
+    static void detailsSetCharStyle(charStyle_t& ch, const int style, int& status);
+    static void detailsSetBoolByStatus(bool& a, int& status);
 
     static void detailsSetCharStyle(charStyle_t& ch, const int style = charStyle::Normal);
     static void detailsSetCharStyle(charStyle_t& ch, const int style, int& status);
