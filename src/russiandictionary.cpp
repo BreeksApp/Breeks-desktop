@@ -19,10 +19,7 @@ RussianDictionary::RussianDictionary()
 	for (int i = 0; i < nWords - 1; ++i) {
 		sourceDic >> word;
 		word = word.left(word.indexOf('/'));
-		const int index = QChar(word.at(0).toLower()).unicode() - RUS_A_UNICODE;
-		const int length = word.length();
-
-		arrDic_[index][length].push_back(word);
+		detailsAddWord(word);
 	}
 }
 
@@ -38,6 +35,22 @@ bool RussianDictionary::isCorrectWord(const QString &word)
 	}
 
 	return false;
+}
+
+void RussianDictionary::addNewWord(const QString word)
+{
+	if (!word.isEmpty()) {
+		if (word.at(0) >= "а" && word.at(0) <= "я") {
+			detailsAddWord(word.toLower());
+		}
+	}
+}
+
+void RussianDictionary::detailsAddWord(const QString word)
+{
+	const int index = QChar(word.at(0).toLower()).unicode() - RUS_A_UNICODE;
+	const int length = word.length();
+	arrDic_[index][length].push_back(word);
 }
 
 void RussianDictionary::printAllWords()

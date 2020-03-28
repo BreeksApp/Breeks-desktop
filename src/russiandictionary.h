@@ -9,9 +9,12 @@ public:
 	RussianDictionary();
 
 	bool isCorrectWord(const QString& word);
+	void addNewWord(const QString word);
 	void printAllWords();
 
 private:
+	void detailsAddWord(const QString word);
+
 	struct wordsLenght_t {
 		int length;
 		QVector< QString > words;

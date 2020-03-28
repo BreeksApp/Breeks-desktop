@@ -346,16 +346,36 @@ bool GenTextEdit::detailsIsLetter(const QChar ch)
 	}
 }
 
+void GenTextEdit::detailsRemoveCheckSign(int &pos)
+{
+	QTextCursor c = this->textCursor();
+	c.setPosition(--pos);
+	c.deleteChar();
+
+	iterator iter = charStyleVector_.begin() + pos;
+	charStyleVector_.erase(iter);
+	--charCounter_;
+}
+
 bool GenTextEdit::detailsCheckSpelling(QString &word, const int indexLastChar)
 {
+	int pos = indexLastChar - word.length();
+
 	//if first letter is not russian, we will skip this word
-	if (!(word.at(0).toLower() >= "а" && word.at(0).toLower() <= "я")) {
+	if (word.length() > 1) {
+		if (!(word.at(0).toLower() >= "а" && word.at(0).toLower() <= "я")) {
+			return true;
+		}
+		//if word was like абв-где- (we don't need last '-')
+		word = (word.at(word.length() - 1) == "-") ? word.left(word.length() - 1) : word;
+	}
+	else if (word.length() == 1) {
+		if (charStyleVector_[std::max(0, pos - 1)].spellChecker == true) {
+			qDebug() << pos;
+			detailsRemoveCheckSign(pos);
+		}
 		return true;
 	}
-
-	//if word was like абв-где- (we don't need last '-')
-	word = (word.at(word.length() - 1) == "-") ? word.left(word.length() - 1) : word;
-	int pos = indexLastChar - word.length();
 
 	if (!rusDic_->isCorrectWord(word)) {
 		if (charStyleVector_[std::max(0, pos - 1)].spellChecker == false) {
@@ -374,15 +394,11 @@ bool GenTextEdit::detailsCheckSpelling(QString &word, const int indexLastChar)
 			++charCounter_;
 			return false;
 		}
+		return false;
 	}
 	else if (charStyleVector_[std::max(0, pos - 1)].spellChecker == true) {
-		QTextCursor c = this->textCursor();
-		c.setPosition(--pos);
-		c.deleteChar();
-
-		iterator iter = charStyleVector_.begin() + pos;
-		charStyleVector_.erase(iter);
-		--charCounter_;
+		detailsRemoveCheckSign(pos);
 	}
 	return true;
 }
+

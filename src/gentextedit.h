@@ -116,6 +116,7 @@ private:
 	void makeCharNormal();
 	void undoCommand();
 	void redoCommand();
+	void addNewWordToDic(const QString word);
 
 //details.cpp - smth like namespace details
 	void detailsEraseSelectedText(int& cursorPos);
@@ -136,6 +137,7 @@ private:
 	void detailsUndoRedoEffects(const commandInfo_t& command, const bool flag = false);
 	bool detailsIsLetter(const QChar ch);
 	bool detailsCheckSpelling(QString& word, const int indexLastChar);
+	void detailsRemoveCheckSign(int& pos);
 };
 
 #endif // TEXT_EDIT

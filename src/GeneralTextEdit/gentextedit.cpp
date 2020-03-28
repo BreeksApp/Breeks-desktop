@@ -100,7 +100,6 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 					charStyleVector_.insert(cursorPos, 1, ch);
 					detailsSetCharStyleByIndex(ch, cursorPos + 1);
 
-
 					++charCounter_;
 				//Add coommand to UndoRefoBuffer
 					setCommandInfo(command, command::insertStr, cursorPos, QKeySequence(iKey).toString());
@@ -373,6 +372,12 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 			this->moveCursor(QTextCursor::Right);
 			return;
 		}
+		else if (QKeySequence(iKey) == Qt::Key_D || QKeySequence(iKey).toString() == "В") {
+			rusDic_->addNewWord(this->textCursor().selectedText().toLower());
+			timer_->stop();
+			timer_->start(1000);
+			return;
+		}
   }
 
   //Backspace
@@ -412,10 +417,16 @@ void GenTextEdit::checkSpelling()
 			word += curCh;
 		}
 		else if (!word.isEmpty()) {
-			if (!detailsCheckSpelling(word, i + delta)) {
-				++delta;
-			}
+			int iTmp = charCounter_;
+			detailsCheckSpelling(word, i + delta);
+			delta += charCounter_ - iTmp;
 			word = "";
+		}
+		else if (i != 0 && charStyleVector_[i + delta - 1].spellChecker == true) {
+			int iTmp = charCounter_;
+			QString sTmp = curCh;
+			detailsCheckSpelling(sTmp, i + delta + 1); //+1 because i is not cursorPos but we need it
+			delta += charCounter_ - iTmp;
 		}
 	}
 	if (!word.isEmpty()) {
