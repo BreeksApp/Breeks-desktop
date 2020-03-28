@@ -254,8 +254,10 @@ void GenTextEdit::detailsSetCharStyleByNeighbours(charStyle_t &ch, int indexRigh
 	ch.underline = charStyleVector_[*indexLeft].underline | charStyleVector_[indexRight].underline | globCh.underline;
 	ch.strike = charStyleVector_[*indexLeft].strike | charStyleVector_[indexRight].strike | globCh.strike;
 
-	ch.sColor = charStyleVector_[indexRight].sColor == "" ?
-				charStyleVector_[*indexLeft].sColor : charStyleVector_[indexRight].sColor;
+	if (charStyleVector_[*indexLeft].spellChecker == false) {
+		ch.sColor = charStyleVector_[indexRight].sColor == "" ?
+					charStyleVector_[*indexLeft].sColor : charStyleVector_[indexRight].sColor;
+	}
 }
 
 void GenTextEdit::detailsSetCharStyleByIndex(const charStyle_t &ch, const int index)
