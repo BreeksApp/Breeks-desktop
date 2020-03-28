@@ -46,7 +46,6 @@ void MainWindow::writeElementsDataToFile(const int index)
     arrDaysData_[index][i].text = a->getText();
     arrDaysData_[index][i].palette = a->getColor();
     arrDaysData_[index][i].charStyleVector = a->getCharStyleVector();
-     //qDebug()<< a->getCharStyleVector().size();
   }
 
   //write data to file
@@ -72,8 +71,8 @@ void MainWindow::writeElementsDataToFile(const int index)
       jChar.insert("sColor", ch.sColor);
       jChars.push_back(jChar);
     }
-  jElem.insert("charStyleVector", jChars);
-  jDayElements.push_back(jElem);
+		jElem.insert("charStyleVector", jChars);
+		jDayElements.push_back(jElem);
   }
   filesystem::writeTimeTableToDB(jDayElements, index);
 }

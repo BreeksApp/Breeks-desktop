@@ -43,6 +43,7 @@ void GenTextEdit::writeToDB(const int currentFile)
 		jChar.insert("item", ch.item);
 		jChar.insert("star", ch.star);
 		jChar.insert("sColor", ch.sColor);
+		jChar.insert("spellChecker", ch.spellChecker);
 		info.jArr.push_back(jChar);
   }
 

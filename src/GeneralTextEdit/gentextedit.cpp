@@ -7,15 +7,20 @@
 #include "gentextedit.h"
 
 GenTextEdit::GenTextEdit(QWidget *parent) :
-	QTextEdit(parent)
+	QTextEdit(parent),
+	timer_(new QTimer())
 {
-	undoRedoBuffer = new UndoRedoText;
+	undoRedoBuffer_ = new UndoRedoText;
+	rusDic_ = new RussianDictionary;
+	timer_->setSingleShot(true);
+	connect(timer_, SIGNAL(timeout()), this, SLOT(checkSpelling()));
 
 	this->setTextColor(QColor(0, 0, 0));
   nCurrentFile_ = 1;
   charCounter_ = 0;
 	//add saved text
 	readFromDB(nCurrentFile_);
+	checkSpelling();
 
 	detailsSetCharStyle(globCh);
 }
@@ -56,8 +61,10 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 				const QString text = (kmModifiers != 0 ?
 							QKeySequence(iKey).toString() : QKeySequence(iKey).toString().toLower());
 				setCommandInfo(command, command::insertStr, cursorPos, text);
-				undoRedoBuffer->pushUndoCommand(command);
+				undoRedoBuffer_->pushUndoCommand(command);
 			//
+				timer_->stop();
+				timer_->start(1000);
         return;
       }
     }
@@ -75,8 +82,10 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
         ++charCounter_;
 			//Add coommand to UndoRefoBuffer
 				setCommandInfo(command, command::insertStr, cursorPos, QKeySequence(iKey).toString());
-				undoRedoBuffer->pushUndoCommand(command);
+				undoRedoBuffer_->pushUndoCommand(command);
 			//
+				timer_->stop();
+				timer_->start(1000);
         return;
       }
     }
@@ -95,8 +104,10 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 					++charCounter_;
 				//Add coommand to UndoRefoBuffer
 					setCommandInfo(command, command::insertStr, cursorPos, QKeySequence(iKey).toString());
-					undoRedoBuffer->pushUndoCommand(command);
+					undoRedoBuffer_->pushUndoCommand(command);
 				//
+					timer_->stop();
+					timer_->start(1000);
 					return;
 				}
 			}
@@ -109,8 +120,10 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 				addSpace(cursorPos);
 			//Add coommand to UndoRefoBuffer
 				setCommandInfo(command, command::insertStr, cursorPos, " ");
-				undoRedoBuffer->pushUndoCommand(command);
+				undoRedoBuffer_->pushUndoCommand(command);
 			//
+				timer_->stop();
+				timer_->start(1000);
 				return;
 			}
 		 //Tab
@@ -119,7 +132,8 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 					detailsEraseSelectedText(cursorPos);
         }
 				addTab(cursorPos);
-
+				timer_->stop();
+				timer_->start(1000);
 				return;
       }
 			//Shift + Tab
@@ -135,8 +149,10 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 				++charCounter_;
 			//Add coommand to UndoRefoBuffer
 				setCommandInfo(command, command::insertStr, cursorPos, "\n");
-				undoRedoBuffer->pushUndoCommand(command);
+				undoRedoBuffer_->pushUndoCommand(command);
 			//
+				timer_->stop();
+				timer_->start(1000);
 				return;
     }
 
@@ -144,9 +160,13 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 			//Ctrl + z
 			if (QKeySequence(iKey) == Qt::Key_Z || QKeySequence(iKey).toString() == "Я") {
 				undoCommand();
+				timer_->stop();
+				timer_->start(1000);
 			}
 			else if (QKeySequence(iKey) == Qt::Key_Y || QKeySequence(iKey).toString() == "Н") {
 				redoCommand();
+				timer_->stop();
+				timer_->start(1000);
 			}
 			//Ctrl + d - dash
 			else if (QKeySequence(iKey) == Qt::Key_D ||QKeySequence(iKey).toString() == "В") {
@@ -156,8 +176,10 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 				++charCounter_;
 			//Add coommand to UndoRefoBuffer
 				setCommandInfo(command, command::insertStr, cursorPos, dashSign_);
-				undoRedoBuffer->pushUndoCommand(command);
+				undoRedoBuffer_->pushUndoCommand(command);
 			//
+				timer_->stop();
+				timer_->start(1000);
 				return;
 			}
       //Ctrl + V - paste
@@ -179,9 +201,10 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 
 			//Add coommand to UndoRefoBuffer
 				setCommandInfo(command, command::insertStr, cursorPos, insertLine);
-				undoRedoBuffer->pushUndoCommand(command);
+				undoRedoBuffer_->pushUndoCommand(command);
 			//
-
+				timer_->stop();
+				timer_->start(1000);
         return;
 			}
 			//Ctrl + p - add to-do-list with point
@@ -275,6 +298,8 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 		else if (QKeySequence(iKey) == Qt::Key_X) {
 			detailsCheckSelectionAndItem(cursorPos); //work with UndoRedoBuffer in that function
 			this->cut();
+			timer_->stop();
+			timer_->start(1000);
 		}
 		//Ctrl + b - Bold
 		else if (QKeySequence(iKey) == Qt::Key_B || QKeySequence(iKey).toString() == "И") {
@@ -356,11 +381,44 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 		detailsCheckItemPosInDeleting(cursorPos, true, kmModifiers);
 		deleteSmth(kmModifiers, QTextCursor::PreviousWord, cursorPos, 0, 1);
 		this->textCursor().deletePreviousChar();
+		timer_->stop();
+		timer_->start(1000);
   }
   //Delete
   else if (QKeySequence(iKey) == Qt::Key_Delete) {
     detailsCheckItemPosInDeleting(cursorPos, false, kmModifiers);
 		deleteSmth(kmModifiers, QTextCursor::NextWord, cursorPos, charStyleVector_.size());
     this->textCursor().deleteChar();
+		timer_->stop();
+		timer_->start(1000);
   }
+}
+
+void GenTextEdit::checkSpelling()
+{
+	QString text = this->toPlainText();
+	QTextStream sourseText(&text);
+	QChar curCh;
+	QString word = "";
+	int delta = 0;
+
+	for (int i = 0; i < text.length(); ++i) {
+		sourseText >> curCh;
+		curCh = curCh.toLower();
+		if (detailsIsLetter(curCh)) {
+			word += curCh;
+		}
+		else if (!word.isEmpty() && curCh == "-") {
+			word += curCh;
+		}
+		else if (!word.isEmpty()) {
+			if (!detailsCheckSpelling(word, i + delta)) {
+				++delta;
+			}
+			word = "";
+		}
+	}
+	if (!word.isEmpty()) {
+		detailsCheckSpelling(word, charCounter_);
+	}
 }

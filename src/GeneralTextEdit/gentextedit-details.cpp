@@ -49,7 +49,7 @@ void GenTextEdit::detailsEraseSelectedText(int &cursorPos)
 //Add command in UndoRedoBuffer
 	commandInfo_t command;
 	setCommandInfo(command, command::deleteStr, iterFirst - charStyleVector_.begin(), c.selectedText());
-	undoRedoBuffer->pushUndoCommand(command);
+	undoRedoBuffer_->pushUndoCommand(command);
 //
 
 	charStyleVector_.erase(iterFirst, iterLast);
@@ -138,6 +138,7 @@ void GenTextEdit::detailsSetCharStyle(charStyle_t &ch, const int style)
     ch.item = false;
     ch.star = false;
 		ch.sColor = colors::nocolor;
+		ch.spellChecker = false;
   }
   else if (style == charStyle::Bold) {
 		ch.bold = !ch.bold;
@@ -161,6 +162,9 @@ void GenTextEdit::detailsSetCharStyle(charStyle_t &ch, const int style)
     ch.star = true;
 		ch.sColor = colors::marina;
   }
+	else if (style == charStyle::SpellChecker) {
+		ch.spellChecker = true;
+	}
 }
 
 void GenTextEdit::detailsSetCharStyle(charStyle_t &ch, const int style, int& status)
@@ -173,6 +177,7 @@ void GenTextEdit::detailsSetCharStyle(charStyle_t &ch, const int style, int& sta
 		ch.item = false;
 		ch.star = false;
 		ch.sColor = colors::nocolor;
+		ch.spellChecker = false;
 	}
 	else if (style == charStyle::Bold) {
 		detailsSetBoolByStatus(ch.bold, status);
@@ -194,6 +199,9 @@ void GenTextEdit::detailsSetCharStyle(charStyle_t &ch, const int style, int& sta
 		ch.item = false;
 		ch.star = true;
 	}
+	else if (style == charStyle::SpellChecker) {
+		ch.spellChecker = true;
+	}
 }
 void GenTextEdit::detailsSetBoolByStatus(bool &a, int &status)
 {
@@ -204,66 +212,6 @@ void GenTextEdit::detailsSetBoolByStatus(bool &a, int &status)
 	else {
 		a = status == 1 ? true : false;
     }
-}
-
-void GenTextEdit::fillCharsAndSetText(QString text, const QJsonArray jArr)
-{
-    this->clearCharStyleVector();
-    this->setCharCounter(jArr.size());
-
-    QTextStream out(&text);
-  \
-    QChar tmpChar;
-    charStyle_t ch;
-   //qDebug() << text;
-
-    for (int i = 0; i < this->getCharCounter(); ++i) {
-      detailsSetCharStyle(ch);
-      QTextCharFormat charFormat;
-      charFormat.setFontWeight(QFont::Normal);
-
-      QJsonObject jChar = jArr[i].toObject();
-
-      bool boldStatus = jChar.value("bold").toBool();
-      bool italicStatus = jChar.value("italic").toBool();
-      bool underlineStatus = jChar.value("underline").toBool();
-      bool strikeStatus = jChar.value("strike").toBool();
-      bool itemStatus = jChar.value("item").toBool();
-      bool starStatus = jChar.value("star").toBool();
-      QString color = jChar.value("sColor").toString();
-
-      if (boldStatus == true) {
-          detailsSetCharStyle(ch, charStyle::Bold);
-          charFormat.setFontWeight(QFont::Bold);
-      }
-      if (italicStatus == true) {
-          detailsSetCharStyle(ch, charStyle::Italic);
-          charFormat.setFontItalic(true);
-      }
-      if (underlineStatus == true) {
-          detailsSetCharStyle(ch, charStyle::Underline);
-          charFormat.setFontUnderline(true);
-      }
-      if (strikeStatus == true) {
-          detailsSetCharStyle(ch, charStyle::Strike);
-          charFormat.setFontStrikeOut(true);
-      }
-        if (itemStatus == true) {
-          detailsSetCharStyle(ch, charStyle::Item);
-          charFormat.setFontWeight(QFont::Normal);
-      }
-        if (starStatus == true) {
-          detailsSetCharStyle(ch, charStyle::Star);
-          charFormat.setFontWeight(QFont::Normal);
-      }
-      ch.sColor = color;
-
-      int cursorPos = this->textCursor().position();
-      this->fillCharStyleVector(cursorPos, 1, ch);
-      out >> tmpChar;
-      this->textCursor().insertText(static_cast<QString>(tmpChar), charFormat);
-      }
-
 }
 
 void GenTextEdit::detailsSetFormatFields(QTextCharFormat &fmt, const charStyle_t ch)
@@ -384,4 +332,55 @@ void GenTextEdit::detailsUndoRedoEffects(const commandInfo_t &command, const boo
 	setCharStyle(style, flag);
 
 	this->moveCursor(QTextCursor::Right);
+}
+
+bool GenTextEdit::detailsIsLetter(const QChar ch)
+{
+	if (/*ENG*/(ch >= "a" && ch <= "z") || /*RUS*/(ch >= "а" && ch <= "я")) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+bool GenTextEdit::detailsCheckSpelling(QString &word, const int indexLastChar)
+{
+	//if first letter is not russian, we will skip this word
+	if (!(word.at(0).toLower() >= "а" && word.at(0).toLower() <= "я")) {
+		return true;
+	}
+
+	//if word was like абв-где- (we don't need last '-')
+	word = (word.at(word.length() - 1) == "-") ? word.left(word.length() - 1) : word;
+	int pos = indexLastChar - word.length();
+
+	if (!rusDic_->isCorrectWord(word)) {
+		if (charStyleVector_[std::max(0, pos - 1)].spellChecker == false) {
+			QTextCursor c = this->textCursor();
+			c.setPosition(pos);
+			c.insertText("*");
+			c.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor);
+			detailsColorText(c, colors::yellow);
+
+			charStyle_t ch;
+			detailsSetCharStyle(ch);
+			ch.spellChecker = true;
+			ch.sColor = colors::yellow;
+			charStyleVector_.insert(pos, ch);
+
+			++charCounter_;
+			return false;
+		}
+	}
+	else if (charStyleVector_[std::max(0, pos - 1)].spellChecker == true) {
+		QTextCursor c = this->textCursor();
+		c.setPosition(--pos);
+		c.deleteChar();
+
+		iterator iter = charStyleVector_.begin() + pos;
+		charStyleVector_.erase(iter);
+		--charCounter_;
+	}
+	return true;
 }
