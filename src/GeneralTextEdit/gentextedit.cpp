@@ -372,13 +372,14 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 			this->moveCursor(QTextCursor::Right);
 			return;
 		}
-		else if (QKeySequence(iKey) == Qt::Key_D || QKeySequence(iKey).toString() == "В") {
-			rusDic_->addNewWord(this->textCursor().selectedText().toLower());
-			timer_->stop();
-			timer_->start(1000);
-			return;
-		}
   }
+	if (kmModifiers == (Qt::ShiftModifier | Qt::ControlModifier) &&
+			(QKeySequence(iKey) == Qt::Key_D || QKeySequence(iKey).toString() == "В")) {
+		rusDic_->addNewWord(this->textCursor().selectedText().toLower());
+		timer_->stop();
+		timer_->start(1000);
+		return;
+	}
 
   //Backspace
   if (QKeySequence(iKey) == Qt::Key_Backspace) {
