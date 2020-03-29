@@ -16,16 +16,18 @@ void GenTextEdit::readFromDB(const int currentFile)
 
   for (int i = 0; i < charCounter_; ++i) {
     QJsonObject jChar = jChars[i].toObject();
+		detailsSetCharStyle(ch);
     charFormat.setFontWeight(QFont::Normal);
     setStylesToChar(ch, charFormat, jChar);
-    int cursorPos = this->textCursor().position();
+
+		int cursorPos = this->textCursor().position();
     this->fillCharStyleVector(cursorPos, 1, ch);
     out >> tmpChar;
-    this->textCursor().insertText(static_cast<QString>(tmpChar), charFormat);
+		this->textCursor().insertText(static_cast<QString>(tmpChar), charFormat); //add with style effects
 
-		QTextCursor c = this->textCursor();
+		/*QTextCursor c = this->textCursor();
 		c.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor);
-		detailsColorText(c, ch.sColor);
+		detailsColorText(c, ch.sColor); //color text*/
   }
 }
 
@@ -43,6 +45,7 @@ void GenTextEdit::writeToDB(const int currentFile)
 		jChar.insert("item", ch.item);
 		jChar.insert("star", ch.star);
 		jChar.insert("sColor", ch.sColor);
+		jChar.insert("spellChecker", ch.spellChecker);
 		info.jArr.push_back(jChar);
   }
 

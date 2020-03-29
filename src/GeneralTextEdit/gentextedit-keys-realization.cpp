@@ -56,7 +56,7 @@ void GenTextEdit::deleteSmth(const Qt::KeyboardModifiers kmModifiers, const QTex
 				//Add command in UndoRedoBuffer
 					commandInfo_t command;
 					setCommandInfo(command, command::deleteStr, iterFirst - charStyleVector_.begin(), c.selectedText());
-					undoRedoBuffer->pushUndoCommand(command);
+					undoRedoBuffer_->pushUndoCommand(command);
 				//
 
         this->setTextCursor(c);
@@ -70,7 +70,7 @@ void GenTextEdit::deleteSmth(const Qt::KeyboardModifiers kmModifiers, const QTex
 					const int pos = iterFirst - charStyleVector_.begin();
 					const QString text = this->toPlainText().at(pos);
 					setCommandInfo(command, command::deleteStr, pos, text);
-					undoRedoBuffer->pushUndoCommand(command);
+					undoRedoBuffer_->pushUndoCommand(command);
 				//
         charStyleVector_.erase(iterFirst);
         --charCounter_;
@@ -129,7 +129,7 @@ void GenTextEdit::addTodoList(const QString itemSign)
 	//Add coommand to UndoRefoBuffer
 	commandInfo_t command;
 		setCommandInfo(command, command::insertStr, cursorPos, item);
-		undoRedoBuffer->pushUndoCommand(command);
+		undoRedoBuffer_->pushUndoCommand(command);
 	//
 }
 
@@ -160,7 +160,7 @@ void GenTextEdit::addStar()
 	//Add command to UndoRedoBuffer
 	commandInfo_t command;
 	setCommandInfo(command, command::insertStr, pos, insertStr);
-	undoRedoBuffer->pushUndoCommand(command);
+	undoRedoBuffer_->pushUndoCommand(command);
 	//
 
 	charCounter_ += 1;
@@ -203,7 +203,7 @@ void GenTextEdit::addTab(int& cursorPos)
 	QString sTab = "";
 	sTab.insert(TAB_LENGTH - 1, " ");
 	setCommandInfo(command, command::insertStr, pos, sTab, TAB_LENGTH);
-	undoRedoBuffer->pushUndoCommand(command);
+	undoRedoBuffer_->pushUndoCommand(command);
 //
 	this->setTextCursor(c);
 }
@@ -226,7 +226,7 @@ void GenTextEdit::backTab(int &cursorPos)
 	//Add command to UndoRedoBuffer
 		commandInfo_t command;
 		setCommandInfo(command, command::deleteStr, c.position() - TAB_LENGTH, sTab, TAB_LENGTH);
-		undoRedoBuffer->pushUndoCommand(command);
+		undoRedoBuffer_->pushUndoCommand(command);
 	//
 		charStyleVector_.erase(iterFirst, iterLast);
 		charCounter_ -= TAB_LENGTH;
@@ -283,7 +283,7 @@ void GenTextEdit::setCharStyle(const int style, const bool forBuffer)
 		//Add coommand to UndoRefoBuffer
 		commandInfo_t command;
 		setCommandInfo(command, command::changeStyle, first, QString::number(style), last - first);
-		undoRedoBuffer->pushUndoCommand(command);
+		undoRedoBuffer_->pushUndoCommand(command);
 		//
 	}
 }
@@ -310,7 +310,7 @@ void GenTextEdit::colorText(const QString color, const bool forBuffer)
 		//Add coommand to UndoRefoBuffer
 			commandInfo_t command;
 			setCommandInfo(command, command::changeColor, first, color, last - first);
-			undoRedoBuffer->pushUndoCommand(command);
+			undoRedoBuffer_->pushUndoCommand(command);
 		}
 	}
 }
@@ -318,9 +318,9 @@ void GenTextEdit::colorText(const QString color, const bool forBuffer)
 //---------Ctrl + z
 void GenTextEdit::undoCommand()
 {
-	if (!undoRedoBuffer->isUndoEmpty()) {
+	if (!undoRedoBuffer_->isUndoEmpty()) {
 		commandInfo_t command;
-		undoRedoBuffer->popUndoCommand(command);
+		undoRedoBuffer_->popUndoCommand(command);
 		this->textCursor().clearSelection();
 		QTextCursor c = this->textCursor();
 		c.setPosition(command.pos);
@@ -341,7 +341,7 @@ void GenTextEdit::undoCommand()
 			//this->moveCursor(QTextCursor::Right);
 		}
 
-		undoRedoBuffer->pushRedoCommand(command);
+		undoRedoBuffer_->pushRedoCommand(command);
 	}
 
 	return;
@@ -365,9 +365,9 @@ void GenTextEdit::setCommandInfo(commandInfo_t& command, const enum command comm
 //---------Ctrl + y
 void GenTextEdit::redoCommand()
 {
-	if (!undoRedoBuffer->isRedoEmpty()) {
+	if (!undoRedoBuffer_->isRedoEmpty()) {
 		commandInfo_t command;
-		undoRedoBuffer->popRedoCommand(command);
+		undoRedoBuffer_->popRedoCommand(command);
 		this->textCursor().clearSelection();
 		QTextCursor c = this->textCursor();
 		c.setPosition(command.pos);
@@ -389,7 +389,7 @@ void GenTextEdit::redoCommand()
 			//this->moveCursor(QTextCursor::Right);
 		}
 
-		undoRedoBuffer->pushUndoCommand(command);
+		undoRedoBuffer_->pushUndoCommand(command);
 	}
 
 	return;

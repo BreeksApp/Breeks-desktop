@@ -32,7 +32,7 @@ void LoginForm::on_loginButton_clicked()
 
   QSqlQuery qry;
   
-    if (qry.exec("SELECT * FROM Employee WHERE Username='" + username + "' AND Password='" + password + "'")) {
+	if (qry.exec("SELECT * FROM Employee WHERE Username='" + username + "' AND Password='" + password + "'")) {
     int count = 0;
     while (qry.next()) {
       count ++;
@@ -47,6 +47,6 @@ void LoginForm::on_loginButton_clicked()
     }
   }
 	else {
-        qDebug() << "No query!";
+		qDebug() << "No query!";
 	}
 }
