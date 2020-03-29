@@ -27,6 +27,7 @@ SOURCES += \
     main.cpp \
     mainwidnow-timetable.cpp \
     mainwindow-Breekszone.cpp \
+    mainwindow-breekszone.cpp \
     mainwindow-effects.cpp \
     mainwindow.cpp \
     mainwindow-note.cpp \
