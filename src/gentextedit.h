@@ -103,6 +103,7 @@ private:
 	const QString warrningSign_ = "❐";
 	const int ITEM_LENGTH = 4;
 	const int TAB_LENGTH = 4;
+	const uint RUS_YO_UNICODE = 0x0435;
 
 //keys-realization.cpp
 	void addTodoList(const QString itemSign);

@@ -349,7 +349,8 @@ bool GenTextEdit::detailsIsLetter(const QChar ch)
 void GenTextEdit::detailsRemoveCheckSign(int &pos)
 {
 	QTextCursor c = this->textCursor();
-	c.setPosition(--pos);
+	pos = pos != 0 ? --pos : pos;
+	c.setPosition(pos);
 	c.deleteChar();
 
 	iterator iter = charStyleVector_.begin() + pos;

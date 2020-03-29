@@ -46,7 +46,8 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 		//letters
     if (kmModifiers == 0 || kmModifiers == Qt::ShiftModifier) {
       if ( (iKey >= Qt::Key_A && iKey <= Qt::Key_Z) ||
-      (QKeySequence(iKey).toString() >= "А" && (QKeySequence(iKey).toString() <= "Я")) ) {
+						(QKeySequence(iKey).toString() >= "А" && (QKeySequence(iKey).toString() <= "Я")) ||
+						QKeySequence(iKey).toString() == "Ё") {
         detailsCheckSelectionAndItem(cursorPos);
 
 				detailsSetCharStyleByNeighbours(ch, cursorPos);
@@ -410,7 +411,12 @@ void GenTextEdit::checkSpelling()
 
 	for (int i = 0; i < text.length(); ++i) {
 		sourseText >> curCh;
+		//dictionary doesn't know about 'Ё' letter
+		if (curCh == "ё" || curCh == "Ё") {
+			curCh = QChar(RUS_YO_UNICODE);
+		}
 		curCh = curCh.toLower();
+
 		if (detailsIsLetter(curCh)) {
 			word += curCh;
 		}
@@ -428,6 +434,11 @@ void GenTextEdit::checkSpelling()
 			QString sTmp = curCh;
 			detailsCheckSpelling(sTmp, i + delta + 1); //+1 because i is not cursorPos but we need it
 			delta += charCounter_ - iTmp;
+		}
+		else if (charStyleVector_[std::max(0, i - 1 + delta)].spellChecker == true) {
+			int pos = std::max(0, i - 1 + delta);
+			detailsRemoveCheckSign(pos);
+			--delta;
 		}
 	}
 	if (!word.isEmpty()) {
