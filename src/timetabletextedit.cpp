@@ -24,6 +24,7 @@ void TimetableTextEdit::fillCharsAndSetText(QString text, const QVector<charStyl
     jChar.insert("item", ch.item);
     jChar.insert("star", ch.star);
     jChar.insert("sColor", ch.sColor);
+		jChar.insert("spellChecker", ch.spellChecker);
     jArr.push_back(jChar);
   }
 
@@ -34,7 +35,6 @@ void TimetableTextEdit::fillCharsAndSetText(QString text, const QVector<charStyl
 
   for (int i = 0; i < this->getCharCounter(); ++i) {
     QJsonObject jChar = jArr[i].toObject();
-    charFormat.setFontWeight(QFont::Normal);
     GenTextEdit::setStylesToChar(ch, charFormat, jChar);
     int cursorPos = this->textCursor().position();
     this->fillCharStyleVector(cursorPos, 1, ch);
