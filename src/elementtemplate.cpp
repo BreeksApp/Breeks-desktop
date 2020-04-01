@@ -56,6 +56,34 @@ ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
   connect(tagButton_, SIGNAL (clicked()), this, SLOT (changeTagColor()));
 }
 
+void ElementTemplate::mousePressEvent(QMouseEvent *event)
+{
+  if (event->button() == Qt::LeftButton) {
+     dragStartPosition_ = event->pos();
+  }
+  elementData_t data;
+  data.text = text_->toPlainText();
+  emit sendMimeData(data, this->grab());
+}
+
+void ElementTemplate::mouseMoveEvent(QMouseEvent *event)
+{
+  if (!(event->buttons() & Qt::LeftButton)) {
+    return;
+  }
+  if ((event->pos() - dragStartPosition_).manhattanLength() < QApplication::startDragDistance())
+    return;
+
+  QDrag *drag = new QDrag(this);
+     QMimeData *mimeData = new QMimeData;
+
+     mimeData->setText("mimeType, data");
+     drag->setMimeData(mimeData);
+     drag->setPixmap(this->grab());
+
+     Qt::DropAction dropAction = drag->exec(Qt::CopyAction | Qt::MoveAction);
+}
+
 void ElementTemplate::enterEvent(QEvent *event)
 {
   tagButton_->setFixedSize(20, 20);

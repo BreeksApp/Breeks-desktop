@@ -60,6 +60,7 @@ void MainWindow::addNewElementToLayout(const int index, const int newElementInde
   for (int j = 0; j < arrDays_[index].elementsCount; ++j) {
     //create new element object
     ElementTemplate *elem = new ElementTemplate;
+    connect(elem, SIGNAL(sendMimeData(const elementData_t, const QPixmap)), this, SLOT(recieveMimeData(const elementData_t, const QPixmap))); //Send username to TextEdit
     elem->setText(arrDaysData_[index][j].text, arrDaysData_[index][j].charStyleVector);
 
     elem->setTime(arrDaysData_[index][j].timeStart, arrDaysData_[index][j].timeEnd);
