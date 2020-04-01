@@ -12,6 +12,7 @@
 #include <QDate>
 #include <QScrollArea>
 #include <set>
+#include <QDrag>
 
 #include "ui_mainwindow.h"
 #include "elementtemplate.h"
@@ -20,6 +21,8 @@
 #include "effects.hpp"
 #include "breek.h"
 #include "loginform.h"
+#include "daywidget.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -32,6 +35,8 @@ class MainWindow : public QMainWindow
 public:
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
+
+  void mousePressEvent( QMouseEvent* event );
 
   LoginForm *loginForm_;
 
@@ -52,8 +57,10 @@ public slots:
   void recieveDayAndElementIndex(const int, const int);
   void recieveDayAndElementIndexAndTagColor(const int, const int, const QPalette);
   void recieveUsername();
+  void recieveMimeData(const elementData_t, const QPixmap);
 
   void moveBreek(int, int, bool);
+  void dropElement(const int);
 
 private slots:
 //note
@@ -108,6 +115,9 @@ private:
   QFile fileThu_;
   QFile fileFri_;
   QFile fileSat_;
+
+  QMimeData mimeData_;
+  QPixmap dragElement_;
 
   using iterType = QVector<elementData_t>::iterator;
   QVector<elementData_t> arrDaysData_[6]; //conteiner with elements data by days
@@ -173,7 +183,7 @@ private:
     QLabel *labelElementsCount;
 
     QScrollArea *scrollArea;
-    QWidget *widgetDay;
+    DayWidget *widgetDay;
     QVBoxLayout *helpLayout;
     QVBoxLayout *layoutDayElements;
 

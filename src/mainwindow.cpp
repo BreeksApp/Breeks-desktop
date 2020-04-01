@@ -26,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
   connect(loginForm_, SIGNAL(sendUsername(const QString)), ui->note, SLOT(recieveUsername(const QString))); //Send username to TextEdit
 
+
 	connect(ui->buttonImage, SIGNAL(imageEnter(bool)), this, SLOT(setImageBackgroundView(bool)));
 	connect(ui->buttonImage, SIGNAL(imageLeave(bool)), this, SLOT(setImageBackgroundView(bool)));
 
@@ -44,6 +45,20 @@ MainWindow::~MainWindow()
   }
 
   delete ui;
+}
+
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
+  if (event->button() == Qt::LeftButton) {
+    QDrag *drag = new QDrag(this);
+    qDebug() << mimeData_.text();
+
+    drag->setMimeData(&mimeData_);
+    drag->setPixmap(dragElement_);
+    Qt::DropAction dropAction = drag->exec();
+
+  }
+
 }
 
 void MainWindow::on_buttonAdd_clicked()
@@ -200,7 +215,13 @@ void MainWindow::recieveDayAndElementIndexAndTagColor(const int dayIndex, const 
 
 void MainWindow::recieveUsername()
 {
-  this->show();
+    this->show();
+}
+
+void MainWindow::recieveMimeData(const elementData_t data, const QPixmap pixMap)
+{
+  mimeData_.setText(data.text);
+  dragElement_ = pixMap;
 }
 
 void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
@@ -227,6 +248,23 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
       }
     }
   }
+}
+
+void MainWindow::dropElement(const int index)
+{
+  bool daysCheck_[6];
+  for (int i = 0; i < 6; i++) {
+    if (i == index) {
+      daysCheck_[i] = true;
+    }
+    else {
+      daysCheck_[i] = false;
+    }
+  }
+
+  elementData_t data;
+
+  recieveTimeTableZoneData(daysCheck_, 6, data);
 }
 
 void MainWindow::on_pushButton_clicked()

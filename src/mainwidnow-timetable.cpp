@@ -138,7 +138,9 @@ void MainWindow::allocateMemoryForDays()
     arrDays_[i].labelElementsCount = new QLabel;
 
     arrDays_[i].scrollArea = new QScrollArea;
-    arrDays_[i].widgetDay = new QWidget;
+    arrDays_[i].widgetDay = new DayWidget;
+    arrDays_[i].widgetDay->setDayNumber(i);
+    connect(arrDays_[i].widgetDay, SIGNAL(dropElement(const int)), this, SLOT(dropElement(const int)));
     arrDays_[i].helpLayout = new QVBoxLayout;
     arrDays_[i].layoutDayElements = new QVBoxLayout;
   }

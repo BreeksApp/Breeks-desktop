@@ -12,12 +12,18 @@
 #include <QLineEdit>
 #include <QTextEdit>
 #include <QTimeEdit>
+#include <QApplication>
+#include <QDrag>
+
 
 class ElementTemplate : public QGroupBox
 {
   Q_OBJECT
 public:
   explicit ElementTemplate(QGroupBox *parent = nullptr);
+
+  void mousePressEvent( QMouseEvent* event );
+  void mouseMoveEvent(QMouseEvent *event);
 
   void enterEvent(QEvent *event);
   void leaveEvent(QEvent *event);
@@ -42,6 +48,8 @@ private:
   const int ELEMENT_WIDTH = 245;
   const int ELEMENT_HEIGHT = 120;
 
+  QPoint dragStartPosition_;
+
   QPushButton *tagButton_;
   QPushButton *settingsButton_;
   QPushButton *deleteButton_;
@@ -60,6 +68,7 @@ private:
 signals:
   void sendDayAndElementIndex(const int dayIndex, const int elementIndex);
   void sendDayAndElementIndexAndTagColor(const int, const int, const QPalette);
+  void sendMimeData(const elementData_t, const QPixmap);
 
 public slots:
 };

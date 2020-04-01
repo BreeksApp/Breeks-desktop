@@ -21,6 +21,7 @@ SOURCES += \
     GeneralTextEdit/gentextedit-write-read.cpp \
     breek.cpp \
     FileSystem/databaseIO.cpp \
+    daywidget.cpp \
     elementtemplate.cpp \
     FileSystem/filesystem.cpp \
     loginform.cpp \
@@ -45,6 +46,7 @@ SOURCES += \
 
 HEADERS += \
     breek.h \
+    daywidget.h \
     elementtemplate.h \
     filesystem.h \
     loginform.h \
