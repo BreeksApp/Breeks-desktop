@@ -91,6 +91,8 @@ void GenTextEdit::fillCharsAndSetText(QString text, const QJsonArray jArr)
 void GenTextEdit::setStylesToChar(charStyle_t& ch, QTextCharFormat& charFormat, const QJsonObject jChar)
 {
   GenTextEdit::detailsSetCharStyle(ch);
+	charFormat.setFontWeight(QFont::Normal);
+
   bool boldStatus = jChar.value("bold").toBool();
   bool italicStatus = jChar.value("italic").toBool();
   bool underlineStatus = jChar.value("underline").toBool();
@@ -128,6 +130,12 @@ void GenTextEdit::setStylesToChar(charStyle_t& ch, QTextCharFormat& charFormat, 
 		GenTextEdit::detailsSetCharStyle(ch, charStyle::SpellChecker);
 	}
   ch.sColor = color;
+	if (color != "") {
+		charFormat.setBackground(QColor(color));
+	}
+	else {
+		charFormat.setBackground(Qt::NoBrush);
+	}
 }
 
 void GenTextEdit::getCharStyle(const int index, charStyle_t& ch) const

@@ -69,6 +69,7 @@ void MainWindow::writeElementsDataToFile(const int index)
       jChar.insert("item", ch.item);
       jChar.insert("star", ch.star);
       jChar.insert("sColor", ch.sColor);
+			jChar.insert("spellChecker", ch.spellChecker);
       jChars.push_back(jChar);
     }
 		jElem.insert("charStyleVector", jChars);
