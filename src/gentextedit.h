@@ -136,8 +136,8 @@ private:
 	void detailsUndoRedoDeleteText(const commandInfo_t& command);
 	void detailsUndoRedoEffects(const commandInfo_t& command, const bool flag = false);
 	bool detailsIsLetter(const QChar ch);
+	void detailsUpdateCharStyle(const int pos, QTextCharFormat& fmt);
 	bool detailsCheckSpelling(QString& word, const int indexLastChar);
-	void detailsRemoveCheckSign(int& pos);
 };
 
 #endif // TEXT_EDIT

@@ -26,7 +26,8 @@ void GenTextEdit::readFromDB(const int currentFile)
 		QTextCursor c = this->textCursor();
 		c.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor);
 		detailsColorText(c, ch.sColor);
-  }
+	}
+	checkSpelling();
 }
 
 void GenTextEdit::writeToDB(const int currentFile)

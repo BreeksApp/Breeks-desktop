@@ -6,26 +6,25 @@
 RussianDictionary::RussianDictionary()
 {
 //.DIC
-	QFile fDic("/home/yaroslav/PROJECTS/Breeks-App/src/RusDic/Russian.dic");
+	QFile fDic("/home/yaroslav/PROJECTS/Breeks-App/src/RusDic/RusDic.txt");
 	if (!fDic.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		qDebug() << "FILE OPENING CRASHED!";
 	}
 	QString sDic = fDic.readAll();
 	QTextStream sourceDic(&sDic);
-	int nWords = 0;
+	size_t nWords = 0;
 	sourceDic >> nWords;
 	QString word = "";
 //---------
-	for (int i = 0; i < nWords - 1; ++i) {
+	for (size_t i = 0; i < nWords - 1; ++i) {
 		sourceDic >> word;
-		word = word.left(word.indexOf('/'));
 		detailsAddWord(word);
 	}
 }
 
 bool RussianDictionary::isCorrectWord(const QString &word)
 {
-	const int indexFirstLetter = QChar(word.at(0).toLower()).unicode() - RUS_A_UNICODE;
+	const int indexFirstLetter = QChar(word.at(0).toLower()).unicode() - RUS_A_CODE;
 	const int length = word.length();
 
 	for(QString dicWord : arrDic_[indexFirstLetter][length]) {
@@ -39,18 +38,23 @@ bool RussianDictionary::isCorrectWord(const QString &word)
 
 void RussianDictionary::addNewWord(const QString word)
 {
-	if (!word.isEmpty()) {
-		if (word.at(0) >= "а" && word.at(0) <= "я") {
-			detailsAddWord(word.toLower());
-		}
+	if (word.length() < MAX_WORD_LEN) {
+		detailsAddWord(word);
 	}
 }
 
-void RussianDictionary::detailsAddWord(const QString word)
+void RussianDictionary::detailsAddWord(QString word)
 {
-	const int index = QChar(word.at(0).toLower()).unicode() - RUS_A_UNICODE;
-	const int length = word.length();
-	arrDic_[index][length].push_back(word);
+	word = word.toLower();
+	while (!word.isEmpty() && !(word.at(0) >= "а" && word.at(0) <= "я")) {
+		word = word.right(word.length() - 1);
+	}
+	if (!word.isEmpty()) {
+		const int index = (word.at(0) != QChar(YO_UNICODE)) ?
+					QChar(word.at(0).toLower()).unicode() - RUS_A_CODE : YO_POS;
+		const int length = word.length();
+		arrDic_[index][length].push_back(word);
+	}
 }
 
 void RussianDictionary::printAllWords()

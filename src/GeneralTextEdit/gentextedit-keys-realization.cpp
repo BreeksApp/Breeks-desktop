@@ -277,7 +277,9 @@ void GenTextEdit::setCharStyle(const int style, const bool forBuffer)
 		if (charStyleVector_[i].sColor != "") {
 			textFormat.setBackground(QColor(charStyleVector_[i].sColor));
 		}
-    c.setCharFormat(textFormat);
+		if (charStyleVector_[i].spellChecker == false || (charStyleVector_[i].spellChecker == true && style != charStyle::Underline)) {
+			c.setCharFormat(textFormat);
+		}
   }
 	if (!forBuffer) { //because that function is also used for change style by Ctrl + z
 		//Add coommand to UndoRefoBuffer
