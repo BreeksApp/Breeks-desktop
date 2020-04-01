@@ -413,11 +413,7 @@ void GenTextEdit::checkSpelling()
 			curCh = QChar(RUS_YO_UNICODE);
 		}
 		curCh = curCh.toLower();
-<<<<<<< HEAD
 
-=======
-		//analize current char
->>>>>>> 80cc23f7bdfbeb078f7b2cf1659b0ee2fb5e68ff
 		if (detailsIsLetter(curCh)) {
 			word += curCh;
 		}
@@ -428,32 +424,9 @@ void GenTextEdit::checkSpelling()
 			detailsCheckSpelling(word, i);
 			word = "";
 		}
-<<<<<<< HEAD
 	}
 	//check the last word
-=======
-		//if the word had a mistake, we shold again check its spelling because mb now there are not mistakes
-		else if (i != 0 && charStyleVector_[std::max(0, i + delta - 1)].spellChecker == true) {
-			int iTmp = charCounter_;
-			QString sTmp = curCh;
-			detailsCheckSpelling(sTmp, i + delta + 1); //+1 because i is not cursorPos but we need it
-			delta += charCounter_ - iTmp;
-		}
-		//if a word was deleted but sign has stayed
-		else if (charStyleVector_[std::max(0, i - 1+ delta)].spellChecker == true) {
-			int pos = std::max(0, i + delta);
-			detailsRemoveCheckSign(pos);
-			--delta;
-		}
-	}
-	//analize last word and last char
->>>>>>> 80cc23f7bdfbeb078f7b2cf1659b0ee2fb5e68ff
 	if (!word.isEmpty()) {
-
 		detailsCheckSpelling(word, charCounter_);
-	}
-	else if (charCounter_ != 0 && charStyleVector_[charCounter_ - 1].spellChecker == true) {
-		int pos = charCounter_;
-		detailsRemoveCheckSign(pos);
 	}
 }

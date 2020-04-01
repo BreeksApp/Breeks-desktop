@@ -359,14 +359,8 @@ void GenTextEdit::detailsUpdateCharStyle(const int pos, QTextCharFormat& fmt)
 	}
 
 	QTextCursor c = this->textCursor();
-<<<<<<< HEAD
 	c.setPosition(pos);
 	c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor);
-=======
-	pos = pos != 0 ? --pos : pos;
-	c.setPosition(pos);
-	c.deleteChar();
->>>>>>> 80cc23f7bdfbeb078f7b2cf1659b0ee2fb5e68ff
 
 	c.setCharFormat(fmt);
 }

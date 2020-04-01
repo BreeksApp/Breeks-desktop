@@ -6,11 +6,8 @@
 RussianDictionary::RussianDictionary()
 {
 //.DIC
-<<<<<<< HEAD
 	QFile fDic("/home/yaroslav/PROJECTS/Breeks-App/src/RusDic/RusDic.txt");
-=======
-	QFile fDic("C:/Users/ypyla/PROJECTS/Breeks-App/src/RusDic/Russian.dic");
->>>>>>> 80cc23f7bdfbeb078f7b2cf1659b0ee2fb5e68ff
+
 	if (!fDic.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		qDebug() << "FILE OPENING CRASHED!";
 	}
