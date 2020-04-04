@@ -140,9 +140,17 @@ void MainWindow::allocateMemoryForDays()
     arrDays_[i].scrollArea = new QScrollArea;
     arrDays_[i].widgetDay = new DayWidget;
     arrDays_[i].widgetDay->setDayNumber(i);
-    connect(arrDays_[i].widgetDay, SIGNAL(dropElement(const int)), this, SLOT(dropElement(const int)));
+
     arrDays_[i].helpLayout = new QVBoxLayout;
     arrDays_[i].layoutDayElements = new QVBoxLayout;
+
+    connect(arrDays_[i].widgetDay, SIGNAL(dropElement(const int, const int, const int, const elementData_t)),
+            this, SLOT(dropElement(const int, const int, const int, const elementData_t)));
+
+    connect(arrDays_[i].widgetDay, SIGNAL(sendDayAndElementIndex(const int, const int)),
+            this, SLOT(recieveDayAndElementIndex(const int, const int)));
+
+    connect(arrDays_[i].widgetDay, SIGNAL(sendElementsHeight(const int, const int)), this, SLOT(sendElementsHeight(const int, const int)));
   }
 
   initializeDaysParameters();

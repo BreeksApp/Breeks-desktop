@@ -23,7 +23,7 @@ public:
   explicit ElementTemplate(QGroupBox *parent = nullptr);
 
   void mousePressEvent( QMouseEvent* event );
-  void mouseMoveEvent(QMouseEvent *event);
+  void mouseMoveEvent(QMouseEvent*event);
 
   void enterEvent(QEvent *event);
   void leaveEvent(QEvent *event);
@@ -45,6 +45,7 @@ private slots:
   void changeTagColor();
 
 private:
+
   const int ELEMENT_WIDTH = 245;
   const int ELEMENT_HEIGHT = 120;
 

@@ -50,15 +50,12 @@ MainWindow::~MainWindow()
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
   if (event->button() == Qt::LeftButton) {
-    QDrag *drag = new QDrag(this);
-    qDebug() << mimeData_.text();
+    //QDrag *drag = new QDrag(this);
 
-    drag->setMimeData(&mimeData_);
-    drag->setPixmap(dragElement_);
-    Qt::DropAction dropAction = drag->exec();
-
+    //drag->setMimeData(&mimeData_);
+    //drag->setPixmap(dragElement_);
+    //Qt::DropAction dropAction = drag->exec();
   }
-
 }
 
 void MainWindow::on_buttonAdd_clicked()
@@ -84,12 +81,15 @@ void MainWindow::on_buttonAdd_clicked()
 
 void MainWindow::recieveTimeTableZoneData(bool *daysCheck, const int arrSize, elementData_t newElement)
 {
+    qDebug() << newElement.timeStart;
+    qDebug() << newElement.timeEnd;
   for (int i = 0; i < arrSize; i++) {
     if (daysCheck[i] == true) {
       //add new element data to array
       const int newElementIndex = addNewElementToArray(newElement, i);
 
       //increase scroll area of this day
+
       arrDays_[i].groupBoxElementsHeight += ELEMENT_HEIGHT_;
       arrDays_[i].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[i].groupBoxElementsHeight);
 
@@ -250,11 +250,11 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
   }
 }
 
-void MainWindow::dropElement(const int index)
+void MainWindow::dropElement(const int dayNumber, const int dayIndex, const int elemIndex, const elementData_t elemData)
 {
   bool daysCheck_[6];
   for (int i = 0; i < 6; i++) {
-    if (i == index) {
+    if (i == dayNumber) {
       daysCheck_[i] = true;
     }
     else {
@@ -262,9 +262,15 @@ void MainWindow::dropElement(const int index)
     }
   }
 
-  elementData_t data;
+  recieveTimeTableZoneData(daysCheck_, 6, elemData);
+  //recieveDayAndElementIndex(dayIndex, elemIndex);
+}
 
-  recieveTimeTableZoneData(daysCheck_, 6, data);
+void MainWindow::sendElementsHeight(const int height, const int index)
+{
+  if (arrDays_[index].elementsCount < 3) {
+    arrDays_[index].widgetDay->setFixedSize(DAY_WIDTH_, ELEMENT_HEIGHT_ * 3);
+  }
 }
 
 void MainWindow::on_pushButton_clicked()
