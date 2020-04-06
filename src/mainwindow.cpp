@@ -81,17 +81,19 @@ void MainWindow::on_buttonAdd_clicked()
 
 void MainWindow::recieveTimeTableZoneData(bool *daysCheck, const int arrSize, elementData_t newElement)
 {
-    qDebug() << newElement.timeStart;
-    qDebug() << newElement.timeEnd;
   for (int i = 0; i < arrSize; i++) {
     if (daysCheck[i] == true) {
       //add new element data to array
       const int newElementIndex = addNewElementToArray(newElement, i);
 
       //increase scroll area of this day
-
-      arrDays_[i].groupBoxElementsHeight += ELEMENT_HEIGHT_;
-      arrDays_[i].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[i].groupBoxElementsHeight);
+      if (arrDays_[i].elementsCount < 3) {
+        arrDays_[i].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[i].groupBoxElementsHeight);
+      }
+      else {
+        arrDays_[i].groupBoxElementsHeight += ELEMENT_HEIGHT_;
+        arrDays_[i].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[i].groupBoxElementsHeight);
+      }
 
       //add new element to layout
       addNewElementToLayout(i, newElementIndex);
@@ -187,8 +189,13 @@ void MainWindow::recieveDayAndElementIndex(const int dayElementIndex, const int 
   delete item;
   arrDays_[dayElementIndex].layoutDayElements->update();
 
-  arrDays_[dayElementIndex].groupBoxElementsHeight -= ELEMENT_HEIGHT_;
-  arrDays_[dayElementIndex].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[dayElementIndex].groupBoxElementsHeight);
+  if (arrDays_[dayElementIndex].elementsCount <= 3) {
+      arrDays_[dayElementIndex].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[dayElementIndex].groupBoxElementsHeight);
+  }
+  else {
+    arrDays_[dayElementIndex].groupBoxElementsHeight -= ELEMENT_HEIGHT_;
+    arrDays_[dayElementIndex].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[dayElementIndex].groupBoxElementsHeight);
+  }
 
   --arrDays_[dayElementIndex].elementsCount;
 
@@ -263,7 +270,6 @@ void MainWindow::dropElement(const int dayNumber, const int dayIndex, const int 
   }
 
   recieveTimeTableZoneData(daysCheck_, 6, elemData);
-  //recieveDayAndElementIndex(dayIndex, elemIndex);
 }
 
 void MainWindow::sendElementsHeight(const int height, const int index)
@@ -285,3 +291,5 @@ void MainWindow::on_pushButton_2_clicked()
           writeElementsDataToFile(i);
     }
 }
+
+

@@ -111,7 +111,7 @@ void MainWindow::setDayInfo()
     //set current date
     QString currentDate = "";
     if (i != iCurrentDay) {
-      tmpDate = date.addDays(i - iCurrentDay);
+      tmpDate = date.addDays(abs(i - iCurrentDay));
       currentDate = ", " + nameMonth + " " + tmpDate.toString("d");
     }
     else {
@@ -159,7 +159,7 @@ void MainWindow::allocateMemoryForDays()
 void MainWindow::initializeDaysParameters()
 {
   for (int i = 0; i < DAYS_COUNT; i++) {
-    arrDays_[i].groupBoxElementsHeight = 0;
+    arrDays_[i].groupBoxElementsHeight = 395;
     arrDays_[i].elementsCount = 0;
     arrDays_[i].labelElementsCount->setText("");
   }

@@ -23,6 +23,7 @@ private:
   int dayNumber_;
   int dayIndex_;
   int elemIndex_;
+  QPoint dragPos_;
 
 signals:
   void dropElement(const int, const int, const int, const elementData_t);

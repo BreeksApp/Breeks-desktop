@@ -60,6 +60,7 @@ void ElementTemplate::mousePressEvent(QMouseEvent *event)
 {
   if (event->button() == Qt::LeftButton) {
      dragStartPosition_ = event->pos();
+
   }
   elementData_t data;
   data.text = text_->toPlainText();
@@ -79,7 +80,7 @@ void ElementTemplate::mouseMoveEvent(QMouseEvent *event)
 
   QByteArray data;
   QDataStream inData(&data, QIODevice::WriteOnly);
-  inData << this->text_->toPlainText() << this->timeStart_->text() << this->timeEnd_->text() << this->getColor();
+  inData << this->text_->toPlainText() << this->timeStart_->text() << this->timeEnd_->text() << this->getColor() << dragStartPosition_;
 
   QByteArray charVector;
   QDataStream inVector(&charVector, QIODevice::WriteOnly);
@@ -97,7 +98,6 @@ void ElementTemplate::mouseMoveEvent(QMouseEvent *event)
   mimeData->setData("indexes", indexes);
   drag->setMimeData(mimeData);
   drag->setPixmap(this->grab());
-
   Qt::DropAction dropAction = drag->exec(Qt::CopyAction | Qt::MoveAction);
 
 }
