@@ -95,7 +95,6 @@ void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
     for (int j = 1; j < 5; ++j) {
       QString sAdress = ":/Images/Images/Breeks/" + QString::number(i) + "." + QString::number(j) + ".png";
 
-      //qDebug() << sAdress;
       switch (j) {
         case 1 :
           arrEmojiNormal[i] = sAdress;

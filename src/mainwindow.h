@@ -60,7 +60,8 @@ public slots:
   void recieveMimeData(const elementData_t, const QPixmap);
 
   void moveBreek(int, int, bool);
-  void dropElement(const int);
+  void dropElement(const int, const int, const int, const elementData_t);
+  void sendElementsHeight(const int, const int);
 
 private slots:
 //note
@@ -88,8 +89,10 @@ private slots:
 
     void on_pushButton_2_clicked();
 
+
 signals:
   void sendUsername(const QString);
+
 
 private:
   Ui::MainWindow *ui;

@@ -111,7 +111,7 @@ void MainWindow::setDayInfo()
     //set current date
     QString currentDate = "";
     if (i != iCurrentDay) {
-      tmpDate = date.addDays(i - iCurrentDay);
+      tmpDate = date.addDays(abs(i - iCurrentDay));
       currentDate = ", " + nameMonth + " " + tmpDate.toString("d");
     }
     else {
@@ -140,9 +140,17 @@ void MainWindow::allocateMemoryForDays()
     arrDays_[i].scrollArea = new QScrollArea;
     arrDays_[i].widgetDay = new DayWidget;
     arrDays_[i].widgetDay->setDayNumber(i);
-    connect(arrDays_[i].widgetDay, SIGNAL(dropElement(const int)), this, SLOT(dropElement(const int)));
+
     arrDays_[i].helpLayout = new QVBoxLayout;
     arrDays_[i].layoutDayElements = new QVBoxLayout;
+
+    connect(arrDays_[i].widgetDay, SIGNAL(dropElement(const int, const int, const int, const elementData_t)),
+            this, SLOT(dropElement(const int, const int, const int, const elementData_t)));
+
+    connect(arrDays_[i].widgetDay, SIGNAL(sendDayAndElementIndex(const int, const int)),
+            this, SLOT(recieveDayAndElementIndex(const int, const int)));
+
+    connect(arrDays_[i].widgetDay, SIGNAL(sendElementsHeight(const int, const int)), this, SLOT(sendElementsHeight(const int, const int)));
   }
 
   initializeDaysParameters();
@@ -151,7 +159,7 @@ void MainWindow::allocateMemoryForDays()
 void MainWindow::initializeDaysParameters()
 {
   for (int i = 0; i < DAYS_COUNT; i++) {
-    arrDays_[i].groupBoxElementsHeight = 0;
+    arrDays_[i].groupBoxElementsHeight = 395;
     arrDays_[i].elementsCount = 0;
     arrDays_[i].labelElementsCount->setText("");
   }
