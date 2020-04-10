@@ -60,6 +60,7 @@ void ElementTemplate::mousePressEvent(QMouseEvent *event)
 {
   if (event->button() == Qt::LeftButton) {
      dragStartPosition_ = event->pos();
+
   }
   elementData_t data;
   data.text = text_->toPlainText();
@@ -75,13 +76,30 @@ void ElementTemplate::mouseMoveEvent(QMouseEvent *event)
     return;
 
   QDrag *drag = new QDrag(this);
-     QMimeData *mimeData = new QMimeData;
+  QMimeData *mimeData = new QMimeData;
 
-     mimeData->setText("mimeType, data");
-     drag->setMimeData(mimeData);
-     drag->setPixmap(this->grab());
+  QByteArray data;
+  QDataStream inData(&data, QIODevice::WriteOnly);
+  inData << this->text_->toPlainText() << this->timeStart_->text() << this->timeEnd_->text() << this->getColor() << dragStartPosition_;
 
-     Qt::DropAction dropAction = drag->exec(Qt::CopyAction | Qt::MoveAction);
+  QByteArray charVector;
+  QDataStream inVector(&charVector, QIODevice::WriteOnly);
+  inVector << this->getCharStyleVector().size();
+  for (charStyle_t ch: this->getCharStyleVector()) {
+    inVector << ch.bold << ch.italic << ch.underline << ch.strike << ch.item << ch.star << ch.sColor;
+  }
+
+  QByteArray indexes;
+  QDataStream inIndexes(&indexes, QIODevice::WriteOnly);
+  inIndexes << dayIndex_ << elementIndex_;
+
+  mimeData->setData("elemData", data);
+  mimeData->setData("charVector", charVector);
+  mimeData->setData("indexes", indexes);
+  drag->setMimeData(mimeData);
+  drag->setPixmap(this->grab());
+  Qt::DropAction dropAction = drag->exec(Qt::CopyAction | Qt::MoveAction);
+
 }
 
 void ElementTemplate::enterEvent(QEvent *event)

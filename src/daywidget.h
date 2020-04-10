@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QDrag>
 #include <QDragEnterEvent>
+#include "datastructures.h"
 
 class DayWidget : public QWidget
 {
@@ -13,15 +14,21 @@ public:
 
   void dragEnterEvent(QDragEnterEvent *event);
   void dropEvent(QDropEvent *event);
+  void dragMoveEvent(QDragMoveEvent *event);
 
   int getDayNumber();
   void setDayNumber(const int);
 
 private:
   int dayNumber_;
+  int dayIndex_;
+  int elemIndex_;
+  QPoint dragPos_;
 
 signals:
-  void dropElement(const int);
+  void dropElement(const int, const int, const int, const elementData_t);
+  void sendDayAndElementIndex(const int, const int);
+  void sendElementsHeight(const int, const int);
 
 public slots:
 };
