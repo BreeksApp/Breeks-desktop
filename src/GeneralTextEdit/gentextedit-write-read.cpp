@@ -11,14 +11,14 @@ void GenTextEdit::readFromDB(const int currentFile)
 
   QTextStream out(&text);
   QChar tmpChar;
-  QTextCharFormat charFormat;
-  charStyle_t ch;
+
 
   for (int i = 0; i < charCounter_; ++i) {
+		QTextCharFormat charFormat;
+		charStyle_t ch;
     QJsonObject jChar = jChars[i].toObject();
 		detailsSetCharStyle(ch);
-    charFormat.setFontWeight(QFont::Normal);
-    setStylesToChar(ch, charFormat, jChar);
+		setStylesToChar(ch, charFormat, jChar);
 
 		int cursorPos = this->textCursor().position();
     this->fillCharStyleVector(cursorPos, 1, ch);

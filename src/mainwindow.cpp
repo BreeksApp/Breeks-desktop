@@ -87,7 +87,7 @@ void MainWindow::recieveTimeTableZoneData(bool *daysCheck, const int arrSize, el
 
       //increase scroll area of this day
       if (arrDays_[i].elementsCount < 3) {
-        arrDays_[i].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[i].groupBoxElementsHeight);
+				arrDays_[i].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[i].groupBoxElementsHeight - 30);
       }
       else {
         arrDays_[i].groupBoxElementsHeight += ELEMENT_HEIGHT_;
@@ -189,7 +189,7 @@ void MainWindow::recieveDayAndElementIndex(const int dayElementIndex, const int 
   arrDays_[dayElementIndex].layoutDayElements->update();
 
   if (arrDays_[dayElementIndex].elementsCount <= 3) {
-      arrDays_[dayElementIndex].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[dayElementIndex].groupBoxElementsHeight);
+			arrDays_[dayElementIndex].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[dayElementIndex].groupBoxElementsHeight - 30);
   }
   else {
     arrDays_[dayElementIndex].groupBoxElementsHeight -= ELEMENT_HEIGHT_;
@@ -276,19 +276,6 @@ void MainWindow::sendElementsHeight(const int height, const int index)
   if (arrDays_[index].elementsCount < 3) {
     arrDays_[index].widgetDay->setFixedSize(DAY_WIDTH_, ELEMENT_HEIGHT_ * 3);
   }
-}
-
-void MainWindow::on_pushButton_clicked()
-{
-  loginForm_->show();
-  this->close();
-}
-
-void MainWindow::on_pushButton_2_clicked()
-{
-    for (int i = 0; i < 6; ++i) {
-          writeElementsDataToFile(i);
-    }
 }
 
 

@@ -93,7 +93,7 @@ private:
 
   QVector< charStyle_t > charStyleVector_; //storrage of font style status of every char
   const QVector< QChar > AVAILABLE_CHARS_ = {'!', '?', '.', ',', ';', ':', '\"', '\'', '&', '*', '@', '~', '`', '#','$', '^', '/',
-        '%', '(', ')', '[', ']', '{', '}', '|', '\\', '<', '>', '-', '_', '+', '='};
+				'%', '(', ')', '[', ']', '{', '}', '|', '\\', '<', '>', '-', '_', '+', '=','№'};
 
 	charStyle_t globCh;
 
