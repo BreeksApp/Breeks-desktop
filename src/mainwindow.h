@@ -85,14 +85,8 @@ private slots:
 //adding new elements
   void on_buttonAdd_clicked();
 
-	void on_pushButton_clicked();
-
-    void on_pushButton_2_clicked();
-
-
 signals:
   void sendUsername(const QString);
-
 
 private:
   Ui::MainWindow *ui;

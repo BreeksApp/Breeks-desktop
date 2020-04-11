@@ -73,7 +73,7 @@ private:
 	UndoRedoText *undoRedoBuffer_;
 	void setCommandInfo(commandInfo_t& command, const enum command commandName,
 				const int pos, const QString text, int lenght = -1);
-	RussianDictionary *rusDic_;
+	static RussianDictionary *rusDic_;
 	QTimer *timer_;
 
 //it is data storage

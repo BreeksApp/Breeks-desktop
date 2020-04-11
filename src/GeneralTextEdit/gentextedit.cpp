@@ -6,12 +6,14 @@
 
 #include "gentextedit.h"
 
+RussianDictionary *GenTextEdit::rusDic_ = new RussianDictionary();
+
 GenTextEdit::GenTextEdit(QWidget *parent) :
 	QTextEdit(parent),
 	timer_(new QTimer())
 {
 	undoRedoBuffer_ = new UndoRedoText;
-	rusDic_ = new RussianDictionary;
+	//rusDic_ = new RussianDictionary;
 	timer_->setSingleShot(true);
 	connect(timer_, SIGNAL(timeout()), this, SLOT(checkSpelling()));
 
