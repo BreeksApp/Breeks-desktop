@@ -56,6 +56,52 @@ ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
   connect(tagButton_, SIGNAL (clicked()), this, SLOT (changeTagColor()));
 }
 
+void ElementTemplate::mousePressEvent(QMouseEvent *event)
+{
+  if (event->button() == Qt::LeftButton) {
+     dragStartPosition_ = event->pos();
+
+  }
+  elementData_t data;
+  data.text = text_->toPlainText();
+  emit sendMimeData(data, this->grab());
+}
+
+void ElementTemplate::mouseMoveEvent(QMouseEvent *event)
+{
+  if (!(event->buttons() & Qt::LeftButton)) {
+    return;
+  }
+  if ((event->pos() - dragStartPosition_).manhattanLength() < QApplication::startDragDistance())
+    return;
+
+  QDrag *drag = new QDrag(this);
+  QMimeData *mimeData = new QMimeData;
+
+  QByteArray data;
+  QDataStream inData(&data, QIODevice::WriteOnly);
+  inData << this->text_->toPlainText() << this->timeStart_->text() << this->timeEnd_->text() << this->getColor() << dragStartPosition_;
+
+  QByteArray charVector;
+  QDataStream inVector(&charVector, QIODevice::WriteOnly);
+  inVector << this->getCharStyleVector().size();
+  for (charStyle_t ch: this->getCharStyleVector()) {
+    inVector << ch.bold << ch.italic << ch.underline << ch.strike << ch.item << ch.star << ch.sColor;
+  }
+
+  QByteArray indexes;
+  QDataStream inIndexes(&indexes, QIODevice::WriteOnly);
+  inIndexes << dayIndex_ << elementIndex_;
+
+  mimeData->setData("elemData", data);
+  mimeData->setData("charVector", charVector);
+  mimeData->setData("indexes", indexes);
+  drag->setMimeData(mimeData);
+  drag->setPixmap(this->grab());
+  Qt::DropAction dropAction = drag->exec(Qt::CopyAction | Qt::MoveAction);
+
+}
+
 void ElementTemplate::enterEvent(QEvent *event)
 {
   tagButton_->setFixedSize(20, 20);

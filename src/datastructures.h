@@ -17,9 +17,9 @@ struct charStyle_t {
   bool underline;
   bool strike;
   bool item;
+	bool spellChecker;
   bool star;
   QString sColor;
-	bool spellChecker;
 };
 namespace colors { //#ade9ff is breeks color
 	const QString nocolor = "";
@@ -28,7 +28,7 @@ namespace colors { //#ade9ff is breeks color
 	const QString marina = "#bcd9ef";
 	const QString orange = "#ffc88e";
 	const QString red = "#ff9d95";
-	const QString yellow = "#ffffcc";
+	const QString white = "#ffffff";
 };
 
 struct elementData_t {

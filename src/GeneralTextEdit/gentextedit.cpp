@@ -6,12 +6,14 @@
 
 #include "gentextedit.h"
 
+RussianDictionary *GenTextEdit::rusDic_ = new RussianDictionary();
+
 GenTextEdit::GenTextEdit(QWidget *parent) :
 	QTextEdit(parent),
 	timer_(new QTimer())
 {
 	undoRedoBuffer_ = new UndoRedoText;
-	rusDic_ = new RussianDictionary;
+	//rusDic_ = new RussianDictionary;
 	timer_->setSingleShot(true);
 	connect(timer_, SIGNAL(timeout()), this, SLOT(checkSpelling()));
 
@@ -20,8 +22,6 @@ GenTextEdit::GenTextEdit(QWidget *parent) :
   charCounter_ = 0;
 	//add saved text
 	readFromDB(nCurrentFile_);
-	checkSpelling();
-
 	detailsSetCharStyle(globCh);
 }
 
@@ -46,7 +46,8 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 		//letters
     if (kmModifiers == 0 || kmModifiers == Qt::ShiftModifier) {
       if ( (iKey >= Qt::Key_A && iKey <= Qt::Key_Z) ||
-      (QKeySequence(iKey).toString() >= "А" && (QKeySequence(iKey).toString() <= "Я")) ) {
+						(QKeySequence(iKey).toString() >= "А" && (QKeySequence(iKey).toString() <= "Я")) ||
+						QKeySequence(iKey).toString() == "Ё") {
         detailsCheckSelectionAndItem(cursorPos);
 
 				detailsSetCharStyleByNeighbours(ch, cursorPos);
@@ -121,8 +122,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 				setCommandInfo(command, command::insertStr, cursorPos, " ");
 				undoRedoBuffer_->pushUndoCommand(command);
 			//
-				timer_->stop();
-				timer_->start(1000);
+				checkSpelling();
 				return;
 			}
 		 //Tab
@@ -150,8 +150,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 				setCommandInfo(command, command::insertStr, cursorPos, "\n");
 				undoRedoBuffer_->pushUndoCommand(command);
 			//
-				timer_->stop();
-				timer_->start(1000);
+				checkSpelling();
 				return;
     }
 
@@ -370,9 +369,11 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 		else if (QKeySequence(iKey) == Qt::Key_R || QKeySequence(iKey).toString() == "К") {
 			colorText(colors::red);
 			this->moveCursor(QTextCursor::Right);
+			checkSpelling();
 			return;
 		}
   }
+	//Ctrl + Shift + D - add new word to dictionary
 	if (kmModifiers == (Qt::ShiftModifier | Qt::ControlModifier) &&
 			(QKeySequence(iKey) == Qt::Key_D || QKeySequence(iKey).toString() == "В")) {
 		rusDic_->addNewWord(this->textCursor().selectedText().toLower());
@@ -406,11 +407,15 @@ void GenTextEdit::checkSpelling()
 	QTextStream sourseText(&text);
 	QChar curCh;
 	QString word = "";
-	int delta = 0;
 
 	for (int i = 0; i < text.length(); ++i) {
 		sourseText >> curCh;
+		//dictionary doesn't know about 'Ё' letter
+		if (curCh == "ё" || curCh == "Ё") {
+			curCh = QChar(RUS_YO_UNICODE);
+		}
 		curCh = curCh.toLower();
+
 		if (detailsIsLetter(curCh)) {
 			word += curCh;
 		}
@@ -418,18 +423,11 @@ void GenTextEdit::checkSpelling()
 			word += curCh;
 		}
 		else if (!word.isEmpty()) {
-			int iTmp = charCounter_;
-			detailsCheckSpelling(word, i + delta);
-			delta += charCounter_ - iTmp;
+			detailsCheckSpelling(word, i);
 			word = "";
 		}
-		else if (i != 0 && charStyleVector_[i + delta - 1].spellChecker == true) {
-			int iTmp = charCounter_;
-			QString sTmp = curCh;
-			detailsCheckSpelling(sTmp, i + delta + 1); //+1 because i is not cursorPos but we need it
-			delta += charCounter_ - iTmp;
-		}
 	}
+	//check the last word
 	if (!word.isEmpty()) {
 		detailsCheckSpelling(word, charCounter_);
 	}

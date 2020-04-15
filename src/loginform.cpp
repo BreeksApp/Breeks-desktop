@@ -10,6 +10,7 @@ LoginForm::LoginForm(QWidget *parent) :
   mydb = QSqlDatabase::addDatabase("QSQLITE"); //Choose driver for work work with SqlLite DB
                 mydb.setDatabaseName("/home/george/Work/BREEKS/Breeks-App/src/FileSystem/BreeksInfo.db"); // Set Path to our DB file
 
+
   if (!mydb.open()) {
     qDebug()<<"Failed to open DataBase";
   }

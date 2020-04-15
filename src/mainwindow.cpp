@@ -25,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(loginForm_, SIGNAL(firstWindow()), this, SLOT(recieveUsername())); //Connect login and Mainwindow form
   connect(loginForm_, SIGNAL(sendUsername(const QString)), ui->note, SLOT(recieveUsername(const QString))); //Send username to TextEdit
 
+
 	connect(ui->buttonImage, SIGNAL(imageEnter(bool)), this, SLOT(setImageBackgroundView(bool)));
 	connect(ui->buttonImage, SIGNAL(imageLeave(bool)), this, SLOT(setImageBackgroundView(bool)));
 
@@ -43,6 +44,17 @@ MainWindow::~MainWindow()
   }
 
   delete ui;
+}
+
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
+  if (event->button() == Qt::LeftButton) {
+    //QDrag *drag = new QDrag(this);
+
+    //drag->setMimeData(&mimeData_);
+    //drag->setPixmap(dragElement_);
+    //Qt::DropAction dropAction = drag->exec();
+  }
 }
 
 void MainWindow::on_buttonAdd_clicked()
@@ -74,8 +86,13 @@ void MainWindow::recieveTimeTableZoneData(bool *daysCheck, const int arrSize, el
       const int newElementIndex = addNewElementToArray(newElement, i);
 
       //increase scroll area of this day
-      arrDays_[i].groupBoxElementsHeight += ELEMENT_HEIGHT_;
-      arrDays_[i].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[i].groupBoxElementsHeight);
+      if (arrDays_[i].elementsCount < 3) {
+				arrDays_[i].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[i].groupBoxElementsHeight - 30);
+      }
+      else {
+        arrDays_[i].groupBoxElementsHeight += ELEMENT_HEIGHT_;
+        arrDays_[i].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[i].groupBoxElementsHeight);
+      }
 
       //add new element to layout
       addNewElementToLayout(i, newElementIndex);
@@ -171,8 +188,13 @@ void MainWindow::recieveDayAndElementIndex(const int dayElementIndex, const int 
   delete item;
   arrDays_[dayElementIndex].layoutDayElements->update();
 
-  arrDays_[dayElementIndex].groupBoxElementsHeight -= ELEMENT_HEIGHT_;
-  arrDays_[dayElementIndex].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[dayElementIndex].groupBoxElementsHeight);
+  if (arrDays_[dayElementIndex].elementsCount <= 3) {
+			arrDays_[dayElementIndex].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[dayElementIndex].groupBoxElementsHeight - 30);
+  }
+  else {
+    arrDays_[dayElementIndex].groupBoxElementsHeight -= ELEMENT_HEIGHT_;
+    arrDays_[dayElementIndex].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[dayElementIndex].groupBoxElementsHeight);
+  }
 
   --arrDays_[dayElementIndex].elementsCount;
 
@@ -199,7 +221,13 @@ void MainWindow::recieveDayAndElementIndexAndTagColor(const int dayIndex, const 
 
 void MainWindow::recieveUsername()
 {
-  this->show();
+    this->show();
+}
+
+void MainWindow::recieveMimeData(const elementData_t data, const QPixmap pixMap)
+{
+  mimeData_.setText(data.text);
+  dragElement_ = pixMap;
 }
 
 void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
@@ -228,15 +256,26 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
   }
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::dropElement(const int dayNumber, const int dayIndex, const int elemIndex, const elementData_t elemData)
 {
-  loginForm_->show();
-  this->close();
+  bool daysCheck_[6];
+  for (int i = 0; i < 6; i++) {
+    if (i == dayNumber) {
+      daysCheck_[i] = true;
+    }
+    else {
+      daysCheck_[i] = false;
+    }
+  }
+
+  recieveTimeTableZoneData(daysCheck_, 6, elemData);
 }
 
-void MainWindow::on_pushButton_2_clicked()
+void MainWindow::sendElementsHeight(const int height, const int index)
 {
-    for (int i = 0; i < 6; ++i) {
-          writeElementsDataToFile(i);
-    }
+  if (arrDays_[index].elementsCount < 3) {
+    arrDays_[index].widgetDay->setFixedSize(DAY_WIDTH_, ELEMENT_HEIGHT_ * 3);
+  }
 }
+
+

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include <QTextCodec>
+#include <QSyntaxHighlighter>
 
 #include "gentextedit.h"
 
@@ -152,6 +153,9 @@ void GenTextEdit::detailsSetCharStyle(charStyle_t &ch, const int style)
   else if (style == charStyle::Strike) {
     ch.strike = !ch.strike;
   }
+	else if (style == charStyle::SpellChecker) {
+		ch.spellChecker = !ch.spellChecker;
+	}
   else if (style == charStyle::Item) {
     ch.item = true;
 		ch.star = false;
@@ -162,9 +166,6 @@ void GenTextEdit::detailsSetCharStyle(charStyle_t &ch, const int style)
     ch.star = true;
 		ch.sColor = colors::marina;
   }
-	else if (style == charStyle::SpellChecker) {
-		ch.spellChecker = true;
-	}
 }
 
 void GenTextEdit::detailsSetCharStyle(charStyle_t &ch, const int style, int& status)
@@ -228,6 +229,10 @@ void GenTextEdit::detailsSetFormatFields(QTextCharFormat &fmt, const charStyle_t
 	if (ch.strike == true) {
 		fmt.setFontStrikeOut(true);
 	}
+	if (ch.spellChecker == true) {
+		fmt.setFontUnderline(true);
+		fmt.setUnderlineColor(QColor(colors::red));
+	}
 }
 
 void GenTextEdit::detailsSetCharStyleByNeighbours(charStyle_t &ch, int indexRight)
@@ -236,28 +241,28 @@ void GenTextEdit::detailsSetCharStyleByNeighbours(charStyle_t &ch, int indexRigh
 		ch = globCh;
 		return;
 	}
-
-	int *indexLeft = &indexRight;
+	int indexLeft = indexRight;
 	//index of right neighbour (cursorPos)
 	if (indexRight >= charCounter_) {
 		indexRight = std::max(0, charCounter_ - 1);
+		indexLeft = indexRight;
 	}
 	else if (indexRight < 0) {
 		indexRight = 0;
+		indexLeft = indexRight;
 	}
 	else {
-		*indexLeft = std::max(0, indexRight - 1);
+		indexLeft = std::max(0, indexRight - 1);
 	}
-	
-	ch.bold = charStyleVector_[*indexLeft].bold | charStyleVector_[indexRight].bold | globCh.bold;
-	ch.italic = charStyleVector_[*indexLeft].italic | charStyleVector_[indexRight].italic | globCh.italic;
-	ch.underline = charStyleVector_[*indexLeft].underline | charStyleVector_[indexRight].underline | globCh.underline;
-	ch.strike = charStyleVector_[*indexLeft].strike | charStyleVector_[indexRight].strike | globCh.strike;
 
-	if (charStyleVector_[*indexLeft].spellChecker == false) {
-		ch.sColor = charStyleVector_[indexRight].sColor == "" ?
-					charStyleVector_[*indexLeft].sColor : charStyleVector_[indexRight].sColor;
-	}
+	ch.bold = charStyleVector_[indexLeft].bold | charStyleVector_[indexRight].bold | globCh.bold;
+	ch.italic = charStyleVector_[indexLeft].italic | charStyleVector_[indexRight].italic | globCh.italic;
+	ch.underline = charStyleVector_[indexLeft].underline | charStyleVector_[indexRight].underline | globCh.underline;
+	ch.strike = charStyleVector_[indexLeft].strike | charStyleVector_[indexRight].strike | globCh.strike;
+	ch.spellChecker = charStyleVector_[indexLeft].spellChecker | charStyleVector_[indexRight].spellChecker;
+
+	ch.sColor = charStyleVector_[indexRight].sColor == "" ?
+				charStyleVector_[indexLeft].sColor : charStyleVector_[indexRight].sColor;
 }
 
 void GenTextEdit::detailsSetCharStyleByIndex(const charStyle_t &ch, const int index)
@@ -346,59 +351,64 @@ bool GenTextEdit::detailsIsLetter(const QChar ch)
 	}
 }
 
-void GenTextEdit::detailsRemoveCheckSign(int &pos)
+void GenTextEdit::detailsUpdateCharStyle(const int pos, QTextCharFormat& fmt)
 {
-	QTextCursor c = this->textCursor();
-	c.setPosition(--pos);
-	c.deleteChar();
+	fmt.setFontWeight(QFont::Normal);
+	detailsSetFormatFields(fmt, charStyleVector_[pos]);
+	if (charStyleVector_[pos].sColor != "") {
+		fmt.setBackground(QColor(charStyleVector_[pos].sColor));
+	}
 
-	iterator iter = charStyleVector_.begin() + pos;
-	charStyleVector_.erase(iter);
-	--charCounter_;
+	QTextCursor c = this->textCursor();
+	c.setPosition(pos);
+	c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor);
+
+	c.setCharFormat(fmt);
 }
 
 bool GenTextEdit::detailsCheckSpelling(QString &word, const int indexLastChar)
 {
 	int pos = indexLastChar - word.length();
-
 	//if first letter is not russian, we will skip this word
 	if (word.length() > 1) {
+		//if it isn't rus letter
 		if (!(word.at(0).toLower() >= "а" && word.at(0).toLower() <= "я")) {
 			return true;
 		}
 		//if word was like абв-где- (we don't need last '-')
 		word = (word.at(word.length() - 1) == "-") ? word.left(word.length() - 1) : word;
 	}
-	else if (word.length() == 1) {
-		if (charStyleVector_[std::max(0, pos - 1)].spellChecker == true) {
-			qDebug() << pos;
-			detailsRemoveCheckSign(pos);
-		}
-		return true;
-	}
-
+	QTextCursor c = this->textCursor();
+	QTextCharFormat fmt;
+	//underline word
 	if (!rusDic_->isCorrectWord(word)) {
-		if (charStyleVector_[std::max(0, pos - 1)].spellChecker == false) {
-			QTextCursor c = this->textCursor();
-			c.setPosition(pos);
-			c.insertText("*");
-			c.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor);
-			detailsColorText(c, colors::yellow);
-
-			charStyle_t ch;
-			detailsSetCharStyle(ch);
-			ch.spellChecker = true;
-			ch.sColor = colors::yellow;
-			charStyleVector_.insert(pos, ch);
-
-			++charCounter_;
-			return false;
+		for (int i = pos; i < pos + word.length(); ++i) {
+			charStyleVector_[i].spellChecker = true;
+			//cursor
+			c.setPosition(i);
+			c.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor);
+			//char style
+			detailsUpdateCharStyle(i, fmt);
+			if (charStyleVector_[pos].sColor != colors::red) {
+				fmt.setUnderlineColor(QColor(colors::red));
+			}
+			else {
+				fmt.setUnderlineColor(QColor(colors::white));
+			}
+			c.setCharFormat(fmt);
 		}
+
 		return false;
 	}
-	else if (charStyleVector_[std::max(0, pos - 1)].spellChecker == true) {
-		detailsRemoveCheckSign(pos);
+	else {
+		for (int i = pos; i < pos + word.length(); ++i) {
+			if (charStyleVector_[i].spellChecker) {
+				charStyleVector_[i].spellChecker = false;
+				detailsUpdateCharStyle(i, fmt);
+			}
+		}
 	}
+
 	return true;
 }
 

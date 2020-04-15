@@ -73,7 +73,7 @@ private:
 	UndoRedoText *undoRedoBuffer_;
 	void setCommandInfo(commandInfo_t& command, const enum command commandName,
 				const int pos, const QString text, int lenght = -1);
-	RussianDictionary *rusDic_;
+	static RussianDictionary *rusDic_;
 	QTimer *timer_;
 
 //it is data storage
@@ -93,7 +93,7 @@ private:
 
   QVector< charStyle_t > charStyleVector_; //storrage of font style status of every char
   const QVector< QChar > AVAILABLE_CHARS_ = {'!', '?', '.', ',', ';', ':', '\"', '\'', '&', '*', '@', '~', '`', '#','$', '^', '/',
-        '%', '(', ')', '[', ']', '{', '}', '|', '\\', '<', '>', '-', '_', '+', '='};
+				'%', '(', ')', '[', ']', '{', '}', '|', '\\', '<', '>', '-', '_', '+', '=','№'};
 
 	charStyle_t globCh;
 
@@ -103,6 +103,7 @@ private:
 	const QString warrningSign_ = "❐";
 	const int ITEM_LENGTH = 4;
 	const int TAB_LENGTH = 4;
+	const uint RUS_YO_UNICODE = 0x0435;
 
 //keys-realization.cpp
 	void addTodoList(const QString itemSign);
@@ -136,8 +137,8 @@ private:
 	void detailsUndoRedoDeleteText(const commandInfo_t& command);
 	void detailsUndoRedoEffects(const commandInfo_t& command, const bool flag = false);
 	bool detailsIsLetter(const QChar ch);
+	void detailsUpdateCharStyle(const int pos, QTextCharFormat& fmt);
 	bool detailsCheckSpelling(QString& word, const int indexLastChar);
-	void detailsRemoveCheckSign(int& pos);
 };
 
 #endif // TEXT_EDIT
