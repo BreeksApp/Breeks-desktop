@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <algorithm>
+#include <QVector>
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QTextStream>
@@ -53,6 +54,8 @@ public slots:
 
 //slot to set data which was pronted and selected by user in AddElement form for Breeks Zone
   void recieveBreeksZoneData(bool *, const int, breeksData_t);
+//slot to fill original breeks positions in layout when they have been added on it(to avoid "position problem")
+  void fillBreeksPositions(int);
 
   void recieveDayAndElementIndex(const int, const int);
   void recieveDayAndElementIndexAndTagColor(const int, const int, const QPalette);
@@ -87,6 +90,7 @@ private slots:
 
 signals:
   void sendUsername(const QString);
+  void breeksZoneDataReceived(int);
 
 private:
   Ui::MainWindow *ui;
@@ -214,6 +218,8 @@ private:
     QGroupBox *breeksZoneGroupBox;
     QGridLayout *breeksZoneLayout;
     Breek *arrBreeks[6];
+    QVector<QPoint> positionsOfBreeks_;
+    bool ifPosTaken_[6];
 
     QGroupBox *breeksDescriptionGroupBox;
     QGridLayout *breeksDescriptionLayout;

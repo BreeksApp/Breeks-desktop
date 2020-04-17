@@ -10,13 +10,8 @@ void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
   breeksZone->breeksZoneLayout->setHorizontalSpacing(160);
   breeksZone->breeksZoneGroupBox->setLayout(breeksZone->breeksZoneLayout);
 
-  const int breekWidth = 80;
-  const int breekHeight = 80;
-
   for (int i = 0; i < DAYS_COUNT; ++i) {
-    breeksZone->arrBreeks[i]->setFixedSize(breekWidth, breekHeight);
     breeksZone->arrBreeks[i]->setEnabled(false);
-    breeksZone->arrBreeks[i]->setFlat(true);
     breeksZone->arrBreeks[i]->setState(false);
 
     connect(breeksZone->arrBreeks[i], SIGNAL(moveBreek(int, int, bool)), this, SLOT(moveBreek(int, int, bool)));
