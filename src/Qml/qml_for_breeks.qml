@@ -43,7 +43,8 @@ Item
     /* изменение ширины уезжающего кубика(чтобы не было козырька справа) */
     property var offsetWidthLeave: getOffset(10, breekWidth, image.implicitWidth)
 
-    property var rotationDuration: 500
+    property var rotationUpDuration: 600
+    property var rotationDownDuration: 500
     property var borderWidth: 0.01 // убрал границу прямоугольников
     property var radiuS: 10 // радиус закругления прямоугольников в углах
 
@@ -63,10 +64,10 @@ Item
     property var offsetHeightD: getOffset(d, breekHeight, image.implicitHeight)
 
     /* переменные для уменьшения "козырька" */
-    property var shrinkDur1: rotationDuration * proportion1
-    property var shrinkDur2: rotationDuration * proportion2
-    property var shrinkDur3: rotationDuration * proportion3
-    property var shrinkDur4: rotationDuration * proportion4
+    property var shrinkDur1: (direction ? rotationUpDuration : rotationDownDuration) * proportion1
+    property var shrinkDur2: (direction ? rotationUpDuration : rotationDownDuration) * proportion2
+    property var shrinkDur3: (direction ? rotationUpDuration : rotationDownDuration) * proportion3
+    property var shrinkDur4: (direction ? rotationUpDuration : rotationDownDuration) * proportion4
 
     function getOffset(absolute, breekSideLength, imageImplic)
     {
@@ -316,25 +317,25 @@ Item
             target: rotFromCond;
             property: "angle";
             from: rotFromCond.angle; to: direction ? 90 : -90;
-            duration: rotationDuration;
+            duration: (direction ? rotationUpDuration : rotationDownDuration);
         }
         NumberAnimation {
             target: rotFromEmoj;
             property: "angle";
             from: rotFromEmoj.angle; to: direction ? 90 : -90;
-            duration: rotationDuration;
+            duration: (direction ? rotationUpDuration : rotationDownDuration);
         }
         NumberAnimation {
             target: rotToCond;
             property: "angle";
             from: rotToCond.angle; to: 0;
-            duration: rotationDuration;
+            duration: (direction ? rotationUpDuration : rotationDownDuration);
         }
         NumberAnimation {
             target: rotToEmoj;
             property: "angle";
             from: rotToEmoj.angle; to: 0;
-            duration: rotationDuration;
+            duration: (direction ? rotationUpDuration : rotationDownDuration);
         }
         /* конец самой прокрутки(вокруг статичной оси) */
 
@@ -346,14 +347,14 @@ Item
             property: "y";
             from:   direction ? getYCondPosition(breekHeight) + conditionTo.height : getYCondPosition(breekHeight);
             to:     direction ? getYCondPosition(breekHeight)                      : getYCondPosition(breekHeight) + conditionFrom.height;
-            duration: rotationDuration;
+            duration: (direction ? rotationUpDuration : rotationDownDuration);
         }
         NumberAnimation {
             target: direction ? emojiTo : emojiFrom;
             property: "y";
             from:   direction ? getYEmojiPosition(breekHeight) + emojiTo.height : getYEmojiPosition(breekHeight);
             to:     direction ? getYEmojiPosition(breekHeight)                  : getYEmojiPosition(breekHeight) + emojiFrom.height;
-            duration: rotationDuration;
+            duration: (direction ? rotationUpDuration : rotationDownDuration);
         }
         /* конец смещения точки отрисовки кубика
            (direction = true: который появляется из под низу - для эмитации "выезжания")
@@ -443,14 +444,14 @@ Item
             property: "width";
             from: conditionFrom.width;
             to:   conditionFrom.width - offsetWidthLeave;
-            duration: rotationDuration;
+            duration: (direction ? rotationUpDuration : rotationDownDuration);
         }
         NumberAnimation {
             target: emojiFrom;
             property: "width";
             from: emojiFrom.width;
             to:   emojiFrom.width - offsetWidthLeave;
-            duration: rotationDuration;
+            duration: (direction ? rotationUpDuration : rotationDownDuration);
         }
         /* конец изменения ширины уезжающего кубика(чтобы не было козырька справа) */
 
@@ -459,7 +460,7 @@ Item
             target: image;
             property: "height";
             from: image.height; to: 0;
-            duration: rotationDuration;
+            duration: (direction ? rotationUpDuration : rotationDownDuration);
         }
         /* конец изменения длины уезжающего эмодзи */
 
@@ -473,19 +474,19 @@ Item
                 target: conditionTo;
                 property: "height";
                 from: 0; to: conditionTo.height;
-                duration: direction ? 0 : rotationDuration;
+                duration: direction ? 0 : (direction ? rotationUpDuration : rotationDownDuration);
             }
             NumberAnimation {
                 target: emojiTo;
                 property: "height";
                 from: 0; to: emojiTo.height;
-                duration: direction ? 0 : rotationDuration;
+                duration: direction ? 0 : (direction ? rotationUpDuration : rotationDownDuration);
             }
             NumberAnimation {
                 target: imageAppearing;
                 property: "height";
                 from: 0; to: imageAppearing.height;
-                duration: direction ? 0 : rotationDuration;
+                duration: direction ? 0 : (direction ? rotationUpDuration : rotationDownDuration);
             }
         }
         /* конец изменения длины вызжающего кубика(чтобы устранить щель) */
