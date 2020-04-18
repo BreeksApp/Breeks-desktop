@@ -90,7 +90,6 @@ private slots:
 
 signals:
   void sendUsername(const QString);
-  void breeksZoneDataReceived(int);
 
 private:
   Ui::MainWindow *ui;
@@ -218,8 +217,9 @@ private:
     QGroupBox *breeksZoneGroupBox;
     QGridLayout *breeksZoneLayout;
     Breek *arrBreeks[6];
-    QVector<QPoint> positionsOfBreeks_;
+    QVector<QPoint> positionsOfBreeks;
     bool ifPosTaken_[6];
+    bool flagIfPosFilled;
 
     QGroupBox *breeksDescriptionGroupBox;
     QGridLayout *breeksDescriptionLayout;

@@ -65,11 +65,6 @@ void MainWindow::on_buttonAdd_clicked()
   //signal to move info from creating element form to new element on timetable
   connect(addForm, SIGNAL(sendTimeTableZoneData(bool*, const int, elementData_t)),
         this, SLOT(recieveTimeTableZoneData(bool*, const int, elementData_t)));
-
-  //signal to fill origin breeks positions when they have been added to layout by recieveBreeksZoneData
-//  connect(this, SIGNAL(breeksZoneDataReceived(int)), this, SLOT(fillBreeksPositions(int)));
-
-  //signal to move info from creating element form to new element on timetable
   connect(addForm, SIGNAL(sendBreeksZoneData(bool*, const int, breeksData_t)),
         this, SLOT(recieveBreeksZoneData(bool*, const int, breeksData_t)));
 
@@ -192,15 +187,13 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, breek
   bigWidgetInBreeksDescriptionZone_->setFixedSize(BREEKS_DESCRIPTION_ZONE_BIG_WIDGET_WIDTH, bigWidgetHeight_);
 
   ++breeksZonesCount_;
-
-  emit MainWindow::breeksZoneDataReceived(newZone.zoneIndex);
 }
 
 void MainWindow::fillBreeksPositions(int zoneIndex)
 {
   if (zoneIndex < arrBreeksZones_.size() && zoneIndex >= 0) {
     for (auto i : arrBreeksZones_[zoneIndex].arrBreeks) {
-      arrBreeksZones_[zoneIndex].positionsOfBreeks_.push_back(i->pos());
+      arrBreeksZones_[zoneIndex].positionsOfBreeks.push_back(i->pos());
     }
   }
 }
@@ -258,7 +251,11 @@ void MainWindow::recieveMimeData(const elementData_t data, const QPixmap pixMap)
 
 void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
 {
-  fillBreeksPositions(zoneIndex);
+  if (!arrBreeksZones_[zoneIndex].flagIfPosFilled) {
+    fillBreeksPositions(zoneIndex);
+    arrBreeksZones_[zoneIndex].flagIfPosFilled = true;
+  }
+
   if (right) {
     if (dayIndex < 6) {
 //      if (!arrBreeksZones_[zoneIndex].arrBreeks[dayIndex + 1]->isEnabled()) {
@@ -268,12 +265,12 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
         breeksZone_t *zone = &arrBreeksZones_[zoneIndex];
         Breek *breek = zone->arrBreeks[dayIndex];
 
-        QVector<QPoint>::iterator it = std::find(zone->positionsOfBreeks_.begin(),
-                                                 zone->positionsOfBreeks_.end(),
+        QVector<QPoint>::iterator it = std::find(zone->positionsOfBreeks.begin(),
+                                                 zone->positionsOfBreeks.end(),
                                                  breek->pos());
 
-        if (it < zone->positionsOfBreeks_.end() - 1) {
-          int index = it - zone->positionsOfBreeks_.begin() + 1;
+        if (it < zone->positionsOfBreeks.end() - 1) {
+          int index = it - zone->positionsOfBreeks.begin() + 1;
           if (!zone->ifPosTaken_[index]) {
 //            breek->move(*(it + 1));
 
@@ -304,12 +301,12 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
         breeksZone_t *zone = &arrBreeksZones_[zoneIndex];
         Breek *breek = zone->arrBreeks[dayIndex];
 
-        QVector<QPoint>::iterator it = std::find(zone->positionsOfBreeks_.begin(),
-                                                 zone->positionsOfBreeks_.end(),
+        QVector<QPoint>::iterator it = std::find(zone->positionsOfBreeks.begin(),
+                                                 zone->positionsOfBreeks.end(),
                                                  breek->pos());
 
-        if (it > zone->positionsOfBreeks_.begin()) {
-          int index = it - zone->positionsOfBreeks_.begin() - 1;
+        if (it > zone->positionsOfBreeks.begin()) {
+          int index = it - zone->positionsOfBreeks.begin() - 1;
           if (!zone->ifPosTaken_[index]) {
 //            breek->move(*(it - 1));
 

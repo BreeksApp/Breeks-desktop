@@ -9,6 +9,7 @@ void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
   breeksZone->breeksZoneGroupBox->setFixedHeight(groupBoxHeight);
   breeksZone->breeksZoneLayout->setHorizontalSpacing(160);
   breeksZone->breeksZoneGroupBox->setLayout(breeksZone->breeksZoneLayout);
+  breeksZone->flagIfPosFilled = false;
 
   for (int i = 0; i < DAYS_COUNT; ++i) {
     breeksZone->arrBreeks[i]->setEnabled(false);
