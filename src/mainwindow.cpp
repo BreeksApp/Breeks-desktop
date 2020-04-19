@@ -276,7 +276,7 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
 
             QPropertyAnimation *animation = new QPropertyAnimation(breek, "geometry");
             QRect rectTo((it + 1)->x(), (it + 1)->y(), breek->geometry().width(), breek->geometry().height());
-            animation->setDuration(4000);
+            animation->setDuration(500);
             animation->setStartValue(breek->geometry());
             animation->setEndValue(rectTo);
             animation->start();
@@ -312,7 +312,7 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
 
             QPropertyAnimation *animation = new QPropertyAnimation(breek, "geometry");
             QRect rectTo((it - 1)->x(), (it - 1)->y(), breek->geometry().width(), breek->geometry().height());
-            animation->setDuration(4000);
+            animation->setDuration(500);
             animation->setStartValue(breek->geometry());
             animation->setEndValue(rectTo);
             animation->start();

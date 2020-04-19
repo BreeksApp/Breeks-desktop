@@ -19,7 +19,8 @@ public:
   enum Conditions
   {
     RED,
-    GREY,
+    GREY_FOREGROUND,
+    GREY_BACKGROUND,
     GREEN
   };
 

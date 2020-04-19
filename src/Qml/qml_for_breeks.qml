@@ -22,8 +22,9 @@ Item
     property variant conditions:
     [
         "#FF3366", // red
-        "#ECEAEC", // grey
-        "#66FF66" // green
+        "#ECEAEC", // grey - foreground
+        "#ECEAEC", // grey - background
+        "#66FF66"  // green
     ]
     property int indexOfCondFrom
     property int indexOfCondTo
@@ -43,8 +44,8 @@ Item
     /* изменение ширины уезжающего кубика(чтобы не было козырька справа) */
     property var offsetWidthLeave: getOffset(10, breekWidth, image.implicitWidth)
 
-    property var rotationUpDuration: 600
-    property var rotationDownDuration: 500
+    property var rotationUpDuration: 500
+    property var rotationDownDuration: 700
     property var borderWidth: 0.01 // убрал границу прямоугольников
     property var radiuS: 10 // радиус закругления прямоугольников в углах
 
@@ -140,6 +141,8 @@ Item
         x: getXCondPosition(breekWidth)
         y: getYCondPosition(breekHeight)
 
+        // не забывай про то, что в анимации идёт расчёт на то,
+        // что Rectangle.width == breekWidth и Rectangle.height == breekHeight
         width: breekWidth
         height: breekHeight
 
@@ -180,6 +183,8 @@ Item
         x: getXEmojiPosition(breekWidth)
         y: getYEmojiPosition(breekHeight)
 
+        // не забывай про то, что в анимации идёт расчёт на то,
+        // что Rectangle.width == breekWidth и Rectangle.height == breekHeight
         width: breekWidth
         height: breekHeight
 
@@ -229,6 +234,8 @@ Item
         x: getXCondPosition(breekWidth)
         y: getYCondPosition(breekHeight)
 
+        // не забывай про то, что в анимации идёт расчёт на то,
+        // что Rectangle.width == breekWidth и Rectangle.height == breekHeight
         width: breekWidth
         height: breekHeight
 
@@ -270,6 +277,8 @@ Item
         x: getXEmojiPosition(breekWidth)
         y: getYEmojiPosition(breekHeight)
 
+        // не забывай про то, что в анимации идёт расчёт на то,
+        // что Rectangle.width == breekWidth и Rectangle.height == breekHeight
         width: breekWidth
         height: breekHeight
 
@@ -316,25 +325,25 @@ Item
         NumberAnimation {
             target: rotFromCond;
             property: "angle";
-            from: rotFromCond.angle; to: direction ? 90 : -90;
+            from: 0; to: direction ? 90 : -90;
             duration: (direction ? rotationUpDuration : rotationDownDuration);
         }
         NumberAnimation {
             target: rotFromEmoj;
             property: "angle";
-            from: rotFromEmoj.angle; to: direction ? 90 : -90;
+            from: 0; to: direction ? 90 : -90;
             duration: (direction ? rotationUpDuration : rotationDownDuration);
         }
         NumberAnimation {
             target: rotToCond;
             property: "angle";
-            from: rotToCond.angle; to: 0;
+            from: direction ? -90 : 90; to: 0;
             duration: (direction ? rotationUpDuration : rotationDownDuration);
         }
         NumberAnimation {
             target: rotToEmoj;
             property: "angle";
-            from: rotToEmoj.angle; to: 0;
+            from: direction ? -90 : 90; to: 0;
             duration: (direction ? rotationUpDuration : rotationDownDuration);
         }
         /* конец самой прокрутки(вокруг статичной оси) */
@@ -345,16 +354,33 @@ Item
         NumberAnimation {
             target: direction ? conditionTo        : conditionFrom;
             property: "y";
-            from:   direction ? getYCondPosition(breekHeight) + conditionTo.height : getYCondPosition(breekHeight);
-            to:     direction ? getYCondPosition(breekHeight)                      : getYCondPosition(breekHeight) + conditionFrom.height;
+            from:   direction ? getYCondPosition(breekHeight) + breekHeight : getYCondPosition(breekHeight);
+            to:     direction ? getYCondPosition(breekHeight)               : getYCondPosition(breekHeight) + breekHeight;
             duration: (direction ? rotationUpDuration : rotationDownDuration);
         }
         NumberAnimation {
             target: direction ? emojiTo : emojiFrom;
             property: "y";
-            from:   direction ? getYEmojiPosition(breekHeight) + emojiTo.height : getYEmojiPosition(breekHeight);
-            to:     direction ? getYEmojiPosition(breekHeight)                  : getYEmojiPosition(breekHeight) + emojiFrom.height;
+            from:   direction ? getYEmojiPosition(breekHeight) + breekHeight : getYEmojiPosition(breekHeight);
+            to:     direction ? getYEmojiPosition(breekHeight)               : getYEmojiPosition(breekHeight) + breekHeight;
             duration: (direction ? rotationUpDuration : rotationDownDuration);
+        }
+
+        // костыль для устранения бага "исчезновения" грани при повороте наверх после поворота вниз
+        // включается только когда direction = true, то есть поворот - наверх
+        NumberAnimation {
+            target: conditionFrom
+            property: "y"
+            from: getYCondPosition(breekHeight);
+            to: getYCondPosition(breekHeight);
+            duration: (direction ? rotationUpDuration : 0);
+        }
+        NumberAnimation {
+            target: emojiFrom
+            property: "y"
+            from: getYEmojiPosition(breekHeight);
+            to: getYEmojiPosition(breekHeight);
+            duration: (direction ? rotationUpDuration : 0);
         }
         /* конец смещения точки отрисовки кубика
            (direction = true: который появляется из под низу - для эмитации "выезжания")
@@ -370,15 +396,15 @@ Item
                 NumberAnimation {
                     target: conditionFrom;
                     property: "height";
-                    from: conditionFrom.height;
-                    to:   conditionFrom.height - offsetHeightA;
+                    from: breekHeight;
+                    to:   breekHeight - offsetHeightA;
                     duration: shrinkDur1;
                 }
                 NumberAnimation {
                     target: emojiFrom;
                     property: "height";
-                    from: emojiFrom.height;
-                    to:   emojiFrom.height - offsetHeightA;
+                    from: breekHeight;
+                    to:   breekHeight - offsetHeightA;
                     duration: shrinkDur1;
                 }
             }
@@ -387,16 +413,16 @@ Item
                 NumberAnimation {
                     target: conditionFrom;
                     property: "height";
-                    from: conditionFrom.height - offsetHeightA;
-                    to:   conditionFrom.height - offsetHeightB;
+                    from: breekHeight - offsetHeightA;
+                    to:   breekHeight - offsetHeightB;
                     duration: shrinkDur2;
                 }
                 NumberAnimation
                 {
                     target: emojiFrom;
                     property: "height";
-                    from: emojiFrom.height - offsetHeightA;
-                    to:   emojiFrom.height - offsetHeightB;
+                    from: breekHeight - offsetHeightA;
+                    to:   breekHeight - offsetHeightB;
                     duration: shrinkDur2;
                 }
             }
@@ -405,15 +431,15 @@ Item
                 NumberAnimation {
                     target: conditionFrom;
                     property: "height";
-                    from: conditionFrom.height - offsetHeightB;
-                    to:   conditionFrom.height - offsetHeightC;
+                    from: breekHeight - offsetHeightB;
+                    to:   breekHeight - offsetHeightC;
                     duration: shrinkDur3;
                 }
                 NumberAnimation {
                     target: emojiFrom;
                     property: "height";
-                    from: emojiFrom.height - offsetHeightB;
-                    to:   emojiFrom.height - offsetHeightC;
+                    from: breekHeight - offsetHeightB;
+                    to:   breekHeight - offsetHeightC;
                     duration: shrinkDur3;
                 }
             }
@@ -422,15 +448,15 @@ Item
                 NumberAnimation {
                     target: conditionFrom;
                     property: "height";
-                    from: conditionFrom.height - offsetHeightC;
-                    to:   conditionFrom.height - offsetHeightD;
+                    from: breekHeight - offsetHeightC;
+                    to:   breekHeight - offsetHeightD;
                     duration: shrinkDur4;
                 }
                 NumberAnimation {
                     target: emojiFrom;
                     property: "height";
-                    from: emojiFrom.height - offsetHeightC;
-                    to:   emojiFrom.height - offsetHeightD;
+                    from: breekHeight - offsetHeightC;
+                    to:   breekHeight - offsetHeightD;
                     duration: shrinkDur4;
                 }
             }
@@ -442,15 +468,15 @@ Item
         NumberAnimation {
             target: conditionFrom;
             property: "width";
-            from: conditionFrom.width;
-            to:   conditionFrom.width - offsetWidthLeave;
+            from: breekWidth;
+            to:   breekWidth - offsetWidthLeave;
             duration: (direction ? rotationUpDuration : rotationDownDuration);
         }
         NumberAnimation {
             target: emojiFrom;
             property: "width";
-            from: emojiFrom.width;
-            to:   emojiFrom.width - offsetWidthLeave;
+            from: breekWidth;
+            to:   breekWidth - offsetWidthLeave;
             duration: (direction ? rotationUpDuration : rotationDownDuration);
         }
         /* конец изменения ширины уезжающего кубика(чтобы не было козырька справа) */
@@ -459,7 +485,7 @@ Item
         NumberAnimation {
             target: image;
             property: "height";
-            from: image.height; to: 0;
+            from: breekHeight; to: 0;
             duration: (direction ? rotationUpDuration : rotationDownDuration);
         }
         /* конец изменения длины уезжающего эмодзи */
@@ -473,19 +499,19 @@ Item
             NumberAnimation {
                 target: conditionTo;
                 property: "height";
-                from: 0; to: conditionTo.height;
+                from: 0; to: breekHeight;
                 duration: direction ? 0 : (direction ? rotationUpDuration : rotationDownDuration);
             }
             NumberAnimation {
                 target: emojiTo;
                 property: "height";
-                from: 0; to: emojiTo.height;
+                from: 0; to: breekHeight;
                 duration: direction ? 0 : (direction ? rotationUpDuration : rotationDownDuration);
             }
             NumberAnimation {
                 target: imageAppearing;
                 property: "height";
-                from: 0; to: imageAppearing.height;
+                from: 0; to: breekHeight;
                 duration: direction ? 0 : (direction ? rotationUpDuration : rotationDownDuration);
             }
         }

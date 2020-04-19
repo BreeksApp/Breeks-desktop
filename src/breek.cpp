@@ -8,7 +8,7 @@
 Breek::Breek(QWidget *parent):
   QPushButton(parent),
   state_(false),
-  workState_(Conditions::GREY),
+  workState_(Conditions::GREY_FOREGROUND),
   width_(80),
   height_(80),
   quickWidget_(nullptr),
@@ -22,7 +22,7 @@ Breek::Breek(QWidget *parent):
 Breek::Breek(int width, int height, QWidget *parent):
   QPushButton(parent),
   state_(false),
-  workState_(Conditions::GREY),
+  workState_(Conditions::GREY_FOREGROUND),
   width_(width),
   height_(height),
   quickWidget_(nullptr),
@@ -46,13 +46,17 @@ void Breek::keyPressEvent(QKeyEvent *event)
   if (iKey == Qt::Key_W) {
     if (workState_ == Conditions::RED) {
 //      updateEmoji(emoji_);
-      connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::GREY);
-      workState_ = Conditions::GREY;
+      connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::GREY_FOREGROUND);
+      workState_ = Conditions::GREY_FOREGROUND;
     }
-    else if (workState_ == Conditions::GREY) {
+    else if (workState_ == Conditions::GREY_FOREGROUND) {
 //      updateEmoji(emojiComplited_);
       connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::GREEN);
       workState_ = Conditions::GREEN;
+    }
+    else if (workState_ == Conditions::GREEN) {
+      connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::GREY_BACKGROUND);
+      workState_ = Conditions::GREY_BACKGROUND;
     }
     else {
       connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::RED);
@@ -63,18 +67,22 @@ void Breek::keyPressEvent(QKeyEvent *event)
   if (iKey == Qt::Key_S) {
     if (workState_ == Conditions::RED) {
 //      updateEmoji(emoji_);
-      connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREEN);
-      workState_ = Conditions::GREEN;
+      connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREY_BACKGROUND);
+      workState_ = Conditions::GREY_BACKGROUND;
     }
-    else if (workState_ == Conditions::GREY) {
+    else if (workState_ == Conditions::GREY_FOREGROUND) {
 //      updateEmoji(emojiDroped_);
       connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::RED);
       workState_ = Conditions::RED;
     }
     else if (workState_ == Conditions::GREEN){
 //      updateEmoji(emoji_);
-      connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREY);
-      workState_ = Conditions::GREY;
+      connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREY_FOREGROUND);
+      workState_ = Conditions::GREY_FOREGROUND;
+    }
+    else {
+      connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREEN);
+      workState_ = Conditions::GREEN;
     }
   }
 
@@ -111,7 +119,7 @@ void Breek::connectToQml(int indexOfEmoji)
 
   graphObject_->setProperty("indexOfEmoji", indexOfEmoji);
   QQmlProperty(graphObject_, "animationOn").write(false);
-  graphObject_->setProperty("indexOfCondFrom", Conditions::GREY);
+  graphObject_->setProperty("indexOfCondFrom", Conditions::GREY_FOREGROUND);
 
   // работа с фоном сцены
 //  QColor color = Qt::GlobalColor::gray;
