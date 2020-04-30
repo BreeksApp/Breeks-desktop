@@ -33,7 +33,6 @@ void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
 
   breeksZone->breeksDescriptionLayout->addWidget(breeksZone->buttonBreekDays, 0, 2);
   breeksZone->buttonBreekDays->setStyleSheet("border-image:url(:/Images/Images/calendar-and-clock.png)");
-  //connect(breeksZone->buttonBreekDays, SIGNAL(clicked()), , SLOT())
 
   breeksZone->breeksDescriptionLayout->addWidget(breeksZone->buttonDelete, 1, 2);
   breeksZone->buttonDelete->setStyleSheet("border-image:url(:/Images/Images/recycle-bin.png)");
@@ -43,9 +42,6 @@ void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
 
   for (int i = 0; i < DAYS_COUNT; ++i) {
     breeksZone->arrBreeksZoneDays[i]->setFixedSize(25, 20);
-    //breeksZone->arrBreeksZoneDays[i]->setEnabled(false);
-    //breeksZone->arrBreeksZoneDays[i]->setFlat(true);
-
     days->addWidget(breeksZone->arrBreeksZoneDays[i]);
   }
   breeksZone->arrBreeksZoneDays[0]->setText("Mn");
@@ -163,13 +159,21 @@ void MainWindow::allocateMemoryForBreeks(breeksZone_t* breeksZone)
   }
 }
 
-/*void MainWindow::setEmoji(const QString emoji)
+void MainWindow::fillBreeksPositions(int zoneIndex)
 {
-  QPixmap pix(emoji);
-  pix = pix.scaledToWidth(arrBreeksZones_. width(), Qt::SmoothTransformation);
-  QIcon buttonIcon(pix);
-  newZone.arrBreeks[i]->setIcon(buttonIcon);
-  newZone.arrBreeks[i]->setIconSize(pix.rect().size());
-}*/
+  if (zoneIndex < arrBreeksZones_.size() && zoneIndex >= 0) {
+    for (auto i : arrBreeksZones_[zoneIndex].arrBreeks) {
+      arrBreeksZones_[zoneIndex].positionsOfBreeks.push_back(i->pos());
+    }
+  }
+}
+
+void MainWindow::delay(int millisecondsToWait)
+{
+    QTime dieTime = QTime::currentTime().addMSecs(millisecondsToWait);
+    while(QTime::currentTime() < dieTime) {
+      QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+    }
+}
 
 

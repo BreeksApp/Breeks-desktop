@@ -3,6 +3,8 @@
 #include <QQmlProperty>
 #include <QQuickItem>
 
+#include <iostream>
+
 #include "breek.h"
 
 Breek::Breek(QWidget *parent):
@@ -45,12 +47,10 @@ void Breek::keyPressEvent(QKeyEvent *event)
 
   if (iKey == Qt::Key_W) {
     if (workState_ == Conditions::RED) {
-//      updateEmoji(emoji_);
       connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::GREY_FOREGROUND);
       workState_ = Conditions::GREY_FOREGROUND;
     }
     else if (workState_ == Conditions::GREY_FOREGROUND) {
-//      updateEmoji(emojiComplited_);
       connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::GREEN);
       workState_ = Conditions::GREEN;
     }
@@ -66,17 +66,14 @@ void Breek::keyPressEvent(QKeyEvent *event)
 
   if (iKey == Qt::Key_S) {
     if (workState_ == Conditions::RED) {
-//      updateEmoji(emoji_);
       connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREY_BACKGROUND);
       workState_ = Conditions::GREY_BACKGROUND;
     }
     else if (workState_ == Conditions::GREY_FOREGROUND) {
-//      updateEmoji(emojiDroped_);
       connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::RED);
       workState_ = Conditions::RED;
     }
     else if (workState_ == Conditions::GREEN){
-//      updateEmoji(emoji_);
       connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREY_FOREGROUND);
       workState_ = Conditions::GREY_FOREGROUND;
     }
@@ -107,7 +104,7 @@ void Breek::setState(bool state)
 
 void Breek::connectToQml(int indexOfEmoji)
 {
-  if (indexOfEmoji < 1 || indexOfEmoji > 9) return;
+  if (indexOfEmoji < 1 || indexOfEmoji > 10) return;
 
   // код, связывающий кнопку с qml
   if (quickWidget_ == nullptr) {
@@ -116,6 +113,8 @@ void Breek::connectToQml(int indexOfEmoji)
     quickWidget_->setFixedSize(0.875 * width_, 0.875 * height_);
     graphObject_ = quickWidget_->rootObject();
   }
+
+  if (!quickWidget_->isVisible()) quickWidget_->setVisible(true);
 
   graphObject_->setProperty("indexOfEmoji", indexOfEmoji);
   QQmlProperty(graphObject_, "animationOn").write(false);
@@ -139,7 +138,6 @@ void Breek::connectToQml(int indexOfEmoji, Directions dir,
       quickWidget_ = new QQuickWidget(QUrl("qrc:/qml/Qml/qml_for_breeks.qml"), this);
       quickWidget_->setResizeMode(QQuickWidget::SizeRootObjectToView);
       quickWidget_->setFixedSize(0.875 * width_, 0.875 * height_);
-
       graphObject_ = quickWidget_->rootObject();
   }
 
@@ -163,13 +161,6 @@ void Breek::setEmoj(int numOfEmoji)
   if (numOfEmoji > 0 && numOfEmoji < 10) nEmoj_ = numOfEmoji;
 }
 
-//void Breek::setEmoji(const QString emoji, const QString emojiCompleted, const QString emojiDroped)
-//{
-//  emoji_ = emoji;
-//  emojiComplited_ = emojiCompleted;
-//  emojiDroped_ = emojiDroped;
-//}
-
 void Breek::setIndex(const int zoneIndex, const int dayIndex)
 {
   zoneIndex_ = zoneIndex;
@@ -181,23 +172,12 @@ void Breek::changeBreekState()
   state_ = !state_;
   this->setEnabled(!this->isEnabled());
 
-//  QString emoji = "";
-//  if (state_) {
-//    emoji = emoji_;
-//  }
-//  updateEmoji(emoji);
-  connectToQml(nEmoj_);
-	//this->setFlat(!this->isFlat());
+  if (state_) {
+    connectToQml(nEmoj_);
+  } else {
+    this->quickWidget_->setVisible(false);
+  }
 }
-
-//void Breek::updateEmoji(const QString& emoji)
-//{
-//  QPixmap pix(emoji);
-//  pix = pix.scaledToWidth(this->width(), Qt::SmoothTransformation);
-//  QIcon buttonIcon(pix);
-//  this->setIcon(buttonIcon);
-//  this->setIconSize(pix.rect().size());
-//}
 
 int Breek::getWidth()
 {

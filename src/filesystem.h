@@ -13,7 +13,7 @@
 #include <QJsonValue>
 #include <QByteArray>
 #include <QtSql>
-#include "gentextedit.h"
+//#include "gentextedit.h"
 #include "datastructures.h"
 
 class filesystem

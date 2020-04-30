@@ -38,9 +38,7 @@ public:
                     Conditions from, Conditions to);
 
   void setEmoj(int);
-//  void setEmoji(const QString, const QString, const QString);
   void setIndex(const int zoneIndex, const int dayIndex);
-//  void updateEmoji(const QString&);
 
   int getWidth();
   int getHeight();
@@ -53,11 +51,7 @@ private:
   int dayIndex_;
   int width_;
   int height_;
-
   int nEmoj_;
-//  QString emoji_;
-//  QString emojiComplited_;
-//  QString emojiDroped_;
 
   QQuickWidget *quickWidget_;
   QObject *graphObject_;

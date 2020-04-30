@@ -15,7 +15,8 @@ Item
         "qrc:/Images/Images/Breeks/6.png",
         "qrc:/Images/Images/Breeks/7.png",
         "qrc:/Images/Images/Breeks/8.png",
-        "qrc:/Images/Images/Breeks/9.png"
+        "qrc:/Images/Images/Breeks/9.png",
+        "qrc:/Images/Images/Breeks/10.png"
     ]
     property int indexOfEmoji
 
