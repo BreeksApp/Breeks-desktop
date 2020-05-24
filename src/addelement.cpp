@@ -3,6 +3,8 @@
 #include <QMessageBox>
 #include <QDebug>
 
+#include <iostream>
+
 AddElement::AddElement(AddButtonHover *button, QWidget *parent) :
   QWidget(parent),
   ui(new Ui::AddElement),
@@ -91,7 +93,7 @@ void AddElement::setAllElementsEffects()
   for (int i = 1; i < EMOJI_COUNT; ++i) {
     arrEmoji_[i].condition = false;
 
-    QString sAdress = ":/images/images/breeks/" + QString::number(i) + ".png";
+    QString sAdress = ":/Images/Images/Breeks/" + QString::number(i) + ".png";
     arrEmoji_[i].emojiAdress = sAdress;
   }
 
@@ -101,13 +103,13 @@ void AddElement::setAllElementsEffects()
 
 void AddElement::setEmoji(const int index)
 {
-  QPixmap pix(arrEmoji_[index].emojiAdress);
+  QPixmap * pix = new QPixmap(arrEmoji_[index].emojiAdress);
 
-  pix = pix.scaledToWidth(ui->buttonTag->width(), Qt::SmoothTransformation);
-  QIcon buttonIcon(pix);
+  *pix = pix->scaledToWidth(ui->buttonTag->width(), Qt::SmoothTransformation);
+  QIcon buttonIcon(*pix);
 
   ui->buttonTag->setIcon(buttonIcon);
-  ui->buttonTag->setIconSize(pix.rect().size());
+  ui->buttonTag->setIconSize((*pix).rect().size());
 
   arrEmoji_[index].condition = true;
 }
@@ -169,7 +171,7 @@ void AddElement::on_buttonAdd_clicked()
   else if (breeksZoneCondition_ == true) {
     breeksData_t newElement;
     newElement.text = text;
-    newElement.nEmoji = currentEmoji;
+    newElement.nEmoji = currentEmoji - 1;
 
     emit sendBreeksZoneData(daysCheck_, DAYS_CHECK_COUNT, newElement);
   }

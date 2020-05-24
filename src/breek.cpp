@@ -104,7 +104,7 @@ void Breek::setState(bool state)
 
 void Breek::connectToQml(int indexOfEmoji)
 {
-  if (indexOfEmoji < 1 || indexOfEmoji > 10) return;
+  if (indexOfEmoji < 0 || indexOfEmoji > 10) return;
 
   // код, связывающий кнопку с qml
   if (quickWidget_ == nullptr) {
@@ -132,7 +132,7 @@ void Breek::connectToQml(int indexOfEmoji)
 void Breek::connectToQml(int indexOfEmoji, Directions dir,
                          Conditions from, Conditions to)
 {
-  if (indexOfEmoji < 1 || indexOfEmoji > 9) return;
+  if (indexOfEmoji < 0 || indexOfEmoji > 9) return;
 
   // код, связывающий кнопку с qml
   if (quickWidget_ == nullptr) {
@@ -159,7 +159,7 @@ void Breek::connectToQml(int indexOfEmoji, Directions dir,
 
 void Breek::setEmoj(int numOfEmoji)
 {
-  if (numOfEmoji > 0 && numOfEmoji < 10) nEmoj_ = numOfEmoji;
+  if (numOfEmoji >= 0 && numOfEmoji < 10) nEmoj_ = numOfEmoji;
 }
 
 void Breek::setIndex(const int zoneIndex, const int dayIndex)
