@@ -121,8 +121,9 @@ void Breek::connectToQml(int indexOfEmoji)
   graphObject_->setProperty("indexOfCondFrom", Conditions::GREY_FOREGROUND);
 
   // работа с фоном сцены
-//  QColor color = Qt::GlobalColor::gray;
-//  quickWidget_->quickWindow()->setColor(color);
+  QColor color;
+  color.setNamedColor("#ececec");
+  quickWidget_->quickWindow()->setColor(color);
 
 //  QWidget *container = QWidget::createWindowContainer(&quickWidget_, this);
   // конец кода, связывающего кнопку с qml

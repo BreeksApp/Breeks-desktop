@@ -214,7 +214,7 @@ private:
 
                         //---------BREEKSZONE---------
 
-  const int MOVE_DURATION = 500;
+  const int MOVE_DURATION = 350;
 
   struct breeksZone_t {
     QGroupBox *breeksZoneGroupBox;
