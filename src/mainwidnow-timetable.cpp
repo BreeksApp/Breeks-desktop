@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include <QScrollArea>
 
+#include <QDebug>
+
 void MainWindow::buildTimeTable()
 {
   bigWidgetInWorkZone_->setFixedSize(WORK_ZONE_BIG_WIDGET_WIDTH, bigWidgetHeight_);
@@ -43,26 +45,26 @@ void MainWindow::setDayInfo()
   int iCurrentDay = 0;
 
   //identify current day of week
-  if (currentDayOfWeek == "понедельник") {
+  if (currentDayOfWeek == "Monday") {
     iCurrentDay = 0;
   }
-  else if (currentDayOfWeek == "вторник") {
+  else if (currentDayOfWeek == "Tuesday") {
     iCurrentDay = 1;
     workZoneScrollArea_->ensureVisible(scrollPosTue, 0);
   }
-  else if (currentDayOfWeek == "среда") {
+  else if (currentDayOfWeek == "Wednesday") {
     iCurrentDay = 2;
     workZoneScrollArea_->ensureVisible(scrollPosWed, 0);
   }
-  else if (currentDayOfWeek == "четверг") {
+  else if (currentDayOfWeek == "Thursday") {
     iCurrentDay = 3;
     workZoneScrollArea_->ensureVisible(scrollPosThu, 0);
   }
-  else if (currentDayOfWeek == "пятница") {
+  else if (currentDayOfWeek == "Friday") {
     iCurrentDay = 4;
     workZoneScrollArea_->ensureVisible(scrollPosFri, 0);
   }
-  else if (currentDayOfWeek == "суббота") {
+  else if (currentDayOfWeek == "Saturday") {
     iCurrentDay = 5;
     workZoneScrollArea_->ensureVisible(scrollPosSat, 0);
   }
@@ -72,7 +74,7 @@ void MainWindow::setDayInfo()
   }
 
   //special data for set info about days in the LOOP BELOW: date, name of the day and font effects
-  const QString arrMonthsRu[12] = { "января", "февраля", "марта", "апреля", "майя",
+  const QString arrMonthsRu[12] = { "января", "февраля", "марта", "апреля", "мая",
         "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря" };
   const QString arrMonthsEng[12] = { "January", "February", "March", "April", "May",
         "June", "July", "August", "September", "October", "November", "December" };
@@ -88,12 +90,13 @@ void MainWindow::setDayInfo()
 
   for (int i = 0; i < DAYS_COUNT; ++i) {
     //identify current month
-    QString nameMonth = tmpDate.toString("MMMM");
-    for (int i = 0; i < 12; ++i) {
-      if (nameMonth == arrMonthsRu[i]) {
-        nameMonth = arrMonthsEng[i];
-      }
-    }
+    QString nameMonth = "May";//tmpDate.toString("MMMM");
+//    for (int i = 0; i < 12; ++i) {
+//      if (nameMonth == arrMonthsRu[i]) {
+//        nameMonth = arrMonthsEng[i];
+//      }
+//      qDebug() << nameMonth;
+//    }
 
     //set font for label with day info
     arrDays_[i].labelDate->setFont(font);
@@ -111,7 +114,7 @@ void MainWindow::setDayInfo()
     //set current date
     QString currentDate = "";
     if (i != iCurrentDay) {
-      tmpDate = date.addDays(abs(i - iCurrentDay));
+      tmpDate = date.addDays(i - iCurrentDay);
       currentDate = ", " + nameMonth + " " + tmpDate.toString("d");
     }
     else {
