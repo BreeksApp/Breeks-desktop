@@ -1,4 +1,4 @@
-QT       += core gui sql
+QT       += core gui sql qml quick quickwidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -27,7 +27,7 @@ SOURCES += \
     loginform.cpp \
     main.cpp \
     mainwidnow-timetable.cpp \
-    mainwindow-Breekszone.cpp \
+    mainwindow-breekszone.cpp \
     mainwindow-effects.cpp \
     mainwindow.cpp \
     mainwindow-note.cpp \
@@ -117,4 +117,5 @@ DISTFILES += \
     Images/Breeks/10.1.png \
     Images/Breeks/10.2.png \
     Images/Breeks/10.3.png \
-    Images/Breeks/10.4.png
+    Images/Breeks/10.4.png \
+    Qml/qml_for_breeks.qml

@@ -60,4 +60,7 @@
         <file>Images/recycle-bin.png</file>
         <file>Images/sharik.jpg</file>
     </qresource>
+    <qresource prefix="/qml">
+        <file>Qml/qml_for_breeks.qml</file>
+    </qresource>
 </RCC>

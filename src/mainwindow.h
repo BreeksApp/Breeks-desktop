@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <algorithm>
+#include <QVector>
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QTextStream>
@@ -84,6 +85,9 @@ private slots:
 
 //adding new elements
   void on_buttonAdd_clicked();
+
+//slot to fill original breeks positions in layout when they have been added on it(to avoid "position problem")
+  void fillBreeksPositions(int);
 
 signals:
   void sendUsername(const QString);
@@ -210,10 +214,14 @@ private:
 
                         //---------BREEKSZONE---------
 
+  const int MOVE_DURATION = 350;
+
   struct breeksZone_t {
     QGroupBox *breeksZoneGroupBox;
     QGridLayout *breeksZoneLayout;
     Breek *arrBreeks[6];
+    QVector<QPoint> positionsOfBreeks;
+    bool flagIfPosFilled;
 
     QGroupBox *breeksDescriptionGroupBox;
     QGridLayout *breeksDescriptionLayout;
@@ -224,6 +232,7 @@ private:
     QPushButton *buttonDelete;
 
     int zoneIndex;
+
   };
 
   QVector<breeksZone_t> arrBreeksZones_;
@@ -234,12 +243,13 @@ private:
   QString arrEmojiDroped[11];
   QString arrEmojiProcess[11];
 
-	void setEmoji(const QString emoji);
+        void setEmoji(const QString emoji);
 
   void allocateMemoryForBreeks(breeksZone_t *breeksZone);
   void setBreeksZone(breeksZone_t *breeksZone);
-  void setDaysConnect(breeksZone_t *breeksZone);
+    void setDaysConnect(breeksZone_t *breeksZone);
   void buildBreeksDescriptionZone();
+  void delay(int);
 
   QPoint descreptionZoneGeometry_;
   int breeksZonesCount_;
