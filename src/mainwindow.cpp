@@ -115,9 +115,20 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, breek
     if (value.breekText->toPlainText() == newElement.text) {
 
       for (int i = 0; i < DAYS_COUNT; i++) {
-        if (daysCheck[i] == true && value.arrBreeks[i]->getState() == false) {
-          value.arrBreeks[i]->setEmoj(newElement.nEmoji);
-          value.arrBreeks[i]->changeBreekState();
+        Breek * breek = value.arrBreeks[i];
+        if (breek->getEmojiNum() != newElement.nEmoji) {
+          breek->setEmoj(newElement.nEmoji);
+          breek->changeBreekState();
+          breek->changeBreekState();
+
+          if (daysCheck[i] == true && breek->getState() == false) {
+            breek->changeBreekState();
+          }
+        }
+        else {
+          if (daysCheck[i] == true && breek->getState() == false) {
+            breek->changeBreekState();
+          }
         }
       }
 
