@@ -174,11 +174,11 @@ void GenTextEdit::addTab(int& cursorPos)
 	charStyle_t ch;
 	detailsSetCharStyle(ch);
 
-	int pos = cursorPos;
 	QTextCursor c = this->textCursor();
 	bool isItem = false;
+	c.movePosition(QTextCursor::StartOfLine, QTextCursor::MoveAnchor);
 
-	if (charCounter_ != 0 && charStyleVector_[std::max(0, pos - 1)].item == true) {
+	/*if (charCounter_ != 0 && charStyleVector_[std::max(0, pos - 1)].item == true) {
 		QTextCursor tmp = c;
 		tmp.movePosition(QTextCursor::StartOfBlock, QTextCursor::MoveAnchor);
 		int nMove = std::min(ITEM_LENGTH, c.position() - tmp.position());
@@ -186,18 +186,21 @@ void GenTextEdit::addTab(int& cursorPos)
 		c.movePosition(QTextCursor::Left, QTextCursor::MoveAnchor, nMove);
 		pos = c.position();
 		isItem = true;
-	}
+	}*/
+
 	detailsSetCharStyle(ch, charStyle::Item);
+	int pos = c.position();
+
 	for (int i = 0; i < TAB_LENGTH; ++i) {
 		c.insertText(" ", charFormat);
 		charStyleVector_.insert(pos + i, 1, ch);
-		//++pos;
 		++charCounter_;
 	}
 
-	if (isItem) {
-		c.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, ITEM_LENGTH);
-	}
+	/*if (isItem) {
+		c.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, cursorPos + ITEM_LENGTH);
+	}*/
+	c.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, cursorPos + ITEM_LENGTH);
 //Add command to UndoRedoBuffer
 	commandInfo_t command;
 	QString sTab = "";
