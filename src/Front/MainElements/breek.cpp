@@ -164,6 +164,11 @@ void Breek::setEmoj(int numOfEmoji)
   if (numOfEmoji >= 0 && numOfEmoji < 10) nEmoj_ = numOfEmoji;
 }
 
+int Breek::getEmojiNum()
+{
+  return nEmoj_;
+}
+
 void Breek::setIndex(const int zoneIndex, const int dayIndex)
 {
   zoneIndex_ = zoneIndex;

@@ -40,6 +40,7 @@ public:
                     Conditions from, Conditions to);
 
   void setEmoj(int);
+  int getEmojiNum();
   void setIndex(const int zoneIndex, const int dayIndex);
 
   int getWidth();
