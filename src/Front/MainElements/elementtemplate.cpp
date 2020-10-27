@@ -1,11 +1,19 @@
 #include "elementtemplate.h"
 #include <QDebug>
 
+#include <QGraphicsDropShadowEffect>
+
 ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
 {
-	this->setFixedSize(ELEMENT_WIDTH, ELEMENT_HEIGHT);
-	this->setStyleSheet("background: #F9F9F9; border: 0.4px solid #ECECEC;"
-											"border-radius: 9px;");
+    this->setFixedSize(ELEMENT_WIDTH, ELEMENT_HEIGHT);
+    this->setStyleSheet("ElementTemplate {background: #F9F9F9; border: 0.5px solid #ECECEC; border-radius: 9px;}");
+
+    QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+    effect->setBlurRadius(0.1);
+    effect->setXOffset(0);
+    effect->setYOffset(0);
+    effect->setColor("#A0A0A0");
+    this->setGraphicsEffect(effect);
 
   elementLayout_ = new QGridLayout;
   elementLayout_->setHorizontalSpacing(5);
@@ -43,9 +51,9 @@ ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
 	deleteButton_->setStyleSheet("background: none");
 
   timeStart_->setFixedSize(45, 25);
-	timeStart_->setStyleSheet("background: #FFFFFF; border: 0.4px solid #E3E3E3; box-sizing: border-box; border-radius: 6px;");
+    timeStart_->setStyleSheet("background: #FFFFFF; border: 0.4px solid #E3E3E3;border-radius: 6px;");
   timeEnd_->setFixedSize(45, 25);
-	timeEnd_->setStyleSheet("background: #FFFFFF; border: 0.4px solid #E3E3E3; box-sizing: border-box; border-radius: 6px;");
+    timeEnd_->setStyleSheet("background: #FFFFFF; border: 0.4px solid #E3E3E3; border-radius: 6px;");
 
   text_->setFixedSize(196, 62);
 

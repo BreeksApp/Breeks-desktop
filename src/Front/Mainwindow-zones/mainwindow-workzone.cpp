@@ -22,12 +22,12 @@ void MainWindow::setWorkZone()
 
   const int scrollAreaWidth = 1018;
   const int scrollAreaHeight = 950;
-  workZoneScrollArea_->setFixedSize(scrollAreaWidth, scrollAreaHeight);
+  workZoneScrollArea_->setFixedWidth(scrollAreaWidth);
 
   QHBoxLayout *layOut = new QHBoxLayout;
-  layOut->addWidget(workZoneScrollArea_);
+  layOut->addWidget(workZoneScrollArea_, Qt::AlignCenter);
   ui->groupBoxWorkZone->setLayout(layOut);
 
-	buildTimeTable();
+  buildTimeTable();
   buildBreeksDescriptionZone();
 }

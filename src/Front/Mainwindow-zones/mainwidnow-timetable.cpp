@@ -5,14 +5,24 @@
 
 void MainWindow::buildTimeTable()
 {
+  ui->groupBoxWorkZone->setStyleSheet("background: #F9F9F9; border-radius: 6px;");
+
   bigWidgetInWorkZone_->setFixedSize(WORK_ZONE_BIG_WIDGET_WIDTH, bigWidgetHeight_);
+  bigWidgetInWorkZone_->setStyleSheet("background: #FFFFFF; border-radius: 9px;");
 
   workZoneScrollArea_->setWidget(bigWidgetInWorkZone_);
-
   workZoneScrollArea_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  workZoneScrollArea_->setStyleSheet("border-radius: 9px;");
+
+  QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+  effect->setBlurRadius(10);
+  effect->setXOffset(0);
+  effect->setYOffset(1);
+  effect->setColor("#909090");
+  workZoneScrollArea_->setGraphicsEffect(effect);
 
   bigWidgetInWorkZone_->setLayout(workZoneLayout_);
-  workZoneLayout_->setContentsMargins(0, 0, 0, 200);
+  workZoneLayout_->setContentsMargins(0, 0, 0, 200); //experience par
 
   allocateMemoryForDays();
 
@@ -21,7 +31,7 @@ void MainWindow::buildTimeTable()
   const int dayHeight = 480;
   for (int i = 0; i < DAYS_COUNT; ++i) {
     arrDays_[i].groupBoxDay->setFixedSize(dayWidth, dayHeight);
-    workZoneLayout_->addWidget(arrDays_[i].groupBoxDay, 0, i);
+    workZoneLayout_->addWidget(arrDays_[i].groupBoxDay, 0, i, Qt::AlignCenter);
   }
 
   //build a day
@@ -103,7 +113,7 @@ void MainWindow::setDayInfo()
     //set font style for elements count label
     for (int i = 0; i < DAYS_COUNT; ++i) {
       arrDays_[i].labelElementsCount->setFont(fontCounter);
-      arrDays_[i].labelElementsCount->setStyleSheet("font: italic;");
+      arrDays_[i].labelElementsCount->setStyleSheet("background: none; color: #000000; font: italic;");
     }
 
     //work with HTML to set style for a part of line
@@ -125,7 +135,6 @@ void MainWindow::setDayInfo()
 
   //set effects to underline current day
   if (iCurrentDay != 6) {
-    arrDays_[iCurrentDay].labelDate->setStyleSheet("background-color: #c9eaff;");
     effects::setElementShadow(arrDays_[iCurrentDay].labelDate, 10);
   }
 }
@@ -171,28 +180,40 @@ void MainWindow::initializeDaysParameters()
 void MainWindow::setDaysStructure()
 {
   for (int i = 0; i < DAYS_COUNT; i++) {
+    arrDays_[i].groupBoxDay->setStyleSheet("QGroupBox {background: #F9F9F9; border: 0.4px solid #E3E3E3 ;border-radius: 9px;}");
     arrDays_[i].groupBoxDay->setLayout(arrDays_[i].layoutFullDay);
 
     //day info
     arrDays_[i].layoutFullDay->addLayout(arrDays_[i].layoutDayInfo);
+    arrDays_[i].labelDate->setStyleSheet("background: none; color: #000000;");
     arrDays_[i].layoutDayInfo->addWidget(arrDays_[i].labelDate);
+
     arrDays_[i].layoutDayInfo->addStretch(15);
+    arrDays_[i].labelElementsCount->setStyleSheet(""); //DON'T WORK
     arrDays_[i].layoutDayInfo->addWidget(arrDays_[i].labelElementsCount);
 
     //scroll area for elements
-    arrDays_[i].layoutFullDay->addWidget(arrDays_[i].scrollArea);
-    const int dayWidgetScrollAreaWidth = 277;
+    arrDays_[i].layoutFullDay->addWidget(arrDays_[i].scrollArea, Qt::AlignCenter);
+    //const int dayWidgetScrollAreaWidth = 277;
     const int dayWidgetScrollAreaHeight = 400;
-    arrDays_[i].scrollArea->setFixedSize(dayWidgetScrollAreaWidth, dayWidgetScrollAreaHeight);
-    arrDays_[i].scrollArea->setStyleSheet("QScrollBar {width: 0px;}");
+    arrDays_[i].scrollArea->setFixedHeight(dayWidgetScrollAreaHeight);
+
+    arrDays_[i].scrollArea->setStyleSheet("QScrollArea {background: #FFFFFF; border: 0.4px solid #E3E3E3; border-radius: 6px; width: 0px;}");
+    arrDays_[i].scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+    effect->setBlurRadius(10);
+    effect->setXOffset(0);
+    effect->setYOffset(1);
+    effect->setColor("#909090");
+    arrDays_[i].scrollArea->setGraphicsEffect(effect);
 
     //zone for elements
     arrDays_[i].scrollArea->setWidget(arrDays_[i].widgetDay);
-
     arrDays_[i].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[i].groupBoxElementsHeight);
     arrDays_[i].widgetDay->setLayout(arrDays_[i].helpLayout);
 
     arrDays_[i].helpLayout->addLayout(arrDays_[i].layoutDayElements);
-    arrDays_[i].layoutDayElements->setContentsMargins(5, 0, 0, 0);
+    arrDays_[i].layoutDayElements->setContentsMargins(6, 0, 0, 0); //i don't know why, but it's badly needed
   }
 }

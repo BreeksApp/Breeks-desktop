@@ -76,7 +76,7 @@ void MainWindow::addNewElementToLayout(const int index, const int newElementInde
     connect(elem, SIGNAL(sendDayAndElementIndexAndTagColor(const int, const int, const QPalette)),
           this, SLOT(recieveDayAndElementIndexAndTagColor(const int, const int, const QPalette)));
 
-    arrDays_[index].layoutDayElements->addWidget(elem);
+    arrDays_[index].layoutDayElements->addWidget(elem, Qt::AlignCenter);
 
     if (j == newElementIndex) {
       const int a = 150 * newElementIndex; //150 is lucky coefficient

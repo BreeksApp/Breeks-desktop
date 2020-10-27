@@ -46,8 +46,8 @@ private slots:
 
 private:
 
-  const int ELEMENT_WIDTH = 245;
-  const int ELEMENT_HEIGHT = 120;
+  const int ELEMENT_WIDTH = 240;
+  const int ELEMENT_HEIGHT = 100;
 
   QPoint dragStartPosition_;
 
