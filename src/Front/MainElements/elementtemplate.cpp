@@ -3,7 +3,9 @@
 
 ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
 {
-  this->setFixedSize(ELEMENT_WIDTH, ELEMENT_HEIGHT);
+	this->setFixedSize(ELEMENT_WIDTH, ELEMENT_HEIGHT);
+	this->setStyleSheet("background: #F9F9F9; border: 0.4px solid #ECECEC;"
+											"border-radius: 9px;");
 
   elementLayout_ = new QGridLayout;
   elementLayout_->setHorizontalSpacing(5);
@@ -20,6 +22,7 @@ ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
   deleteButton_->setFlat(true);
 
   text_ = new TimetableTextEdit;
+	text_->setStyleSheet("background: #FFFFFF; border: 0.4px solid #E3E3E3 ;border-radius: 6px;");
 
   timeStart_ = new QLineEdit;
   timeEnd_ = new QLineEdit;
@@ -32,15 +35,21 @@ ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
   }
 
   tagButton_->setFixedSize(20, 62);
-  settingsButton_->setFixedSize(20, 20);
+	tagButton_->setStyleSheet("background: #81C4FF; border-radius: 2px;");
+
+	settingsButton_->setFixedSize(20, 20);
+
   deleteButton_->setFixedSize(20, 20);
+	deleteButton_->setStyleSheet("background: none");
 
   timeStart_->setFixedSize(45, 25);
+	timeStart_->setStyleSheet("background: #FFFFFF; border: 0.4px solid #E3E3E3; box-sizing: border-box; border-radius: 6px;");
   timeEnd_->setFixedSize(45, 25);
+	timeEnd_->setStyleSheet("background: #FFFFFF; border: 0.4px solid #E3E3E3; box-sizing: border-box; border-radius: 6px;");
 
   text_->setFixedSize(196, 62);
 
-  QFont font("Helvetica", 12);
+	QFont font("Helvetica", 10);
   text_->setFont(font);
 
   elementLayout_->addWidget(tagButton_, 0, 0);
