@@ -5,18 +5,18 @@
 
 ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
 {
-    this->setFixedSize(ELEMENT_WIDTH, ELEMENT_HEIGHT);
-    this->setStyleSheet("ElementTemplate {background: #F9F9F9; border: 0.5px solid #ECECEC; border-radius: 9px;}");
+	this->setFixedSize(ELEMENT_WIDTH, ELEMENT_HEIGHT);
+	this->setStyleSheet("ElementTemplate {background: #F9F9F9; border: 0.4px solid #ECECEC; border-radius: 9px;}");
 
-    QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
-    effect->setBlurRadius(0.1);
-    effect->setXOffset(0);
-    effect->setYOffset(0);
-    effect->setColor("#A0A0A0");
-    this->setGraphicsEffect(effect);
+	QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+	effect->setBlurRadius(5);
+	effect->setXOffset(0.5);
+	effect->setYOffset(0);
+	effect->setColor("#e3e3e3");
+	this->setGraphicsEffect(effect);
 
   elementLayout_ = new QGridLayout;
-  elementLayout_->setHorizontalSpacing(5);
+	//elementLayout_->setHorizontalSpacing(5);
 
   tagButton_ = new QPushButton;
 
@@ -30,7 +30,8 @@ ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
   deleteButton_->setFlat(true);
 
   text_ = new TimetableTextEdit;
-	text_->setStyleSheet("background: #FFFFFF; border: 0.4px solid #E3E3E3 ;border-radius: 6px;");
+	text_->setStyleSheet("background: #FFFFFF; border: 0.4px solid #E3E3E3; border-radius: 6px;");
+	text_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
   timeStart_ = new QLineEdit;
   timeEnd_ = new QLineEdit;

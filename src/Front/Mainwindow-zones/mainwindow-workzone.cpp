@@ -17,7 +17,7 @@ void MainWindow::setWorkZone()
   connect(this->breeksDescriptionZoneScrollArea_->verticalScrollBar(), &QScrollBar::valueChanged,
         this->workZoneScrollArea_->verticalScrollBar(), &QScrollBar::setValue);
 
-  bigWidgetHeight_ = 700;
+	bigWidgetHeight_ = 800;
   breeksZonesCount_ = 0;
 
   const int scrollAreaWidth = 1018;
