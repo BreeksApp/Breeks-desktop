@@ -28,6 +28,8 @@ void MainWindow::setWorkZone()
   layOut->addWidget(workZoneScrollArea_, Qt::AlignCenter);
   ui->groupBoxWorkZone->setLayout(layOut);
 
+	ui->groupBoxWorkZone->setStyleSheet("QGroupBox {background: none;}");
+
   buildTimeTable();
   buildBreeksDescriptionZone();
 }

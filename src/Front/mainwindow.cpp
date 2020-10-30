@@ -87,10 +87,10 @@ void MainWindow::recieveTimeTableZoneData(bool *daysCheck, const int arrSize, el
 
       //increase scroll area of this day
       if (arrDays_[i].elementsCount < 3) {
-				arrDays_[i].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[i].groupBoxElementsHeight - 30);
+				//arrDays_[i].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[i].groupBoxElementsHeight - 30);
       }
       else {
-        arrDays_[i].groupBoxElementsHeight += ELEMENT_HEIGHT_;
+				arrDays_[i].groupBoxElementsHeight = ELEMENT_HEIGHT_ * (arrDays_[i].elementsCount + 1) + 25;
         arrDays_[i].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[i].groupBoxElementsHeight);
       }
 
@@ -180,16 +180,16 @@ void MainWindow::recieveDayAndElementIndex(const int dayElementIndex, const int 
   delete item->widget();
   delete item;
   arrDays_[dayElementIndex].layoutDayElements->update();
+	--arrDays_[dayElementIndex].elementsCount;
 
   if (arrDays_[dayElementIndex].elementsCount <= 3) {
-			arrDays_[dayElementIndex].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[dayElementIndex].groupBoxElementsHeight - 30);
+			arrDays_[dayElementIndex].groupBoxElementsHeight = 370;
+			arrDays_[dayElementIndex].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[dayElementIndex].groupBoxElementsHeight);
   }
   else {
-    arrDays_[dayElementIndex].groupBoxElementsHeight -= ELEMENT_HEIGHT_;
+		arrDays_[dayElementIndex].groupBoxElementsHeight = ELEMENT_HEIGHT_ * arrDays_[dayElementIndex].elementsCount + 25;
     arrDays_[dayElementIndex].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[dayElementIndex].groupBoxElementsHeight);
   }
-
-  --arrDays_[dayElementIndex].elementsCount;
 
   if (arrDays_[dayElementIndex].elementsCount == 0) {
     arrDays_[dayElementIndex].labelElementsCount->setText("");

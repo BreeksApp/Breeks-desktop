@@ -202,7 +202,7 @@ private:
   const int BREEKS_DESCRIPTION_ZONE_BIG_WIDGET_WIDTH = 305;
 
   const int DAY_WIDTH_ = 260;
-  const int ELEMENT_HEIGHT_ = 130;
+	const int ELEMENT_HEIGHT_ = 115;
 
   const int DAYS_COUNT = 6;
   day_t arrDays_[6];

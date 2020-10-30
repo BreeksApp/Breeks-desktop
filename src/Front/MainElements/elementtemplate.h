@@ -28,6 +28,8 @@ public:
   void enterEvent(QEvent *event);
   void leaveEvent(QEvent *event);
 
+	int getWidth();
+
   void setText(QString text, const QVector<charStyle_t>& charArr);
   void setTime(QString timeStart, QString timeEnd);
   void setPalette(const QPalette palette);
@@ -57,7 +59,7 @@ private:
 
   QGridLayout *elementLayout_;
   TimetableTextEdit *text_;
-  QLineEdit *timeStart_;
+	QLineEdit *timeStart_;
   QLineEdit *timeEnd_;
 
   int dayIndex_;

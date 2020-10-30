@@ -6,13 +6,13 @@
 ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
 {
 	this->setFixedSize(ELEMENT_WIDTH, ELEMENT_HEIGHT);
-	this->setStyleSheet("ElementTemplate {background: #F9F9F9; border: 0.4px solid #ECECEC; border-radius: 9px;}");
+	this->setStyleSheet("ElementTemplate {background: #F9F9F9; border: 0.4px solid #c0c0c0; border-radius: 6px;}");
 
 	QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
 	effect->setBlurRadius(5);
-	effect->setXOffset(0.5);
+	effect->setXOffset(0);
 	effect->setYOffset(0);
-	effect->setColor("#e3e3e3");
+	effect->setColor("#b9b9b9");
 	this->setGraphicsEffect(effect);
 
   elementLayout_ = new QGridLayout;
@@ -30,13 +30,15 @@ ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
   deleteButton_->setFlat(true);
 
   text_ = new TimetableTextEdit;
-	text_->setStyleSheet("background: #FFFFFF; border: 0.4px solid #E3E3E3; border-radius: 6px;");
+	text_->setStyleSheet("TimetableTextEdit#text_ {background: #FFFFFF; border: 0.4px solid #E3E3E3; border-radius: 6px;}");
 	text_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-  timeStart_ = new QLineEdit;
+	timeStart_ = new QLineEdit;
   timeEnd_ = new QLineEdit;
-  timeStart_->setFocusPolicy(Qt::NoFocus);
+	timeStart_->setFocusPolicy(Qt::NoFocus);
   timeEnd_->setFocusPolicy(Qt::NoFocus);
+	timeStart_->setAlignment(Qt::AlignCenter);
+	timeEnd_->setAlignment(Qt::AlignCenter);
 
   for (int i = 0; i < TAGS_COUNT; ++i) {
     arrTags_[i].condition = false;
@@ -44,25 +46,28 @@ ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
   }
 
   tagButton_->setFixedSize(20, 62);
-	tagButton_->setStyleSheet("background: #81C4FF; border-radius: 2px;");
+	tagButton_->setStyleSheet("QPushButton {background: #81C4FF; border-radius: 3px;}");
 
 	settingsButton_->setFixedSize(20, 20);
+	settingsButton_->setStyleSheet("background: none");
 
   deleteButton_->setFixedSize(20, 20);
 	deleteButton_->setStyleSheet("background: none");
 
-  timeStart_->setFixedSize(45, 25);
+
+	timeStart_->setFixedSize(45, 20);
     timeStart_->setStyleSheet("background: #FFFFFF; border: 0.4px solid #E3E3E3;border-radius: 6px;");
-  timeEnd_->setFixedSize(45, 25);
+	timeEnd_->setFixedSize(45, 20);
     timeEnd_->setStyleSheet("background: #FFFFFF; border: 0.4px solid #E3E3E3; border-radius: 6px;");
 
-  text_->setFixedSize(196, 62);
+	text_->setFixedHeight(tagButton_->height());
+	//text_->setFixedWidth(250);
 
 	QFont font("Helvetica", 10);
   text_->setFont(font);
 
   elementLayout_->addWidget(tagButton_, 0, 0);
-  elementLayout_->addWidget(text_, 0, 1);
+	elementLayout_->addWidget(text_, 0, 1, 2, 3);
   elementLayout_->addWidget(settingsButton_, 1, 0);
   elementLayout_->addWidget(deleteButton_, 2, 0);
   elementLayout_->addWidget(timeStart_, 3, 2);
@@ -117,7 +122,6 @@ void ElementTemplate::mouseMoveEvent(QMouseEvent *event)
   drag->setMimeData(mimeData);
   drag->setPixmap(this->grab());
   Qt::DropAction dropAction = drag->exec(Qt::CopyAction | Qt::MoveAction);
-
 }
 
 void ElementTemplate::enterEvent(QEvent *event)
@@ -126,7 +130,7 @@ void ElementTemplate::enterEvent(QEvent *event)
 
   deleteButton_->setEnabled(true);
   deleteButton_->setFlat(false);
-  deleteButton_->setStyleSheet("border-image:url(:/Images/Front/Images/recycle-bin.png)");
+	deleteButton_->setStyleSheet("border-image:url(:/Images/Front/Images/recycle-bin.png)");
 
   settingsButton_->setEnabled(true);
   settingsButton_->setFlat(false);
@@ -140,12 +144,17 @@ void ElementTemplate::leaveEvent(QEvent *event)
 
   deleteButton_->setEnabled(false);
   deleteButton_->setFlat(true);
-  deleteButton_->setStyleSheet("background-color: #eceaec");
+	deleteButton_->setStyleSheet("background: none");
 
   settingsButton_->setEnabled(false);
   settingsButton_->setFlat(true);
 
   QWidget::leaveEvent(event);
+}
+
+int ElementTemplate::getWidth()
+{
+	return this->width();
 }
 
 void ElementTemplate::setText(QString text, const QVector<charStyle_t>& charArr)
@@ -155,7 +164,7 @@ void ElementTemplate::setText(QString text, const QVector<charStyle_t>& charArr)
 
 void ElementTemplate::setTime(QString timeStart, QString timeEnd)
 {
-  timeStart_->setText(timeStart.remove(5, 3));
+	timeStart_->setText(timeStart.remove(5, 3));
   timeEnd_->setText(timeEnd.remove(5, 3));
 
   if (timeEnd == "00:00") {
@@ -201,12 +210,10 @@ QVector<charStyle_t> ElementTemplate::getCharStyleVector()
 void ElementTemplate::changeTagColor()
 {
   for (int i = 0; i < TAGS_COUNT; ++i) {
-    if (arrTags_[i].condition == true) {
-      tagButton_->setPalette(arrTags_[(i + 1) % TAGS_COUNT].pallete);
+		if (arrTags_[i].condition == true) {
+			tagButton_->setPalette(arrTags_[(i + 1) % TAGS_COUNT].pallete);
       arrTags_[(i + 1) % TAGS_COUNT].condition = true;
-
       arrTags_[i].condition = false;
-
       emit sendDayAndElementIndexAndTagColor(dayIndex_, elementIndex_, tagButton_->palette());
 
       break;

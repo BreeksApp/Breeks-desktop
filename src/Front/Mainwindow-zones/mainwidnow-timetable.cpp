@@ -29,7 +29,7 @@ void MainWindow::buildTimeTable()
 
   //add groupboxes for days
 	const int dayWidth = 305;
-  const int dayHeight = 480;
+	const int dayHeight = 480;
   for (int i = 0; i < DAYS_COUNT; ++i) {
     arrDays_[i].groupBoxDay->setFixedSize(dayWidth, dayHeight);
     workZoneLayout_->addWidget(arrDays_[i].groupBoxDay, 0, i, Qt::AlignCenter);
@@ -172,7 +172,7 @@ void MainWindow::allocateMemoryForDays()
 void MainWindow::initializeDaysParameters()
 {
   for (int i = 0; i < DAYS_COUNT; i++) {
-    arrDays_[i].groupBoxElementsHeight = 395;
+		arrDays_[i].groupBoxElementsHeight = 370;
     arrDays_[i].elementsCount = 0;
     arrDays_[i].labelElementsCount->setText("");
   }
@@ -181,68 +181,50 @@ void MainWindow::initializeDaysParameters()
 void MainWindow::setDaysStructure()
 {
   for (int i = 0; i < DAYS_COUNT; i++) {
-		arrDays_[i].groupBoxDay->setStyleSheet("QGroupBox {background: #F9F9F9; border: 0.4px solid #E3E3E3 ;border-radius: 15px;}");
+		arrDays_[i].groupBoxDay->setStyleSheet("QGroupBox {background: #FCFCFC; border: 1.5px solid #F9F9F9 ;border-radius: 20px;}");
     arrDays_[i].groupBoxDay->setLayout(arrDays_[i].layoutFullDay);
+
+		arrDays_[i].layoutFullDay->setContentsMargins(10, 10, 10, 30);
 
     //day info
     arrDays_[i].layoutFullDay->addLayout(arrDays_[i].layoutDayInfo);
     arrDays_[i].labelDate->setStyleSheet("background: none; color: #000000;");
     arrDays_[i].layoutDayInfo->addWidget(arrDays_[i].labelDate);
 
-    arrDays_[i].layoutDayInfo->addStretch(15);
-    arrDays_[i].labelElementsCount->setStyleSheet(""); //DON'T WORK
-    arrDays_[i].layoutDayInfo->addWidget(arrDays_[i].labelElementsCount);
+		arrDays_[i].layoutDayInfo->addStretch(11);
+		arrDays_[i].layoutDayInfo->addWidget(arrDays_[i].labelElementsCount, Qt::AlignRight);
 
     //scroll area for elements
 		arrDays_[i].layoutFullDay->addWidget(arrDays_[i].scrollArea, Qt::AlignCenter);
 		//const int dayWidgetScrollAreaWidth = 277;
-    const int dayWidgetScrollAreaHeight = 400;
+		const int dayWidgetScrollAreaHeight = 370;
 		arrDays_[i].scrollArea->setFixedHeight(dayWidgetScrollAreaHeight);
 
-		arrDays_[i].scrollArea->setStyleSheet("QScrollArea {background: #FFFFFF; border: 0.4px solid #E3E3E3; border-radius: 6px;}");
+		arrDays_[i].scrollArea->setStyleSheet("QScrollArea {background: #FFFFFF; border: 0.4px solid #E3E3E3; border-radius: 9px;}");
 
 
 		arrDays_[i].scrollArea->verticalScrollBar()->setStyleSheet("QScrollBar:vertical {"
-																																								 //"    border: 1px solid #E3E3E3;"
-																																								 "    border-radius: 3px;"
-																																								 "    background: #FFFFF;"
+																																								 "    border: 0.1px solid #FFFFFF;"
+																																								 //"    border-radius: 4px;"
+																																								 "    background: #FFFFFF;"
 																																								 "    width: 16px;    "
 																																								 "    margin: 0px 0px 0px 0px;"
 																																								 "}"
 																																								 "QScrollBar::handle:vertical {"
-																																								 "    border-radius: 3px;"
-																																								 "    background: #F9F9F9;"
+																																								 "    border: 0.7px solid #E3E3E3;"
+																																								 "    border-radius: 2px;"
+																																								 "    background: #FCFCFC;"
 																																								 "    min-height: 0px;"
-																																								 "}"
-																																								 "QScrollBar::add-line:vertical {"
-																																								 "    border-radius: 3px;"
-																																								 "    background: #F9F9F9;"
-																																								 "    height: 0px;"
-																																								 "    subcontrol-position: bottom;"
-																																								 "    subcontrol-origin: margin;"
-																																								 "}"
-																																								 "QScrollBar::sub-line:vertical {"
-																																								 "    border-radius: 3px;"
-																																								 "    background: #F9F9F9;"
-																																								 "    height: 0 px;"
-																																								 "    subcontrol-position: top;"
-																																								 "    subcontrol-origin: margin;"
 																																								 "}"
 																																								 );
 		arrDays_[i].scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-		QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
-		effect->setBlurRadius(10);
-		effect->setXOffset(-2);
-		effect->setYOffset(0);
-		effect->setColor("#909090");
-		arrDays_[i].scrollArea->verticalScrollBar()->setGraphicsEffect(effect);
 
-    effect->setBlurRadius(10);
+		QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+		effect->setBlurRadius(7);
     effect->setXOffset(0);
     effect->setYOffset(1);
     effect->setColor("#909090");
-    arrDays_[i].scrollArea->setGraphicsEffect(effect);
-
+		arrDays_[i].scrollArea->setGraphicsEffect(effect);
 
 		//zone for elements
 		arrDays_[i].scrollArea->setWidgetResizable(true);
@@ -251,6 +233,7 @@ void MainWindow::setDaysStructure()
 		arrDays_[i].widgetDay->setLayout(arrDays_[i].helpLayout);
 
 		arrDays_[i].helpLayout->addLayout(arrDays_[i].layoutDayElements, Qt::AlignCenter);
-		arrDays_[i].layoutDayElements->setContentsMargins(3, 0, 0, 0); //i don't know why, but it's badly needed
-  }
+		arrDays_[i].layoutDayElements->setContentsMargins(3, 10, 0, 10); //i don't know why, but it's badly needed
+		arrDays_[i].layoutDayElements->setSpacing(15);
+	}
 }
