@@ -21,10 +21,11 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   ui->setupUi(this);
 
+	this->setStyleSheet("background: #F9F9F9");
+
   loginForm_ = new LoginForm;
   connect(loginForm_, SIGNAL(firstWindow()), this, SLOT(recieveUsername())); //Connect login and Mainwindow form
   connect(loginForm_, SIGNAL(sendUsername(const QString)), ui->note, SLOT(recieveUsername(const QString))); //Send username to TextEdit
-
 
 	connect(ui->buttonImage, SIGNAL(imageEnter(bool)), this, SLOT(setImageBackgroundView(bool)));
 	connect(ui->buttonImage, SIGNAL(imageLeave(bool)), this, SLOT(setImageBackgroundView(bool)));
@@ -261,10 +262,8 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
 
   }
   else {
-
     if (dayIndex > 0) {
       breeksZone_t *zone = &arrBreeksZones_[zoneIndex];
-
       if (!zone->arrBreeks[dayIndex - 1]->isEnabled()) {
         QRect rectFrom = zone->arrBreeks[dayIndex]->geometry();
         QPoint posFrom = zone->arrBreeks[dayIndex]->pos();
@@ -288,7 +287,6 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
         workZoneScrollArea_->ensureVisible(zone->arrBreeks[dayIndex - 1]->pos().x() - 250, 0);
       }
     }
-
   }
 }
 

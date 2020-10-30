@@ -17,18 +17,21 @@ void MainWindow::setWorkZone()
   connect(this->breeksDescriptionZoneScrollArea_->verticalScrollBar(), &QScrollBar::valueChanged,
         this->workZoneScrollArea_->verticalScrollBar(), &QScrollBar::setValue);
 
-	bigWidgetHeight_ = 800;
+	bigWidgetHeight_ = 500;//ui->groupBoxWorkZone->height() - 20;
   breeksZonesCount_ = 0;
 
-  const int scrollAreaWidth = 1018;
-  const int scrollAreaHeight = 950;
-  workZoneScrollArea_->setFixedWidth(scrollAreaWidth);
+	//const int scrollAreaWidth = 500;
+	//const int scrollAreaHeight = 950;
+	workZoneScrollArea_->setFixedWidth(ui->groupBoxWorkZone->width() - 20);
 
   QHBoxLayout *layOut = new QHBoxLayout;
   layOut->addWidget(workZoneScrollArea_, Qt::AlignCenter);
   ui->groupBoxWorkZone->setLayout(layOut);
 
-	ui->groupBoxWorkZone->setStyleSheet("QGroupBox {background: none;}");
+	workZoneScrollArea_->setContentsMargins(0, 5, 0, 0);
+	bigWidgetInWorkZone_->setContentsMargins(0, 5, 0, 0);
+
+	//ui->groupBoxWorkZone->setStyleSheet("background: none;");
 
   buildTimeTable();
   buildBreeksDescriptionZone();

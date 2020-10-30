@@ -61,7 +61,6 @@ ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
     timeEnd_->setStyleSheet("background: #FFFFFF; border: 0.4px solid #E3E3E3; border-radius: 6px;");
 
 	text_->setFixedHeight(tagButton_->height());
-	//text_->setFixedWidth(250);
 
 	QFont font("Helvetica", 10);
   text_->setFont(font);

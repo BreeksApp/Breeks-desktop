@@ -6,7 +6,14 @@
 
 void MainWindow::buildTimeTable()
 {
-	ui->groupBoxWorkZone->setStyleSheet("background: #F9F9F9; border-radius: 6px;");
+	QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+	effect->setBlurRadius(10);
+	effect->setXOffset(0);
+	effect->setYOffset(1);
+	effect->setColor("#909090");
+	ui->groupBoxWorkZone->setGraphicsEffect(effect);
+
+	ui->groupBoxWorkZone->setStyleSheet("background: #FFFFFF; border-radius: 6px;");
 
 	bigWidgetInWorkZone_->setFixedSize(WORK_ZONE_BIG_WIDGET_WIDTH, bigWidgetHeight_);
 	bigWidgetInWorkZone_->setStyleSheet("background: #FFFFFF; border-radius: 9px;");
@@ -14,16 +21,10 @@ void MainWindow::buildTimeTable()
   workZoneScrollArea_->setWidget(bigWidgetInWorkZone_);
   workZoneScrollArea_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	workZoneScrollArea_->setStyleSheet("border-radius: 9px;");
-
-  QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
-  effect->setBlurRadius(10);
-  effect->setXOffset(0);
-  effect->setYOffset(1);
-  effect->setColor("#909090");
 	//workZoneScrollArea_->setGraphicsEffect(effect);
 
   bigWidgetInWorkZone_->setLayout(workZoneLayout_);
-  workZoneLayout_->setContentsMargins(0, 0, 0, 200); //experience par
+	//workZoneLayout_->setContentsMargins(0, 0, 0, 200); //experience par
 
   allocateMemoryForDays();
 
@@ -212,10 +213,18 @@ void MainWindow::setDaysStructure()
 																																								 "}"
 																																								 "QScrollBar::handle:vertical {"
 																																								 "    border: 0.7px solid #E3E3E3;"
-																																								 "    border-radius: 2px;"
+																																								 "    border-radius: 3px;"
 																																								 "    background: #FCFCFC;"
 																																								 "    min-height: 0px;"
 																																								 "}"
+																															 "QScrollBar::add-line:horizontal {"
+																																		 "border: none;"
+																																		 "background: none;"
+																															 "}"
+																															 "QScrollBar::sub-line:horizontal {"
+																																		 "border: none;"
+																																		 "background: none;"
+																															 "}"
 																																								 );
 		arrDays_[i].scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 

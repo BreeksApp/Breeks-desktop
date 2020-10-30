@@ -83,25 +83,6 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="labelBackground">
-    <property name="geometry">
-     <rect>
-      <x>-60</x>
-      <y>0</y>
-      <width>2081</width>
-      <height>1121</height>
-     </rect>
-    </property>
-    <property name="cursor">
-     <cursorShape>ArrowCursor</cursorShape>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: #ffffff</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
    <widget class="GenTextEdit" name="note">
     <property name="geometry">
      <rect>
@@ -434,9 +415,9 @@
     <property name="geometry">
      <rect>
       <x>520</x>
-      <y>0</y>
-      <width>1041</width>
-      <height>1051</height>
+      <y>10</y>
+      <width>1031</width>
+      <height>981</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -452,14 +433,13 @@
       <x>1560</x>
       <y>0</y>
       <width>351</width>
-      <height>1051</height>
+      <height>1031</height>
      </rect>
     </property>
     <property name="title">
      <string/>
     </property>
    </widget>
-   <zorder>labelBackground</zorder>
    <zorder>groupBox</zorder>
    <zorder>buttonAdd</zorder>
    <zorder>buttonPage6</zorder>
