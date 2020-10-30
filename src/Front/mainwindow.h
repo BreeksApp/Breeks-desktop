@@ -37,7 +37,8 @@ public:
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
 
-  void mousePressEvent( QMouseEvent* event );
+	void mousePressEvent(QMouseEvent *event);
+	void mouseReleasedEvent(QMouseEvent *event);
 
   LoginForm *loginForm_;
 
@@ -63,6 +64,8 @@ public slots:
   void moveBreek(int, int, bool);
   void dropElement(const int, const int, const int, const elementData_t);
   void sendElementsHeight(const int, const int);
+	void moveTimetableElement();
+	void mouseReleasedByDragElement();
 
 private slots:
 //timetable
@@ -212,6 +215,8 @@ private:
 
 	int iCurrentDay_;
 	QTimer *timer_;
+
+	bool isElementDrag_;
 
   int addNewElementToArray(const elementData_t& newElement, const int index);
   void addNewElementToLayout(const int index, const int newElementIndex);

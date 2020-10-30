@@ -31,6 +31,7 @@ signals:
   void dropElement(const int, const int, const int, const elementData_t);
   void sendDayAndElementIndex(const int, const int);
   void sendElementsHeight(const int, const int);
+	void moveElement();
 
 public slots:
 };

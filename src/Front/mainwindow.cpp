@@ -3,6 +3,9 @@
 #include <memory>
 #include "QScrollBar"
 
+#include <QtConcurrent/QtConcurrent>
+#include <QThread>
+
 #include "mainwindow.h"
 #include "Front/GeneralTextEdit/gentextedit.h"
 #include "Front/MainElements/addelement.h"
@@ -56,6 +59,34 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
     //drag->setPixmap(dragElement_);
     //Qt::DropAction dropAction = drag->exec();
   }
+}
+
+void MainWindow::moveTimetableElement()
+{
+	//qDebug() << ui->groupBox->mapToGlobal(this->cursor().pos());
+	//while (isElementDrag_) {
+		QPoint pos = ui->groupBox->mapToGlobal(this->cursor().pos());
+
+		if (pos.x() > 950 & pos.x() < 1150) {
+			//qDebug() << "!";
+			QPoint pos1 = bigWidgetInWorkZone_->mapFromGlobal(this->cursor().pos());
+			workZoneScrollArea_->ensureVisible(pos1.x() - 10, 0);
+			QThread::msleep(50);
+		}
+	//}
+}
+
+void MainWindow::mouseReleasedByDragElement()
+{
+	isElementDrag_ = true;
+	/*void (*fcnPtr)(bool, QPoint, QPoint) = [](bool isElementDrag, QPoint pos, QPoint pos1){
+
+	};
+
+	QFuture<void> future = QtConcurrent::run(fcnPtr);*/
+	//надо параллельно поток запустить
+
+	moveTimetableElement();
 }
 
 void MainWindow::on_buttonAdd_clicked()
@@ -292,6 +323,7 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
 
 void MainWindow::dropElement(const int dayNumber, const int dayIndex, const int elemIndex, const elementData_t elemData)
 {
+	isElementDrag_ = false;
   bool daysCheck_[6];
   for (int i = 0; i < 6; i++) {
     if (i == dayNumber) {

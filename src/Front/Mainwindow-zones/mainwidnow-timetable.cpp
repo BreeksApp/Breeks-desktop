@@ -46,6 +46,8 @@ void MainWindow::buildTimeTable()
 	connect(timer_, SIGNAL(timeout()), this, SLOT(setDayInfo()));
 	iCurrentDay_ = 0;
 	setDayInfo();
+
+	isElementDrag_ = false;
 }
 
 void MainWindow::setDayInfo()
@@ -78,7 +80,7 @@ void MainWindow::setDayInfo()
   const int scrollPosWed = 1000;
   const int scrollPosThu = 1300;
   const int scrollPosFri = 1600;
-  const int scrollPosSat = 1900;
+	const int scrollPosSat = bigWidgetInWorkZone_->width();
 	//const int scrollPosSun = workZoneScrollArea_->width();
 
 	//identify current day of week
@@ -199,6 +201,8 @@ void MainWindow::allocateMemoryForDays()
             this, SLOT(recieveDayAndElementIndex(const int, const int)));
 
     connect(arrDays_[i].widgetDay, SIGNAL(sendElementsHeight(const int, const int)), this, SLOT(sendElementsHeight(const int, const int)));
+
+		connect(arrDays_[i].widgetDay, SIGNAL(moveElement()), this, SLOT(mouseReleasedByDragElement()));
   }
 
   initializeDaysParameters();

@@ -10,6 +10,7 @@ DayWidget::DayWidget(QWidget *parent) : QWidget(parent)
 void DayWidget::dragEnterEvent(QDragEnterEvent *event)
 {
   event->acceptProposedAction();
+	//emit moveElement(this->pos());
 }
 
 void DayWidget::dropEvent(QDropEvent *event)
@@ -43,6 +44,7 @@ void DayWidget::dropEvent(QDropEvent *event)
 void DayWidget::dragMoveEvent(QDragMoveEvent *event)
 {
   event->acceptProposedAction();
+	emit moveElement();
 }
 
 int DayWidget::getDayNumber()
