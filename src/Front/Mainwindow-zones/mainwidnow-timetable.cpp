@@ -11,8 +11,8 @@ void MainWindow::buildTimeTable()
 	effect->setXOffset(0);
 	effect->setYOffset(1);
 	effect->setColor("#909090");
-	ui->groupBoxWorkZone->setGraphicsEffect(effect);
 
+	ui->groupBoxWorkZone->setGraphicsEffect(effect);
 	ui->groupBoxWorkZone->setStyleSheet("background: #FFFFFF; border-radius: 6px;");
 
 	bigWidgetInWorkZone_->setFixedSize(WORK_ZONE_BIG_WIDGET_WIDTH, bigWidgetHeight_);
@@ -21,7 +21,6 @@ void MainWindow::buildTimeTable()
   workZoneScrollArea_->setWidget(bigWidgetInWorkZone_);
   workZoneScrollArea_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	workZoneScrollArea_->setStyleSheet("border-radius: 9px;");
-	//workZoneScrollArea_->setGraphicsEffect(effect);
 
   bigWidgetInWorkZone_->setLayout(workZoneLayout_);
 	//workZoneLayout_->setContentsMargins(0, 0, 0, 200); //experience par
@@ -39,51 +38,90 @@ void MainWindow::buildTimeTable()
   //build a day
   setDaysStructure();
   for (int i = 0; i < DAYS_COUNT; ++i) {
-   readElementsDataFromFile(i);
+		readElementsDataFromFile(i);
   }
-  setDayInfo();
+
+	timer_ = new QTimer();
+	timer_->setSingleShot(true);
+	connect(timer_, SIGNAL(timeout()), this, SLOT(setDayInfo()));
+	iCurrentDay_ = 0;
+	setDayInfo();
 }
 
 void MainWindow::setDayInfo()
-{    
+{
+	arrDays_[iCurrentDay_].scrollArea->verticalScrollBar()->setStyleSheet(
+				"QScrollBar:vertical {"
+					"border: 0.1px solid #FFFFFF;"
+					"background: #FFFFFF;"
+					"width: 16px;    "
+					"margin: 0px 0px 0px 0px;}"
+
+				"QScrollBar::handle:vertical {"
+					//"border: 0.7px solid #E3E3E3;"
+					"border-radius: 4px;"
+					"background: #FCFCFC;"
+					"min-height: 0px;}"
+
+				"QScrollBar::add-line:vertical {"
+					"border: none;"
+					"background: none;}"
+
+				"QScrollBar::sub-line:vartical {"
+					"border: none;"
+					"background: none;}");
+
+	QDate date = QDate::currentDate();
+
   //to auto-set current day in the center of screen
   const int scrollPosTue = 700;
   const int scrollPosWed = 1000;
   const int scrollPosThu = 1300;
   const int scrollPosFri = 1600;
   const int scrollPosSat = 1900;
+	//const int scrollPosSun = workZoneScrollArea_->width();
 
-  QString currentDayOfWeek = QDate::currentDate().toString("dddd"); //dddd gives to us full name of current day of week
-  int iCurrentDay = 0;
+	//identify current day of week
+	iCurrentDay_ = date.dayOfWeek() - 1;
 
-  //identify current day of week
-  if (currentDayOfWeek == "Monday") {
-    iCurrentDay = 0;
-  }
-  else if (currentDayOfWeek == "Tuesday") {
-    iCurrentDay = 1;
-    workZoneScrollArea_->ensureVisible(scrollPosTue, 0);
-  }
-  else if (currentDayOfWeek == "Wednesday") {
-    iCurrentDay = 2;
-    workZoneScrollArea_->ensureVisible(scrollPosWed, 0);
-  }
-  else if (currentDayOfWeek == "Thursday") {
-    iCurrentDay = 3;
-    workZoneScrollArea_->ensureVisible(scrollPosThu, 0);
-  }
-  else if (currentDayOfWeek == "Friday") {
-    iCurrentDay = 4;
-    workZoneScrollArea_->ensureVisible(scrollPosFri, 0);
-  }
-  else if (currentDayOfWeek == "Saturday") {
-    iCurrentDay = 5;
-    workZoneScrollArea_->ensureVisible(scrollPosSat, 0);
-  }
-  else {
-    iCurrentDay = 6;
-    workZoneScrollArea_->ensureVisible(scrollPosSat, 0);
-  }
+	arrDays_[iCurrentDay_].scrollArea->verticalScrollBar()->setStyleSheet(
+				"QScrollBar:vertical {"
+					"border: 0.1px solid #FFFFFF;"
+					"background: #FFFFFF;"
+					"width: 16px;    "
+					"margin: 0px 0px 0px 0px;}"
+
+				"QScrollBar::handle:vertical {"
+					"border: 0.7px solid #E3E3E3;"
+					"border-radius: 4px;"
+					"background: #87cefa;"
+					"min-height: 0px;}"
+
+				"QScrollBar::add-line:vertical {"
+					"border: none;"
+					"background: none;}"
+
+				"QScrollBar::sub-line:vartical {"
+					"border: none;"
+					"background: none;}");
+
+	switch (iCurrentDay_) {
+		case 1 :
+			workZoneScrollArea_->ensureVisible(scrollPosTue, 0);
+		break;
+		case 2 :
+			workZoneScrollArea_->ensureVisible(scrollPosWed, 0);
+		break;
+		case 3 :
+			workZoneScrollArea_->ensureVisible(scrollPosThu, 0);
+		break;
+		case 4 :
+			workZoneScrollArea_->ensureVisible(scrollPosFri, 0);
+		break;
+
+		default :
+			workZoneScrollArea_->ensureVisible(scrollPosSat, 0);
+	}
 
   //special data for set info about days in the LOOP BELOW: date, name of the day and font effects
   const QString arrMonthsRu[12] = { "января", "февраля", "марта", "апреля", "мая",
@@ -91,54 +129,50 @@ void MainWindow::setDayInfo()
   const QString arrMonthsEng[12] = { "January", "February", "March", "April", "May",
         "June", "July", "August", "September", "October", "November", "December" };
 
-  const QString daysNames[6] = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+	const QString daysNamesRu[7] = {"Понедельник", "Вторник", "Среда",
+																	"Четверг", "Пятница", "Суббота", "Воскресенье"};
+	const QString daysNamesEng[7] = {"Monday", "Tuesday", "Wednesday",
+																	 "Thursday", "Friday", "Saturday", "Sunday"};
 
-  QDate date = QDate::currentDate();
-  QDate tmpDate = date;
+	QDate tmpDate = date;
 
-  QFont font("Helvetica", 14);
-  QFont fontCounter("Helvetica", 12);
+	QFont font("Helvetica", 12);
+	QFont fontCounter("Helvetica", 11);
   //-------
-
-  for (int i = 0; i < DAYS_COUNT; ++i) {
-    //identify current month
-    QString nameMonth = "May";//tmpDate.toString("MMMM");
-//    for (int i = 0; i < 12; ++i) {
-//      if (nameMonth == arrMonthsRu[i]) {
-//        nameMonth = arrMonthsEng[i];
-//      }
-//      qDebug() << nameMonth;
-//    }
+	for (int i = 0; i < DAYS_COUNT; ++i) {
+		//identify month of day
+		tmpDate = date.addDays(i - iCurrentDay_ + 1);
+		QString nameMonth = tmpDate.toString("MMMM");
 
     //set font for label with day info
     arrDays_[i].labelDate->setFont(font);
     //set font style for elements count label
     for (int i = 0; i < DAYS_COUNT; ++i) {
       arrDays_[i].labelElementsCount->setFont(fontCounter);
-      arrDays_[i].labelElementsCount->setStyleSheet("background: none; color: #000000; font: italic;");
+			arrDays_[i].labelElementsCount->setStyleSheet("background: none; color: #000000; "
+																										"font: italic;");
     }
 
     //work with HTML to set style for a part of line
-    QString strHTML = "<b>" + daysNames[i] + "</b>";
+		QString strHTML = "<b>" + daysNamesRu[i] + "</b>";
     QByteArray encoding = strHTML.toUtf8();
     const char *charHTML= encoding.data();
 
     //set current date
-    QString currentDate = "";
-    if (i != iCurrentDay) {
-      tmpDate = date.addDays(i - iCurrentDay);
-      currentDate = ", " + nameMonth + " " + tmpDate.toString("d");
-    }
-    else {
-      currentDate = ", " + nameMonth + " " + date.toString("d");
-    }
-    arrDays_[i].labelDate->setText(tr(charHTML) + currentDate);
+		QString sCurrentDate = "";
+		sCurrentDate = ", " + nameMonth + " " + tmpDate.toString("d");
+		if (i != iCurrentDay_) {
+			arrDays_[i].labelDate->setText(tr(charHTML) + sCurrentDate);
+		}
+		else {
+			arrDays_[i].labelDate->setText(QString(tr(charHTML)).toUpper() + sCurrentDate);
+		}
   }
 
-  //set effects to underline current day
-  if (iCurrentDay != 6) {
-    effects::setElementShadow(arrDays_[iCurrentDay].labelDate, 10);
-  }
+	int iTime = QDateTime::currentDateTime().msecsTo(
+				QDateTime::currentDateTime().date().startOfDay().addDays(1));
+	timer_->start(iTime);
+	qDebug() << iTime;
 }
 
 void MainWindow::allocateMemoryForDays()
@@ -203,29 +237,27 @@ void MainWindow::setDaysStructure()
 
 		arrDays_[i].scrollArea->setStyleSheet("QScrollArea {background: #FFFFFF; border: 0.4px solid #E3E3E3; border-radius: 9px;}");
 
+		arrDays_[i].scrollArea->verticalScrollBar()->setStyleSheet(
+					"QScrollBar:vertical {"
+						"border: 0.1px solid #FFFFFF;"
+						"background: #FFFFFF;"
+						"width: 16px;"
+						"margin: 0px 0px 0px 0px;}"
 
-		arrDays_[i].scrollArea->verticalScrollBar()->setStyleSheet("QScrollBar:vertical {"
-																																								 "    border: 0.1px solid #FFFFFF;"
-																																								 //"    border-radius: 4px;"
-																																								 "    background: #FFFFFF;"
-																																								 "    width: 16px;    "
-																																								 "    margin: 0px 0px 0px 0px;"
-																																								 "}"
-																																								 "QScrollBar::handle:vertical {"
-																																								 "    border: 0.7px solid #E3E3E3;"
-																																								 "    border-radius: 3px;"
-																																								 "    background: #FCFCFC;"
-																																								 "    min-height: 0px;"
-																																								 "}"
-																															 "QScrollBar::add-line:horizontal {"
-																																		 "border: none;"
-																																		 "background: none;"
-																															 "}"
-																															 "QScrollBar::sub-line:horizontal {"
-																																		 "border: none;"
-																																		 "background: none;"
-																															 "}"
-																																								 );
+					"QScrollBar::handle:vertical {"
+						"border: 0.7px solid #E3E3E3;"
+						"border-radius: 4px;"
+						"background: #FCFCFC;"
+						"min-height: 0px;}"
+
+					"QScrollBar::add-line:vertical {"
+						"border: none;"
+						"background: none;}"
+
+					"QScrollBar::sub-line:vartical {"
+						"border: none;"
+						"background: none;}");
+
 		arrDays_[i].scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
 		QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;

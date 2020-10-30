@@ -65,6 +65,9 @@ public slots:
   void sendElementsHeight(const int, const int);
 
 private slots:
+//timetable
+	void setDayInfo();
+
 //note
   //buttons to work with text
 	void on_buttonMakeBold_clicked();
@@ -170,10 +173,10 @@ private:
     Bold,      // = 1
     Italic,    // = 2
     Underline, // = 3
-        Strike,    // = 4
-        Item,      // = 5
-        Star			 // = 6
-    };
+		Strike,    // = 4
+		Item,      // = 5
+		Star			 // = 6
+	};
 
   struct day_t {
     QGroupBox *groupBoxDay;
@@ -194,7 +197,7 @@ private:
 
   void buildTimeTable();
   void setDaysStructure();
-  void setDayInfo();
+	//void setDayInfo();
   void allocateMemoryForDays();
   void initializeDaysParameters();
 
@@ -204,9 +207,11 @@ private:
   const int DAY_WIDTH_ = 260;
 	const int ELEMENT_HEIGHT_ = 115;
 
-  const int DAYS_COUNT = 6;
-  day_t arrDays_[6];
+	const int DAYS_COUNT = 6;
+	day_t arrDays_[6];
 
+	int iCurrentDay_;
+	QTimer *timer_;
 
   int addNewElementToArray(const elementData_t& newElement, const int index);
   void addNewElementToLayout(const int index, const int newElementIndex);

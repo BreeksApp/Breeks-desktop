@@ -92,7 +92,7 @@ void MainWindow::recieveTimeTableZoneData(bool *daysCheck, const int arrSize, el
       }
       else {
 				arrDays_[i].groupBoxElementsHeight = ELEMENT_HEIGHT_ * (arrDays_[i].elementsCount + 1) + 25;
-        arrDays_[i].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[i].groupBoxElementsHeight);
+				arrDays_[i].widgetDay->setFixedHeight(arrDays_[i].groupBoxElementsHeight);
       }
 
       //add new element to layout
@@ -185,7 +185,7 @@ void MainWindow::recieveDayAndElementIndex(const int dayElementIndex, const int 
 
   if (arrDays_[dayElementIndex].elementsCount <= 3) {
 			arrDays_[dayElementIndex].groupBoxElementsHeight = 370;
-			arrDays_[dayElementIndex].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[dayElementIndex].groupBoxElementsHeight);
+			arrDays_[dayElementIndex].widgetDay->setFixedHeight(arrDays_[dayElementIndex].groupBoxElementsHeight);
   }
   else {
 		arrDays_[dayElementIndex].groupBoxElementsHeight = ELEMENT_HEIGHT_ * arrDays_[dayElementIndex].elementsCount + 25;
@@ -308,7 +308,7 @@ void MainWindow::dropElement(const int dayNumber, const int dayIndex, const int 
 void MainWindow::sendElementsHeight(const int height, const int index)
 {
   if (arrDays_[index].elementsCount < 3) {
-    arrDays_[index].widgetDay->setFixedSize(DAY_WIDTH_, ELEMENT_HEIGHT_ * 3);
+		arrDays_[index].widgetDay->setFixedHeight(ELEMENT_HEIGHT_ * 3);
   }
 }
 
