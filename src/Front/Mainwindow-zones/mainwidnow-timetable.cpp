@@ -201,6 +201,9 @@ void MainWindow::allocateMemoryForDays()
 		connect(arrDays_[i].widgetDay, SIGNAL(sendElementsHeight(const int, const int)),
 						this, SLOT(sendElementsHeight(const int, const int)));
 		connect(arrDays_[i].widgetDay, SIGNAL(moveElement()), this, SLOT(mousePressedByDragElement()));
+
+		connect(arrDays_[i].widgetDay, SIGNAL(elementEnterArea(int)), this, SLOT(enterDayArea(int)));
+		connect(arrDays_[i].widgetDay, SIGNAL(elementLeaveArea(int)), this, SLOT(leaveDayArea(int)));
   }
 
   initializeDaysParameters();
@@ -261,6 +264,7 @@ void MainWindow::setDaysStructure()
 						"background: none;}");
 
 		arrDays_[i].scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+		arrDays_[i].scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
 		QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
 		effect->setBlurRadius(7);
@@ -279,4 +283,16 @@ void MainWindow::setDaysStructure()
 		arrDays_[i].layoutDayElements->setContentsMargins(3, 10, 0, 10); //i don't know why, but it's badly needed
 		arrDays_[i].layoutDayElements->setSpacing(15);
 	}
+}
+
+void MainWindow::enterDayArea(int index)
+{
+	arrDays_[index].scrollArea->graphicsEffect()->setEnabled(false);
+	arrDays_[index].scrollArea->setStyleSheet("QScrollArea {border: 2px solid #abcdef; border-radius: 9px;}");
+}
+
+void MainWindow::leaveDayArea(int index)
+{
+	arrDays_[index].scrollArea->graphicsEffect()->setEnabled(true);
+	arrDays_[index].scrollArea->setStyleSheet("border-radius: 9px;");
 }

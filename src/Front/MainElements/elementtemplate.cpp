@@ -6,10 +6,10 @@
 ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
 {
 	this->setFixedSize(ELEMENT_WIDTH, ELEMENT_HEIGHT);
-	this->setStyleSheet("ElementTemplate {background: #F9F9F9; border: 0.4px solid #c0c0c0; border-radius: 6px;}");
+	this->setStyleSheet("ElementTemplate {background: #F9F9F9; border: 0.4px solid #cbcbcb; border-radius: 8px;}");
 
 	QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
-	effect->setBlurRadius(5);
+	effect->setBlurRadius(3);
 	effect->setXOffset(0);
 	effect->setYOffset(0);
 	effect->setColor("#b9b9b9");
@@ -119,12 +119,11 @@ void ElementTemplate::mouseMoveEvent(QMouseEvent *event)
   mimeData->setData("charVector", charVector);
   mimeData->setData("indexes", indexes);
   drag->setMimeData(mimeData);
+	this->setAttribute(Qt::WA_NoSystemBackground);
   drag->setPixmap(this->grab());
 
 	this->hide();
-
   Qt::DropAction dropAction = drag->exec(Qt::CopyAction | Qt::MoveAction);
-
 	emit dropNoChanges();
 	if (this->isHidden()) {
 		this->show();

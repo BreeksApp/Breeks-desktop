@@ -15,6 +15,7 @@ public:
   explicit DayWidget(QWidget *parent = nullptr);
 
   void dragEnterEvent(QDragEnterEvent *event);
+	void dragLeaveEvent(QDragLeaveEvent *event);
   void dropEvent(QDropEvent *event);
   void dragMoveEvent(QDragMoveEvent *event);
 
@@ -33,6 +34,9 @@ signals:
   void sendElementsHeight(const int, const int);
 	void moveElement();
 	void dropNoChanges();
+
+	void elementEnterArea(int);
+	void elementLeaveArea(int);
 
 public slots:
 };

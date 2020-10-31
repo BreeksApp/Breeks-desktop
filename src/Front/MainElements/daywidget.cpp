@@ -10,6 +10,14 @@ DayWidget::DayWidget(QWidget *parent) : QWidget(parent)
 void DayWidget::dragEnterEvent(QDragEnterEvent *event)
 {
   event->acceptProposedAction();
+	elementEnterArea(dayNumber_);
+	//this->setStyleSheet("border: 2px solid #111111; border-radius: 9px;");
+}
+
+void DayWidget::dragLeaveEvent(QDragLeaveEvent *event)
+{
+	elementLeaveArea(dayNumber_);
+	//this->setStyleSheet("border-radius: 9px;");
 }
 
 void DayWidget::dropEvent(QDropEvent *event)
@@ -38,6 +46,7 @@ void DayWidget::dropEvent(QDropEvent *event)
 		emit dropElement(dayNumber_, dayIndex_, elemIndex_, elemData);
 		emit sendDayAndElementIndex(dayIndex_, elemIndex_);
   }
+	emit elementLeaveArea(dayNumber_);
 
   event->acceptProposedAction();
 }

@@ -65,6 +65,8 @@ public slots:
   void sendElementsHeight(const int, const int);
 	void mousePressedByDragElement();
 	void dropNoChanges();
+	void enterDayArea(int);
+	void leaveDayArea(int);
 
 private slots:
 //timetable
