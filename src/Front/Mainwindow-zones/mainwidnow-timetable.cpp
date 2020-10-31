@@ -147,7 +147,7 @@ void MainWindow::setDayInfo()
   //-------
 	for (int i = 0; i < DAYS_COUNT; ++i) {
 		//identify month of day
-		tmpDate = date.addDays(i - iCurrentDay_ + 1);
+		tmpDate = date.addDays(i - iCurrentDay_);
 		QString nameMonth = tmpDate.toString("MMMM");
 
     //set font for label with day info
