@@ -37,6 +37,7 @@ void MainWindow::buildTimeTable()
 
   //build a day
   setDaysStructure();
+
   for (int i = 0; i < DAYS_COUNT; ++i) {
 		readElementsDataFromFile(i);
   }
@@ -45,6 +46,7 @@ void MainWindow::buildTimeTable()
 	timer_->setSingleShot(true);
 	connect(timer_, SIGNAL(timeout()), this, SLOT(setDayInfo()));
 	iCurrentDay_ = 0;
+
 	setDayInfo();
 
 	isElementDrag_ = false;
@@ -86,26 +88,28 @@ void MainWindow::setDayInfo()
 	//identify current day of week
 	iCurrentDay_ = date.dayOfWeek() - 1;
 
-	arrDays_[iCurrentDay_].scrollArea->verticalScrollBar()->setStyleSheet(
-				"QScrollBar:vertical {"
-					"border: 0.1px solid #FFFFFF;"
-					"background: #FFFFFF;"
-					"width: 16px;    "
-					"margin: 0px 0px 0px 0px;}"
+	if (iCurrentDay_ < DAYS_COUNT) {
+		arrDays_[iCurrentDay_].scrollArea->verticalScrollBar()->setStyleSheet(
+					"QScrollBar:vertical {"
+						"border: 0.1px solid #FFFFFF;"
+						"background: #FFFFFF;"
+						"width: 16px;    "
+						"margin: 0px 0px 0px 0px;}"
 
-				"QScrollBar::handle:vertical {"
-					"border: 0.5px solid #87cefa;"
-					"border-radius: 4px;"
-					"background: #87cefa;"
-					"min-height: 0px;}"
+					"QScrollBar::handle:vertical {"
+						"border: 0.5px solid #87cefa;"
+						"border-radius: 4px;"
+						"background: #87cefa;"
+						"min-height: 0px;}"
 
-				"QScrollBar::add-line:vertical {"
-					"border: none;"
-					"background: none;}"
+					"QScrollBar::add-line:vertical {"
+						"border: none;"
+						"background: none;}"
 
-				"QScrollBar::sub-line:vartical {"
-					"border: none;"
-					"background: none;}");
+					"QScrollBar::sub-line:vartical {"
+						"border: none;"
+						"background: none;}");
+	}
 
 	switch (iCurrentDay_) {
 		case 1 :
@@ -288,7 +292,7 @@ void MainWindow::setDaysStructure()
 void MainWindow::enterDayArea(int index)
 {
 	arrDays_[index].scrollArea->graphicsEffect()->setEnabled(false);
-	arrDays_[index].scrollArea->setStyleSheet("QScrollArea {border: 2px solid #abcdef; border-radius: 9px;}");
+	arrDays_[index].scrollArea->setStyleSheet("QScrollArea {background: #f2f3f4; border-radius: 9px;}");
 }
 
 void MainWindow::leaveDayArea(int index)
