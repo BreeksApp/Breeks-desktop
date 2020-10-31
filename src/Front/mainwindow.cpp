@@ -81,7 +81,7 @@ void MainWindow::mousePressedByDragElement()
 
 void MainWindow::dropNoChanges()
 {
-	qDebug("LOCK");
+	//qDebug("LOCK");
 	isElementDrag_ = false;
 }
 
@@ -203,6 +203,9 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, breek
 void MainWindow::recieveDayAndElementIndex(const int dayElementIndex, const int elementIndex)
 {
   auto item = arrDays_[dayElementIndex].layoutDayElements->itemAt(elementIndex);
+	if (item->widget()->isHidden()) {
+		item->widget()->show();
+	}
   arrDays_[dayElementIndex].layoutDayElements->removeItem(item);
   arrDays_[dayElementIndex].layoutDayElements->removeWidget(item->widget());
   delete item->widget();
