@@ -72,8 +72,7 @@ signals:
   void sendDayAndElementIndex(const int dayIndex, const int elementIndex);
   void sendDayAndElementIndexAndTagColor(const int, const int, const QPalette);
   void sendMimeData(const elementData_t, const QPixmap);
-
-public slots:
+	void dropNoChanges(); //for drop after drag beyond dayWidget
 };
 
 #endif // ELEMENTTEMPLATE_H

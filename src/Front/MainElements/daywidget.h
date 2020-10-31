@@ -32,6 +32,7 @@ signals:
   void sendDayAndElementIndex(const int, const int);
   void sendElementsHeight(const int, const int);
 	void moveElement();
+	void dropNoChanges();
 
 public slots:
 };

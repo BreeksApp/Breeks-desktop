@@ -10,11 +10,12 @@ DayWidget::DayWidget(QWidget *parent) : QWidget(parent)
 void DayWidget::dragEnterEvent(QDragEnterEvent *event)
 {
   event->acceptProposedAction();
-	//emit moveElement(this->pos());
 }
 
 void DayWidget::dropEvent(QDropEvent *event)
 {
+	//emit dropNoChanges();
+
   elementData_t elemData;
   QByteArray data = event->mimeData()->data("elemData");
   QDataStream out(&data, QIODevice::ReadOnly);
@@ -34,8 +35,8 @@ void DayWidget::dropEvent(QDropEvent *event)
   }
 
   if (dayNumber_ != dayIndex_) {
-   emit dropElement(dayNumber_, dayIndex_, elemIndex_, elemData);
-   emit sendDayAndElementIndex(dayIndex_, elemIndex_);
+		emit dropElement(dayNumber_, dayIndex_, elemIndex_, elemData);
+		emit sendDayAndElementIndex(dayIndex_, elemIndex_);
   }
 
   event->acceptProposedAction();

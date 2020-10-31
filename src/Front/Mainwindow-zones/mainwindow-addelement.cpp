@@ -62,6 +62,7 @@ void MainWindow::addNewElementToLayout(const int index, const int newElementInde
     ElementTemplate *elem = new ElementTemplate;
 
     connect(elem, SIGNAL(sendMimeData(const elementData_t, const QPixmap)), this, SLOT(recieveMimeData(const elementData_t, const QPixmap)));
+		connect(elem, SIGNAL(dropNoChanges()), this, SLOT(dropNoChanges()));
 
     elem->setText(arrDaysData_[index][j].text, arrDaysData_[index][j].charStyleVector);
 

@@ -120,7 +120,13 @@ void ElementTemplate::mouseMoveEvent(QMouseEvent *event)
   mimeData->setData("indexes", indexes);
   drag->setMimeData(mimeData);
   drag->setPixmap(this->grab());
+
+	//this->hide();
+
   Qt::DropAction dropAction = drag->exec(Qt::CopyAction | Qt::MoveAction);
+
+	//this->show();
+	emit dropNoChanges();
 }
 
 void ElementTemplate::enterEvent(QEvent *event)

@@ -60,7 +60,7 @@ void MainWindow::setDayInfo()
 					"margin: 0px 0px 0px 0px;}"
 
 				"QScrollBar::handle:vertical {"
-					//"border: 0.7px solid #E3E3E3;"
+					"border: 0.5px solid #E3E3E3;"
 					"border-radius: 4px;"
 					"background: #FCFCFC;"
 					"min-height: 0px;}"
@@ -94,7 +94,7 @@ void MainWindow::setDayInfo()
 					"margin: 0px 0px 0px 0px;}"
 
 				"QScrollBar::handle:vertical {"
-					"border: 0.7px solid #E3E3E3;"
+					"border: 0.5px solid #87cefa;"
 					"border-radius: 4px;"
 					"background: #87cefa;"
 					"min-height: 0px;}"
@@ -196,13 +196,11 @@ void MainWindow::allocateMemoryForDays()
 
     connect(arrDays_[i].widgetDay, SIGNAL(dropElement(const int, const int, const int, const elementData_t)),
             this, SLOT(dropElement(const int, const int, const int, const elementData_t)));
-
     connect(arrDays_[i].widgetDay, SIGNAL(sendDayAndElementIndex(const int, const int)),
             this, SLOT(recieveDayAndElementIndex(const int, const int)));
-
-    connect(arrDays_[i].widgetDay, SIGNAL(sendElementsHeight(const int, const int)), this, SLOT(sendElementsHeight(const int, const int)));
-
-		connect(arrDays_[i].widgetDay, SIGNAL(moveElement()), this, SLOT(mouseReleasedByDragElement()));
+		connect(arrDays_[i].widgetDay, SIGNAL(sendElementsHeight(const int, const int)),
+						this, SLOT(sendElementsHeight(const int, const int)));
+		connect(arrDays_[i].widgetDay, SIGNAL(moveElement()), this, SLOT(mousePressedByDragElement()));
   }
 
   initializeDaysParameters();
@@ -249,7 +247,7 @@ void MainWindow::setDaysStructure()
 						"margin: 0px 0px 0px 0px;}"
 
 					"QScrollBar::handle:vertical {"
-						"border: 0.7px solid #E3E3E3;"
+						"border: 0.5px solid #E3E3E3;"
 						"border-radius: 4px;"
 						"background: #FCFCFC;"
 						"min-height: 0px;}"

@@ -52,41 +52,37 @@ MainWindow::~MainWindow()
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
-  if (event->button() == Qt::LeftButton) {
-    //QDrag *drag = new QDrag(this);
-
-    //drag->setMimeData(&mimeData_);
-    //drag->setPixmap(dragElement_);
-    //Qt::DropAction dropAction = drag->exec();
-  }
+	//qDebug("Pressed");
 }
 
 void MainWindow::moveTimetableElement()
 {
 	//qDebug() << ui->groupBox->mapToGlobal(this->cursor().pos());
-	//while (isElementDrag_) {
+	while (isElementDrag_) {
 		QPoint pos = ui->groupBox->mapToGlobal(this->cursor().pos());
-
-		if (pos.x() > 950 & pos.x() < 1150) {
-			//qDebug() << "!";
+		if (pos.x() > 920 & pos.x() < 1150) {
 			QPoint pos1 = bigWidgetInWorkZone_->mapFromGlobal(this->cursor().pos());
-			workZoneScrollArea_->ensureVisible(pos1.x() - 10, 0);
-			QThread::msleep(50);
+			workZoneScrollArea_->ensureVisible(pos1.x() - 5, 0);
+			QThread::msleep(10);
 		}
-	//}
+		else if (pos.x() > 1850 & pos.x() < 2050) {
+			QPoint pos1 = bigWidgetInWorkZone_->mapFromGlobal(this->cursor().pos());
+			workZoneScrollArea_->ensureVisible(pos1.x() + 5, 0);
+			QThread::msleep(10);
+		}
+	}
 }
 
-void MainWindow::mouseReleasedByDragElement()
+void MainWindow::mousePressedByDragElement()
 {
 	isElementDrag_ = true;
-	/*void (*fcnPtr)(bool, QPoint, QPoint) = [](bool isElementDrag, QPoint pos, QPoint pos1){
+	QFuture<void> future = QtConcurrent::run(this, &MainWindow::moveTimetableElement);
+}
 
-	};
-
-	QFuture<void> future = QtConcurrent::run(fcnPtr);*/
-	//надо параллельно поток запустить
-
-	moveTimetableElement();
+void MainWindow::dropNoChanges()
+{
+	qDebug("LOCK");
+	isElementDrag_ = false;
 }
 
 void MainWindow::on_buttonAdd_clicked()
@@ -323,7 +319,8 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
 
 void MainWindow::dropElement(const int dayNumber, const int dayIndex, const int elemIndex, const elementData_t elemData)
 {
-	isElementDrag_ = false;
+	dropNoChanges();
+
   bool daysCheck_[6];
   for (int i = 0; i < 6; i++) {
     if (i == dayNumber) {

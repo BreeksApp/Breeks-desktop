@@ -38,7 +38,6 @@ public:
   ~MainWindow();
 
 	void mousePressEvent(QMouseEvent *event);
-	void mouseReleasedEvent(QMouseEvent *event);
 
   LoginForm *loginForm_;
 
@@ -64,13 +63,12 @@ public slots:
   void moveBreek(int, int, bool);
   void dropElement(const int, const int, const int, const elementData_t);
   void sendElementsHeight(const int, const int);
-	void moveTimetableElement();
-	void mouseReleasedByDragElement();
+	void mousePressedByDragElement();
+	void dropNoChanges();
 
 private slots:
 //timetable
 	void setDayInfo();
-
 //note
   //buttons to work with text
 	void on_buttonMakeBold_clicked();
@@ -86,7 +84,6 @@ private slots:
   void on_buttonPage5_clicked();
   void on_buttonPage6_clicked();
 //
-
   void on_buttonImage_clicked();
 
 //adding new elements
@@ -220,6 +217,8 @@ private:
 
   int addNewElementToArray(const elementData_t& newElement, const int index);
   void addNewElementToLayout(const int index, const int newElementIndex);
+
+	void moveTimetableElement();
 //------------------
 
                         //---------BREEKSZONE---------
