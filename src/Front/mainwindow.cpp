@@ -203,39 +203,47 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, breek
 void MainWindow::recieveDayAndElementIndex(const int dayElementIndex, const int elementIndex)
 {
   auto item = arrDays_[dayElementIndex].layoutDayElements->itemAt(elementIndex);
-	if (item->widget()->isHidden()) {
+
+	if (!item->widget()->isHidden()) {
+		arrDays_[dayElementIndex].layoutDayElements->removeItem(item);
+		arrDays_[dayElementIndex].layoutDayElements->removeWidget(item->widget());
+		delete item->widget();
+		delete item;
+		arrDays_[dayElementIndex].layoutDayElements->update();
+
+		--arrDays_[dayElementIndex].elementsCount;
+
+		if (arrDays_[dayElementIndex].elementsCount <= 3) {
+				arrDays_[dayElementIndex].groupBoxElementsHeight = 370;
+				arrDays_[dayElementIndex].widgetDay->setFixedHeight(arrDays_[dayElementIndex].groupBoxElementsHeight);
+		}
+		else {
+			arrDays_[dayElementIndex].groupBoxElementsHeight =
+						ELEMENT_HEIGHT_ * arrDays_[dayElementIndex].elementsCount + 25;
+			arrDays_[dayElementIndex].widgetDay->setFixedSize(
+						DAY_WIDTH_, arrDays_[dayElementIndex].groupBoxElementsHeight);
+		}
+
+		if (arrDays_[dayElementIndex].elementsCount == 0) {
+			arrDays_[dayElementIndex].labelElementsCount->setText("");
+		}
+		else {
+			arrDays_[dayElementIndex].labelElementsCount->setText(
+						QString::number(arrDays_[dayElementIndex].elementsCount));
+		}
+
+		iterType start = arrDaysData_[dayElementIndex].begin();
+		arrDaysData_[dayElementIndex].erase(start + elementIndex);
+
+		for (int i = elementIndex; i < arrDays_[dayElementIndex].elementsCount; ++i) {
+			ElementTemplate *a = qobject_cast<ElementTemplate*>
+						(arrDays_[dayElementIndex].layoutDayElements->itemAt(i)->widget());
+			a->setElementIndex(i);
+		}
+	}
+	else {
 		item->widget()->show();
 	}
-  arrDays_[dayElementIndex].layoutDayElements->removeItem(item);
-  arrDays_[dayElementIndex].layoutDayElements->removeWidget(item->widget());
-  delete item->widget();
-  delete item;
-  arrDays_[dayElementIndex].layoutDayElements->update();
-	--arrDays_[dayElementIndex].elementsCount;
-
-  if (arrDays_[dayElementIndex].elementsCount <= 3) {
-			arrDays_[dayElementIndex].groupBoxElementsHeight = 370;
-			arrDays_[dayElementIndex].widgetDay->setFixedHeight(arrDays_[dayElementIndex].groupBoxElementsHeight);
-  }
-  else {
-		arrDays_[dayElementIndex].groupBoxElementsHeight = ELEMENT_HEIGHT_ * arrDays_[dayElementIndex].elementsCount + 25;
-    arrDays_[dayElementIndex].widgetDay->setFixedSize(DAY_WIDTH_, arrDays_[dayElementIndex].groupBoxElementsHeight);
-  }
-
-  if (arrDays_[dayElementIndex].elementsCount == 0) {
-    arrDays_[dayElementIndex].labelElementsCount->setText("");
-  }
-  else {
-    arrDays_[dayElementIndex].labelElementsCount->setText(QString::number(arrDays_[dayElementIndex].elementsCount));
-  }
-
-  iterType start = arrDaysData_[dayElementIndex].begin();
-  arrDaysData_[dayElementIndex].erase(start + elementIndex);
-
-  for (int i = elementIndex; i < arrDays_[dayElementIndex].elementsCount; ++i) {
-    ElementTemplate *a = qobject_cast<ElementTemplate*>(arrDays_[dayElementIndex].layoutDayElements->itemAt(i)->widget());
-    a->setElementIndex(i);
-  }
 }
 
 void MainWindow::recieveDayAndElementIndexAndTagColor(const int dayIndex, const int elementIndex, const QPalette color)

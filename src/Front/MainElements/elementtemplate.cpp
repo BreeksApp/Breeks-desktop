@@ -56,9 +56,9 @@ ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
 
 
 	timeStart_->setFixedSize(45, 20);
-    timeStart_->setStyleSheet("background: #FFFFFF; border: 0.4px solid #E3E3E3;border-radius: 6px;");
+	timeStart_->setStyleSheet("background: #FFFFFF; border: 0.4px solid #E3E3E3;border-radius: 6px;");
 	timeEnd_->setFixedSize(45, 20);
-    timeEnd_->setStyleSheet("background: #FFFFFF; border: 0.4px solid #E3E3E3; border-radius: 6px;");
+	timeEnd_->setStyleSheet("background: #FFFFFF; border: 0.4px solid #E3E3E3; border-radius: 6px;");
 
 	text_->setFixedHeight(tagButton_->height());
 
@@ -123,9 +123,15 @@ void ElementTemplate::mouseMoveEvent(QMouseEvent *event)
   drag->setPixmap(this->grab());
 
 	this->hide();
+
   Qt::DropAction dropAction = drag->exec(Qt::CopyAction | Qt::MoveAction);
+
 	emit dropNoChanges();
-	if (this->isHidden()) {
+
+	if (!this->isHidden()) {
+		emit deleteItem(dayIndex_, elementIndex_);
+	}
+	else {
 		this->show();
 	}
 }
