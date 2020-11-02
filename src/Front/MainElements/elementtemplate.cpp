@@ -123,10 +123,12 @@ void ElementTemplate::mouseMoveEvent(QMouseEvent *event)
   drag->setPixmap(this->grab());
 
 	this->hide();
+	emit defineDayMoveFrom(dayIndex_, "d0f896");
 
   Qt::DropAction dropAction = drag->exec(Qt::CopyAction | Qt::MoveAction);
 
 	emit dropNoChanges();
+	emit defineDayMoveFrom(dayIndex_, "d0f896");
 
 	if (!this->isHidden()) {
 		emit deleteItem(dayIndex_, elementIndex_);

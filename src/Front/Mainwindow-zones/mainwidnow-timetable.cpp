@@ -270,6 +270,8 @@ void MainWindow::setDaysStructure()
 		arrDays_[i].scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 		arrDays_[i].scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
+		oldStyle_ = "";
+
 		QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
 		effect->setBlurRadius(7);
     effect->setXOffset(0);
@@ -299,4 +301,27 @@ void MainWindow::leaveDayArea(int index)
 {
 	arrDays_[index].scrollArea->graphicsEffect()->setEnabled(true);
 	arrDays_[index].scrollArea->setStyleSheet("border-radius: 9px;");
+}
+
+void MainWindow::defineDayMoveFrom(int dayIndex, QString sColor) {
+	if (oldStyle_ == "") {
+		oldStyle_ = arrDays_[dayIndex].scrollArea->verticalScrollBar()->styleSheet();
+		arrDays_[dayIndex].scrollArea->verticalScrollBar()->setStyleSheet(
+					"QScrollBar:vertical {"
+						"border: 0.1px solid #FFFFFF;"
+						"background: #FFFFFF;"
+						"width: 16px;"
+						"margin: 0px 0px 0px 0px;}"
+
+					"QScrollBar::handle:vertical {"
+						"border: 0.5px solid #E3E3E3;"
+						"border-radius: 4px;"
+						"background: #" + sColor + ";"
+						"min-height: 0px;}");
+	}
+	else {
+		arrDays_[dayIndex].scrollArea->verticalScrollBar()->setStyleSheet(oldStyle_);
+		oldStyle_ = "";
+	}
+
 }

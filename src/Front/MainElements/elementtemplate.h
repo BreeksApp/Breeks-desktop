@@ -74,6 +74,7 @@ signals:
   void sendMimeData(const elementData_t, const QPixmap);
 	void dropNoChanges(); //for drop after drag beyond dayWidget
 	void deleteItem(int, int);
+	void defineDayMoveFrom(int, QString);
 };
 
 #endif // ELEMENTTEMPLATE_H

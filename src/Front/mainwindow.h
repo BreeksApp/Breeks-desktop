@@ -67,6 +67,7 @@ public slots:
 	void dropNoChanges();
 	void enterDayArea(int);
 	void leaveDayArea(int);
+	void defineDayMoveFrom(int, QString);
 
 private slots:
 //timetable
@@ -216,6 +217,7 @@ private:
 	QTimer *timer_;
 
 	bool isElementDrag_;
+	QString oldStyle_;
 
   int addNewElementToArray(const elementData_t& newElement, const int index);
   void addNewElementToLayout(const int index, const int newElementIndex);
