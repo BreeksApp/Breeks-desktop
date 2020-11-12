@@ -32,7 +32,7 @@ public:
 
   void setText(QString text, const QVector<charStyle_t>& charArr);
   void setTime(QString timeStart, QString timeEnd);
-  void setPalette(const QPalette palette);
+	void setTagColor(const QString sColor);
 
   void setDayAndElementIndex(const int dayIndex, const int elementIndex);
   void setElementIndex(const int index);
@@ -40,7 +40,7 @@ public:
   QVector<charStyle_t> getCharStyleVector();
 
   QString getText() const;
-  QPalette getColor() const;
+	QString getTagColor() const;
 
 private slots:
   void deleteElement();
@@ -54,6 +54,8 @@ private:
   QPoint dragStartPosition_;
 
   QPushButton *tagButton_;
+	QString tagColor_;
+
   QPushButton *settingsButton_;
   QPushButton *deleteButton_;
 
@@ -70,7 +72,7 @@ private:
 
 signals:
   void sendDayAndElementIndex(const int dayIndex, const int elementIndex);
-  void sendDayAndElementIndexAndTagColor(const int, const int, const QPalette);
+	void sendDayAndElementIndexAndTagColor(const int, const int, const QString);
   void sendMimeData(const elementData_t, const QPixmap);
 	void dropNoChanges(); //for drop after drag beyond dayWidget
 	void deleteItem(int, int);

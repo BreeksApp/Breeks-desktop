@@ -56,7 +56,7 @@ public slots:
   void recieveBreeksZoneData(bool *, const int, breeksData_t);
 
   void recieveDayAndElementIndex(const int, const int);
-  void recieveDayAndElementIndexAndTagColor(const int, const int, const QPalette);
+	void recieveDayAndElementIndexAndTagColor(const int, const int, const QString);
   void recieveUsername();
   void recieveMimeData(const elementData_t, const QPixmap);
 

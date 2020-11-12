@@ -246,9 +246,9 @@ void MainWindow::recieveDayAndElementIndex(const int dayElementIndex, const int 
 	}
 }
 
-void MainWindow::recieveDayAndElementIndexAndTagColor(const int dayIndex, const int elementIndex, const QPalette color)
+void MainWindow::recieveDayAndElementIndexAndTagColor(const int dayIndex, const int elementIndex, const QString sColor)
 {
-    arrDaysData_[dayIndex][elementIndex].palette = color;
+		arrDaysData_[dayIndex][elementIndex].tagColor = sColor;
 }
 
 void MainWindow::recieveUsername()

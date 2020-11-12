@@ -16,13 +16,17 @@ void MainWindow::readElementsDataFromFile(const int index)
   }
 
   QJsonArray day = filesystem::readTimeTableFromDB(index);
-  for (QJsonValue elem: day) {
+
+	for (QJsonValue elem: day) {
     QJsonObject jElem = elem.toObject();
 
     elementData_t elemData;
     elemData.text = jElem.value("text").toString();
-    QColor color(jElem.value("color").toString());
-    elemData.palette.setColor(QPalette::Button, color);
+		//QColor color(jElem.value("color").toString());
+		elemData.tagColor = jElem.value("tagColor").toString();
+
+		qDebug() << "READ: " << elemData.tagColor;
+
     elemData.timeStart = jElem.value("timeStart").toString();
     elemData.timeEnd = jElem.value("timeEnd").toString();
 
@@ -44,7 +48,7 @@ void MainWindow::writeElementsDataToFile(const int index)
   for (int i = 0; i < arrDaysData_[index].size(); ++i) {
     ElementTemplate *a = qobject_cast<ElementTemplate*>(arrDays_[index].layoutDayElements->itemAt(i)->widget());
     arrDaysData_[index][i].text = a->getText();
-    arrDaysData_[index][i].palette = a->getColor();
+		arrDaysData_[index][i].tagColor = a->getTagColor();
     arrDaysData_[index][i].charStyleVector = a->getCharStyleVector();
   }
 
@@ -52,12 +56,14 @@ void MainWindow::writeElementsDataToFile(const int index)
   QJsonArray jDayElements;
 
   for (elementData_t element : arrDaysData_[index]) {
-    QColor color = element.palette.color(QPalette::Button);
+		//QColor color = element.palette.color(QPalette::Button);
     QJsonObject jElem;
     jElem.insert("text", element.text);
     jElem.insert("timeStart", element.timeStart);
     jElem.insert("timeEnd", element.timeEnd);
-    jElem.insert("color", color.name());
+		jElem.insert("tagColor", element.tagColor);
+
+		qDebug() << element.tagColor;
 
     QJsonArray jChars;
     foreach(charStyle_t ch, element.charStyleVector) {

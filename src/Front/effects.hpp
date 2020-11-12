@@ -9,14 +9,14 @@
 #include <QGraphicsDropShadowEffect>
 
 namespace effects {
-  const QColor colorDefault = "#eceaec"; //grey
-  const QColor colorSelected = "#abdfff"; //blue
+	const QString colorDefault = "#eceaec"; //grey
+	const QString colorSelected = "#abdfff"; //blue
 
-  template<typename T>
-  void setElementColor(T *element, const QPalette color); //defenition is below of class
+	template<typename T>
+	void setElementColor(T *element, const QPalette color); //defenition is below of class
 
-  template<typename T>
-  void setElementShadow(T *element, const int radius = 20, const QColor color = Qt::black);
+	template<typename T>
+	void setElementShadow(T *element, const int radius = 20, const QColor color = Qt::black);
 };
 
 //----------TEMPLATE IMPLEMENTATION----------

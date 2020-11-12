@@ -35,10 +35,10 @@ namespace colors { //#ade9ff is breeks color
 
 struct elementData_t {
   QString text;
-  QPalette palette;
+	QString tagColor;
   QString timeStart;
   QString timeEnd;
-  QString color;
+	//QString color;
   QVector<charStyle_t> charStyleVector;
 };
 \
@@ -49,11 +49,11 @@ struct breeksData_t {
 
 struct tagElement_t {
   bool condition;
-  QPalette pallete;
+	QString sColor;
 };
 namespace tag {
   const int N_COLORS = 6;
-	const QColor ARR_COLORS[6] = {"#0000FF", "#FF3366", "#FFFF66",
+	const QString ARR_COLORS[6] = {"#0000FF", "#FF3366", "#FFFF66",
 																"#CC66FF", "#ECEAEC", "#66FF66"};
 }
 

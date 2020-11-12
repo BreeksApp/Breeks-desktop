@@ -42,7 +42,7 @@ ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
 
   for (int i = 0; i < TAGS_COUNT; ++i) {
     arrTags_[i].condition = false;
-    arrTags_[i].pallete.setColor(QPalette::Button, tag::ARR_COLORS[i]);
+		arrTags_[i].sColor = tag::ARR_COLORS[i];
   }
 
   tagButton_->setFixedSize(20, 62);
@@ -102,7 +102,7 @@ void ElementTemplate::mouseMoveEvent(QMouseEvent *event)
 
   QByteArray data;
   QDataStream inData(&data, QIODevice::WriteOnly);
-  inData << this->text_->toPlainText() << this->timeStart_->text() << this->timeEnd_->text() << this->getColor() << dragStartPosition_;
+	inData << this->text_->toPlainText() << this->timeStart_->text() << this->timeEnd_->text() << this->getTagColor() << dragStartPosition_;
 
   QByteArray charVector;
   QDataStream inVector(&charVector, QIODevice::WriteOnly);
@@ -186,12 +186,13 @@ void ElementTemplate::setTime(QString timeStart, QString timeEnd)
   }
 }
 
-void ElementTemplate::setPalette(const QPalette palette)
+void ElementTemplate::setTagColor(const QString sColor)
 {
-  tagButton_->setPalette(palette);
+	tagButton_->setStyleSheet("QPushButton {background:" + sColor + "; border-radius: 3px;}");
+	tagColor_ = sColor;
 
   for (int i = 0; i < TAGS_COUNT; i++) {
-    if (tagButton_->palette() == arrTags_[i].pallete) {
+		if (tagColor_ == arrTags_[i].sColor) {
       arrTags_[i].condition = true;
     }
     else {
@@ -225,10 +226,11 @@ void ElementTemplate::changeTagColor()
 {
   for (int i = 0; i < TAGS_COUNT; ++i) {
 		if (arrTags_[i].condition == true) {
-			tagButton_->setPalette(arrTags_[(i + 1) % TAGS_COUNT].pallete);
+			setTagColor(arrTags_[(i + 1) % TAGS_COUNT].sColor);
+			//tagButton_->setPalette(arrTags_[(i + 1) % TAGS_COUNT].pallete);
       arrTags_[(i + 1) % TAGS_COUNT].condition = true;
       arrTags_[i].condition = false;
-      emit sendDayAndElementIndexAndTagColor(dayIndex_, elementIndex_, tagButton_->palette());
+			emit sendDayAndElementIndexAndTagColor(dayIndex_, elementIndex_, tagColor_);
 
       break;
     }
@@ -240,9 +242,9 @@ QString ElementTemplate::getText() const
   return text_->toPlainText();
 }
 
-QPalette ElementTemplate::getColor() const
+QString ElementTemplate::getTagColor() const
 {
-  return tagButton_->palette();
+	return tagColor_;
 }
 
 

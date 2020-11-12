@@ -178,7 +178,7 @@ void MainWindow::setDayInfo()
 	int iTime = QDateTime::currentDateTime().msecsTo(
 				QDateTime::currentDateTime().date().startOfDay().addDays(1));
 	timer_->start(iTime);
-	qDebug() << iTime;
+	//qDebug() << iTime;
 }
 
 void MainWindow::allocateMemoryForDays()

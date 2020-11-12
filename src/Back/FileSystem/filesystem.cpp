@@ -60,6 +60,9 @@ QJsonArray filesystem::readTimeTableFromDB(const int index)
   QJsonObject jObject = jDoc.object();
   QJsonObject timeTable = jObject.value("timeTable").toObject();
   QJsonArray day = timeTable.value("day" + QString::number(index + 1)).toArray();
+
+	qDebug() << day;
+
   return  day;
 }
 

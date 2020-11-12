@@ -69,15 +69,15 @@ void MainWindow::addNewElementToLayout(const int index, const int newElementInde
     elem->setText(arrDaysData_[index][j].text, arrDaysData_[index][j].charStyleVector);
 
     elem->setTime(arrDaysData_[index][j].timeStart, arrDaysData_[index][j].timeEnd);
-    elem->setPalette(arrDaysData_[index][j].palette);
+		elem->setTagColor(arrDaysData_[index][j].tagColor);
     elem->setDayAndElementIndex(index, j);
 
     //for deleting element from arrDaysData_
     connect(elem, SIGNAL(sendDayAndElementIndex(const int, const int)),
           this, SLOT(recieveDayAndElementIndex(const int, const int)));
     //for updating info about element's tag color
-    connect(elem, SIGNAL(sendDayAndElementIndexAndTagColor(const int, const int, const QPalette)),
-          this, SLOT(recieveDayAndElementIndexAndTagColor(const int, const int, const QPalette)));
+		connect(elem, SIGNAL(sendDayAndElementIndexAndTagColor(const int, const int, const QString)),
+					this, SLOT(recieveDayAndElementIndexAndTagColor(const int, const int, const QString)));
 
 		arrDays_[index].layoutDayElements->addWidget(elem, Qt::AlignCenter);
 
