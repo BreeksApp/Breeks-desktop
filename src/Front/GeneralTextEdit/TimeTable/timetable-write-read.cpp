@@ -25,8 +25,6 @@ void MainWindow::readElementsDataFromFile(const int index)
 		//QColor color(jElem.value("color").toString());
 		elemData.tagColor = jElem.value("tagColor").toString();
 
-		qDebug() << "READ: " << elemData.tagColor;
-
     elemData.timeStart = jElem.value("timeStart").toString();
     elemData.timeEnd = jElem.value("timeEnd").toString();
 
@@ -62,8 +60,6 @@ void MainWindow::writeElementsDataToFile(const int index)
     jElem.insert("timeStart", element.timeStart);
     jElem.insert("timeEnd", element.timeEnd);
 		jElem.insert("tagColor", element.tagColor);
-
-		qDebug() << element.tagColor;
 
     QJsonArray jChars;
     foreach(charStyle_t ch, element.charStyleVector) {

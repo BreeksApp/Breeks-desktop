@@ -45,18 +45,22 @@ public:
 private slots:
   void deleteElement();
   void changeTagColor();
+	void scaleTextEdit();
 
 private:
 
 	const int ELEMENT_WIDTH = 245;
-  const int ELEMENT_HEIGHT = 100;
+	int ELEMENT_HEIGHT = 100;
+	int TEXT_HEIGHT = 62;
 
   QPoint dragStartPosition_;
+
+	bool isScaled_;
 
   QPushButton *tagButton_;
 	QString tagColor_;
 
-  QPushButton *settingsButton_;
+	QPushButton *scaleButton_;
   QPushButton *deleteButton_;
 
   QGridLayout *elementLayout_;
@@ -77,6 +81,7 @@ signals:
 	void dropNoChanges(); //for drop after drag beyond dayWidget
 	void deleteItem(int, int);
 	void defineDayMoveFrom(int, QString);
+	void changeElementsLayoutHeight(const int, const int);
 };
 
 #endif // ELEMENTTEMPLATE_H

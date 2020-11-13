@@ -78,6 +78,8 @@ void MainWindow::addNewElementToLayout(const int index, const int newElementInde
     //for updating info about element's tag color
 		connect(elem, SIGNAL(sendDayAndElementIndexAndTagColor(const int, const int, const QString)),
 					this, SLOT(recieveDayAndElementIndexAndTagColor(const int, const int, const QString)));
+		connect(elem, SIGNAL(changeElementsLayoutHeight(const int, const int)),
+					this, SLOT(changeElementsLayoutHeight(const int, const int)));
 
 		arrDays_[index].layoutDayElements->addWidget(elem, Qt::AlignCenter);
 

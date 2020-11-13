@@ -97,9 +97,9 @@ void MainWindow::setDayInfo()
 						"margin: 0px 0px 0px 0px;}"
 
 					"QScrollBar::handle:vertical {"
-						"border: 0.5px solid #87cefa;"
+						"border: 0.5px solid #b3defc;"
 						"border-radius: 4px;"
-						"background: #87cefa;"
+						"background: #b3defc;"
 						"min-height: 0px;}"
 
 					"QScrollBar::add-line:vertical {"
@@ -202,6 +202,7 @@ void MainWindow::allocateMemoryForDays()
             this, SLOT(dropElement(const int, const int, const int, const elementData_t)));
     connect(arrDays_[i].widgetDay, SIGNAL(sendDayAndElementIndex(const int, const int)),
             this, SLOT(recieveDayAndElementIndex(const int, const int)));
+
 		connect(arrDays_[i].widgetDay, SIGNAL(sendElementsHeight(const int, const int)),
 						this, SLOT(sendElementsHeight(const int, const int)));
 		connect(arrDays_[i].widgetDay, SIGNAL(moveElement()), this, SLOT(mousePressedByDragElement()));
@@ -218,6 +219,7 @@ void MainWindow::initializeDaysParameters()
   for (int i = 0; i < DAYS_COUNT; i++) {
 		arrDays_[i].groupBoxElementsHeight = 370;
     arrDays_[i].elementsCount = 0;
+		arrDays_[i].elementsScaledCount = 0;
     arrDays_[i].labelElementsCount->setText("");
   }
 }
@@ -225,7 +227,7 @@ void MainWindow::initializeDaysParameters()
 void MainWindow::setDaysStructure()
 {
   for (int i = 0; i < DAYS_COUNT; i++) {
-		arrDays_[i].groupBoxDay->setStyleSheet("QGroupBox {background: #FCFCFC; border: 1.5px solid #F9F9F9 ;border-radius: 20px;}");
+		arrDays_[i].groupBoxDay->setStyleSheet("QGroupBox {background: #F7F7F7; border: 1.5px solid #F9F9F9 ;border-radius: 20px;}");
     arrDays_[i].groupBoxDay->setLayout(arrDays_[i].layoutFullDay);
 
 		arrDays_[i].layoutFullDay->setContentsMargins(10, 10, 10, 30);
@@ -294,7 +296,12 @@ void MainWindow::setDaysStructure()
 void MainWindow::enterDayArea(int index)
 {
 	arrDays_[index].scrollArea->graphicsEffect()->setEnabled(false);
-	arrDays_[index].scrollArea->setStyleSheet("QScrollArea {background: #f2f3f4; border-radius: 9px;}");
+	if (index != iCurrentDay_) {
+		arrDays_[index].scrollArea->setStyleSheet("QScrollArea {background: #f8feee; border-radius: 9px;}");
+	}
+	else {
+		arrDays_[iCurrentDay_].scrollArea->setStyleSheet("QScrollArea {background: #e7f4fe; border-radius: 9px;}");
+	}
 }
 
 void MainWindow::leaveDayArea(int index)
@@ -317,11 +324,37 @@ void MainWindow::defineDayMoveFrom(int dayIndex, QString sColor) {
 						"border: 0.5px solid #E3E3E3;"
 						"border-radius: 4px;"
 						"background: #" + sColor + ";"
-						"min-height: 0px;}");
+						"min-height: 0px;}"
+
+					"QScrollBar::add-line:vertical {"
+					"border: none;"
+					"background: none;}"
+
+					"QScrollBar::sub-line:vartical {"
+					"border: none;"
+					"background: none;}");
 	}
 	else {
 		arrDays_[dayIndex].scrollArea->verticalScrollBar()->setStyleSheet(oldStyle_);
 		oldStyle_ = "";
 	}
+}
 
+void MainWindow::changeElementsLayoutHeight(const int dayIndex, const int diffHeight)
+{
+	if (diffHeight > 0) {
+		arrDays_[dayIndex].elementsScaledCount++;
+	}
+	else {
+		arrDays_[dayIndex].elementsScaledCount--;
+	}
+
+	if (arrDays_[dayIndex].elementsCount > 2) {
+		arrDays_[dayIndex].groupBoxElementsHeight = ELEMENT_HEIGHT_ * (arrDays_[dayIndex].elementsCount - arrDays_[dayIndex].elementsScaledCount)
+					+ (ELEMENT_HEIGHT_ + 30) * arrDays_[dayIndex].elementsScaledCount + 25;
+	}
+	else {
+		arrDays_[dayIndex].groupBoxElementsHeight = 370;
+	}
+	arrDays_[dayIndex].widgetDay->setFixedHeight(arrDays_[dayIndex].groupBoxElementsHeight);
 }

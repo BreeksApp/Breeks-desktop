@@ -137,5 +137,6 @@ DISTFILES += \
     Front/Images/col.png \
     Front/Images/recycle-bin.png \
     Front/Images/sharik.jpg \
+    Front/Images/trash.png \
     Front/Qml/qml_for_breeks.qml \
     Front/RusDic/RusDic.txt

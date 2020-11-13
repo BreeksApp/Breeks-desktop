@@ -9,10 +9,10 @@ ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
 	this->setStyleSheet("ElementTemplate {background: #F9F9F9; border: 0.4px solid #cbcbcb; border-radius: 8px;}");
 
 	QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
-	effect->setBlurRadius(3);
+	effect->setBlurRadius(5);
 	effect->setXOffset(0);
 	effect->setYOffset(0);
-	effect->setColor("#b9b9b9");
+	effect->setColor("#BABCBE");
 	this->setGraphicsEffect(effect);
 
   elementLayout_ = new QGridLayout;
@@ -20,23 +20,23 @@ ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
 
   tagButton_ = new QPushButton;
 
-  settingsButton_ = new QPushButton;
-  settingsButton_->setEnabled(false);
-  settingsButton_->setFlat(true);
+	scaleButton_ = new QPushButton;
+	scaleButton_->setEnabled(false);
+	scaleButton_->setFlat(true);
 
   deleteButton_ = new QPushButton;
 	//deleteButton_->setStyleSheet("border-image:url(:/images/images/recycle-bin.png)");
   deleteButton_->setEnabled(false);
   deleteButton_->setFlat(true);
 
-  text_ = new TimetableTextEdit;
-	text_->setStyleSheet("TimetableTextEdit#text_ {background: #FFFFFF; border: 0.4px solid #E3E3E3; border-radius: 6px;}");
+	text_ = new TimetableTextEdit;
+	text_->setStyleSheet("background: #FFFFFF; border: 0.5px solid #EEEEEE; border-radius: 6px;");
 	text_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
 	timeStart_ = new QLineEdit;
-  timeEnd_ = new QLineEdit;
+	timeEnd_ = new QLineEdit;
 	timeStart_->setFocusPolicy(Qt::NoFocus);
-  timeEnd_->setFocusPolicy(Qt::NoFocus);
+	timeEnd_->setFocusPolicy(Qt::NoFocus);
 	timeStart_->setAlignment(Qt::AlignCenter);
 	timeEnd_->setAlignment(Qt::AlignCenter);
 
@@ -45,15 +45,15 @@ ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
 		arrTags_[i].sColor = tag::ARR_COLORS[i];
   }
 
-  tagButton_->setFixedSize(20, 62);
+	tagButton_->setFixedSize(20, 62);
 	tagButton_->setStyleSheet("QPushButton {background: #81C4FF; border-radius: 3px;}");
 
-	settingsButton_->setFixedSize(20, 20);
-	settingsButton_->setStyleSheet("background: none");
+	scaleButton_->setFixedSize(20, 20);
+	scaleButton_->setStyleSheet("background: none");
+	isScaled_ = false;
 
-  deleteButton_->setFixedSize(20, 20);
+	deleteButton_->setFixedSize(20, 20);
 	deleteButton_->setStyleSheet("background: none");
-
 
 	timeStart_->setFixedSize(45, 20);
 	timeStart_->setStyleSheet("background: #FFFFFF; border: 0.4px solid #E3E3E3;border-radius: 6px;");
@@ -63,19 +63,20 @@ ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
 	text_->setFixedHeight(tagButton_->height());
 
 	QFont font("Helvetica", 10);
-  text_->setFont(font);
+	text_->setFont(font);
 
-  elementLayout_->addWidget(tagButton_, 0, 0);
+	elementLayout_->addWidget(tagButton_, 0, 0);
 	elementLayout_->addWidget(text_, 0, 1, 2, 3);
-  elementLayout_->addWidget(settingsButton_, 1, 0);
-  elementLayout_->addWidget(deleteButton_, 2, 0);
-  elementLayout_->addWidget(timeStart_, 3, 2);
-  elementLayout_->addWidget(timeEnd_, 3, 3);
+	elementLayout_->addWidget(deleteButton_, 2, 0);
+	elementLayout_->addWidget(scaleButton_, 1, 0);
+	elementLayout_->addWidget(timeStart_, 3, 2);
+	elementLayout_->addWidget(timeEnd_, 3, 3);
 
   this->setLayout(elementLayout_);
 
   connect(deleteButton_, SIGNAL (clicked()), this, SLOT (deleteElement()));
   connect(tagButton_, SIGNAL (clicked()), this, SLOT (changeTagColor()));
+	connect(scaleButton_, SIGNAL(clicked()), this, SLOT (scaleTextEdit()));
 }
 
 void ElementTemplate::mousePressEvent(QMouseEvent *event)
@@ -119,7 +120,11 @@ void ElementTemplate::mouseMoveEvent(QMouseEvent *event)
   mimeData->setData("charVector", charVector);
   mimeData->setData("indexes", indexes);
   drag->setMimeData(mimeData);
+
 	this->setAttribute(Qt::WA_NoSystemBackground);
+
+	this->setStyleSheet("QGroupBox {background: #F9F9F9; border-radius: 8px; border: 1.3px solid #DDDDDD}");
+	this->graphicsEffect()->setEnabled(false);
   drag->setPixmap(this->grab());
 
 	this->hide();
@@ -135,6 +140,8 @@ void ElementTemplate::mouseMoveEvent(QMouseEvent *event)
 	}
 	else {
 		this->show();
+		this->graphicsEffect()->setEnabled(true);
+		this->setStyleSheet("QGroupBox{background: #F9F9F9; border: 0.4px solid #cbcbcb; border-radius: 8px;}");
 	}
 }
 
@@ -142,12 +149,21 @@ void ElementTemplate::enterEvent(QEvent *event)
 {
   tagButton_->setFixedSize(20, 20);
 
-  deleteButton_->setEnabled(true);
-  deleteButton_->setFlat(false);
-	deleteButton_->setStyleSheet("border-image:url(:/Images/Front/Images/recycle-bin.png)");
+	scaleButton_->setEnabled(true);
+	scaleButton_->setFlat(false);
+	if (!isScaled_ & text_->document()->size().height() > 56) {
+		scaleButton_->setStyleSheet("background: #F9F9F9; border-image:url(:/Images/Front/Images/caret-down.png)");
+	}
+	else if (isScaled_) {
+		scaleButton_->setStyleSheet("background: #F9F9F9; border-image:url(:/Images/Front/Images/caret-up.png)");
+	}
 
-  settingsButton_->setEnabled(true);
-  settingsButton_->setFlat(false);
+  deleteButton_->setEnabled(true);
+	deleteButton_->setFlat(false);
+	deleteButton_->setStyleSheet("background: #F9F9F9; border-image:url(:/Images/Front/Images/trash.png)");
+
+	scaleButton_->setEnabled(true);
+	scaleButton_->setFlat(false);
 
   QWidget::enterEvent(event);
 }
@@ -160,8 +176,9 @@ void ElementTemplate::leaveEvent(QEvent *event)
   deleteButton_->setFlat(true);
 	deleteButton_->setStyleSheet("background: none");
 
-  settingsButton_->setEnabled(false);
-  settingsButton_->setFlat(true);
+	scaleButton_->setEnabled(false);
+	scaleButton_->setFlat(true);
+	scaleButton_->setStyleSheet("background: none");
 
   QWidget::leaveEvent(event);
 }
@@ -204,6 +221,36 @@ void ElementTemplate::setTagColor(const QString sColor)
 void ElementTemplate::deleteElement()
 {
   emit sendDayAndElementIndex(dayIndex_, elementIndex_);
+}
+
+void ElementTemplate::scaleTextEdit()
+{
+	//int fullHeight = static_cast<int>(text_->document()->size().height());
+	//int diff = fullHeight - TEXT_HEIGHT + 4;
+
+	int diff = 0;
+
+	if (!isScaled_) {
+		diff = 30;
+		isScaled_ = true;
+		scaleButton_->setStyleSheet("background: #F9F9F9; border-image:url(:/Images/Front/Images/caret-up.png)");
+		elementLayout_->addWidget(text_, 0, 1, 3, 3);
+	}
+	else {
+		diff = -30;
+		isScaled_ = false;
+		if (text_->document()->size().height() > 56) {
+			scaleButton_->setStyleSheet("background: #F9F9F9; border-image:url(:/Images/Front/Images/caret-down.png)");
+		}
+	}
+
+	ELEMENT_HEIGHT += diff;
+	TEXT_HEIGHT += diff;
+
+	this->setFixedHeight(ELEMENT_HEIGHT);
+	text_->setFixedHeight(TEXT_HEIGHT);
+
+	emit(changeElementsLayoutHeight(dayIndex_, diff));
 }
 
 void ElementTemplate::setDayAndElementIndex(const int dayIndex, const int elementIndex)

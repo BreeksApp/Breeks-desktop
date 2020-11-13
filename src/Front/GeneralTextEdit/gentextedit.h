@@ -126,18 +126,24 @@ private:
 	//if we write smth in the middle of item, we won't have the item it will become a regular text
 	void detailsCheckItemAndCanselStatus(int& cursorPos);
 	void detailsCheckSelectionAndItem(int& cursorPos); //to unite common checkers
+
 	static void detailsSetCharStyle(charStyle_t& ch, const int style = charStyle::Normal);
 	static void detailsSetCharStyle(charStyle_t& ch, const int style, int& status);
 	static void detailsSetBoolByStatus(bool& a, int& status);
+
 	void detailsSetFormatFields(QTextCharFormat& fmt, const charStyle_t ch);
 	void detailsSetCharStyleByNeighbours(charStyle_t& ch, const int index);
 	void detailsSetCharStyleByIndex(const charStyle_t& ch, const int index);
+
 	void detailsColorText(QTextCursor c, const QString color);
+
 	void detailsUndoRedoInsertText(const commandInfo_t& command);
 	void detailsUndoRedoDeleteText(const commandInfo_t& command);
 	void detailsUndoRedoEffects(const commandInfo_t& command, const bool flag = false);
+
 	bool detailsIsLetter(const QChar ch);
 	void detailsUpdateCharStyle(const int pos, QTextCharFormat& fmt);
+
 	bool detailsCheckSpelling(QString& word, const int indexLastChar);
 };
 
