@@ -2,6 +2,7 @@
 #include <QDebug>
 
 #include <QGraphicsDropShadowEffect>
+#include <QScrollBar>
 
 ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
 {
@@ -149,21 +150,20 @@ void ElementTemplate::enterEvent(QEvent *event)
 {
   tagButton_->setFixedSize(20, 20);
 
-	scaleButton_->setEnabled(true);
-	scaleButton_->setFlat(false);
 	if (!isScaled_ & text_->document()->size().height() > 56) {
+		scaleButton_->setEnabled(true);
+		scaleButton_->setFlat(false);
 		scaleButton_->setStyleSheet("background: #F9F9F9; border-image:url(:/Images/Front/Images/caret-down.png)");
 	}
 	else if (isScaled_) {
+		scaleButton_->setEnabled(true);
+		scaleButton_->setFlat(false);
 		scaleButton_->setStyleSheet("background: #F9F9F9; border-image:url(:/Images/Front/Images/caret-up.png)");
 	}
 
   deleteButton_->setEnabled(true);
 	deleteButton_->setFlat(false);
 	deleteButton_->setStyleSheet("background: #F9F9F9; border-image:url(:/Images/Front/Images/trash.png)");
-
-	scaleButton_->setEnabled(true);
-	scaleButton_->setFlat(false);
 
   QWidget::enterEvent(event);
 }
@@ -190,7 +190,12 @@ int ElementTemplate::getWidth()
 
 void ElementTemplate::setText(QString text, const QVector<charStyle_t>& charArr)
 {
+	text_->setFocus();
   text_->fillCharsAndSetText(text, charArr);
+	text_->moveCursor(QTextCursor::Start);
+
+	text_->verticalScrollBar()->maximum();
+	//text_->verticalScrollBar()->move(0, 0);
 }
 
 void ElementTemplate::setTime(QString timeStart, QString timeEnd)
@@ -198,9 +203,9 @@ void ElementTemplate::setTime(QString timeStart, QString timeEnd)
 	timeStart_->setText(timeStart.remove(5, 3));
   timeEnd_->setText(timeEnd.remove(5, 3));
 
-  if (timeEnd == "00:00") {
+	/*if (timeEnd == "00:00") { //нужно расширить условие
     timeEnd_->hide();
-  }
+	}*/
 }
 
 void ElementTemplate::setTagColor(const QString sColor)
@@ -231,13 +236,34 @@ void ElementTemplate::scaleTextEdit()
 	int diff = 0;
 
 	if (!isScaled_) {
-		diff = 30;
+		diff = 46;
 		isScaled_ = true;
+
+		but1 = new QPushButton();
+		but1->setFixedSize(20, 30);
+		elementLayout_->addWidget(but1, 3, 0);
+		but2 = new QPushButton();
+		but2->setFixedSize(20, 30);
+		but1->setEnabled(false);
+		but2->setEnabled(false);
+		but1->setStyleSheet("background: none;");
+		but2->setStyleSheet("background: none;");
+		elementLayout_->addWidget(but2, 4, 0);
+		elementLayout_->addWidget(timeStart_, 5, 2);
+		elementLayout_->addWidget(timeEnd_, 5, 3);
+
+		//elementLayout_->addWidget(deleteButton_, 3, 0);
 		scaleButton_->setStyleSheet("background: #F9F9F9; border-image:url(:/Images/Front/Images/caret-up.png)");
 		elementLayout_->addWidget(text_, 0, 1, 3, 3);
 	}
 	else {
-		diff = -30;
+		diff = -46;
+
+		elementLayout_->removeWidget(but1);
+		elementLayout_->removeWidget(but2);
+		elementLayout_->addWidget(timeStart_, 3, 2);
+		elementLayout_->addWidget(timeEnd_, 3, 3);
+
 		isScaled_ = false;
 		if (text_->document()->size().height() > 56) {
 			scaleButton_->setStyleSheet("background: #F9F9F9; border-image:url(:/Images/Front/Images/caret-down.png)");
@@ -274,7 +300,6 @@ void ElementTemplate::changeTagColor()
   for (int i = 0; i < TAGS_COUNT; ++i) {
 		if (arrTags_[i].condition == true) {
 			setTagColor(arrTags_[(i + 1) % TAGS_COUNT].sColor);
-			//tagButton_->setPalette(arrTags_[(i + 1) % TAGS_COUNT].pallete);
       arrTags_[(i + 1) % TAGS_COUNT].condition = true;
       arrTags_[i].condition = false;
 			emit sendDayAndElementIndexAndTagColor(dayIndex_, elementIndex_, tagColor_);

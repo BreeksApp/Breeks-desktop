@@ -241,7 +241,7 @@ void MainWindow::setDaysStructure()
 		arrDays_[i].layoutDayInfo->addWidget(arrDays_[i].labelElementsCount, Qt::AlignRight);
 
     //scroll area for elements
-		arrDays_[i].layoutFullDay->addWidget(arrDays_[i].scrollArea, Qt::AlignCenter);
+		arrDays_[i].layoutFullDay->addWidget(arrDays_[i].scrollArea);
 		//const int dayWidgetScrollAreaWidth = 277;
 		const int dayWidgetScrollAreaHeight = 370;
 		arrDays_[i].scrollArea->setFixedHeight(dayWidgetScrollAreaHeight);
@@ -351,7 +351,7 @@ void MainWindow::changeElementsLayoutHeight(const int dayIndex, const int diffHe
 
 	if (arrDays_[dayIndex].elementsCount > 2) {
 		arrDays_[dayIndex].groupBoxElementsHeight = ELEMENT_HEIGHT_ * (arrDays_[dayIndex].elementsCount - arrDays_[dayIndex].elementsScaledCount)
-					+ (ELEMENT_HEIGHT_ + 30) * arrDays_[dayIndex].elementsScaledCount + 25;
+					+ (ELEMENT_HEIGHT_ + 46) * arrDays_[dayIndex].elementsScaledCount + 25;
 	}
 	else {
 		arrDays_[dayIndex].groupBoxElementsHeight = 370;

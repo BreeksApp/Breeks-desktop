@@ -74,6 +74,9 @@ private:
   const int TAGS_COUNT = 6;
   tagElement_t arrTags_[6];
 
+	QPushButton *but1;
+	QPushButton *but2;
+
 signals:
   void sendDayAndElementIndex(const int dayIndex, const int elementIndex);
 	void sendDayAndElementIndexAndTagColor(const int, const int, const QString);
