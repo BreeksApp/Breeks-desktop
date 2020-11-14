@@ -14,6 +14,7 @@ void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
   for (int i = 0; i < DAYS_COUNT; ++i) {
     breeksZone->arrBreeks[i]->setEnabled(false);
     breeksZone->arrBreeks[i]->setState(false);
+		breeksZone->arrBreeks[i]->setStyleSheet("background: none;");
 
     connect(breeksZone->arrBreeks[i], SIGNAL(moveBreek(int, int, bool)), this, SLOT(moveBreek(int, int, bool)));
   }
