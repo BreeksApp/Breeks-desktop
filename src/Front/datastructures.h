@@ -12,6 +12,7 @@
 #include <QJsonValue>
 #include <QByteArray>
 #include <QtSql>
+#include <QTimeEdit>
 
 struct charStyle_t {
   bool bold;
@@ -36,8 +37,8 @@ namespace colors { //#ade9ff is breeks color
 struct elementData_t {
   QString text;
 	QString tagColor;
-  QString timeStart;
-  QString timeEnd;
+	QString timeStart;
+	QString timeEnd;
 	//QString color;
   QVector<charStyle_t> charStyleVector;
 };

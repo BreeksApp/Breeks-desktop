@@ -25,8 +25,11 @@ void MainWindow::readElementsDataFromFile(const int index)
 		//QColor color(jElem.value("color").toString());
 		elemData.tagColor = jElem.value("tagColor").toString();
 
-    elemData.timeStart = jElem.value("timeStart").toString();
-    elemData.timeEnd = jElem.value("timeEnd").toString();
+		//QString sTime = jElem.value("timeStart").toString();
+		//QTime time(sTime.left(2).toInt(), sTime.mid(3, 4).toInt());
+		elemData.timeStart = jElem.value("timeStart").toString();
+		//sTime = jElem.value("timeEnd").toString();
+		elemData.timeEnd = jElem.value("timeEnd").toString();
 
     QJsonArray jChars = jElem.value("charStyleVector").toArray();
     charStyle_t ch;
@@ -57,8 +60,8 @@ void MainWindow::writeElementsDataToFile(const int index)
 		//QColor color = element.palette.color(QPalette::Button);
     QJsonObject jElem;
     jElem.insert("text", element.text);
-    jElem.insert("timeStart", element.timeStart);
-    jElem.insert("timeEnd", element.timeEnd);
+		jElem.insert("timeStart", element.timeStart);
+		jElem.insert("timeEnd", element.timeEnd);
 		jElem.insert("tagColor", element.tagColor);
 
     QJsonArray jChars;

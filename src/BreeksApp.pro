@@ -34,6 +34,7 @@ SOURCES += \
     Front/MainElements/daywidget.cpp \
     Front/MainElements/elementtemplate.cpp \
     Front/MainElements/imagehover.cpp \
+    Front/MainElements/timeedit.cpp \
     Front/Mainwindow-zones/mainwidnow-timetable.cpp \
     Front/Mainwindow-zones/mainwindow-addelement.cpp \
     Front/Mainwindow-zones/mainwindow-breekszone.cpp \
@@ -58,6 +59,7 @@ HEADERS += \
     Front/MainElements/daywidget.h \
     Front/MainElements/elementtemplate.h \
     Front/MainElements/imagehover.h \
+    Front/MainElements/timeedit.h \
     Front/datastructures.h \
     Front/effects.hpp \
     Front/mainwindow.h \

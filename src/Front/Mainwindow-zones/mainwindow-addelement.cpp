@@ -67,8 +67,7 @@ void MainWindow::addNewElementToLayout(const int index, const int newElementInde
 		connect(elem, SIGNAL(deleteItem(int, int)), this, SLOT(recieveDayAndElementIndex(int, int)));
 
     elem->setText(arrDaysData_[index][j].text, arrDaysData_[index][j].charStyleVector);
-
-    elem->setTime(arrDaysData_[index][j].timeStart, arrDaysData_[index][j].timeEnd);
+		elem->setTime(arrDaysData_[index][j].timeStart, arrDaysData_[index][j].timeEnd);
 		elem->setTagColor(arrDaysData_[index][j].tagColor);
     elem->setDayAndElementIndex(index, j);
 

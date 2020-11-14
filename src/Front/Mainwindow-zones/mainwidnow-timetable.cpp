@@ -351,7 +351,7 @@ void MainWindow::changeElementsLayoutHeight(const int dayIndex, const int diffHe
 
 	if (arrDays_[dayIndex].elementsCount > 2) {
 		arrDays_[dayIndex].groupBoxElementsHeight = ELEMENT_HEIGHT_ * (arrDays_[dayIndex].elementsCount - arrDays_[dayIndex].elementsScaledCount)
-					+ (ELEMENT_HEIGHT_ + 46) * arrDays_[dayIndex].elementsScaledCount + 25;
+					+ (ELEMENT_HEIGHT_ + 48) * arrDays_[dayIndex].elementsScaledCount + 25;
 	}
 	else {
 		arrDays_[dayIndex].groupBoxElementsHeight = 370;

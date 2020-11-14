@@ -147,24 +147,21 @@ void AddElement::on_buttonAdd_clicked()
 
     newElement.text = text;
 
-    QString sTimeStrart = ui->timeStart->time().toString();
-    QString sTimeEnd = ui->timeEnd->time().toString();
-
-    if ((sTimeStrart < sTimeEnd) || (sTimeEnd == "00:00:00")) {
-      newElement.timeStart = sTimeStrart;
-      newElement.timeEnd = sTimeEnd;
+		if ((ui->timeStart < ui->timeEnd) || (ui->timeEnd->time().toString() == "00:00:00")) {
+			newElement.timeStart = ui->timeStart->time().toString();
+			newElement.timeEnd = ui->timeEnd->time().toString();
     }
-    else if (sTimeStrart == sTimeEnd){
-      newElement.timeStart = sTimeStrart;
-      newElement.timeEnd = "00:00:00";
+		else if (ui->timeStart == ui->timeStart){
+			newElement.timeStart = ui->timeStart->time().toString();
+			newElement.timeEnd = "00:00";
     }
     else {
       //reverse time
-      newElement.timeStart = sTimeEnd;
-      newElement.timeEnd = sTimeStrart;
+			newElement.timeStart = ui->timeEnd->time().toString();
+			newElement.timeEnd = ui->timeStart->time().toString();
     }
-    newElement.timeStart.remove(5, 3);
-    newElement.timeEnd.remove(5, 3);
+		//newElement.timeStart.remove(5, 3);
+		//newElement.timeEnd.remove(5, 3);
 
 		newElement.tagColor = currentTagColor_;
     newElement.charStyleVector = ui->text->getCharStyleVector();

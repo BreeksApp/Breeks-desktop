@@ -3,6 +3,7 @@
 
 #include "Front/GeneralTextEdit/TimeTable/timetabletextedit.h"
 #include "Front/datastructures.h"
+#include "timeedit.h"
 
 #include <QWidget>
 #include <QGroupBox>
@@ -31,7 +32,7 @@ public:
 	int getWidth();
 
   void setText(QString text, const QVector<charStyle_t>& charArr);
-  void setTime(QString timeStart, QString timeEnd);
+	void setTime(QString, QString);
 	void setTagColor(const QString sColor);
 
   void setDayAndElementIndex(const int dayIndex, const int elementIndex);
@@ -65,8 +66,8 @@ private:
 
   QGridLayout *elementLayout_;
   TimetableTextEdit *text_;
-	QLineEdit *timeStart_;
-  QLineEdit *timeEnd_;
+	TimeEdit *timeStart_;
+	TimeEdit *timeEnd_;
 
   int dayIndex_;
   int elementIndex_;
