@@ -124,7 +124,7 @@ void Breek::connectToQml(int indexOfEmoji)
 
   // работа с фоном сцены
   QColor color;
-  color.setNamedColor("#ececec");
+  color.setNamedColor("#FFFFFF");
   quickWidget_->quickWindow()->setColor(color);
 
 //  QWidget *container = QWidget::createWindowContainer(&quickWidget_, this);
