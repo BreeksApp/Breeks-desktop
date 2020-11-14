@@ -62,12 +62,12 @@ private:
   //-----TAG-----
   struct tagElement {
     bool condition;
-    QPalette pallete;
+		QString sColor;
   };
   const int TAGS_COUNT = 6;
   tagElement arrTags_[6];
 
-  QPalette currentTagPalette_;
+	QString currentTagColor_;
   //
 
   //-----EMOJI-----

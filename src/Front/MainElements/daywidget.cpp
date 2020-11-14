@@ -27,7 +27,7 @@ void DayWidget::dropEvent(QDropEvent *event)
   elementData_t elemData;
   QByteArray data = event->mimeData()->data("elemData");
   QDataStream out(&data, QIODevice::ReadOnly);
-  out >> elemData.text >> elemData.timeStart >> elemData.timeEnd >> elemData.palette >> dragPos_;
+	out >> elemData.text >> elemData.timeStart >> elemData.timeEnd >> elemData.tagColor >> dragPos_;
   QByteArray indexes = event->mimeData()->data("indexes");
   QDataStream outIndexes(&indexes, QIODevice::ReadOnly);
   outIndexes >> dayIndex_ >> elemIndex_;

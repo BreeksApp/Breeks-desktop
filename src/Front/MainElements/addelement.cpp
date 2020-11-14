@@ -84,11 +84,12 @@ void AddElement::setAllElementsEffects()
   //TAG
   for (int i = 0; i < TAGS_COUNT; ++i) {
     arrTags_[i].condition = false;
-    arrTags_[i].pallete.setColor(QPalette::Button, tag::ARR_COLORS[i]);
+		arrTags_[i].sColor = tag::ARR_COLORS[i];
   }
   arrTags_[TAGS_COUNT - 1].condition = true;
-  currentTagPalette_.setColor(QPalette::Button, effects::colorDefault /*grey*/);
-	effects::setElementColor(ui->buttonTag, currentTagPalette_);
+	currentTagColor_ = effects::colorDefault;
+	ui->buttonTag->setStyleSheet("QPushButton {background: " + currentTagColor_ + "; border-radius: 3px;}");
+	//effects::setElementColor(ui->buttonTag, currentTagPalette_);
   //
 
   //EMOJI
@@ -146,26 +147,23 @@ void AddElement::on_buttonAdd_clicked()
 
     newElement.text = text;
 
-    QString sTimeStrart = ui->timeStart->time().toString();
-    QString sTimeEnd = ui->timeEnd->time().toString();
-
-    if ((sTimeStrart < sTimeEnd) || (sTimeEnd == "00:00:00")) {
-      newElement.timeStart = sTimeStrart;
-      newElement.timeEnd = sTimeEnd;
+		if ((ui->timeStart < ui->timeEnd) || (ui->timeEnd->time().toString() == "00:00:00")) {
+			newElement.timeStart = ui->timeStart->time().toString();
+			newElement.timeEnd = ui->timeEnd->time().toString();
     }
-    else if (sTimeStrart == sTimeEnd){
-      newElement.timeStart = sTimeStrart;
-      newElement.timeEnd = "00:00:00";
+		else if (ui->timeStart == ui->timeStart){
+			newElement.timeStart = ui->timeStart->time().toString();
+			newElement.timeEnd = "00:00";
     }
     else {
       //reverse time
-      newElement.timeStart = sTimeEnd;
-      newElement.timeEnd = sTimeStrart;
+			newElement.timeStart = ui->timeEnd->time().toString();
+			newElement.timeEnd = ui->timeStart->time().toString();
     }
-    newElement.timeStart.remove(5, 3);
-    newElement.timeEnd.remove(5, 3);
+		//newElement.timeStart.remove(5, 3);
+		//newElement.timeEnd.remove(5, 3);
 
-    newElement.palette = ui->buttonTag->palette();
+		newElement.tagColor = currentTagColor_;
     newElement.charStyleVector = ui->text->getCharStyleVector();
 
     emit sendTimeTableZoneData(daysCheck_, DAYS_CHECK_COUNT, newElement);
@@ -248,9 +246,10 @@ void AddElement::on_buttonTag_clicked()
   if (timeTableZoneCondition_) {
     for (int i = 0; i < TAGS_COUNT; ++i) {
       if (arrTags_[i].condition == true) {
-        effects::setElementColor(ui->buttonTag, arrTags_[(i + 1) % TAGS_COUNT].pallete);
+				ui->buttonTag->setStyleSheet("QPushButton {background: " + arrTags_[(i + 1) % TAGS_COUNT].sColor + "; border-radius: 3px;}");
+				//effects::setElementColor(ui->buttonTag, arrTags_[(i + 1) % TAGS_COUNT].pallete);
 
-        currentTagPalette_ = arrTags_[(i + 1) % TAGS_COUNT].pallete;
+				currentTagColor_ = arrTags_[(i + 1) % TAGS_COUNT].sColor;
 
         if (i == TAGS_COUNT - 1) {
           arrTags_[0].condition = true;
@@ -282,7 +281,8 @@ void AddElement::on_pushButtonTimeTableZone_clicked()
     effects::setElementColor(ui->pushButtonTimeTableZone, paletteSelectedElement_);
     effects::setElementColor(ui->pushButtonBreeksZone, paletteDefaultElement_);
 
-    effects::setElementColor(ui->buttonTag, currentTagPalette_);
+		ui->buttonTag->setStyleSheet("QPushButton {background: " + currentTagColor_ + "; border-radius: 3px;}");
+		//effects::setElementColor(ui->buttonTag, currentTagPalette_);
     setEmoji(0);
 
     ui->timeStart->show();

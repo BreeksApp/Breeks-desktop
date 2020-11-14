@@ -59,6 +59,13 @@
         <file>Front/Images/NoteBackground.png</file>
         <file>Front/Images/recycle-bin.png</file>
         <file>Front/Images/sharik.jpg</file>
+        <file>Front/Images/trash.png</file>
+        <file>Front/Images/remove.svg</file>
+        <file>Front/Images/clear.svg</file>
+        <file>Front/Images/remove.png</file>
+        <file>Front/Images/delete.svg</file>
+        <file>Front/Images/caret-down.png</file>
+        <file>Front/Images/caret-up.png</file>
     </qresource>
     <qresource prefix="/qml">
         <file>Front/Qml/qml_for_breeks.qml</file>

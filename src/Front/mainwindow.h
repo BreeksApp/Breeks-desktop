@@ -56,9 +56,10 @@ public slots:
   void recieveBreeksZoneData(bool *, const int, breeksData_t);
 
   void recieveDayAndElementIndex(const int, const int);
-  void recieveDayAndElementIndexAndTagColor(const int, const int, const QPalette);
+	void recieveDayAndElementIndexAndTagColor(const int, const int, const QString);
   void recieveUsername();
   void recieveMimeData(const elementData_t, const QPixmap);
+	void changeElementsLayoutHeight(const int, const int);
 
   void moveBreek(int, int, bool);
   void dropElement(const int, const int, const int, const elementData_t);
@@ -196,6 +197,7 @@ private:
 
     int groupBoxElementsHeight;
     int elementsCount;
+		int elementsScaledCount;
   };
 
   void buildTimeTable();

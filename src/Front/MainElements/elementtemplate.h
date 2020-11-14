@@ -3,6 +3,7 @@
 
 #include "Front/GeneralTextEdit/TimeTable/timetabletextedit.h"
 #include "Front/datastructures.h"
+#include "timeedit.h"
 
 #include <QWidget>
 #include <QGroupBox>
@@ -31,8 +32,8 @@ public:
 	int getWidth();
 
   void setText(QString text, const QVector<charStyle_t>& charArr);
-  void setTime(QString timeStart, QString timeEnd);
-  void setPalette(const QPalette palette);
+	void setTime(QString, QString);
+	void setTagColor(const QString sColor);
 
   void setDayAndElementIndex(const int dayIndex, const int elementIndex);
   void setElementIndex(const int index);
@@ -40,27 +41,33 @@ public:
   QVector<charStyle_t> getCharStyleVector();
 
   QString getText() const;
-  QPalette getColor() const;
+	QString getTagColor() const;
 
 private slots:
   void deleteElement();
   void changeTagColor();
+	void scaleTextEdit();
 
 private:
 
 	const int ELEMENT_WIDTH = 245;
-  const int ELEMENT_HEIGHT = 100;
+	int ELEMENT_HEIGHT = 100;
+	int TEXT_HEIGHT = 62;
 
   QPoint dragStartPosition_;
 
+	bool isScaled_;
+
   QPushButton *tagButton_;
-  QPushButton *settingsButton_;
+	QString tagColor_;
+
+	QPushButton *scaleButton_;
   QPushButton *deleteButton_;
 
   QGridLayout *elementLayout_;
   TimetableTextEdit *text_;
-	QLineEdit *timeStart_;
-  QLineEdit *timeEnd_;
+	TimeEdit *timeStart_;
+	TimeEdit *timeEnd_;
 
   int dayIndex_;
   int elementIndex_;
@@ -68,13 +75,17 @@ private:
   const int TAGS_COUNT = 6;
   tagElement_t arrTags_[6];
 
+	QPushButton *but1;
+	QPushButton *but2;
+
 signals:
   void sendDayAndElementIndex(const int dayIndex, const int elementIndex);
-  void sendDayAndElementIndexAndTagColor(const int, const int, const QPalette);
+	void sendDayAndElementIndexAndTagColor(const int, const int, const QString);
   void sendMimeData(const elementData_t, const QPixmap);
 	void dropNoChanges(); //for drop after drag beyond dayWidget
 	void deleteItem(int, int);
 	void defineDayMoveFrom(int, QString);
+	void changeElementsLayoutHeight(const int, const int);
 };
 
 #endif // ELEMENTTEMPLATE_H

@@ -131,6 +131,7 @@ void MainWindow::recieveTimeTableZoneData(bool *daysCheck, const int arrSize, el
         arrDays_[i].groupBoxElementsHeight -= 7;
       }*/
 
+			arrDays_[i].elementsScaledCount = 0;
       arrDays_[i].labelElementsCount->setText(QString::number(arrDays_[i].elementsCount));
     }
   }
@@ -207,22 +208,28 @@ void MainWindow::recieveDayAndElementIndex(const int dayElementIndex, const int 
 	if (!item->widget()->isHidden()) {
 		arrDays_[dayElementIndex].layoutDayElements->removeItem(item);
 		arrDays_[dayElementIndex].layoutDayElements->removeWidget(item->widget());
+
+		if (item->widget()->size().height() > 100) {
+			--arrDays_[dayElementIndex].elementsScaledCount;
+		}
+
 		delete item->widget();
 		delete item;
 		arrDays_[dayElementIndex].layoutDayElements->update();
 
 		--arrDays_[dayElementIndex].elementsCount;
 
-		if (arrDays_[dayElementIndex].elementsCount <= 3) {
+		if (arrDays_[dayElementIndex].elementsCount <= 3 & arrDays_[dayElementIndex].elementsScaledCount < 3) {
 				arrDays_[dayElementIndex].groupBoxElementsHeight = 370;
-				arrDays_[dayElementIndex].widgetDay->setFixedHeight(arrDays_[dayElementIndex].groupBoxElementsHeight);
 		}
 		else {
-			arrDays_[dayElementIndex].groupBoxElementsHeight =
-						ELEMENT_HEIGHT_ * arrDays_[dayElementIndex].elementsCount + 25;
-			arrDays_[dayElementIndex].widgetDay->setFixedSize(
-						DAY_WIDTH_, arrDays_[dayElementIndex].groupBoxElementsHeight);
+			arrDays_[dayElementIndex].groupBoxElementsHeight = ELEMENT_HEIGHT_ * (arrDays_[dayElementIndex].elementsCount
+						- arrDays_[dayElementIndex].elementsScaledCount)
+						+ (ELEMENT_HEIGHT_ + 30) * arrDays_[dayElementIndex].elementsScaledCount + 25;
+			//arrDays_[dayElementIndex].groupBoxElementsHeight =
+						//ELEMENT_HEIGHT_ * arrDays_[dayElementIndex].elementsCount + 25;
 		}
+		arrDays_[dayElementIndex].widgetDay->setFixedHeight(arrDays_[dayElementIndex].groupBoxElementsHeight);
 
 		if (arrDays_[dayElementIndex].elementsCount == 0) {
 			arrDays_[dayElementIndex].labelElementsCount->setText("");
@@ -246,9 +253,9 @@ void MainWindow::recieveDayAndElementIndex(const int dayElementIndex, const int 
 	}
 }
 
-void MainWindow::recieveDayAndElementIndexAndTagColor(const int dayIndex, const int elementIndex, const QPalette color)
+void MainWindow::recieveDayAndElementIndexAndTagColor(const int dayIndex, const int elementIndex, const QString sColor)
 {
-    arrDaysData_[dayIndex][elementIndex].palette = color;
+		arrDaysData_[dayIndex][elementIndex].tagColor = sColor;
 }
 
 void MainWindow::recieveUsername()
