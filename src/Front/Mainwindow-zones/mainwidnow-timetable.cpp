@@ -12,7 +12,9 @@ void MainWindow::buildTimeTable()
 	effect->setYOffset(1);
 	effect->setColor("#909090");
 
-	ui->groupBoxWorkZone->setGraphicsEffect(effect);
+	ui->shadowWidget->setGraphicsEffect(effect); //fakeWidget
+	ui->shadowWidget->setStyleSheet("border-radius: 6px;");
+
 	ui->groupBoxWorkZone->setStyleSheet("background: #FFFFFF; border-radius: 6px;");
 
 	bigWidgetInWorkZone_->setFixedSize(WORK_ZONE_BIG_WIDGET_WIDTH, bigWidgetHeight_);

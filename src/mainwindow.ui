@@ -440,6 +440,17 @@
      <string/>
     </property>
    </widget>
+   <widget class="QWidget" name="shadowWidget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>519</x>
+      <y>9</y>
+      <width>1031</width>
+      <height>981</height>
+     </rect>
+    </property>
+   </widget>
+   <zorder>shadowWidget</zorder>
    <zorder>groupBox</zorder>
    <zorder>buttonAdd</zorder>
    <zorder>buttonPage6</zorder>

@@ -151,9 +151,9 @@ void AddElement::on_buttonAdd_clicked()
 			newElement.timeStart = ui->timeStart->time().toString();
 			newElement.timeEnd = ui->timeEnd->time().toString();
     }
-		else if (ui->timeStart == ui->timeStart){
+		else if (ui->timeStart == ui->timeEnd){
 			newElement.timeStart = ui->timeStart->time().toString();
-			newElement.timeEnd = "00:00";
+			newElement.timeEnd = "00:00:00";
     }
     else {
       //reverse time

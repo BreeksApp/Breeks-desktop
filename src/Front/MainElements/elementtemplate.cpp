@@ -115,7 +115,7 @@ void ElementTemplate::mouseMoveEvent(QMouseEvent *event)
 
   QByteArray data;
   QDataStream inData(&data, QIODevice::WriteOnly);
-	inData << this->text_->toPlainText() << this->timeStart_->text() << this->timeEnd_->text() << this->getTagColor() << dragStartPosition_;
+	inData << this->text_->toPlainText() << this->timeStart_->time().toString() << this->timeEnd_->time().toString() << this->getTagColor() << dragStartPosition_;
 
   QByteArray charVector;
   QDataStream inVector(&charVector, QIODevice::WriteOnly);
@@ -210,9 +210,10 @@ void ElementTemplate::setText(QString text, const QVector<charStyle_t>& charArr)
 }
 
 void ElementTemplate::setTime(QString timeStart, QString timeEnd)
-{
-	timeStart_->setTime(QTime(timeStart.left(2).toInt(), timeStart.mid(3, 4).toInt()));
-	timeEnd_->setTime(QTime(timeEnd.left(2).toInt(), timeEnd.mid(3, 4).toInt()));
+{	
+	timeStart_->setTime(QTime().fromString(timeStart));
+	timeEnd_->setTime(QTime().fromString(timeEnd));
+
 	//timeStart_->setText(timeStart.remove(5, 3));
 	//timeEnd_->setText(timeEnd.remove(5, 3));
 
