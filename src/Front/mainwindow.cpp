@@ -59,16 +59,19 @@ void MainWindow::moveTimetableElement()
 {
 	//qDebug() << ui->groupBox->mapToGlobal(this->cursor().pos());
 	while (isElementDrag_) {
-		QPoint pos = ui->groupBox->mapToGlobal(this->cursor().pos());
-		if (pos.x() > 920 & pos.x() < 1150) {
+		QPoint pos = this->mapToGlobal(this->cursor().pos());
+
+		int posMain = this->mapToGlobal(ui->groupBoxWorkZone->pos()).x();
+
+		if (pos.x() > posMain & pos.x() < posMain + 700) {
 			QPoint pos1 = bigWidgetInWorkZone_->mapFromGlobal(this->cursor().pos());
-			workZoneScrollArea_->ensureVisible(pos1.x() - 5, 0);
-			QThread::msleep(10);
+			workZoneScrollArea_->ensureVisible(pos1.x() - 0.5, 0);
+			QThread::msleep(2);
 		}
-		else if (pos.x() > 1850 & pos.x() < 2050) {
+		else if (pos.x() > posMain + ui->groupBoxWorkZone->width() - 700 & pos.x() < posMain + ui->groupBoxWorkZone->width()) {
 			QPoint pos1 = bigWidgetInWorkZone_->mapFromGlobal(this->cursor().pos());
-			workZoneScrollArea_->ensureVisible(pos1.x() + 5, 0);
-			QThread::msleep(10);
+			workZoneScrollArea_->ensureVisible(pos1.x() + 0.5, 0);
+			QThread::msleep(2);
 		}
 	}
 }
