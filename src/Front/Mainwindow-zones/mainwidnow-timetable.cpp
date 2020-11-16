@@ -231,7 +231,7 @@ void MainWindow::initializeDaysParameters()
 void MainWindow::setDaysStructure()
 {
   for (int i = 0; i < DAYS_COUNT; i++) {
-		arrDays_[i].groupBoxDay->setStyleSheet("QGroupBox {background: #F7F7F7; border: 1.5px solid #F9F9F9; border-radius: 20px;}");
+		arrDays_[i].groupBoxDay->setStyleSheet("QGroupBox {background: #F7F7F7; border: 1.5px solid #F1F1F1; border-radius: 20px;}");
     arrDays_[i].groupBoxDay->setLayout(arrDays_[i].layoutFullDay);
 
 		arrDays_[i].layoutFullDay->setContentsMargins(10, 10, 10, 30);

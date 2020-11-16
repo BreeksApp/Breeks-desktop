@@ -6,7 +6,7 @@ void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
 	const int groupBoxHeight = 100;
 
   //-----BREEKS ZONE sizes-----
-	breeksZone->breeksZoneGroupBox->setFixedWidth(WORK_ZONE_BIG_WIDGET_WIDTH - 30);
+	breeksZone->breeksZoneGroupBox->setFixedWidth(WORK_ZONE_BIG_WIDGET_WIDTH - 36);
   breeksZone->breeksZoneGroupBox->setFixedHeight(groupBoxHeight);
 	//breeksZone->breeksZoneGroupBox->setContentsMargins(0, 0, 0, 0);
 	breeksZone->breeksZoneGroupBox->setStyleSheet("QGroupBox {background: #F7F7F7; border: 1.5px solid #F1F1F1; border-radius: 20px;}");
@@ -67,12 +67,12 @@ void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
   days->addWidget(helper);
   //
 
-  QVBoxLayout *main = new QVBoxLayout;
-  main->addLayout(breeksZone->breeksDescriptionLayout);
-  main->addLayout(days);
-  main->setContentsMargins(10, 13, 10, 10);
+	QVBoxLayout *mainLayout = new QVBoxLayout;
+	mainLayout->addLayout(breeksZone->breeksDescriptionLayout);
+	mainLayout->addLayout(days);
+	//mainLayout->setContentsMargins(10, 13, 10, 10);
 
-  breeksZone->breeksDescriptionGroupBox->setLayout(main);
+	breeksZone->breeksDescriptionGroupBox->setLayout(mainLayout);
   //
 
   for (int i = 0; i < 4; ++i) {
@@ -115,18 +115,20 @@ void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
 
 void MainWindow::buildBreeksDescriptionZone()
 {
+	ui->groupBoxBreeksDescreption->setStyleSheet("QGroupBox{background: #FFFFFF; border-radius: 6px;}a");
+
   QHBoxLayout *layOut = new QHBoxLayout;
   ui->groupBoxBreeksDescreption->setLayout(layOut);
 
-  const int scrollAreaWidth = 323;
-  const int scrollAreaHeight = 950;
+	//const int scrollAreaWidth = 323;
+	//const int scrollAreaHeight = 950;
 
-  breeksDescriptionZoneScrollArea_->setFixedSize(scrollAreaWidth, scrollAreaHeight);
+	breeksDescriptionZoneScrollArea_->setFixedHeight(ui->groupBoxBreeksDescreption->height() - 20);
   layOut->addWidget(breeksDescriptionZoneScrollArea_);
 
-  bigWidgetInBreeksDescriptionZone_->setFixedSize(BREEKS_DESCRIPTION_ZONE_BIG_WIDGET_WIDTH, bigWidgetHeight_);
-
-  breeksDescriptionZoneScrollArea_->setWidget(bigWidgetInBreeksDescriptionZone_);
+	bigWidgetInBreeksDescriptionZone_->setFixedSize(ui->groupBoxBreeksDescreption->width() - 20, bigWidgetHeight_);
+	breeksDescriptionZoneScrollArea_->setWidget(bigWidgetInBreeksDescriptionZone_);
+	breeksDescriptionZoneScrollArea_->setStyleSheet("border-radius: 9px;");
 
 	//breeksDescriptionZoneLayout_->setContentsMargins(0, 0, 0, 200);
   bigWidgetInBreeksDescriptionZone_->setLayout(breeksDescriptionZoneLayout_);
@@ -134,11 +136,11 @@ void MainWindow::buildBreeksDescriptionZone()
 //GroupBox to describe posibilities of breeks
   QGroupBox *description = new QGroupBox;
 
-  const int descriptionWidth = 270;
+	//const int descriptionWidth = 270;
   const int descriptionHeight = 480;
 
-  description->setFixedSize(descriptionWidth, descriptionHeight);
-  breeksDescriptionZoneLayout_->addWidget(description, 0, 0);
+	description->setFixedHeight(descriptionHeight);
+	breeksDescriptionZoneLayout_->addWidget(description, 0, 0, Qt::AlignCenter);
 }
 
 void MainWindow::setDaysConnect(breeksZone_t* breeksZone)
