@@ -38,7 +38,7 @@ AddElement::AddElement(AddButtonHover *button, QWidget *parent) :
 
 AddElement::~AddElement()
 {
-  mainAddButton_->setStyleSheet("border-image:url(:/Images/Front/Images/addButtonDefault.png)");
+	mainAddButton_->setGraphicsEffect(nullptr);
   delete ui;
 }
 

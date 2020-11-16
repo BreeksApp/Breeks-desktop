@@ -67,6 +67,8 @@
         <file>Front/Images/caret-down.png</file>
         <file>Front/Images/caret-up.png</file>
         <file>Front/Images/plus.svg</file>
+        <file>Front/Images/plus.png</file>
+        <file>Front/Images/pluss.png</file>
     </qresource>
     <qresource prefix="/qml">
         <file>Front/Qml/qml_for_breeks.qml</file>

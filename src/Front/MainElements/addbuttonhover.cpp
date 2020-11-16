@@ -2,6 +2,8 @@
 
 #include "addbuttonhover.h"
 
+#include <QGraphicsDropShadowEffect>
+
 AddButtonHover::AddButtonHover(QWidget *parent) :
   QPushButton (parent)
 {
@@ -10,12 +12,18 @@ AddButtonHover::AddButtonHover(QWidget *parent) :
 
 void AddButtonHover::enterEvent(QEvent *event)
 {
-  this->setStyleSheet(styleSheetHover);
-  QPushButton::enterEvent(event);
+	QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+	effect->setBlurRadius(10);
+	effect->setXOffset(0);
+	effect->setYOffset(1);
+	effect->setColor("#909090");
+	this->setGraphicsEffect(effect);
+
+	QPushButton::enterEvent(event);
 }
 
 void AddButtonHover::leaveEvent(QEvent *event)
 {
-  QPushButton::leaveEvent(event);
-  this->setStyleSheet(styleSheetDefault);
+	QPushButton::leaveEvent(event);
+	this->setGraphicsEffect(nullptr);
 }

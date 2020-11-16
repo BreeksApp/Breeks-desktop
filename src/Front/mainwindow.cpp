@@ -37,6 +37,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	setStatesFromFileLastVisit();
 	setAllElementsEffects();
+
+	ui->note->setContentsMargins(10, 10, 10, 10);
 }
 
 MainWindow::~MainWindow()
@@ -106,7 +108,12 @@ void MainWindow::on_buttonAdd_clicked()
   const int y = ui->buttonAdd->pos().y() + b;
   addForm->move(x, y);
 
-  ui->buttonAdd->setStyleSheet("border-image:url(:/Images/Front/Images/addButtonHover.png)");
+	QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+	effect->setBlurRadius(10);
+	effect->setXOffset(0);
+	effect->setYOffset(1);
+	effect->setColor("#909090");
+	ui->buttonAdd->setGraphicsEffect(effect);
 }
 
 void MainWindow::recieveTimeTableZoneData(bool *daysCheck, const int arrSize, elementData_t newElement)
@@ -177,7 +184,7 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, breek
   newZone.breekText->setText(newElement.text);
 
   for (int i = 0; i < arrSize; ++i) {
-    newZone.breeksZoneLayout->addWidget(newZone.arrBreeks[i], 1, i); // breeks added to layout here
+		newZone.breeksZoneLayout->addWidget(newZone.arrBreeks[i], 1, i); // breeks added to layout here
     newZone.arrBreeks[i]->setEmoj(newElement.nEmoji);
     newZone.arrBreeks[i]->setIndex(newZone.zoneIndex, i);
 
@@ -191,17 +198,17 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, breek
 
   arrBreeksZones_.push_back(newZone);
 
-  if (breeksZonesCount_ == 1) {
-    bigWidgetHeight_ += 120;
+	if (breeksZonesCount_ == 0) {
+		bigWidgetHeight_ += 125;
   }
   else {
-    bigWidgetHeight_ += 120;
+		bigWidgetHeight_ += 115;
   }
 
-  bigWidgetInWorkZone_->setFixedSize(WORK_ZONE_BIG_WIDGET_WIDTH, bigWidgetHeight_);
-  bigWidgetInBreeksDescriptionZone_->setFixedSize(BREEKS_DESCRIPTION_ZONE_BIG_WIDGET_WIDTH, bigWidgetHeight_);
+	bigWidgetInWorkZone_->setFixedHeight(bigWidgetHeight_);
+	bigWidgetInBreeksDescriptionZone_->setFixedHeight(bigWidgetHeight_);
 
-  ++breeksZonesCount_;
+	++breeksZonesCount_;
 }
 
 void MainWindow::recieveDayAndElementIndex(const int dayElementIndex, const int elementIndex)

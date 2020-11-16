@@ -17,55 +17,11 @@
    <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="labelImageBackground">
-    <property name="geometry">
-     <rect>
-      <x>100</x>
-      <y>40</y>
-      <width>250</width>
-      <height>250</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: #e6f6ff;</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="ImageHover" name="buttonImage">
-    <property name="geometry">
-     <rect>
-      <x>105</x>
-      <y>45</y>
-      <width>241</width>
-      <height>241</height>
-     </rect>
-    </property>
-    <property name="cursor">
-     <cursorShape>PointingHandCursor</cursorShape>
-    </property>
-    <property name="focusPolicy">
-     <enum>Qt::TabFocus</enum>
-    </property>
-    <property name="styleSheet">
-     <string notr="true"/>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="default">
-     <bool>false</bool>
-    </property>
-    <property name="flat">
-     <bool>true</bool>
-    </property>
-   </widget>
    <widget class="GenTextEdit" name="note">
     <property name="geometry">
      <rect>
-      <x>100</x>
-      <y>360</y>
+      <x>60</x>
+      <y>130</y>
       <width>311</width>
       <height>531</height>
      </rect>
@@ -85,14 +41,18 @@
     <property name="styleSheet">
      <string notr="true">QTextEdit{
  	border-radius: 12px;
+	padding-left:10; 
+	padding-top:10; 
+	padding-bottom:10; 
+	padding-right:10;
 }</string>
     </property>
    </widget>
    <widget class="QPushButton" name="buttonPage6">
     <property name="geometry">
      <rect>
-      <x>-10</x>
-      <y>670</y>
+      <x>20</x>
+      <y>380</y>
       <width>51</width>
       <height>31</height>
      </rect>
@@ -113,8 +73,8 @@
    <widget class="QPushButton" name="buttonPage1">
     <property name="geometry">
      <rect>
-      <x>-10</x>
-      <y>470</y>
+      <x>20</x>
+      <y>180</y>
       <width>51</width>
       <height>31</height>
      </rect>
@@ -153,8 +113,8 @@
    <widget class="QPushButton" name="buttonPage5">
     <property name="geometry">
      <rect>
-      <x>-10</x>
-      <y>630</y>
+      <x>20</x>
+      <y>340</y>
       <width>51</width>
       <height>31</height>
      </rect>
@@ -175,8 +135,8 @@
    <widget class="QPushButton" name="buttonPage3">
     <property name="geometry">
      <rect>
-      <x>-10</x>
-      <y>550</y>
+      <x>20</x>
+      <y>260</y>
       <width>51</width>
       <height>31</height>
      </rect>
@@ -197,8 +157,8 @@
    <widget class="QPushButton" name="buttonPage2">
     <property name="geometry">
      <rect>
-      <x>-10</x>
-      <y>510</y>
+      <x>20</x>
+      <y>220</y>
       <width>51</width>
       <height>31</height>
      </rect>
@@ -222,8 +182,8 @@
    <widget class="QPushButton" name="buttonPage4">
     <property name="geometry">
      <rect>
-      <x>-10</x>
-      <y>590</y>
+      <x>20</x>
+      <y>300</y>
       <width>51</width>
       <height>31</height>
      </rect>
@@ -244,10 +204,10 @@
    <widget class="QGroupBox" name="groupBoxWorkZone">
     <property name="geometry">
      <rect>
-      <x>490</x>
-      <y>40</y>
-      <width>1031</width>
-      <height>951</height>
+      <x>450</x>
+      <y>20</y>
+      <width>1041</width>
+      <height>991</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -260,10 +220,10 @@
    <widget class="QGroupBox" name="groupBoxBreeksDescreption">
     <property name="geometry">
      <rect>
-      <x>1540</x>
-      <y>0</y>
+      <x>1520</x>
+      <y>20</y>
       <width>351</width>
-      <height>1031</height>
+      <height>991</height>
      </rect>
     </property>
     <property name="title">
@@ -273,20 +233,20 @@
    <widget class="QWidget" name="shadowWidget" native="true">
     <property name="geometry">
      <rect>
-      <x>489</x>
-      <y>39</y>
-      <width>1031</width>
-      <height>951</height>
+      <x>449</x>
+      <y>19</y>
+      <width>1041</width>
+      <height>991</height>
      </rect>
     </property>
    </widget>
    <widget class="AddButtonHover" name="buttonAdd">
     <property name="geometry">
      <rect>
-      <x>460</x>
-      <y>20</y>
-      <width>71</width>
-      <height>71</height>
+      <x>420</x>
+      <y>10</y>
+      <width>61</width>
+      <height>61</height>
      </rect>
     </property>
     <property name="cursor">
@@ -296,12 +256,58 @@
      <enum>Qt::TabFocus</enum>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-image:url(:/Images/Front/Images/plus.svg);</string>
+     <string notr="true">border-image:url(:/Images/Front/Images/pluss.png);
+background: none;</string>
     </property>
     <property name="text">
      <string/>
     </property>
    </widget>
+   <widget class="ImageHover" name="buttonImage">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>720</y>
+      <width>291</width>
+      <height>181</height>
+     </rect>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::TabFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="default">
+     <bool>false</bool>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelImageBackground">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>710</y>
+      <width>311</width>
+      <height>201</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: #e6f6ff;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <zorder>labelImageBackground</zorder>
    <zorder>shadowWidget</zorder>
    <zorder>buttonPage6</zorder>
    <zorder>buttonPage1</zorder>
@@ -310,10 +316,9 @@
    <zorder>buttonPage2</zorder>
    <zorder>buttonPage4</zorder>
    <zorder>note</zorder>
-   <zorder>labelImageBackground</zorder>
-   <zorder>buttonImage</zorder>
    <zorder>groupBoxWorkZone</zorder>
    <zorder>groupBoxBreeksDescreption</zorder>
+   <zorder>buttonImage</zorder>
    <zorder>buttonAdd</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
