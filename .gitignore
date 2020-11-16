@@ -4,7 +4,6 @@ build*
 src/*.o
 src/moc_*
 src/qrc_*
-src/ui_*
 src/fileLastVisit.txt
 src/.qmake*
 src/Makefile

@@ -6,6 +6,7 @@ void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
 	const int groupBoxHeight = 100;
 
   //-----BREEKS ZONE sizes-----
+	breeksZone->breeksZoneGroupBox->setFixedWidth(WORK_ZONE_BIG_WIDGET_WIDTH - 30);
   breeksZone->breeksZoneGroupBox->setFixedHeight(groupBoxHeight);
 	//breeksZone->breeksZoneGroupBox->setContentsMargins(0, 0, 0, 0);
 	breeksZone->breeksZoneGroupBox->setStyleSheet("QGroupBox {background: #F7F7F7; border: 1.5px solid #F1F1F1; border-radius: 20px;}");
