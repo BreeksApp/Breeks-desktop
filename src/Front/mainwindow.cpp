@@ -193,7 +193,7 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, breek
     }
   }
 
-  workZoneLayout_->addWidget(newZone.breeksZoneGroupBox, breeksZonesCount_ + 1, 0, 1, 6);
+	workZoneLayout_->addWidget(newZone.breeksZoneGroupBox, breeksZonesCount_ + 1, 0, 1, 6, Qt::AlignCenter);
   breeksDescriptionZoneLayout_->addWidget(newZone.breeksDescriptionGroupBox, breeksZonesCount_ + 1, 0);
 
   arrBreeksZones_.push_back(newZone);
