@@ -112,7 +112,7 @@ void Breek::connectToQml(int indexOfEmoji)
   if (quickWidget_ == nullptr) {
     quickWidget_ = new QQuickWidget(QUrl("qrc:/qml/Front/Qml/qml_for_breeks.qml"), this);
     quickWidget_->setResizeMode(QQuickWidget::SizeRootObjectToView);
-    quickWidget_->setFixedSize(0.875 * width_, 0.875 * height_);
+    quickWidget_->setFixedSize(1.125*width_, 1.125*height_);
     graphObject_ = quickWidget_->rootObject();
   }
 
@@ -140,7 +140,7 @@ void Breek::connectToQml(int indexOfEmoji, Directions dir,
   if (quickWidget_ == nullptr) {
       quickWidget_ = new QQuickWidget(QUrl("qrc:/qml/Front/Qml/qml_for_breeks.qml"), this);
       quickWidget_->setResizeMode(QQuickWidget::SizeRootObjectToView);
-      quickWidget_->setFixedSize(0.875 * width_, 0.875 * height_);
+      quickWidget_->setFixedSize(1.125*width_, 1.125*height_);
       graphObject_ = quickWidget_->rootObject();
   }
 
