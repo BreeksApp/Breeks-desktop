@@ -59,32 +59,6 @@ void MainWindow::noteChangePage(const int n)
 }
 
 //-------------------------BUTTONS-------------------------
-void MainWindow::on_buttonMakeBold_clicked()
-{
-	ui->note->setCharStyle(ui->note->charStyle::Bold);
-  //ui->note->writeToFile();
-}
-void MainWindow::on_buttonMakeItalic_clicked()
-{
-	ui->note->setCharStyle(ui->note->charStyle::Italic);
-  //ui->note->writeToFile();
-}
-void MainWindow::on_buttonMakeUnderline_clicked()
-{
-	ui->note->setCharStyle(ui->note->charStyle::Underline);
-  //ui->note->writeToFile();
-}
-void MainWindow::on_buttonMakeStrike_clicked()
-{
-	ui->note->setCharStyle(ui->note->charStyle::Strike);
-  //ui->note->writeToFile();
-}
-void MainWindow::on_buttonAddTodoList_clicked()
-{
-  ui->note->addTodoList();
-  //ui->note->writeToFile();
-}
-
 void MainWindow::on_buttonPage1_clicked()
 {
   ui->note->writeToDB(ui->note->getNumberCurrentFile());

@@ -12,7 +12,9 @@ void MainWindow::buildTimeTable()
 	effect->setYOffset(1);
 	effect->setColor("#909090");
 
-	ui->groupBoxWorkZone->setGraphicsEffect(effect);
+	ui->shadowWidget->setGraphicsEffect(effect); //fakeWidget
+	ui->shadowWidget->setStyleSheet("border-radius: 6px;");
+
 	ui->groupBoxWorkZone->setStyleSheet("background: #FFFFFF; border-radius: 6px;");
 
 	bigWidgetInWorkZone_->setFixedSize(WORK_ZONE_BIG_WIDGET_WIDTH, bigWidgetHeight_);
@@ -54,6 +56,8 @@ void MainWindow::buildTimeTable()
 
 void MainWindow::setDayInfo()
 {
+	iCurrentDay_ = 0;
+
 	arrDays_[iCurrentDay_].scrollArea->verticalScrollBar()->setStyleSheet(
 				"QScrollBar:vertical {"
 					"border: 0.1px solid #FFFFFF;"
@@ -227,7 +231,7 @@ void MainWindow::initializeDaysParameters()
 void MainWindow::setDaysStructure()
 {
   for (int i = 0; i < DAYS_COUNT; i++) {
-		arrDays_[i].groupBoxDay->setStyleSheet("QGroupBox {background: #F7F7F7; border: 1.5px solid #F9F9F9 ;border-radius: 20px;}");
+		arrDays_[i].groupBoxDay->setStyleSheet("QGroupBox {background: #F7F7F7; border: 1.5px solid #F9F9F9; border-radius: 20px;}");
     arrDays_[i].groupBoxDay->setLayout(arrDays_[i].layoutFullDay);
 
 		arrDays_[i].layoutFullDay->setContentsMargins(10, 10, 10, 30);

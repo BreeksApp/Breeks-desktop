@@ -74,12 +74,6 @@ private slots:
 //timetable
 	void setDayInfo();
 //note
-  //buttons to work with text
-	void on_buttonMakeBold_clicked();
-  void on_buttonMakeItalic_clicked();
-  void on_buttonMakeUnderline_clicked();
-  void on_buttonMakeStrike_clicked();
-  void on_buttonAddTodoList_clicked();
   //buttons to change pages
   void on_buttonPage1_clicked();
   void on_buttonPage2_clicked();

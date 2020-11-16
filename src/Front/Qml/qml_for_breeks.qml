@@ -34,8 +34,8 @@ Item
     property int direction // 1 - поворот вверх, 0 - поворот вниз
 
     // назначается вручную
-    property int pushButtonWidth: 80
-    property int pushButtonHeight: 80
+    property int pushButtonWidth: 100
+    property int pushButtonHeight: 100
     property var sceneWidth: 0.875 * pushButtonWidth
     property var sceneHeight: 0.875 * pushButtonHeight
     property var offset: 0.1

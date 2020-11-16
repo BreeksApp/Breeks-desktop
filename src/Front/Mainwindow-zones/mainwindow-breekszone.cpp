@@ -3,22 +3,29 @@
 
 void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
 {
-  const int groupBoxHeight = 120;
+	const int groupBoxHeight = 100;
 
   //-----BREEKS ZONE sizes-----
   breeksZone->breeksZoneGroupBox->setFixedHeight(groupBoxHeight);
+	//breeksZone->breeksZoneGroupBox->setContentsMargins(0, 0, 0, 0);
+	breeksZone->breeksZoneGroupBox->setStyleSheet("QGroupBox {background: #F7F7F7; border: 1.5px solid #F1F1F1; border-radius: 20px;}");
   breeksZone->breeksZoneLayout->setHorizontalSpacing(160);
   breeksZone->breeksZoneGroupBox->setLayout(breeksZone->breeksZoneLayout);
+	breeksZone->breeksZoneLayout->setMargin(0);
   breeksZone->flagIfPosFilled = false;
 
   for (int i = 0; i < DAYS_COUNT; ++i) {
-    breeksZone->arrBreeks[i]->setEnabled(false);
-    breeksZone->arrBreeks[i]->setState(false);
+		breeksZone->arrBreeks[i]->setEnabled(false);
+		breeksZone->arrBreeks[i]->setState(false);
+		breeksZone->arrBreeks[i]->setStyleSheet("background: #111111;");
+
+		breeksZone->arrBreeksZoneDays[i]->setFixedSize(90, 90);
+		breeksZone->arrBreeks[i]->setFixedSize(90, 90);
 
     connect(breeksZone->arrBreeks[i], SIGNAL(moveBreek(int, int, bool)), this, SLOT(moveBreek(int, int, bool)));
   }
 
-  //-----DeSCRIPTION ZONE-----
+	//-----DESCRIPTION ZONE-----
   breeksZone->breeksDescriptionGroupBox->setFixedSize(270, groupBoxHeight);
 
   breeksZone->breekText->setFixedSize(220, 50);
@@ -120,7 +127,7 @@ void MainWindow::buildBreeksDescriptionZone()
 
   breeksDescriptionZoneScrollArea_->setWidget(bigWidgetInBreeksDescriptionZone_);
 
-  breeksDescriptionZoneLayout_->setContentsMargins(0, 0, 0, 200);
+	//breeksDescriptionZoneLayout_->setContentsMargins(0, 0, 0, 200);
   bigWidgetInBreeksDescriptionZone_->setLayout(breeksDescriptionZoneLayout_);
 
 //GroupBox to describe posibilities of breeks
