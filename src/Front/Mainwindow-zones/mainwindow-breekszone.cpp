@@ -20,13 +20,13 @@ void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
 		breeksZone->arrBreeks[i]->setEnabled(false);
 		breeksZone->arrBreeks[i]->setState(false);
 
-		connect(breeksZone->arrBreeks[i], SIGNAL(sendSateToLilDay(int, int, int)), this, SLOT(changeBreeksZoneLilDayState(int, int, int)));
-
 		breeksZone->arrBreeksZoneDays[i]->setFixedSize(90, 90);
 		breeksZone->arrBreeks[i]->setFixedSize(90, 90);
 		breeksZone->arrBreeks[i]->setStyleSheet("background: none;");
 
+		connect(breeksZone->arrBreeks[i], SIGNAL(sendSateToLilDay(int, int, int)), this, SLOT(changeBreeksZoneLilDayState(int, int, int)));
     connect(breeksZone->arrBreeks[i], SIGNAL(moveBreek(int, int, bool)), this, SLOT(moveBreek(int, int, bool)));
+		connect(breeksZone->arrBreeks[i], SIGNAL(isHere(int, int, bool)), this, SLOT(setBreeksZoneLilDayShadow(int, int, bool)));
   }
 
 	//-----DESCRIPTION ZONE-----
@@ -257,10 +257,32 @@ void MainWindow::changeBreeksZoneLilDayState(int zoneIndex, int dayIndex, int iS
 			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setStyleSheet("background: #FFFFFF; border-radius: 4px;");
 		break;
 		case 1 :
-			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setStyleSheet("background: #66FF66; border-radius: 4px;");
+			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setStyleSheet("background: #d0f896; border-radius: 4px;");
 		break;
 		case 2 :
-			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setStyleSheet("background: #FF3366; border-radius: 4px;");
+			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setStyleSheet("background: #ff8696; border-radius: 4px;");
+	}
+}
+
+void MainWindow::setBreeksZoneLilDayShadow(int zoneIndex, int dayIndex, bool state)
+{
+	QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect;
+	shadow->setBlurRadius(9);
+	shadow->setXOffset(0);
+	shadow->setYOffset(0);
+	shadow->setColor("#81C4FF");
+
+	if (state) {
+		arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setGraphicsEffect(shadow);
+		if (dayIndex == iCurrentDay_) {
+			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setStyleSheet("background: #b3defc; border-radius: 4px;");
+		}
+	}
+	else {
+		arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setGraphicsEffect(nullptr);
+		if (dayIndex == iCurrentDay_) {
+			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setStyleSheet("background: #FFFFFF; border-radius: 4px;");
+		}
 	}
 }
 

@@ -87,11 +87,13 @@ void Breek::keyPressEvent(QKeyEvent *event)
 
   if (iKey == Qt::Key_D) {
 		workState_ = Conditions::GREY_FOREGROUND;
+		connectToQml(nEmoj_);
     emit moveBreek(zoneIndex_, dayIndex_, true);
   }
 
   if (iKey == Qt::Key_A) {
 		workState_ = Conditions::GREY_FOREGROUND;
+		connectToQml(nEmoj_);
     emit moveBreek(zoneIndex_, dayIndex_, false);
   }
 
@@ -134,11 +136,12 @@ void Breek::connectToQml(int indexOfEmoji)
   graphObject_->setProperty("indexOfEmoji", indexOfEmoji);
   QQmlProperty(graphObject_, "animationOn").write(false);
 	graphObject_->setProperty("indexOfCondFrom", Conditions::GREY_FOREGROUND);
+	graphObject_->setProperty("indexOfCondTo", Conditions::GREY_FOREGROUND);
 
   // работа с фоном сцены
   QColor color;
 	color.setNamedColor("#F7F7F7");
-  quickWidget_->quickWindow()->setColor(color);
+	quickWidget_->quickWindow()->setColor(color);
 
 //  QWidget *container = QWidget::createWindowContainer(&quickWidget_, this);
   // конец кода, связывающего кнопку с qml
@@ -198,6 +201,8 @@ void Breek::changeBreekState()
   } else {
     this->quickWidget_->setVisible(false);
   }
+
+	emit isHere(zoneIndex_, dayIndex_, state_);
 }
 
 int Breek::getWidth()

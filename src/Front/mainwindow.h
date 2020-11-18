@@ -90,6 +90,7 @@ private slots:
 //slot to fill original breeks positions in layout when they have been added on it(to avoid "position problem")
   void fillBreeksPositions(int);
 	void changeBreeksZoneLilDayState(int, int, int);
+	void setBreeksZoneLilDayShadow(int, int, bool);
 
 signals:
   void sendUsername(const QString);

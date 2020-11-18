@@ -191,16 +191,6 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, breek
 	newZone.breekText->moveCursor(QTextCursor::Start);
 	newZone.breekText->verticalScrollBar()->maximum();
 
-  for (int i = 0; i < arrSize; ++i) {
-		newZone.breeksZoneLayout->addWidget(newZone.arrBreeks[i], 1, i); // breeks added to layout here
-    newZone.arrBreeks[i]->setEmoj(newElement.nEmoji);
-    newZone.arrBreeks[i]->setIndex(newZone.zoneIndex, i);
-
-    if (daysCheck[i] == true) {
-      newZone.arrBreeks[i]->changeBreekState();
-    }
-  }
-
 	if (iCurrentDay_ < DAYS_COUNT & newZone.arrBreeks[iCurrentDay_]->getState()) {
 		newZone.arrBreeksZoneDays[iCurrentDay_]->setStyleSheet("background: #b3defc; border-radius: 4px;");
 	}
@@ -212,15 +202,25 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, breek
 
 	if (breeksZonesCount_ == 0) {
 		bigWidgetHeight_ += 130;
-  }
-  else {
+	}
+	else {
 		bigWidgetHeight_ += 125;
-  }
-
+	}
 	bigWidgetInWorkZone_->setFixedHeight(bigWidgetHeight_);
 	bigWidgetInBreeksDescriptionZone_->setFixedHeight(bigWidgetHeight_);
-
 	++breeksZonesCount_;
+
+	//ADD BREEKS
+
+	for (int i = 0; i < arrSize; ++i) {
+		arrBreeksZones_[breeksZonesCount_ - 1].breeksZoneLayout->addWidget(newZone.arrBreeks[i], 1, i); // breeks added to layout here
+		arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i]->setEmoj(newElement.nEmoji);
+		arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i]->setIndex(newZone.zoneIndex, i);
+
+		if (daysCheck[i] == true) {
+			arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i]->changeBreekState();
+		}
+	}
 }
 
 void MainWindow::recieveDayAndElementIndex(const int dayElementIndex, const int elementIndex)

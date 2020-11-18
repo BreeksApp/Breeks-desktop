@@ -338,7 +338,7 @@ void MainWindow::defineDayMoveFrom(int dayIndex, QString sColor) {
 					"QScrollBar::handle:vertical {"
 						"border: 0.5px solid #E3E3E3;"
 						"border-radius: 2px;"
-						"background: #" + sColor + ";"
+						"background: #" + sColor + ";" //#d0f896
 						"min-height: 0px;}"
 
 					"QScrollBar::add-line:vertical {"

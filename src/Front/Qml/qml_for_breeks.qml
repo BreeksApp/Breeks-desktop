@@ -23,7 +23,7 @@ Item
     property variant conditions:
     [
         "#FF3366", // red
-        "#ECEAEC", // grey - foreground
+        "#F7F7F7", // grey - foreground
         "#F7F7F7", // grey - background
         "#66FF66"  // green
     ]
@@ -186,8 +186,8 @@ Item
             spread: 0
             color: "darkgray"
             transparentBorder: true
-            horizontalOffset: getCondShadeOffset(condRectWidth)
-            verticalOffset: getCondShadeOffset(condRectHeight)
+            //horizontalOffset: getCondShadeOffset(condRectWidth)
+            //verticalOffset: getCondShadeOffset(condRectHeight)
         }
     }
     Rectangle
@@ -219,7 +219,7 @@ Item
         }
 
         // работа с тенью
-        layer.enabled: true
+        /*layer.enabled: true
         layer.effect: DropShadow
         {
             anchors.fill: emojiFrom
@@ -230,7 +230,7 @@ Item
             transparentBorder: true
             horizontalOffset: getEmojiShadeOffset(emojiRectWidth)
             verticalOffset: getEmojiShadeOffset(emojiRectHeight)
-        }
+        }*/
 
         Image {
             id: image
@@ -279,8 +279,8 @@ Item
             spread: 0
             color: "darkgray"
             transparentBorder: true
-            horizontalOffset: getCondShadeOffset(condRectWidth)
-            verticalOffset: getCondShadeOffset(condRectHeight)
+            //horizontalOffset: getCondShadeOffset(condRectWidth)
+            //verticalOffset: getCondShadeOffset(condRectHeight)
         }
     }
     /* 1 - 333, 2 - dark, 3 - dark + 16 */
@@ -313,7 +313,7 @@ Item
         }
 
         // работа с тенью
-        layer.enabled: true
+        /*layer.enabled: true
         layer.effect: DropShadow
         {
             anchors.fill: emojiTo
@@ -324,7 +324,7 @@ Item
             transparentBorder: true
             horizontalOffset: getEmojiShadeOffset(emojiRectWidth)
             verticalOffset: getEmojiShadeOffset(emojiRectHeight)
-        }
+        }*/
 
         Image {
             id: imageAppearing
