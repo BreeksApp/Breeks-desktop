@@ -1,5 +1,6 @@
 #include "Front/mainwindow.h"
 #include <QScrollArea>
+#include <QScrollBar>
 
 void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
 {
@@ -18,60 +19,119 @@ void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
   for (int i = 0; i < DAYS_COUNT; ++i) {
 		breeksZone->arrBreeks[i]->setEnabled(false);
 		breeksZone->arrBreeks[i]->setState(false);
-		breeksZone->arrBreeks[i]->setStyleSheet("background: #111111;");
+
+		connect(breeksZone->arrBreeks[i], SIGNAL(sendSateToLilDay(int, int, int)), this, SLOT(changeBreeksZoneLilDayState(int, int, int)));
 
 		breeksZone->arrBreeksZoneDays[i]->setFixedSize(90, 90);
 		breeksZone->arrBreeks[i]->setFixedSize(90, 90);
+		breeksZone->arrBreeks[i]->setStyleSheet("background: none;");
 
     connect(breeksZone->arrBreeks[i], SIGNAL(moveBreek(int, int, bool)), this, SLOT(moveBreek(int, int, bool)));
   }
 
 	//-----DESCRIPTION ZONE-----
-  breeksZone->breeksDescriptionGroupBox->setFixedSize(270, groupBoxHeight);
+	breeksZone->breeksDescriptionGroupBox->setFixedSize(300, groupBoxHeight);
+	breeksZone->breeksDescriptionGroupBox->setStyleSheet("QGroupBox{background: #F7F7F7; border: 1.5px solid #F1F1F1; border-radius: 15px;}");
 
-  breeksZone->breekText->setFixedSize(220, 50);
+	breeksDescriptionZoneScrollArea_->verticalScrollBar()->setStyleSheet(
+				"QScrollBar:vertical {"
+					"border: 0.1px solid #FFFFFF;"
+					"background: #FFFFFF;"
+					"width: 9px;"
+					"margin: 0px 0px 0px 0px;}"
+
+				"QScrollBar::handle:vertical {"
+					"border: 0.5px solid #c7c7bf;"
+					"border-radius: 4px;"
+					"background: #c7c7bf;"
+					"min-height: 0px;}"
+
+				"QScrollBar::add-line:vertical {"
+				"border: none;"
+				"background: none;}"
+
+				"QScrollBar::sub-line:vartical {"
+				"border: none;"
+				"background: none;}");
+
+
+	QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+	effect->setBlurRadius(5);
+	effect->setXOffset(0);
+	effect->setYOffset(0);
+	effect->setColor("#BABCBE");
+
+	breeksZone->breekText->setFixedSize(240, 60);
+	breeksZone->breekText->setStyleSheet("background: #FFFFFF; border: 0.2px solid #EEEEEE; border-radius: 4px;"
+																			 "padding-left: 2; padding-top: 2; padding-bottom: 2; padding-right: 2;");
+	QFont font("Helvetica", 12);
+	breeksZone->breekText->setFont(font);
+
+	breeksZone->breekText->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded);
+	breeksZone->breekText->verticalScrollBar()->setStyleSheet(
+				"QScrollBar:vertical {"
+					"border: 0.1px solid #FFFFFF;"
+					"background: #FFFFFF;"
+					"width: 12px;"
+					"margin: 0px 0px 0px 0px;}"
+
+				"QScrollBar::handle:vertical {"
+					//"border: 0.5px solid #c7c7bf;"
+					"border-radius: 3px;"
+					"background: #e3e3df;"
+					"min-height: 0px;}"
+
+				"QScrollBar::add-line:vertical {"
+					"border: none;"
+					"background: none;}"
+
+				"QScrollBar::sub-line:vartical {"
+					"border: none;"
+					"background: none;}");
 
   const int buttonSize = 20;
   breeksZone->buttonBreekDays->setFixedSize(buttonSize, buttonSize);
   breeksZone->buttonDelete->setFixedSize(buttonSize, buttonSize);
 
-  breeksZone->breeksDescriptionLayout->addWidget(breeksZone->breekText, 0, 0, 1, 1);
-  QFont font("Helvetica", 12);
-  breeksZone->breekText->setFont(font);
+	breeksZone->breeksDescriptionLayout->addWidget(breeksZone->breekText, 0, 0, 1, 1);
 
-  breeksZone->breeksDescriptionLayout->addWidget(breeksZone->buttonBreekDays, 0, 2);
-  breeksZone->buttonBreekDays->setStyleSheet("border-image:url(:/Images/Front/Images/calendar-and-clock.png)");
+	//breeksZone->breeksDescriptionLayout->addWidget(breeksZone->buttonBreekDays, 0, 2);
+	//breeksZone->buttonBreekDays->setStyleSheet("border-image:url(:/Images/Front/Images/calendar-and-clock.png)");
+	//breeksZone->buttonBreekDays->setStyleSheet("background: none;");
 
-  breeksZone->breeksDescriptionLayout->addWidget(breeksZone->buttonDelete, 1, 2);
-  breeksZone->buttonDelete->setStyleSheet("border-image:url(:/Images/Front/Images/recycle-bin.png)");
+	breeksZone->breeksDescriptionLayout->addWidget(breeksZone->buttonDelete, 0, 1);
+	breeksZone->buttonDelete->setStyleSheet("background: none; border-image:url(:/Images/Front/Images/trash.png)");
 
   QHBoxLayout *days = new QHBoxLayout;
-  days->setContentsMargins(0, 0, 0, 0);
+	days->setContentsMargins(0, 0, 28, 0);
 
   for (int i = 0; i < DAYS_COUNT; ++i) {
     breeksZone->arrBreeksZoneDays[i]->setFixedSize(25, 20);
-    days->addWidget(breeksZone->arrBreeksZoneDays[i]);
+		breeksZone->arrBreeksZoneDays[i]->setStyleSheet("background: #FFFFFF; border-radius: 4px;");
+		days->addWidget(breeksZone->arrBreeksZoneDays[i], Qt::AlignCenter);
   }
-  breeksZone->arrBreeksZoneDays[0]->setText("Mn");
-  breeksZone->arrBreeksZoneDays[1]->setText("Tu");
-  breeksZone->arrBreeksZoneDays[2]->setText("Wd");
-  breeksZone->arrBreeksZoneDays[3]->setText("Th");
-  breeksZone->arrBreeksZoneDays[4]->setText("Fr");
-  breeksZone->arrBreeksZoneDays[5]->setText("Sa");
+	breeksZone->arrBreeksZoneDays[0]->setText("Пн");
+	breeksZone->arrBreeksZoneDays[1]->setText("Вт");
+	breeksZone->arrBreeksZoneDays[2]->setText("Ср");
+	breeksZone->arrBreeksZoneDays[3]->setText("Чт");
+	breeksZone->arrBreeksZoneDays[4]->setText("Пт");
+	breeksZone->arrBreeksZoneDays[5]->setText("Сб");
 
   //
   QPushButton *helper = new QPushButton;
-  helper->setFixedSize(5, 20);
+	helper->setFixedSize(15, 20);
   helper->setEnabled(false);
   helper->setFlat(true);
-  days->addWidget(helper);
+	helper->setStyleSheet("background: none;");
+	//days->addWidget(helper);
   //
 
 	QVBoxLayout *mainLayout = new QVBoxLayout;
 	mainLayout->addLayout(breeksZone->breeksDescriptionLayout);
 	mainLayout->addLayout(days);
-	//mainLayout->setContentsMargins(10, 13, 10, 10);
+	mainLayout->setContentsMargins(6, 6, 6, 4);
 
+	breeksZone->breeksDescriptionGroupBox->setContentsMargins(0, 0, 0, 0);
 	breeksZone->breeksDescriptionGroupBox->setLayout(mainLayout);
   //
 
@@ -115,32 +175,40 @@ void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
 
 void MainWindow::buildBreeksDescriptionZone()
 {
-	ui->groupBoxBreeksDescreption->setStyleSheet("QGroupBox{background: #FFFFFF; border-radius: 6px;}a");
+	QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+	effect->setBlurRadius(10);
+	effect->setXOffset(0);
+	effect->setYOffset(1);
+	effect->setColor("#909090");
+	ui->groupBoxBreeksDescreption->setGraphicsEffect(effect);
+	ui->groupBoxBreeksDescreption->setStyleSheet("QGroupBox{background: #FFFFFF; border-radius: 6px;}");
+
 
   QHBoxLayout *layOut = new QHBoxLayout;
   ui->groupBoxBreeksDescreption->setLayout(layOut);
 
-	//const int scrollAreaWidth = 323;
-	//const int scrollAreaHeight = 950;
-
 	breeksDescriptionZoneScrollArea_->setFixedHeight(ui->groupBoxBreeksDescreption->height() - 20);
   layOut->addWidget(breeksDescriptionZoneScrollArea_);
 
-	bigWidgetInBreeksDescriptionZone_->setFixedSize(ui->groupBoxBreeksDescreption->width() - 20, bigWidgetHeight_);
+	bigWidgetInBreeksDescriptionZone_->setFixedSize(ui->groupBoxBreeksDescreption->width() - 30, bigWidgetHeight_);
+	bigWidgetInBreeksDescriptionZone_->setContentsMargins(7, 0, 0, 0);
+	bigWidgetInBreeksDescriptionZone_->setStyleSheet("QWidget{background: #FFFFFF;}");
+
 	breeksDescriptionZoneScrollArea_->setWidget(bigWidgetInBreeksDescriptionZone_);
-	breeksDescriptionZoneScrollArea_->setStyleSheet("border-radius: 9px;");
+	breeksDescriptionZoneScrollArea_->setStyleSheet("background: #FFFFFF; border-radius: 9px;");
 
 	//breeksDescriptionZoneLayout_->setContentsMargins(0, 0, 0, 200);
   bigWidgetInBreeksDescriptionZone_->setLayout(breeksDescriptionZoneLayout_);
 
 //GroupBox to describe posibilities of breeks
-  QGroupBox *description = new QGroupBox;
+	QGroupBox *mfc = new QGroupBox;
 
 	//const int descriptionWidth = 270;
   const int descriptionHeight = 480;
 
-	description->setFixedHeight(descriptionHeight);
-	breeksDescriptionZoneLayout_->addWidget(description, 0, 0, Qt::AlignCenter);
+	mfc->setFixedHeight(descriptionHeight);
+	mfc->setStyleSheet("QGroupBox{background: #F7F7F7; border-radius: 6px;}");
+	breeksDescriptionZoneLayout_->addWidget(mfc, 0, 0, Qt::AlignCenter);
 }
 
 void MainWindow::setDaysConnect(breeksZone_t* breeksZone)
@@ -159,7 +227,7 @@ void MainWindow::allocateMemoryForBreeks(breeksZone_t* breeksZone)
   breeksZone->breeksDescriptionGroupBox = new QGroupBox;
   breeksZone->breeksDescriptionLayout = new QGridLayout;
 
-  breeksZone->breekText = new TextNewElement;
+	breeksZone->breekText = new TimetableTextEdit();
   breeksZone->buttonBreekDays = new QPushButton;
   breeksZone->buttonDelete = new QPushButton;
 
@@ -175,7 +243,25 @@ void MainWindow::fillBreeksPositions(int zoneIndex)
     for (auto i : arrBreeksZones_[zoneIndex].arrBreeks) {
       arrBreeksZones_[zoneIndex].positionsOfBreeks.push_back(i->pos());
     }
-  }
+	}
+}
+
+void MainWindow::changeBreeksZoneLilDayState(int zoneIndex, int dayIndex, int iState)
+{
+	if (dayIndex == iCurrentDay_) {
+		return;
+	}
+
+	switch (iState) {
+		case 0 :
+			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setStyleSheet("background: #FFFFFF; border-radius: 4px;");
+		break;
+		case 1 :
+			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setStyleSheet("background: #66FF66; border-radius: 4px;");
+		break;
+		case 2 :
+			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setStyleSheet("background: #FF3366; border-radius: 4px;");
+	}
 }
 
 void MainWindow::delay(int millisecondsToWait)

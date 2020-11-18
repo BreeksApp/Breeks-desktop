@@ -150,7 +150,7 @@ void MainWindow::recieveTimeTableZoneData(bool *daysCheck, const int arrSize, el
 void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, breeksData_t newElement)
 {
 //if we arleady have breeks zone with this name
-  for (breeksZone_t &value : arrBreeksZones_) {
+	for (breeksZone_t &value : arrBreeksZones_) { //value == zone
     if (value.breekText->toPlainText() == newElement.text) {
 
       for (int i = 0; i < DAYS_COUNT; i++) {
@@ -171,6 +171,10 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, breek
         }
       }
 
+			if (iCurrentDay_ < DAYS_COUNT & value.arrBreeks[iCurrentDay_]->getState()) {
+				value.arrBreeksZoneDays[iCurrentDay_]->setStyleSheet("background: #b3defc; border-radius: 4px;");
+			}
+
       return;
     }
   }
@@ -181,7 +185,11 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, breek
   allocateMemoryForBreeks(&newZone); // breeks constructor call here (6 constructors)
   setBreeksZone(&newZone); // make invisible and connect move event
   setDaysConnect(&newZone); // arrBreeksZoneDays[6] connect clicked() with breeks->changeBreekState
-  newZone.breekText->setText(newElement.text);
+
+	newZone.breekText->setFocus();
+	newZone.breekText->fillCharsAndSetText(newElement.text, newElement.charStyleVector);
+	newZone.breekText->moveCursor(QTextCursor::Start);
+	newZone.breekText->verticalScrollBar()->maximum();
 
   for (int i = 0; i < arrSize; ++i) {
 		newZone.breeksZoneLayout->addWidget(newZone.arrBreeks[i], 1, i); // breeks added to layout here
@@ -192,6 +200,10 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, breek
       newZone.arrBreeks[i]->changeBreekState();
     }
   }
+
+	if (iCurrentDay_ < DAYS_COUNT & newZone.arrBreeks[iCurrentDay_]->getState()) {
+		newZone.arrBreeksZoneDays[iCurrentDay_]->setStyleSheet("background: #b3defc; border-radius: 4px;");
+	}
 
 	workZoneLayout_->addWidget(newZone.breeksZoneGroupBox, breeksZonesCount_ + 1, 0, 1, 6, Qt::AlignCenter);
 	breeksDescriptionZoneLayout_->addWidget(newZone.breeksDescriptionGroupBox, breeksZonesCount_ + 1, 0, Qt::AlignCenter);
@@ -286,6 +298,10 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
     arrBreeksZones_[zoneIndex].flagIfPosFilled = true;
   }
 
+	if (dayIndex == iCurrentDay_) {
+		arrBreeksZones_[zoneIndex].arrBreeksZoneDays[iCurrentDay_]->setStyleSheet("background: #FFFFFF; border-radius: 4px;");
+	}
+
   if (right) {
 
     if (dayIndex < DAYS_COUNT - 1) {
@@ -309,10 +325,9 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
         zone->arrBreeks[dayIndex + 1]->changeBreekState();
         zone->arrBreeks[dayIndex]->move(posFrom);
 
-        zone->arrBreeks[dayIndex + 1]->setFocus();
-
         workZoneScrollArea_->ensureVisible(zone->arrBreeks[dayIndex + 1]->pos().x() + 250, 0);
       }
+			zone->arrBreeks[dayIndex + 1]->setFocus();
     }
 
   }
@@ -337,12 +352,15 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
         zone->arrBreeks[dayIndex - 1]->changeBreekState();
         zone->arrBreeks[dayIndex]->move(posFrom);
 
-        zone->arrBreeks[dayIndex - 1]->setFocus();
-
         workZoneScrollArea_->ensureVisible(zone->arrBreeks[dayIndex - 1]->pos().x() - 250, 0);
       }
+			zone->arrBreeks[dayIndex - 1]->setFocus();
     }
   }
+
+	if (iCurrentDay_ < DAYS_COUNT & arrBreeksZones_[zoneIndex].arrBreeks[iCurrentDay_]->getState()) {
+		arrBreeksZones_[zoneIndex].arrBreeksZoneDays[iCurrentDay_]->setStyleSheet("background: #b3defc; border-radius: 4px;");
+	}
 }
 
 void MainWindow::dropElement(const int dayNumber, const int dayIndex, const int elemIndex, const elementData_t elemData)

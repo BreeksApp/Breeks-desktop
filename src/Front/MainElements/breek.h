@@ -61,6 +61,7 @@ private:
 
 signals:
   void moveBreek(int, int, bool);
+	void sendSateToLilDay(int, int, int);
 
 public slots:
   void changeBreekState();

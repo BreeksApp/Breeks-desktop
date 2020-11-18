@@ -171,6 +171,7 @@ void AddElement::on_buttonAdd_clicked()
   else if (breeksZoneCondition_ == true) {
     breeksData_t newElement;
     newElement.text = text;
+		newElement.charStyleVector = ui->text->getCharStyleVector();
     newElement.nEmoji = currentEmoji - 1;
 
     emit sendBreeksZoneData(daysCheck_, DAYS_CHECK_COUNT, newElement);
