@@ -86,12 +86,25 @@ void Breek::keyPressEvent(QKeyEvent *event)
   }
 
   if (iKey == Qt::Key_D) {
+		workState_ = Conditions::GREY_FOREGROUND;
     emit moveBreek(zoneIndex_, dayIndex_, true);
   }
 
   if (iKey == Qt::Key_A) {
+		workState_ = Conditions::GREY_FOREGROUND;
     emit moveBreek(zoneIndex_, dayIndex_, false);
   }
+
+	//for description
+	if (workState_ == Conditions::GREY_FOREGROUND || workState_ == Conditions::GREY_BACKGROUND || !state_) {
+		emit sendSateToLilDay(zoneIndex_, dayIndex_, 0);
+	}
+	else if (workState_ == Conditions::GREEN) {
+		emit sendSateToLilDay(zoneIndex_, dayIndex_, 1);
+	}
+	else {
+		emit sendSateToLilDay(zoneIndex_, dayIndex_, 2);
+	}
 }
 
 bool Breek::getState()
@@ -120,11 +133,11 @@ void Breek::connectToQml(int indexOfEmoji)
 
   graphObject_->setProperty("indexOfEmoji", indexOfEmoji);
   QQmlProperty(graphObject_, "animationOn").write(false);
-  graphObject_->setProperty("indexOfCondFrom", Conditions::GREY_FOREGROUND);
+	graphObject_->setProperty("indexOfCondFrom", Conditions::GREY_FOREGROUND);
 
   // работа с фоном сцены
   QColor color;
-  color.setNamedColor("#FFFFFF");
+	color.setNamedColor("#F7F7F7");
   quickWidget_->quickWindow()->setColor(color);
 
 //  QWidget *container = QWidget::createWindowContainer(&quickWidget_, this);
@@ -149,7 +162,7 @@ void Breek::connectToQml(int indexOfEmoji, Directions dir,
   graphObject_->setProperty("indexOfCondFrom", from);
   graphObject_->setProperty("indexOfCondTo", to);
   QQmlProperty(graphObject_, "animationOn").write(false);
-  QQmlProperty(graphObject_, "animationOn").write(true);
+	QQmlProperty(graphObject_, "animationOn").write(true);
 
   // работа с фоном сцены
 //  QColor color = Qt::GlobalColor::gray;

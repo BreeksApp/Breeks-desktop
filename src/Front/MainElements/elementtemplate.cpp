@@ -74,7 +74,7 @@ ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
 														"width: 13px}");
 
 	text_->setFixedHeight(tagButton_->height());
-	QFont font("Helvetica", 10);
+	QFont font("Helvetica", 11);
 	text_->setFont(font);
 
 	elementLayout_->addWidget(tagButton_, 0, 0);

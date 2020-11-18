@@ -45,6 +45,7 @@ struct elementData_t {
 \
 struct breeksData_t {
   QString text;
+	QVector<charStyle_t> charStyleVector;
   int nEmoji;
 };
 

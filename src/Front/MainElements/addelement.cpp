@@ -147,7 +147,7 @@ void AddElement::on_buttonAdd_clicked()
 
     newElement.text = text;
 
-		if ((ui->timeStart < ui->timeEnd) || (ui->timeEnd->time().toString() == "00:00:00")) {
+		if ((ui->timeStart->time() < ui->timeEnd->time()) || (ui->timeEnd->time().toString() == "00:00:00")) {
 			newElement.timeStart = ui->timeStart->time().toString();
 			newElement.timeEnd = ui->timeEnd->time().toString();
     }
@@ -171,6 +171,7 @@ void AddElement::on_buttonAdd_clicked()
   else if (breeksZoneCondition_ == true) {
     breeksData_t newElement;
     newElement.text = text;
+		newElement.charStyleVector = ui->text->getCharStyleVector();
     newElement.nEmoji = currentEmoji - 1;
 
     emit sendBreeksZoneData(daysCheck_, DAYS_CHECK_COUNT, newElement);

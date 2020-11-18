@@ -89,6 +89,7 @@ private slots:
 
 //slot to fill original breeks positions in layout when they have been added on it(to avoid "position problem")
   void fillBreeksPositions(int);
+	void changeBreeksZoneLilDayState(int, int, int);
 
 signals:
   void sendUsername(const QString);
@@ -234,14 +235,13 @@ private:
 
     QGroupBox *breeksDescriptionGroupBox;
     QGridLayout *breeksDescriptionLayout;
-    TextNewElement *breekText;
+		TimetableTextEdit *breekText;
 
     QPushButton *buttonBreekDays;
     QPushButton *arrBreeksZoneDays[6];
     QPushButton *buttonDelete;
 
     int zoneIndex;
-
   };
 
   QVector<breeksZone_t> arrBreeksZones_;

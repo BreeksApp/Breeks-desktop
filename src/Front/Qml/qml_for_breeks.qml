@@ -24,7 +24,7 @@ Item
     [
         "#FF3366", // red
         "#ECEAEC", // grey - foreground
-        "#ECEAEC", // grey - background
+        "#F7F7F7", // grey - background
         "#66FF66"  // green
     ]
     property int indexOfCondFrom

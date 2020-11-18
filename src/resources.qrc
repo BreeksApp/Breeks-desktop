@@ -69,6 +69,7 @@
         <file>Front/Images/plus.svg</file>
         <file>Front/Images/plus.png</file>
         <file>Front/Images/pluss.png</file>
+        <file>Front/Images/plus2.png</file>
     </qresource>
     <qresource prefix="/qml">
         <file>Front/Qml/qml_for_breeks.qml</file>

@@ -56,13 +56,15 @@ void MainWindow::buildTimeTable()
 
 void MainWindow::setDayInfo()
 {
-	iCurrentDay_ = 0;
+	if (iCurrentDay_ = DAYS_COUNT) {
+		iCurrentDay_ = 0;
+	}
 
 	arrDays_[iCurrentDay_].scrollArea->verticalScrollBar()->setStyleSheet(
 				"QScrollBar:vertical {"
 					"border: 0.1px solid #FFFFFF;"
 					"background: #FFFFFF;"
-					"width: 16px;    "
+					"width: 12px;    "
 					"margin: 0px 0px 0px 0px;}"
 
 				"QScrollBar::handle:vertical {"
@@ -78,6 +80,11 @@ void MainWindow::setDayInfo()
 				"QScrollBar::sub-line:vartical {"
 					"border: none;"
 					"background: none;}");
+
+	//for days in description zone
+	for (int i = 0; i < breeksZonesCount_; ++i) {
+		arrBreeksZones_[i].arrBreeksZoneDays[iCurrentDay_]->setStyleSheet("background: #FFFFFF; border-radius: 4px;");
+	}
 
 	QDate date = QDate::currentDate();
 
@@ -97,12 +104,12 @@ void MainWindow::setDayInfo()
 					"QScrollBar:vertical {"
 						"border: 0.1px solid #FFFFFF;"
 						"background: #FFFFFF;"
-						"width: 16px;    "
+						"width: 12px;    "
 						"margin: 0px 0px 0px 0px;}"
 
 					"QScrollBar::handle:vertical {"
 						"border: 0.5px solid #b3defc;"
-						"border-radius: 4px;"
+						"border-radius: 2px;"
 						"background: #b3defc;"
 						"min-height: 0px;}"
 
@@ -113,6 +120,10 @@ void MainWindow::setDayInfo()
 					"QScrollBar::sub-line:vartical {"
 						"border: none;"
 						"background: none;}");
+	}
+
+	for (int i = 0; i < breeksZonesCount_; ++i) {
+		arrBreeksZones_[i].arrBreeksZoneDays[iCurrentDay_]->setStyleSheet("background: #b3defc; border-radius: 4px;");
 	}
 
 	switch (iCurrentDay_) {
@@ -231,7 +242,7 @@ void MainWindow::initializeDaysParameters()
 void MainWindow::setDaysStructure()
 {
   for (int i = 0; i < DAYS_COUNT; i++) {
-		arrDays_[i].groupBoxDay->setStyleSheet("QGroupBox {background: #F7F7F7; border: 1.5px solid #F9F9F9; border-radius: 20px;}");
+		arrDays_[i].groupBoxDay->setStyleSheet("QGroupBox {background: #F7F7F7; border: 1.5px solid #F1F1F1; border-radius: 20px;}");
     arrDays_[i].groupBoxDay->setLayout(arrDays_[i].layoutFullDay);
 
 		arrDays_[i].layoutFullDay->setContentsMargins(10, 10, 10, 30);
@@ -256,12 +267,12 @@ void MainWindow::setDaysStructure()
 					"QScrollBar:vertical {"
 						"border: 0.1px solid #FFFFFF;"
 						"background: #FFFFFF;"
-						"width: 16px;"
+						"width: 12px;"
 						"margin: 0px 0px 0px 0px;}"
 
 					"QScrollBar::handle:vertical {"
 						"border: 0.5px solid #E3E3E3;"
-						"border-radius: 4px;"
+						"border-radius: 2px;"
 						"background: #FCFCFC;"
 						"min-height: 0px;}"
 
@@ -292,7 +303,7 @@ void MainWindow::setDaysStructure()
 		arrDays_[i].widgetDay->setLayout(arrDays_[i].helpLayout);
 
 		arrDays_[i].helpLayout->addLayout(arrDays_[i].layoutDayElements, Qt::AlignCenter);
-		arrDays_[i].layoutDayElements->setContentsMargins(3, 10, 0, 10); //i don't know why, but it's badly needed
+		arrDays_[i].layoutDayElements->setContentsMargins(6, 10, 0, 10); //i don't know why, but it's badly needed
 		arrDays_[i].layoutDayElements->setSpacing(15);
 	}
 }
@@ -321,12 +332,12 @@ void MainWindow::defineDayMoveFrom(int dayIndex, QString sColor) {
 					"QScrollBar:vertical {"
 						"border: 0.1px solid #FFFFFF;"
 						"background: #FFFFFF;"
-						"width: 16px;"
+						"width: 9px;"
 						"margin: 0px 0px 0px 0px;}"
 
 					"QScrollBar::handle:vertical {"
 						"border: 0.5px solid #E3E3E3;"
-						"border-radius: 4px;"
+						"border-radius: 2px;"
 						"background: #" + sColor + ";"
 						"min-height: 0px;}"
 
