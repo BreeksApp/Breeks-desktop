@@ -212,14 +212,25 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, breek
 
 	//ADD BREEKS
 
-	for (int i = 0; i < arrSize; ++i) {
-		arrBreeksZones_[breeksZonesCount_ - 1].breeksZoneLayout->addWidget(newZone.arrBreeks[i], 1, i); // breeks added to layout here
-		arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i]->setEmoj(newElement.nEmoji);
-		arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i]->setIndex(newZone.zoneIndex, i);
+	int i = 0;
+	while (i < 11) {
+		arrBreeksZones_[breeksZonesCount_ - 1].breeksZoneLayout->addWidget(newZone.arrBreeks[i / 2], 1, i);// breeks added to layout here
 
-		if (daysCheck[i] == true) {
-			arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i]->changeBreekState();
+		QGroupBox *emojiPack = new QGroupBox();
+		emojiPack->setFixedWidth(160);
+		emojiPack->setStyleSheet("background: #111111");
+		if (i != 10) {
+			arrBreeksZones_[breeksZonesCount_ - 1].breeksZoneLayout->addWidget(emojiPack, 1, i + 1);
 		}
+
+		arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->setEmoj(newElement.nEmoji);
+		arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->setIndex(newZone.zoneIndex, i / 2);
+
+		if (daysCheck[i / 2] == true) {
+			arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->changeBreekState();
+		}
+
+		i += 2;
 	}
 }
 
@@ -282,7 +293,7 @@ void MainWindow::recieveDayAndElementIndexAndTagColor(const int dayIndex, const 
 
 void MainWindow::recieveUsername()
 {
-    this->show();
+		this->showMaximized();
 }
 
 void MainWindow::recieveMimeData(const elementData_t data, const QPixmap pixMap)
@@ -297,10 +308,6 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
     fillBreeksPositions(zoneIndex);
     arrBreeksZones_[zoneIndex].flagIfPosFilled = true;
   }
-
-	if (dayIndex == iCurrentDay_) {
-		arrBreeksZones_[zoneIndex].arrBreeksZoneDays[iCurrentDay_]->setStyleSheet("background: #FFFFFF; border-radius: 4px;");
-	}
 
   if (right) {
 
@@ -328,6 +335,7 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
         workZoneScrollArea_->ensureVisible(zone->arrBreeks[dayIndex + 1]->pos().x() + 250, 0);
       }
 			zone->arrBreeks[dayIndex + 1]->setFocus();
+			return;
     }
 
   }
@@ -355,9 +363,13 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
         workZoneScrollArea_->ensureVisible(zone->arrBreeks[dayIndex - 1]->pos().x() - 250, 0);
       }
 			zone->arrBreeks[dayIndex - 1]->setFocus();
+			return;
     }
   }
 
+	if (dayIndex == iCurrentDay_) {
+		arrBreeksZones_[zoneIndex].arrBreeksZoneDays[iCurrentDay_]->setStyleSheet("background: #FFFFFF; border-radius: 4px;");
+	}
 	if (iCurrentDay_ < DAYS_COUNT & arrBreeksZones_[zoneIndex].arrBreeks[iCurrentDay_]->getState()) {
 		arrBreeksZones_[zoneIndex].arrBreeksZoneDays[iCurrentDay_]->setStyleSheet("background: #b3defc; border-radius: 4px;");
 	}

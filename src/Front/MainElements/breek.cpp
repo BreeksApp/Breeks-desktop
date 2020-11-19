@@ -99,7 +99,9 @@ void Breek::keyPressEvent(QKeyEvent *event)
 
 	//for description
 	if (workState_ == Conditions::GREY_FOREGROUND || workState_ == Conditions::GREY_BACKGROUND || !state_) {
-		emit sendSateToLilDay(zoneIndex_, dayIndex_, 0);
+		if (state_) {
+			emit sendSateToLilDay(zoneIndex_, dayIndex_, 0);
+		}
 	}
 	else if (workState_ == Conditions::GREEN) {
 		emit sendSateToLilDay(zoneIndex_, dayIndex_, 1);
@@ -194,6 +196,7 @@ void Breek::setIndex(const int zoneIndex, const int dayIndex)
 void Breek::changeBreekState()
 {
   state_ = !state_;
+	workState_ = Conditions::GREY_FOREGROUND;
   this->setEnabled(!this->isEnabled());
 
   if (state_) {

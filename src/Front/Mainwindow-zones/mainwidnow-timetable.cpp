@@ -64,7 +64,7 @@ void MainWindow::setDayInfo()
 				"QScrollBar:vertical {"
 					"border: 0.1px solid #FFFFFF;"
 					"background: #FFFFFF;"
-					"width: 12px;    "
+					"width: 9px;    "
 					"margin: 0px 0px 0px 0px;}"
 
 				"QScrollBar::handle:vertical {"
@@ -104,7 +104,7 @@ void MainWindow::setDayInfo()
 					"QScrollBar:vertical {"
 						"border: 0.1px solid #FFFFFF;"
 						"background: #FFFFFF;"
-						"width: 12px;    "
+						"width: 9px;    "
 						"margin: 0px 0px 0px 0px;}"
 
 					"QScrollBar::handle:vertical {"
@@ -267,7 +267,7 @@ void MainWindow::setDaysStructure()
 					"QScrollBar:vertical {"
 						"border: 0.1px solid #FFFFFF;"
 						"background: #FFFFFF;"
-						"width: 12px;"
+						"width: 9px;"
 						"margin: 0px 0px 0px 0px;}"
 
 					"QScrollBar::handle:vertical {"

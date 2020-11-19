@@ -11,9 +11,11 @@ void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
   breeksZone->breeksZoneGroupBox->setFixedHeight(groupBoxHeight);
 	//breeksZone->breeksZoneGroupBox->setContentsMargins(0, 0, 0, 0);
 	breeksZone->breeksZoneGroupBox->setStyleSheet("QGroupBox {background: #F7F7F7; border: 1.5px solid #F1F1F1; border-radius: 20px;}");
-  breeksZone->breeksZoneLayout->setHorizontalSpacing(160);
-  breeksZone->breeksZoneGroupBox->setLayout(breeksZone->breeksZoneLayout);
-	breeksZone->breeksZoneLayout->setMargin(0);
+
+	breeksZone->breeksZoneLayout->setHorizontalSpacing(5);
+
+	breeksZone->breeksZoneGroupBox->setLayout(breeksZone->breeksZoneLayout);
+	breeksZone->breeksZoneLayout->setContentsMargins(60, 0, 0, 0);
   breeksZone->flagIfPosFilled = false;
 
   for (int i = 0; i < DAYS_COUNT; ++i) {
@@ -252,14 +254,23 @@ void MainWindow::changeBreeksZoneLilDayState(int zoneIndex, int dayIndex, int iS
 		return;
 	}
 
+	QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect;
+	shadow->setBlurRadius(9);
+	shadow->setXOffset(0);
+	shadow->setYOffset(0);
+	shadow->setColor("#81C4FF");
+
 	switch (iState) {
 		case 0 :
+			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setGraphicsEffect(shadow);
 			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setStyleSheet("background: #FFFFFF; border-radius: 4px;");
 		break;
 		case 1 :
+			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setGraphicsEffect(nullptr);
 			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setStyleSheet("background: #d0f896; border-radius: 4px;");
 		break;
 		case 2 :
+			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setGraphicsEffect(nullptr);
 			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setStyleSheet("background: #ff8696; border-radius: 4px;");
 	}
 }
@@ -271,6 +282,8 @@ void MainWindow::setBreeksZoneLilDayShadow(int zoneIndex, int dayIndex, bool sta
 	shadow->setXOffset(0);
 	shadow->setYOffset(0);
 	shadow->setColor("#81C4FF");
+
+	arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setStyleSheet("background: #FFFFFF; border-radius: 4px;");
 
 	if (state) {
 		arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setGraphicsEffect(shadow);
