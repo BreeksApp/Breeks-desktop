@@ -12,10 +12,8 @@ void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
 	//breeksZone->breeksZoneGroupBox->setContentsMargins(0, 0, 0, 0);
 	breeksZone->breeksZoneGroupBox->setStyleSheet("QGroupBox {background: #F7F7F7; border: 1.5px solid #F1F1F1; border-radius: 20px;}");
 
-	breeksZone->breeksZoneLayout->setHorizontalSpacing(5);
-
 	breeksZone->breeksZoneGroupBox->setLayout(breeksZone->breeksZoneLayout);
-	breeksZone->breeksZoneLayout->setContentsMargins(60, 0, 0, 0);
+	breeksZone->breeksZoneLayout->setContentsMargins(100, 0, 100, 0);
   breeksZone->flagIfPosFilled = false;
 
   for (int i = 0; i < DAYS_COUNT; ++i) {

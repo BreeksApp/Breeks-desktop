@@ -28,6 +28,7 @@ SOURCES += \
     Front/GeneralTextEdit/gentextedit.cpp \
     Front/GeneralTextEdit/textnewelement.cpp \
     Front/GeneralTextEdit/undoredotext.cpp \
+    Front/MainElements/EmojiHub/emojibutton.cpp \
     Front/MainElements/addbuttonhover.cpp \
     Front/MainElements/addelement.cpp \
     Front/MainElements/breek.cpp \
@@ -42,6 +43,7 @@ SOURCES += \
     Front/Mainwindow-zones/mainwindow-image.cpp \
     Front/Mainwindow-zones/mainwindow-note.cpp \
     Front/Mainwindow-zones/mainwindow-workzone.cpp \
+    Front/MainElements/EmojiHub/emojihub.cpp \
     Front/mainwindow.cpp \
     loginform.cpp \
     main.cpp
@@ -53,6 +55,7 @@ HEADERS += \
     Front/GeneralTextEdit/gentextedit.h \
     Front/GeneralTextEdit/textnewelement.h \
     Front/GeneralTextEdit/undoredotext.h \
+    Front/MainElements/EmojiHub/emojibutton.h \
     Front/MainElements/addbuttonhover.h \
     Front/MainElements/addelement.h \
     Front/MainElements/breek.h \
@@ -62,6 +65,7 @@ HEADERS += \
     Front/MainElements/timeedit.h \
     Front/datastructures.h \
     Front/effects.hpp \
+    Front/MainElements/EmojiHub/emojihub.h \
     Front/mainwindow.h \
     loginform.h
 

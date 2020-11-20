@@ -23,7 +23,8 @@ public:
     RED,
     GREY_FOREGROUND,
     GREY_BACKGROUND,
-    GREEN
+		GREEN,
+		BLUE
   };
 
   explicit Breek(QWidget *parent = nullptr);
@@ -31,11 +32,13 @@ public:
   ~Breek();
 
   void keyPressEvent(QKeyEvent *event);
+	void mouseDoubleClickEvent(QMouseEvent *event);
 
   bool getState();
   void setState(bool state);
 
-  void connectToQml(int indexOfEmoji);
+	void connectToQml(int indexOfEmoji, Conditions cond);
+	void connectToQml(Conditions cond);
   void connectToQml(int indexOfEmoji, Directions dir,
                     Conditions from, Conditions to);
 
@@ -59,13 +62,19 @@ private:
   QQuickWidget *quickWidget_;
   QObject *graphObject_;
 
+	bool callHub_;
+
 signals:
   void moveBreek(int, int, bool);
 	void sendSateToLilDay(int, int, int);
 	void isHere(int, int, bool);
+	void doubleClicked();
 
 public slots:
   void changeBreekState();
+	void changeEmoji(int);
+	void closeEmojiHub();
+	void openEmojiHub();
 };
 
 #endif // BREEK_H

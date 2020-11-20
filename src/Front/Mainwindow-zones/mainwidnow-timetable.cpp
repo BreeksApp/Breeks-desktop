@@ -56,7 +56,7 @@ void MainWindow::buildTimeTable()
 
 void MainWindow::setDayInfo()
 {
-	if (iCurrentDay_ = DAYS_COUNT) {
+	if (iCurrentDay_ == DAYS_COUNT) {
 		iCurrentDay_ = 0;
 	}
 

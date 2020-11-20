@@ -1,6 +1,7 @@
 //VIEW
 
 #include <QDebug>
+#include <QGraphicsDropShadowEffect>
 #include <QKeyEvent>
 #include <QQmlProperty>
 #include <QQuickItem>
@@ -87,15 +88,19 @@ void Breek::keyPressEvent(QKeyEvent *event)
 
   if (iKey == Qt::Key_D) {
 		workState_ = Conditions::GREY_FOREGROUND;
-		connectToQml(nEmoj_);
+		connectToQml(nEmoj_, workState_);
     emit moveBreek(zoneIndex_, dayIndex_, true);
   }
 
   if (iKey == Qt::Key_A) {
 		workState_ = Conditions::GREY_FOREGROUND;
-		connectToQml(nEmoj_);
+		connectToQml(nEmoj_, workState_);
     emit moveBreek(zoneIndex_, dayIndex_, false);
   }
+
+	if (iKey == Qt::Key_E) {
+		emit doubleClicked();
+	}
 
 	//for description
 	if (workState_ == Conditions::GREY_FOREGROUND || workState_ == Conditions::GREY_BACKGROUND || !state_) {
@@ -111,6 +116,11 @@ void Breek::keyPressEvent(QKeyEvent *event)
 	}
 }
 
+void Breek::mouseDoubleClickEvent(QMouseEvent *event)
+{
+	emit doubleClicked();
+}
+
 bool Breek::getState()
 {
   return state_;
@@ -121,7 +131,7 @@ void Breek::setState(bool state)
   state_ = state;
 }
 
-void Breek::connectToQml(int indexOfEmoji)
+void Breek::connectToQml(int indexOfEmoji, Conditions cond)
 {
   if (indexOfEmoji < 0 || indexOfEmoji > 10) return;
 
@@ -137,8 +147,8 @@ void Breek::connectToQml(int indexOfEmoji)
 
   graphObject_->setProperty("indexOfEmoji", indexOfEmoji);
   QQmlProperty(graphObject_, "animationOn").write(false);
-	graphObject_->setProperty("indexOfCondFrom", Conditions::GREY_FOREGROUND);
-	graphObject_->setProperty("indexOfCondTo", Conditions::GREY_FOREGROUND);
+	graphObject_->setProperty("indexOfCondFrom", cond);
+	graphObject_->setProperty("indexOfCondTo", cond);
 
   // работа с фоном сцены
   QColor color;
@@ -147,6 +157,18 @@ void Breek::connectToQml(int indexOfEmoji)
 
 //  QWidget *container = QWidget::createWindowContainer(&quickWidget_, this);
   // конец кода, связывающего кнопку с qml
+}
+
+void Breek::connectToQml(Conditions cond)
+{
+	QQmlProperty(graphObject_, "animationOn").write(false);
+	graphObject_->setProperty("indexOfCondFrom", cond);
+	graphObject_->setProperty("indexOfCondTo", cond);
+
+	// работа с фоном сцены
+	QColor color;
+	color.setNamedColor("#F7F7F7");
+	quickWidget_->quickWindow()->setColor(color);
 }
 
 void Breek::connectToQml(int indexOfEmoji, Directions dir,
@@ -200,12 +222,28 @@ void Breek::changeBreekState()
   this->setEnabled(!this->isEnabled());
 
   if (state_) {
-    connectToQml(nEmoj_);
+		connectToQml(nEmoj_, workState_);
   } else {
     this->quickWidget_->setVisible(false);
   }
 
 	emit isHere(zoneIndex_, dayIndex_, state_);
+}
+
+void Breek::changeEmoji(int nEmoji)
+{
+	nEmoj_ = nEmoji;
+	connectToQml(nEmoj_, Conditions::BLUE);
+}
+
+void Breek::closeEmojiHub()
+{
+	connectToQml(nEmoj_, workState_);
+}
+
+void Breek::openEmojiHub()
+{
+	connectToQml(Conditions::BLUE);
 }
 
 int Breek::getWidth()

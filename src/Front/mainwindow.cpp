@@ -5,6 +5,7 @@
 
 #include <QtConcurrent/QtConcurrent>
 #include <QThread>
+#include <Front/MainElements/EmojiHub/emojihub.h>
 
 #include "mainwindow.h"
 #include "Front/GeneralTextEdit/gentextedit.h"
@@ -216,11 +217,10 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, breek
 	while (i < 11) {
 		arrBreeksZones_[breeksZonesCount_ - 1].breeksZoneLayout->addWidget(newZone.arrBreeks[i / 2], 1, i);// breeks added to layout here
 
-		QGroupBox *emojiPack = new QGroupBox();
-		emojiPack->setFixedWidth(160);
-		emojiPack->setStyleSheet("background: #111111");
+		//emojiHub
+		EmojiHub *emojiHub = new EmojiHub;
 		if (i != 10) {
-			arrBreeksZones_[breeksZonesCount_ - 1].breeksZoneLayout->addWidget(emojiPack, 1, i + 1);
+			arrBreeksZones_[breeksZonesCount_ - 1].breeksZoneLayout->addWidget(emojiHub, 1, i + 1, Qt::AlignCenter);
 		}
 
 		arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->setEmoj(newElement.nEmoji);
@@ -228,6 +228,19 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, breek
 
 		if (daysCheck[i / 2] == true) {
 			arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->changeBreekState();
+		}
+
+		if (i / 2 <= 4) {
+			connect(arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2], SIGNAL(doubleClicked()), emojiHub, SLOT(showThis()));
+			connect(emojiHub, SIGNAL(changeEmoji(int)), arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2], SLOT(changeEmoji(int)));
+			connect(emojiHub, SIGNAL(close()), arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2], SLOT(closeEmojiHub()));
+			connect(emojiHub, SIGNAL(open()), arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2], SLOT(openEmojiHub()));
+		}
+		if (i / 2 + 1 == 5){
+			connect(arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2 + 1], SIGNAL(doubleClicked()), emojiHub, SLOT(showThisSt()));
+			connect(emojiHub, SIGNAL(changeEmojiSt(int)), arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2 + 1], SLOT(changeEmoji(int)));
+			connect(emojiHub, SIGNAL(closeSt()), arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2 + 1], SLOT(closeEmojiHub()));
+			connect(emojiHub, SIGNAL(openSt()), arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2 + 1], SLOT(openEmojiHub()));
 		}
 
 		i += 2;
