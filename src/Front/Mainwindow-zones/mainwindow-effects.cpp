@@ -18,6 +18,18 @@ void MainWindow::setAllElementsColor()
 
 void MainWindow::setAllElementsShadow()
 {
-	effects::setElementShadow<GenTextEdit>(ui->note);
-  effects::setElementShadow<QLabel>(ui->labelImageBackground);
+	QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+	effect->setBlurRadius(10);
+	effect->setXOffset(0);
+	effect->setYOffset(1);
+	effect->setColor("#909090");
+
+	ui->note->setGraphicsEffect(effect);
+
+	QGraphicsDropShadowEffect *effect2 = new QGraphicsDropShadowEffect;
+	effect2->setBlurRadius(10);
+	effect2->setXOffset(0);
+	effect2->setYOffset(1);
+	effect2->setColor("#909090");
+	ui->labelImageBackground->setGraphicsEffect(effect2);
 }

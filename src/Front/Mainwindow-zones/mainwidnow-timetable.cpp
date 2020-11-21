@@ -33,7 +33,7 @@ void MainWindow::buildTimeTable()
 
 				"QScrollBar::handle:horizontal {"
 					//"border: 0.5px solid #c7c7bf;"
-					"border-radius: 3px;"
+					"border-radius: 4px;"
 					"background: #e3e3df;"
 					"min-height: 0px;}"
 
@@ -45,8 +45,7 @@ void MainWindow::buildTimeTable()
 
 					"QScrollBar::handle:horizontal:hover {"
 						//"border: 0.5px solid #c7c7bf;"
-						"border-radius: 3px;"
-						"height: 15px;"
+						"border-radius: 4px;"
 						"background: #c7c7bf;"
 						"min-height: 0px;}"
 

@@ -44,16 +44,22 @@ void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
 				"QScrollBar::handle:vertical {"
 					"border: 0.5px solid #c7c7bf;"
 					"border-radius: 4px;"
+					"background: #e3e3df;"
+					"min-height: 0px;}"
+
+				"QScrollBar::handle:vertical:hover {"
+					"border: 0.5px solid #c7c7bf;"
+					"border-radius: 4px;"
 					"background: #c7c7bf;"
 					"min-height: 0px;}"
 
 				"QScrollBar::add-line:vertical {"
-				"border: none;"
-				"background: none;}"
+					"border: none;"
+					"background: none;}"
 
 				"QScrollBar::sub-line:vartical {"
-				"border: none;"
-				"background: none;}");
+					"border: none;"
+					"background: none;}");
 
 
 	QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
