@@ -64,6 +64,7 @@ signals:
 	void isHere(int, int, bool);
 	void doubleClicked();
 	void setZoneFocus(int, bool);
+	void changeState(int, int);
 
 public slots:
   void changeBreekState();

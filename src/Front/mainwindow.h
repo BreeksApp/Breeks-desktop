@@ -95,6 +95,7 @@ private slots:
 	void setBreeksZoneLilDayShadow(int, int, bool);
 	void setBreeksDescriptionZoneFocus(int, bool);
 	void descriptionZoneDayDobleClick(int, int);
+	void changeLilDayState(int, int);
 
 signals:
   void sendUsername(const QString);

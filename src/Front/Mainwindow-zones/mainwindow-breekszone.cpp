@@ -217,6 +217,7 @@ void MainWindow::setDaysConnect(breeksZone_t* breeksZone)
   for (int i = 0; i < DAYS_COUNT; ++i) {
 		connect(breeksZone->arrBreeksZoneDays[i], SIGNAL(singleClick()), breeksZone->arrBreeks[i], SLOT(changeBreekState()));
 		connect(breeksZone->arrBreeksZoneDays[i], SIGNAL(doubleClick(int, int)), this, SLOT(descriptionZoneDayDobleClick(int, int)));
+		connect(breeksZone->arrBreeks[i], SIGNAL(changeState(int, int)), this, SLOT(changeLilDayState(int, int)));
   }
 }
 
@@ -341,6 +342,11 @@ void MainWindow::descriptionZoneDayDobleClick(int zoneIndex, int dayIndex)
 
 	workZoneScrollArea_->horizontalScrollBar()->setValue(dayPos);
 	arrBreeksZones_[zoneIndex].arrBreeks[dayIndex]->setFocus();
+}
+
+void MainWindow::changeLilDayState(int zoneIndex, int dayIndex)
+{
+	arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->mousePressEvent(nullptr);
 }
 
 void MainWindow::delay(int millisecondsToWait)

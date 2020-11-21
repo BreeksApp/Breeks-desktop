@@ -50,61 +50,80 @@ void Breek::keyPressEvent(QKeyEvent *event)
 {
   int iKey = event->key();
 
-	if (iKey == Qt::Key_W || QKeySequence(iKey).toString() == "Ц") {
-    if (workState_ == Conditions::RED) {
-      connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::GREY_FOREGROUND);
-      workState_ = Conditions::GREY_FOREGROUND;
-    }
-    else if (workState_ == Conditions::GREY_FOREGROUND) {
-      connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::GREEN);
-      workState_ = Conditions::GREEN;
-    }
-    else if (workState_ == Conditions::GREEN) {
-      connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::GREY_BACKGROUND);
-      workState_ = Conditions::GREY_BACKGROUND;
-    }
-    else {
-      connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::RED);
-      workState_ = Conditions::RED;
-    }
-  }
+	if (event->modifiers() == 0) {
+		if (iKey == Qt::Key_W || QKeySequence(iKey).toString() == "Ц") {
+			if (workState_ == Conditions::RED) {
+				connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::GREY_FOREGROUND);
+				workState_ = Conditions::GREY_FOREGROUND;
+			}
+			else if (workState_ == Conditions::GREY_FOREGROUND) {
+				connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::GREEN);
+				workState_ = Conditions::GREEN;
+			}
+			else if (workState_ == Conditions::GREEN) {
+				connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::GREY_BACKGROUND);
+				workState_ = Conditions::GREY_BACKGROUND;
+			}
+			else {
+				connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::RED);
+				workState_ = Conditions::RED;
+			}
+		}
 
-	if (iKey == Qt::Key_S || QKeySequence(iKey).toString() == "Ы") {
-    if (workState_ == Conditions::RED) {
-      connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREY_BACKGROUND);
-      workState_ = Conditions::GREY_BACKGROUND;
-    }
-    else if (workState_ == Conditions::GREY_FOREGROUND) {
-      connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::RED);
-      workState_ = Conditions::RED;
-    }
-    else if (workState_ == Conditions::GREEN){
-      connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREY_FOREGROUND);
-      workState_ = Conditions::GREY_FOREGROUND;
-    }
-    else {
-      connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREEN);
-      workState_ = Conditions::GREEN;
-    }
-  }
+		if (iKey == Qt::Key_S || QKeySequence(iKey).toString() == "Ы") {
+			if (workState_ == Conditions::RED) {
+				connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREY_BACKGROUND);
+				workState_ = Conditions::GREY_BACKGROUND;
+			}
+			else if (workState_ == Conditions::GREY_FOREGROUND) {
+				connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::RED);
+				workState_ = Conditions::RED;
+			}
+			else if (workState_ == Conditions::GREEN){
+				connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREY_FOREGROUND);
+				workState_ = Conditions::GREY_FOREGROUND;
+			}
+			else {
+				connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREEN);
+				workState_ = Conditions::GREEN;
+			}
+		}
 
-	if (iKey == Qt::Key_D || QKeySequence(iKey).toString() == "В") {
-		if (callHub_) {
+		if (iKey == Qt::Key_D || QKeySequence(iKey).toString() == "В") {
+			if (callHub_) {
+				emit doubleClicked();
+			}
+			emit moveBreek(zoneIndex_, dayIndex_, true);
+		}
+
+		if (iKey == Qt::Key_A || QKeySequence(iKey).toString() == "Ф") {
+			if (callHub_) {
+				emit doubleClicked();
+			}
+			emit moveBreek(zoneIndex_, dayIndex_, false);
+		}
+
+		if (iKey == Qt::Key_E || QKeySequence(iKey).toString() == "У") {
+			qDebug() << dayIndex_;
 			emit doubleClicked();
 		}
-    emit moveBreek(zoneIndex_, dayIndex_, true);
-  }
 
-	if (iKey == Qt::Key_A || QKeySequence(iKey).toString() == "Ф") {
-		if (callHub_) {
-			emit doubleClicked();
+		if (iKey == Qt::Key_Q || QKeySequence(iKey).toString() == "Й") {
+			emit changeState(zoneIndex_, dayIndex_);
 		}
-    emit moveBreek(zoneIndex_, dayIndex_, false);
-  }
+	}
 
-	if (iKey == Qt::Key_E || QKeySequence(iKey).toString() == "У") {
-		qDebug() << dayIndex_;
-		emit doubleClicked();
+	if (event->modifiers() == Qt::ControlModifier) {
+		if (QKeySequence(iKey) == Qt::Key_A || QKeySequence(iKey).toString() == "Ф") {
+			if (dayIndex_ > 0) {
+				emit (changeState(zoneIndex_, dayIndex_ - 1));
+			}
+		}
+		if (QKeySequence(iKey) == Qt::Key_D || QKeySequence(iKey).toString() == "В") {
+			if (dayIndex_ < 5) {
+				emit (changeState(zoneIndex_, dayIndex_ + 1));
+			}
+		}
 	}
 
 	//for description
