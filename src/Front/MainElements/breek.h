@@ -63,6 +63,7 @@ signals:
 	void sendSateToLilDay(int, int, int);
 	void isHere(int, int, bool);
 	void doubleClicked();
+	void setZoneFocus(int, bool);
 
 public slots:
   void changeBreekState();

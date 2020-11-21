@@ -244,6 +244,8 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, breek
 			connect(emojiHub, SIGNAL(openSt()), arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2 + 1], SLOT(openEmojiHub()));
 		}
 
+		connect(arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2], SIGNAL(setZoneFocus(int, bool)), this, SLOT(setBreeksDescriptionZoneFocus(int, bool)));
+
 		i += 2;
 	}
 }

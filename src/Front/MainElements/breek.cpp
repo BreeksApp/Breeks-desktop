@@ -135,11 +135,13 @@ void Breek::mousePressEvent(QMouseEvent *event)
 void Breek::focusInEvent(QFocusEvent *)
 {
 	connectToQml(Conditions::SHADOW, true);
+	emit setZoneFocus(zoneIndex_, true);
 }
 
 void Breek::focusOutEvent(QFocusEvent *)
 {
 	connectToQml(Conditions::SHADOW, false);
+	emit setZoneFocus(zoneIndex_, false);
 }
 
 bool Breek::getState()

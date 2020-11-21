@@ -297,6 +297,22 @@ void MainWindow::setBreeksZoneLilDayShadow(int zoneIndex, int dayIndex, bool sta
 	}
 }
 
+void MainWindow::setBreeksDescriptionZoneFocus(int zoneIndex, bool cond)
+{
+	if (cond) {
+		QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect;
+		shadow->setBlurRadius(9);
+		shadow->setXOffset(0);
+		shadow->setYOffset(0);
+		shadow->setColor("#909090");
+
+		arrBreeksZones_[zoneIndex].breeksDescriptionGroupBox->setGraphicsEffect(shadow);
+	}
+	else {
+		arrBreeksZones_[zoneIndex].breeksDescriptionGroupBox->setGraphicsEffect(nullptr);
+	}
+}
+
 void MainWindow::delay(int millisecondsToWait)
 {
     QTime dieTime = QTime::currentTime().addMSecs(millisecondsToWait);
