@@ -316,16 +316,30 @@ void MainWindow::setBreeksDescriptionZoneFocus(int zoneIndex, bool cond)
 
 void MainWindow::descriptionZoneDayDobleClick(int zoneIndex, int dayIndex)
 {
-	int sliderPos = workZoneScrollArea_->horizontalScrollBar()->sliderPosition();
-	int dayPos = arrBreeksZones_[zoneIndex].arrBreeks[dayIndex]->pos().x();
+	int dayPos = 0;
 
-	if (sliderPos < dayPos) {
-		workZoneScrollArea_->ensureVisible(dayPos + 530, workZoneScrollArea_->verticalScrollBar()->sliderPosition());
-	}
-	else {
-		workZoneScrollArea_->ensureVisible(dayPos - 450, workZoneScrollArea_->verticalScrollBar()->sliderPosition());
+	switch (dayIndex) {
+		case 0 :
+			dayPos = 0;
+		break;
+		case 1 :
+			dayPos = 0;
+		break;
+		case 2 :
+			dayPos = 350;
+		break;
+		case 3 :
+			dayPos = 680;
+		break;
+		case 4 :
+			dayPos = 1000;
+		break;
+		case 5 :
+			dayPos = 1000;
+		break;
 	}
 
+	workZoneScrollArea_->horizontalScrollBar()->setValue(dayPos);
 	arrBreeksZones_[zoneIndex].arrBreeks[dayIndex]->setFocus();
 }
 

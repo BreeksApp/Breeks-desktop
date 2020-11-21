@@ -50,7 +50,7 @@ void Breek::keyPressEvent(QKeyEvent *event)
 {
   int iKey = event->key();
 
-  if (iKey == Qt::Key_W) {
+	if (iKey == Qt::Key_W || QKeySequence(iKey).toString() == "Ц") {
     if (workState_ == Conditions::RED) {
       connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::GREY_FOREGROUND);
       workState_ = Conditions::GREY_FOREGROUND;
@@ -69,7 +69,7 @@ void Breek::keyPressEvent(QKeyEvent *event)
     }
   }
 
-  if (iKey == Qt::Key_S) {
+	if (iKey == Qt::Key_S || QKeySequence(iKey).toString() == "Ы") {
     if (workState_ == Conditions::RED) {
       connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREY_BACKGROUND);
       workState_ = Conditions::GREY_BACKGROUND;
@@ -88,21 +88,21 @@ void Breek::keyPressEvent(QKeyEvent *event)
     }
   }
 
-  if (iKey == Qt::Key_D) {
+	if (iKey == Qt::Key_D || QKeySequence(iKey).toString() == "В") {
 		if (callHub_) {
 			emit doubleClicked();
 		}
     emit moveBreek(zoneIndex_, dayIndex_, true);
   }
 
-  if (iKey == Qt::Key_A) {
+	if (iKey == Qt::Key_A || QKeySequence(iKey).toString() == "Ф") {
 		if (callHub_) {
 			emit doubleClicked();
 		}
     emit moveBreek(zoneIndex_, dayIndex_, false);
   }
 
-	if (iKey == Qt::Key_E) {
+	if (iKey == Qt::Key_E || QKeySequence(iKey).toString() == "У") {
 		qDebug() << dayIndex_;
 		emit doubleClicked();
 	}
