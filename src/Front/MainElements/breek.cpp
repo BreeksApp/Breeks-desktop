@@ -22,6 +22,8 @@ Breek::Breek(QWidget *parent):
   this->setFocusPolicy(Qt::ClickFocus);
   this->setFixedSize(width_, height_);
   this->setFlat(true);
+
+	callHub_ = false;
 }
 
 Breek::Breek(int width, int height, QWidget *parent):
@@ -87,18 +89,21 @@ void Breek::keyPressEvent(QKeyEvent *event)
   }
 
   if (iKey == Qt::Key_D) {
-		workState_ = Conditions::GREY_FOREGROUND;
-		connectToQml(nEmoj_, workState_);
+		if (callHub_) {
+			emit doubleClicked();
+		}
     emit moveBreek(zoneIndex_, dayIndex_, true);
   }
 
   if (iKey == Qt::Key_A) {
-		workState_ = Conditions::GREY_FOREGROUND;
-		connectToQml(nEmoj_, workState_);
+		if (callHub_) {
+			emit doubleClicked();
+		}
     emit moveBreek(zoneIndex_, dayIndex_, false);
   }
 
 	if (iKey == Qt::Key_E) {
+		qDebug() << dayIndex_;
 		emit doubleClicked();
 	}
 
@@ -119,6 +124,22 @@ void Breek::keyPressEvent(QKeyEvent *event)
 void Breek::mouseDoubleClickEvent(QMouseEvent *event)
 {
 	emit doubleClicked();
+	this->setFocus();
+}
+
+void Breek::mousePressEvent(QMouseEvent *event)
+{
+	this->setFocus();
+}
+
+void Breek::focusInEvent(QFocusEvent *)
+{
+	connectToQml(Conditions::SHADOW, true);
+}
+
+void Breek::focusOutEvent(QFocusEvent *)
+{
+	connectToQml(Conditions::SHADOW, false);
 }
 
 bool Breek::getState()
@@ -128,7 +149,17 @@ bool Breek::getState()
 
 void Breek::setState(bool state)
 {
-  state_ = state;
+	state_ = state;
+}
+
+Conditions Breek::getColorState()
+{
+	return workState_;
+}
+
+void Breek::setColorState(Conditions cond)
+{
+	workState_ = cond;
 }
 
 void Breek::connectToQml(int indexOfEmoji, Conditions cond)
@@ -159,11 +190,22 @@ void Breek::connectToQml(int indexOfEmoji, Conditions cond)
   // конец кода, связывающего кнопку с qml
 }
 
-void Breek::connectToQml(Conditions cond)
+void Breek::connectToQml(Conditions cond, bool isShadow)
 {
 	QQmlProperty(graphObject_, "animationOn").write(false);
-	graphObject_->setProperty("indexOfCondFrom", cond);
-	graphObject_->setProperty("indexOfCondTo", cond);
+
+	if (!isShadow && cond != Conditions::SHADOW) {
+		graphObject_->setProperty("indexOfCondFrom", cond);
+		graphObject_->setProperty("indexOfCondTo", cond);
+	}
+	else {
+		if (isShadow) {
+			graphObject_->setProperty("bigShadow", true);
+		}
+		else {
+			graphObject_->setProperty("bigShadow", false);
+		}
+	}
 
 	// работа с фоном сцены
 	QColor color;
@@ -223,27 +265,40 @@ void Breek::changeBreekState()
 
   if (state_) {
 		connectToQml(nEmoj_, workState_);
+		callHub_ = false;
   } else {
     this->quickWidget_->setVisible(false);
+		if (callHub_) {
+			emit doubleClicked();
+			callHub_ = false;
+		}
   }
 
 	emit isHere(zoneIndex_, dayIndex_, state_);
+	this->setFocus();
 }
 
 void Breek::changeEmoji(int nEmoji)
 {
 	nEmoj_ = nEmoji;
-	connectToQml(nEmoj_, Conditions::BLUE);
+	connectToQml(nEmoj_, Conditions::YELLOW);
+	this->setFocus();
 }
 
 void Breek::closeEmojiHub()
 {
-	connectToQml(nEmoj_, workState_);
+	callHub_ = false;
+	this->setFocus();
+
+	if (state_) {
+		connectToQml(nEmoj_, workState_);
+	}
 }
 
 void Breek::openEmojiHub()
 {
-	connectToQml(Conditions::BLUE);
+	callHub_ = true;
+	connectToQml(Conditions::YELLOW);
 }
 
 int Breek::getWidth()

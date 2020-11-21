@@ -73,8 +73,16 @@ void EmojiHub::keyPressEvent(QKeyEvent *event)
 	if (iKey == Qt::Key_E) {
 		this->setStyleSheet("background: none; border-radius: 9px; border: 0.4px solid #FFFFFF;");
 		scrollArea_->hide();
-		close();
-		closeSt();
+
+		if (isSaturday_) {
+			closeSt();
+			isSaturday_ = false;
+		}
+		else {
+			close();
+		}
+
+		QGroupBox::keyPressEvent(event);
 	}
 }
 

@@ -11,6 +11,7 @@
 #include "Front/GeneralTextEdit/gentextedit.h"
 #include "Front/MainElements/addelement.h"
 #include "Front/MainElements/elementtemplate.h"
+#include "Front/datastructures.h"
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -230,7 +231,7 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, breek
 			arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->changeBreekState();
 		}
 
-		if (i / 2 <= 4) {
+		if (i / 2 < 5) {
 			connect(arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2], SIGNAL(doubleClicked()), emojiHub, SLOT(showThis()));
 			connect(emojiHub, SIGNAL(changeEmoji(int)), arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2], SLOT(changeEmoji(int)));
 			connect(emojiHub, SIGNAL(close()), arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2], SLOT(closeEmojiHub()));
@@ -328,6 +329,10 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
       breeksZone_t *zone = &arrBreeksZones_[zoneIndex];
 
       if (!zone->arrBreeks[dayIndex + 1]->isEnabled()) {
+				Conditions workState = Conditions::GREY_FOREGROUND;
+				zone->arrBreeks[dayIndex]->setColorState(workState);
+				zone->arrBreeks[dayIndex]->connectToQml(zone->arrBreeks[dayIndex]->getEmojiNum(), workState);
+
         QRect rectFrom = zone->arrBreeks[dayIndex]->geometry();
         QPoint posFrom = zone->arrBreeks[dayIndex]->pos();
         QPoint posTo = zone->arrBreeks[dayIndex + 1]->pos();
@@ -342,6 +347,13 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
         delay(MOVE_DURATION + 50);
 
         zone->arrBreeks[dayIndex]->changeBreekState();
+
+				if (zone->arrBreeks[dayIndex + 1]->getEmojiNum() != zone->arrBreeks[dayIndex]->getEmojiNum()) {
+					zone->arrBreeks[dayIndex + 1]->setEmoj(zone->arrBreeks[dayIndex]->getEmojiNum());
+					zone->arrBreeks[dayIndex + 1]->connectToQml(zone->arrBreeks[dayIndex + 1]->getEmojiNum(), zone->arrBreeks[dayIndex + 1]->getColorState());
+					QThread::msleep(100);
+				}
+
         zone->arrBreeks[dayIndex + 1]->changeBreekState();
         zone->arrBreeks[dayIndex]->move(posFrom);
 
@@ -356,6 +368,10 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
     if (dayIndex > 0) {
       breeksZone_t *zone = &arrBreeksZones_[zoneIndex];
       if (!zone->arrBreeks[dayIndex - 1]->isEnabled()) {
+				Conditions workState = Conditions::GREY_FOREGROUND;
+				zone->arrBreeks[dayIndex]->setState(workState);
+				zone->arrBreeks[dayIndex]->connectToQml(zone->arrBreeks[dayIndex]->getEmojiNum(), workState);
+
         QRect rectFrom = zone->arrBreeks[dayIndex]->geometry();
         QPoint posFrom = zone->arrBreeks[dayIndex]->pos();
         QPoint posTo = zone->arrBreeks[dayIndex - 1]->pos();
@@ -370,6 +386,11 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
         delay(MOVE_DURATION + 50);
 
         zone->arrBreeks[dayIndex]->changeBreekState();
+
+				if (zone->arrBreeks[dayIndex - 1]->getEmojiNum() != zone->arrBreeks[dayIndex]->getEmojiNum()) {
+					zone->arrBreeks[dayIndex - 1]->setEmoj(zone->arrBreeks[dayIndex]->getEmojiNum());
+					zone->arrBreeks[dayIndex - 1]->connectToQml(zone->arrBreeks[dayIndex - 1]->getEmojiNum(), zone->arrBreeks[dayIndex - 1]->getColorState());
+				}
         zone->arrBreeks[dayIndex - 1]->changeBreekState();
         zone->arrBreeks[dayIndex]->move(posFrom);
 

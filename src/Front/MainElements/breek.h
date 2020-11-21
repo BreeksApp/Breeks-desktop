@@ -8,37 +8,31 @@
 #include <QObject>
 #include <QQuickWidget>
 
+#include "Front/datastructures.h"
+
 class Breek : public QPushButton
 {
   Q_OBJECT
 
 public:
-  enum Directions
-  {
-    DOWNSIDE,
-    UPSIDE
-  };
-  enum Conditions
-  {
-    RED,
-    GREY_FOREGROUND,
-    GREY_BACKGROUND,
-		GREEN,
-		BLUE
-  };
-
   explicit Breek(QWidget *parent = nullptr);
   Breek(int width, int height, QWidget *parent = nullptr);
   ~Breek();
 
-  void keyPressEvent(QKeyEvent *event);
-	void mouseDoubleClickEvent(QMouseEvent *event);
+	void keyPressEvent(QKeyEvent *event) override;
+	void mouseDoubleClickEvent(QMouseEvent *event) override;
+	void mousePressEvent(QMouseEvent *event) override;
+	void focusInEvent(QFocusEvent *) override;
+	void focusOutEvent(QFocusEvent *) override;
 
   bool getState();
   void setState(bool state);
 
+	Conditions getColorState();
+	void setColorState(Conditions cond);
+
 	void connectToQml(int indexOfEmoji, Conditions cond);
-	void connectToQml(Conditions cond);
+	void connectToQml(Conditions cond, bool = false);
   void connectToQml(int indexOfEmoji, Directions dir,
                     Conditions from, Conditions to);
 
