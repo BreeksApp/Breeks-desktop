@@ -69,12 +69,12 @@ void MainWindow::moveTimetableElement()
 
 		if (pos.x() > posMain & pos.x() < posMain + 700) {
 			QPoint pos1 = bigWidgetInWorkZone_->mapFromGlobal(this->cursor().pos());
-			workZoneScrollArea_->ensureVisible(pos1.x() - 0.5, 0);
+			workZoneScrollArea_->ensureVisible(pos1.x() - 1, workZoneScrollArea_->verticalScrollBar()->sliderPosition());
 			QThread::msleep(2);
 		}
 		else if (pos.x() > posMain + ui->groupBoxWorkZone->width() - 700 & pos.x() < posMain + ui->groupBoxWorkZone->width()) {
 			QPoint pos1 = bigWidgetInWorkZone_->mapFromGlobal(this->cursor().pos());
-			workZoneScrollArea_->ensureVisible(pos1.x() + 0.5, 0);
+			workZoneScrollArea_->ensureVisible(pos1.x() + 1, workZoneScrollArea_->verticalScrollBar()->sliderPosition());
 			QThread::msleep(2);
 		}
 	}
@@ -203,11 +203,12 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, breek
   arrBreeksZones_.push_back(newZone);
 
 	if (breeksZonesCount_ == 0) {
-		bigWidgetHeight_ += 130;
+		bigWidgetHeight_ += 125;
 	}
 	else {
 		bigWidgetHeight_ += 125;
 	}
+
 	bigWidgetInWorkZone_->setFixedHeight(bigWidgetHeight_);
 	bigWidgetInBreeksDescriptionZone_->setFixedHeight(bigWidgetHeight_);
 	++breeksZonesCount_;
@@ -316,99 +317,6 @@ void MainWindow::recieveMimeData(const elementData_t data, const QPixmap pixMap)
 {
   mimeData_.setText(data.text);
   dragElement_ = pixMap;
-}
-
-void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
-{
-  if (!arrBreeksZones_[zoneIndex].flagIfPosFilled) {
-    fillBreeksPositions(zoneIndex);
-    arrBreeksZones_[zoneIndex].flagIfPosFilled = true;
-  }
-
-  if (right) {
-
-    if (dayIndex < DAYS_COUNT - 1) {
-      breeksZone_t *zone = &arrBreeksZones_[zoneIndex];
-
-      if (!zone->arrBreeks[dayIndex + 1]->isEnabled()) {
-				Conditions workState = Conditions::GREY_FOREGROUND;
-				zone->arrBreeks[dayIndex]->setColorState(workState);
-				zone->arrBreeks[dayIndex]->connectToQml(zone->arrBreeks[dayIndex]->getEmojiNum(), workState);
-
-        QRect rectFrom = zone->arrBreeks[dayIndex]->geometry();
-        QPoint posFrom = zone->arrBreeks[dayIndex]->pos();
-        QPoint posTo = zone->arrBreeks[dayIndex + 1]->pos();
-
-        QPropertyAnimation *animation = new QPropertyAnimation(zone->arrBreeks[dayIndex], "geometry");
-        QRect rectTo(posTo.x(), posTo.y(), rectFrom.width(), rectFrom.height());
-        animation->setDuration(MOVE_DURATION);
-        animation->setStartValue(rectFrom);
-        animation->setEndValue(rectTo);
-
-        animation->start();
-        delay(MOVE_DURATION + 50);
-
-        zone->arrBreeks[dayIndex]->changeBreekState();
-
-				if (zone->arrBreeks[dayIndex + 1]->getEmojiNum() != zone->arrBreeks[dayIndex]->getEmojiNum()) {
-					zone->arrBreeks[dayIndex + 1]->setEmoj(zone->arrBreeks[dayIndex]->getEmojiNum());
-					zone->arrBreeks[dayIndex + 1]->connectToQml(zone->arrBreeks[dayIndex + 1]->getEmojiNum(), zone->arrBreeks[dayIndex + 1]->getColorState());
-					QThread::msleep(100);
-				}
-
-        zone->arrBreeks[dayIndex + 1]->changeBreekState();
-        zone->arrBreeks[dayIndex]->move(posFrom);
-
-        workZoneScrollArea_->ensureVisible(zone->arrBreeks[dayIndex + 1]->pos().x() + 250, 0);
-      }
-			zone->arrBreeks[dayIndex + 1]->setFocus();
-			return;
-    }
-
-  }
-  else {
-    if (dayIndex > 0) {
-      breeksZone_t *zone = &arrBreeksZones_[zoneIndex];
-      if (!zone->arrBreeks[dayIndex - 1]->isEnabled()) {
-				Conditions workState = Conditions::GREY_FOREGROUND;
-				zone->arrBreeks[dayIndex]->setState(workState);
-				zone->arrBreeks[dayIndex]->connectToQml(zone->arrBreeks[dayIndex]->getEmojiNum(), workState);
-
-        QRect rectFrom = zone->arrBreeks[dayIndex]->geometry();
-        QPoint posFrom = zone->arrBreeks[dayIndex]->pos();
-        QPoint posTo = zone->arrBreeks[dayIndex - 1]->pos();
-
-        QPropertyAnimation *animation = new QPropertyAnimation(zone->arrBreeks[dayIndex], "geometry");
-        QRect rectTo(posTo.x(), posTo.y(), rectFrom.width(), rectFrom.height());
-        animation->setDuration(MOVE_DURATION);
-        animation->setStartValue(rectFrom);
-        animation->setEndValue(rectTo);
-
-        animation->start();
-        delay(MOVE_DURATION + 50);
-
-        zone->arrBreeks[dayIndex]->changeBreekState();
-
-				if (zone->arrBreeks[dayIndex - 1]->getEmojiNum() != zone->arrBreeks[dayIndex]->getEmojiNum()) {
-					zone->arrBreeks[dayIndex - 1]->setEmoj(zone->arrBreeks[dayIndex]->getEmojiNum());
-					zone->arrBreeks[dayIndex - 1]->connectToQml(zone->arrBreeks[dayIndex - 1]->getEmojiNum(), zone->arrBreeks[dayIndex - 1]->getColorState());
-				}
-        zone->arrBreeks[dayIndex - 1]->changeBreekState();
-        zone->arrBreeks[dayIndex]->move(posFrom);
-
-        workZoneScrollArea_->ensureVisible(zone->arrBreeks[dayIndex - 1]->pos().x() - 250, 0);
-      }
-			zone->arrBreeks[dayIndex - 1]->setFocus();
-			return;
-    }
-  }
-
-	if (dayIndex == iCurrentDay_) {
-		arrBreeksZones_[zoneIndex].arrBreeksZoneDays[iCurrentDay_]->setStyleSheet("background: #FFFFFF; border-radius: 4px;");
-	}
-	if (iCurrentDay_ < DAYS_COUNT & arrBreeksZones_[zoneIndex].arrBreeks[iCurrentDay_]->getState()) {
-		arrBreeksZones_[zoneIndex].arrBreeksZoneDays[iCurrentDay_]->setStyleSheet("background: #b3defc; border-radius: 4px;");
-	}
 }
 
 void MainWindow::dropElement(const int dayNumber, const int dayIndex, const int elemIndex, const elementData_t elemData)

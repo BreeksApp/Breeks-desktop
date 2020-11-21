@@ -265,6 +265,8 @@ void Breek::changeBreekState()
 	workState_ = Conditions::GREY_FOREGROUND;
   this->setEnabled(!this->isEnabled());
 
+	qDebug() << dayIndex_ << state_ << this->isEnabled();
+
   if (state_) {
 		connectToQml(nEmoj_, workState_);
 		callHub_ = false;
@@ -277,7 +279,7 @@ void Breek::changeBreekState()
   }
 
 	emit isHere(zoneIndex_, dayIndex_, state_);
-	this->setFocus();
+	//this->setFocus();
 }
 
 void Breek::changeEmoji(int nEmoji)

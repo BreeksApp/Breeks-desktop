@@ -15,6 +15,8 @@
 #include <set>
 #include <QDrag>
 
+#include <Front/MainElements/descriptionzonedaybutton.h>
+
 #include "ui_mainwindow.h"
 #include "Front/MainElements/elementtemplate.h"
 #include "Front/GeneralTextEdit/textnewelement.h"
@@ -92,6 +94,7 @@ private slots:
 	void changeBreeksZoneLilDayState(int, int, int);
 	void setBreeksZoneLilDayShadow(int, int, bool);
 	void setBreeksDescriptionZoneFocus(int, bool);
+	void descriptionZoneDayDobleClick(int, int);
 
 signals:
   void sendUsername(const QString);
@@ -240,7 +243,7 @@ private:
 		TimetableTextEdit *breekText;
 
     QPushButton *buttonBreekDays;
-    QPushButton *arrBreeksZoneDays[6];
+		DescriptionZoneDayButton *arrBreeksZoneDays[6];
     QPushButton *buttonDelete;
 
     int zoneIndex;
@@ -254,11 +257,11 @@ private:
   QString arrEmojiDroped[11];
   QString arrEmojiProcess[11];
 
-        void setEmoji(const QString emoji);
+	void setEmoji(const QString emoji);
 
   void allocateMemoryForBreeks(breeksZone_t *breeksZone);
   void setBreeksZone(breeksZone_t *breeksZone);
-    void setDaysConnect(breeksZone_t *breeksZone);
+	void setDaysConnect(breeksZone_t *breeksZone);
   void buildBreeksDescriptionZone();
   void delay(int);
 

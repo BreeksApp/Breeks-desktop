@@ -33,6 +33,7 @@ SOURCES += \
     Front/MainElements/addelement.cpp \
     Front/MainElements/breek.cpp \
     Front/MainElements/daywidget.cpp \
+    Front/MainElements/descriptionzonedaybutton.cpp \
     Front/MainElements/elementtemplate.cpp \
     Front/MainElements/imagehover.cpp \
     Front/MainElements/timeedit.cpp \
@@ -60,6 +61,7 @@ HEADERS += \
     Front/MainElements/addelement.h \
     Front/MainElements/breek.h \
     Front/MainElements/daywidget.h \
+    Front/MainElements/descriptionzonedaybutton.h \
     Front/MainElements/elementtemplate.h \
     Front/MainElements/imagehover.h \
     Front/MainElements/timeedit.h \
