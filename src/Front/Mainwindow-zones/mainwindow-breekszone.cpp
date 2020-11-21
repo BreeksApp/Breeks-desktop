@@ -323,7 +323,7 @@ void MainWindow::descriptionZoneDayDobleClick(int zoneIndex, int dayIndex)
 		workZoneScrollArea_->ensureVisible(dayPos + 530, workZoneScrollArea_->verticalScrollBar()->sliderPosition());
 	}
 	else {
-		workZoneScrollArea_->ensureVisible(dayPos - 405, workZoneScrollArea_->verticalScrollBar()->sliderPosition());
+		workZoneScrollArea_->ensureVisible(dayPos - 450, workZoneScrollArea_->verticalScrollBar()->sliderPosition());
 	}
 
 	arrBreeksZones_[zoneIndex].arrBreeks[dayIndex]->setFocus();
@@ -378,11 +378,12 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
 				zone->arrBreeks[dayIndex + 1]->changeBreekState();
 				zone->arrBreeks[dayIndex]->move(posFrom);
 
-				QThread::msleep(200);
-				descriptionZoneDayDobleClick(zoneIndex, dayIndex + 1);
 				//workZoneScrollArea_->ensureVisible(zone->arrBreeks[dayIndex + 1]->pos().x() + 530, workZoneScrollArea_->verticalScrollBar()->sliderPosition());
 			}
 			zone->arrBreeks[dayIndex + 1]->setFocus();
+			QThread::msleep(200);
+			descriptionZoneDayDobleClick(zoneIndex, dayIndex + 1);
+
 			return;
 		}
 
@@ -417,12 +418,12 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
 				}
 				zone->arrBreeks[dayIndex - 1]->changeBreekState();
 				zone->arrBreeks[dayIndex]->move(posFrom);
-
-				QThread::msleep(200);
-				descriptionZoneDayDobleClick(zoneIndex, dayIndex - 1);
 				//workZoneScrollArea_->ensureVisible(zone->arrBreeks[dayIndex - 1]->pos().x() - 405, workZoneScrollArea_->verticalScrollBar()->sliderPosition());
 			}
 			zone->arrBreeks[dayIndex - 1]->setFocus();
+			QThread::msleep(200);
+			descriptionZoneDayDobleClick(zoneIndex, dayIndex - 1);
+
 			return;
 		}
 	}
