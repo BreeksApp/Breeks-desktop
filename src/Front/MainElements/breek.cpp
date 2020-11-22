@@ -86,12 +86,12 @@ void Breek::keyPressEvent(QKeyEvent *event)
   }
 
   if (iKey == Qt::Key_D) {
-		workState_ = Conditions::GREY_FOREGROUND;
+                workState_ = Conditions::GREY_FOREGROUND;
     emit moveBreek(zoneIndex_, dayIndex_, true);
   }
 
   if (iKey == Qt::Key_A) {
-		workState_ = Conditions::GREY_FOREGROUND;
+                workState_ = Conditions::GREY_FOREGROUND;
     emit moveBreek(zoneIndex_, dayIndex_, false);
   }
 
