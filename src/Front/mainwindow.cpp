@@ -5,11 +5,13 @@
 
 #include <QtConcurrent/QtConcurrent>
 #include <QThread>
+#include <Front/MainElements/EmojiHub/emojihub.h>
 
 #include "mainwindow.h"
 #include "Front/GeneralTextEdit/gentextedit.h"
 #include "Front/MainElements/addelement.h"
 #include "Front/MainElements/elementtemplate.h"
+#include "Front/datastructures.h"
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -67,12 +69,12 @@ void MainWindow::moveTimetableElement()
 
 		if (pos.x() > posMain & pos.x() < posMain + 700) {
 			QPoint pos1 = bigWidgetInWorkZone_->mapFromGlobal(this->cursor().pos());
-			workZoneScrollArea_->ensureVisible(pos1.x() - 0.5, 0);
+			workZoneScrollArea_->ensureVisible(pos1.x() - 1, workZoneScrollArea_->verticalScrollBar()->sliderPosition());
 			QThread::msleep(2);
 		}
 		else if (pos.x() > posMain + ui->groupBoxWorkZone->width() - 700 & pos.x() < posMain + ui->groupBoxWorkZone->width()) {
 			QPoint pos1 = bigWidgetInWorkZone_->mapFromGlobal(this->cursor().pos());
-			workZoneScrollArea_->ensureVisible(pos1.x() + 0.5, 0);
+			workZoneScrollArea_->ensureVisible(pos1.x() + 1, workZoneScrollArea_->verticalScrollBar()->sliderPosition());
 			QThread::msleep(2);
 		}
 	}
@@ -191,16 +193,6 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, breek
 	newZone.breekText->moveCursor(QTextCursor::Start);
 	newZone.breekText->verticalScrollBar()->maximum();
 
-  for (int i = 0; i < arrSize; ++i) {
-		newZone.breeksZoneLayout->addWidget(newZone.arrBreeks[i], 1, i); // breeks added to layout here
-    newZone.arrBreeks[i]->setEmoj(newElement.nEmoji);
-    newZone.arrBreeks[i]->setIndex(newZone.zoneIndex, i);
-
-    if (daysCheck[i] == true) {
-      newZone.arrBreeks[i]->changeBreekState();
-    }
-  }
-
 	if (iCurrentDay_ < DAYS_COUNT & newZone.arrBreeks[iCurrentDay_]->getState()) {
 		newZone.arrBreeksZoneDays[iCurrentDay_]->setStyleSheet("background: #b3defc; border-radius: 4px;");
 	}
@@ -211,16 +203,52 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, breek
   arrBreeksZones_.push_back(newZone);
 
 	if (breeksZonesCount_ == 0) {
-		bigWidgetHeight_ += 130;
-  }
-  else {
 		bigWidgetHeight_ += 125;
-  }
+	}
+	else {
+		bigWidgetHeight_ += 125;
+	}
 
 	bigWidgetInWorkZone_->setFixedHeight(bigWidgetHeight_);
 	bigWidgetInBreeksDescriptionZone_->setFixedHeight(bigWidgetHeight_);
-
 	++breeksZonesCount_;
+
+	//ADD BREEKS
+
+	int i = 0;
+	while (i < 11) {
+		arrBreeksZones_[breeksZonesCount_ - 1].breeksZoneLayout->addWidget(newZone.arrBreeks[i / 2], 1, i);// breeks added to layout here
+
+		//emojiHub
+		EmojiHub *emojiHub = new EmojiHub;
+		if (i != 10) {
+			arrBreeksZones_[breeksZonesCount_ - 1].breeksZoneLayout->addWidget(emojiHub, 1, i + 1, Qt::AlignCenter);
+		}
+
+		arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->setEmoj(newElement.nEmoji);
+		arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->setIndex(newZone.zoneIndex, i / 2);
+
+		if (daysCheck[i / 2] == true) {
+			arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->changeBreekState();
+		}
+
+		if (i / 2 < 5) {
+			connect(arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2], SIGNAL(doubleClicked()), emojiHub, SLOT(showThis()));
+			connect(emojiHub, SIGNAL(changeEmoji(int)), arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2], SLOT(changeEmoji(int)));
+			connect(emojiHub, SIGNAL(close()), arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2], SLOT(closeEmojiHub()));
+			connect(emojiHub, SIGNAL(open()), arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2], SLOT(openEmojiHub()));
+		}
+		if (i / 2 + 1 == 5){
+			connect(arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2 + 1], SIGNAL(doubleClicked()), emojiHub, SLOT(showThisSt()));
+			connect(emojiHub, SIGNAL(changeEmojiSt(int)), arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2 + 1], SLOT(changeEmoji(int)));
+			connect(emojiHub, SIGNAL(closeSt()), arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2 + 1], SLOT(closeEmojiHub()));
+			connect(emojiHub, SIGNAL(openSt()), arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2 + 1], SLOT(openEmojiHub()));
+		}
+
+		connect(arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2], SIGNAL(setZoneFocus(int, bool)), this, SLOT(setBreeksDescriptionZoneFocus(int, bool)));
+
+		i += 2;
+	}
 }
 
 void MainWindow::recieveDayAndElementIndex(const int dayElementIndex, const int elementIndex)
@@ -282,85 +310,13 @@ void MainWindow::recieveDayAndElementIndexAndTagColor(const int dayIndex, const 
 
 void MainWindow::recieveUsername()
 {
-    this->show();
+		this->showMaximized();
 }
 
 void MainWindow::recieveMimeData(const elementData_t data, const QPixmap pixMap)
 {
   mimeData_.setText(data.text);
   dragElement_ = pixMap;
-}
-
-void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
-{
-  if (!arrBreeksZones_[zoneIndex].flagIfPosFilled) {
-    fillBreeksPositions(zoneIndex);
-    arrBreeksZones_[zoneIndex].flagIfPosFilled = true;
-  }
-
-	if (dayIndex == iCurrentDay_) {
-		arrBreeksZones_[zoneIndex].arrBreeksZoneDays[iCurrentDay_]->setStyleSheet("background: #FFFFFF; border-radius: 4px;");
-	}
-
-  if (right) {
-
-    if (dayIndex < DAYS_COUNT - 1) {
-      breeksZone_t *zone = &arrBreeksZones_[zoneIndex];
-
-      if (!zone->arrBreeks[dayIndex + 1]->isEnabled()) {
-        QRect rectFrom = zone->arrBreeks[dayIndex]->geometry();
-        QPoint posFrom = zone->arrBreeks[dayIndex]->pos();
-        QPoint posTo = zone->arrBreeks[dayIndex + 1]->pos();
-
-        QPropertyAnimation *animation = new QPropertyAnimation(zone->arrBreeks[dayIndex], "geometry");
-        QRect rectTo(posTo.x(), posTo.y(), rectFrom.width(), rectFrom.height());
-        animation->setDuration(MOVE_DURATION);
-        animation->setStartValue(rectFrom);
-        animation->setEndValue(rectTo);
-
-        animation->start();
-        delay(MOVE_DURATION + 50);
-
-        zone->arrBreeks[dayIndex]->changeBreekState();
-        zone->arrBreeks[dayIndex + 1]->changeBreekState();
-        zone->arrBreeks[dayIndex]->move(posFrom);
-
-        workZoneScrollArea_->ensureVisible(zone->arrBreeks[dayIndex + 1]->pos().x() + 250, 0);
-      }
-			zone->arrBreeks[dayIndex + 1]->setFocus();
-    }
-
-  }
-  else {
-    if (dayIndex > 0) {
-      breeksZone_t *zone = &arrBreeksZones_[zoneIndex];
-      if (!zone->arrBreeks[dayIndex - 1]->isEnabled()) {
-        QRect rectFrom = zone->arrBreeks[dayIndex]->geometry();
-        QPoint posFrom = zone->arrBreeks[dayIndex]->pos();
-        QPoint posTo = zone->arrBreeks[dayIndex - 1]->pos();
-
-        QPropertyAnimation *animation = new QPropertyAnimation(zone->arrBreeks[dayIndex], "geometry");
-        QRect rectTo(posTo.x(), posTo.y(), rectFrom.width(), rectFrom.height());
-        animation->setDuration(MOVE_DURATION);
-        animation->setStartValue(rectFrom);
-        animation->setEndValue(rectTo);
-
-        animation->start();
-        delay(MOVE_DURATION + 50);
-
-        zone->arrBreeks[dayIndex]->changeBreekState();
-        zone->arrBreeks[dayIndex - 1]->changeBreekState();
-        zone->arrBreeks[dayIndex]->move(posFrom);
-
-        workZoneScrollArea_->ensureVisible(zone->arrBreeks[dayIndex - 1]->pos().x() - 250, 0);
-      }
-			zone->arrBreeks[dayIndex - 1]->setFocus();
-    }
-  }
-
-	if (iCurrentDay_ < DAYS_COUNT & arrBreeksZones_[zoneIndex].arrBreeks[iCurrentDay_]->getState()) {
-		arrBreeksZones_[zoneIndex].arrBreeksZoneDays[iCurrentDay_]->setStyleSheet("background: #b3defc; border-radius: 4px;");
-	}
 }
 
 void MainWindow::dropElement(const int dayNumber, const int dayIndex, const int elemIndex, const elementData_t elemData)

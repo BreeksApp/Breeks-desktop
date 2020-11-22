@@ -1,6 +1,7 @@
 //VIEW
 
 #include <QDebug>
+#include <QGraphicsDropShadowEffect>
 #include <QKeyEvent>
 #include <QQmlProperty>
 #include <QQuickItem>
@@ -21,6 +22,8 @@ Breek::Breek(QWidget *parent):
   this->setFocusPolicy(Qt::ClickFocus);
   this->setFixedSize(width_, height_);
   this->setFlat(true);
+
+	callHub_ = false;
 }
 
 Breek::Breek(int width, int height, QWidget *parent):
@@ -47,6 +50,7 @@ void Breek::keyPressEvent(QKeyEvent *event)
 {
   int iKey = event->key();
 
+<<<<<<< HEAD
   if (iKey == Qt::Key_W) {
     if (workState_ == Conditions::RED) {
       connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::GREY_FOREGROUND);
@@ -94,10 +98,89 @@ void Breek::keyPressEvent(QKeyEvent *event)
                 workState_ = Conditions::GREY_FOREGROUND;
     emit moveBreek(zoneIndex_, dayIndex_, false);
   }
+=======
+	if (event->modifiers() == 0) {
+		if (iKey == Qt::Key_W || QKeySequence(iKey).toString() == "Ц") {
+			if (workState_ == Conditions::RED) {
+				connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::GREY_FOREGROUND);
+				workState_ = Conditions::GREY_FOREGROUND;
+			}
+			else if (workState_ == Conditions::GREY_FOREGROUND) {
+				connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::GREEN);
+				workState_ = Conditions::GREEN;
+			}
+			else if (workState_ == Conditions::GREEN) {
+				connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::GREY_BACKGROUND);
+				workState_ = Conditions::GREY_BACKGROUND;
+			}
+			else {
+				connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::RED);
+				workState_ = Conditions::RED;
+			}
+		}
+
+		if (iKey == Qt::Key_S || QKeySequence(iKey).toString() == "Ы") {
+			if (workState_ == Conditions::RED) {
+				connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREY_BACKGROUND);
+				workState_ = Conditions::GREY_BACKGROUND;
+			}
+			else if (workState_ == Conditions::GREY_FOREGROUND) {
+				connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::RED);
+				workState_ = Conditions::RED;
+			}
+			else if (workState_ == Conditions::GREEN){
+				connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREY_FOREGROUND);
+				workState_ = Conditions::GREY_FOREGROUND;
+			}
+			else {
+				connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREEN);
+				workState_ = Conditions::GREEN;
+			}
+		}
+
+		if (iKey == Qt::Key_D || QKeySequence(iKey).toString() == "В") {
+			if (callHub_) {
+				emit doubleClicked();
+			}
+			emit moveBreek(zoneIndex_, dayIndex_, true);
+		}
+
+		if (iKey == Qt::Key_A || QKeySequence(iKey).toString() == "Ф") {
+			if (callHub_) {
+				emit doubleClicked();
+			}
+			emit moveBreek(zoneIndex_, dayIndex_, false);
+		}
+
+		if (iKey == Qt::Key_E || QKeySequence(iKey).toString() == "У") {
+			qDebug() << dayIndex_;
+			emit doubleClicked();
+		}
+
+		if (iKey == Qt::Key_Q || QKeySequence(iKey).toString() == "Й") {
+			emit changeState(zoneIndex_, dayIndex_);
+		}
+	}
+
+	if (event->modifiers() == Qt::ControlModifier) {
+		if (QKeySequence(iKey) == Qt::Key_A || QKeySequence(iKey).toString() == "Ф") {
+			if (dayIndex_ > 0) {
+				emit (changeState(zoneIndex_, dayIndex_ - 1));
+			}
+		}
+		if (QKeySequence(iKey) == Qt::Key_D || QKeySequence(iKey).toString() == "В") {
+			if (dayIndex_ < 5) {
+				emit (changeState(zoneIndex_, dayIndex_ + 1));
+			}
+		}
+	}
+>>>>>>> 5979b45c2f0287ba18a47b0c4080fb3c21811c17
 
 	//for description
 	if (workState_ == Conditions::GREY_FOREGROUND || workState_ == Conditions::GREY_BACKGROUND || !state_) {
-		emit sendSateToLilDay(zoneIndex_, dayIndex_, 0);
+		if (state_) {
+			emit sendSateToLilDay(zoneIndex_, dayIndex_, 0);
+		}
 	}
 	else if (workState_ == Conditions::GREEN) {
 		emit sendSateToLilDay(zoneIndex_, dayIndex_, 1);
@@ -107,6 +190,29 @@ void Breek::keyPressEvent(QKeyEvent *event)
 	}
 }
 
+void Breek::mouseDoubleClickEvent(QMouseEvent *event)
+{
+	emit doubleClicked();
+	this->setFocus();
+}
+
+void Breek::mousePressEvent(QMouseEvent *event)
+{
+	this->setFocus();
+}
+
+void Breek::focusInEvent(QFocusEvent *)
+{
+	connectToQml(Conditions::SHADOW, true);
+	emit setZoneFocus(zoneIndex_, true);
+}
+
+void Breek::focusOutEvent(QFocusEvent *)
+{
+	connectToQml(Conditions::SHADOW, false);
+	emit setZoneFocus(zoneIndex_, false);
+}
+
 bool Breek::getState()
 {
   return state_;
@@ -114,10 +220,20 @@ bool Breek::getState()
 
 void Breek::setState(bool state)
 {
-  state_ = state;
+	state_ = state;
 }
 
-void Breek::connectToQml(int indexOfEmoji)
+Conditions Breek::getColorState()
+{
+	return workState_;
+}
+
+void Breek::setColorState(Conditions cond)
+{
+	workState_ = cond;
+}
+
+void Breek::connectToQml(int indexOfEmoji, Conditions cond)
 {
   if (indexOfEmoji < 0 || indexOfEmoji > 10) return;
 
@@ -133,15 +249,39 @@ void Breek::connectToQml(int indexOfEmoji)
 
   graphObject_->setProperty("indexOfEmoji", indexOfEmoji);
   QQmlProperty(graphObject_, "animationOn").write(false);
-	graphObject_->setProperty("indexOfCondFrom", Conditions::GREY_FOREGROUND);
+	graphObject_->setProperty("indexOfCondFrom", cond);
+	graphObject_->setProperty("indexOfCondTo", cond);
 
   // работа с фоном сцены
   QColor color;
 	color.setNamedColor("#F7F7F7");
-  quickWidget_->quickWindow()->setColor(color);
+	quickWidget_->quickWindow()->setColor(color);
 
 //  QWidget *container = QWidget::createWindowContainer(&quickWidget_, this);
   // конец кода, связывающего кнопку с qml
+}
+
+void Breek::connectToQml(Conditions cond, bool isShadow)
+{
+	QQmlProperty(graphObject_, "animationOn").write(false);
+
+	if (!isShadow && cond != Conditions::SHADOW) {
+		graphObject_->setProperty("indexOfCondFrom", cond);
+		graphObject_->setProperty("indexOfCondTo", cond);
+	}
+	else {
+		if (isShadow) {
+			graphObject_->setProperty("bigShadow", true);
+		}
+		else {
+			graphObject_->setProperty("bigShadow", false);
+		}
+	}
+
+	// работа с фоном сцены
+	QColor color;
+	color.setNamedColor("#F7F7F7");
+	quickWidget_->quickWindow()->setColor(color);
 }
 
 void Breek::connectToQml(int indexOfEmoji, Directions dir,
@@ -191,13 +331,47 @@ void Breek::setIndex(const int zoneIndex, const int dayIndex)
 void Breek::changeBreekState()
 {
   state_ = !state_;
+	workState_ = Conditions::GREY_FOREGROUND;
   this->setEnabled(!this->isEnabled());
 
+	qDebug() << dayIndex_ << state_ << this->isEnabled();
+
   if (state_) {
-    connectToQml(nEmoj_);
+		connectToQml(nEmoj_, workState_);
+		callHub_ = false;
   } else {
     this->quickWidget_->setVisible(false);
+		if (callHub_) {
+			emit doubleClicked();
+			callHub_ = false;
+		}
   }
+
+	emit isHere(zoneIndex_, dayIndex_, state_);
+	//this->setFocus();
+}
+
+void Breek::changeEmoji(int nEmoji)
+{
+	nEmoj_ = nEmoji;
+	connectToQml(nEmoj_, Conditions::YELLOW);
+	this->setFocus();
+}
+
+void Breek::closeEmojiHub()
+{
+	callHub_ = false;
+	this->setFocus();
+
+	if (state_) {
+		connectToQml(nEmoj_, workState_);
+	}
+}
+
+void Breek::openEmojiHub()
+{
+	callHub_ = true;
+	connectToQml(Conditions::YELLOW);
 }
 
 int Breek::getWidth()

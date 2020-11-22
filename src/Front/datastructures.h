@@ -64,6 +64,21 @@ struct textInfo_t {
   QString text;
 };
 
+enum Directions
+{
+	DOWNSIDE,
+	UPSIDE
+};
+enum Conditions
+{
+	RED,
+	GREY_FOREGROUND,
+	GREY_BACKGROUND,
+	GREEN,
+	YELLOW,
+	SHADOW
+};
+
 
 
 #endif // DATASTRUCTURES_H

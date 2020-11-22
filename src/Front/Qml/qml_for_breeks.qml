@@ -23,12 +23,16 @@ Item
     property variant conditions:
     [
         "#FF3366", // red
-        "#ECEAEC", // grey - foreground
+        "#F7F7F7", // grey - foreground
         "#F7F7F7", // grey - background
-        "#66FF66"  // green
+        "#66FF66", // green
+        "#FFFF66", // yellow
+        "#666666"
     ]
     property int indexOfCondFrom
     property int indexOfCondTo
+
+    property bool bigShadow
 
     property bool animationOn // включить / отключить анимацию - если хочется смотреть только на один breek
     property int direction // 1 - поворот вверх, 0 - поворот вниз
@@ -139,6 +143,15 @@ Item
         return (sceneHeight - sideLength)/2
     }
 
+    function getColorForShadow() {
+      if (bigShadow) {
+        return conditions[5]
+      }
+      else {
+        return "darkgray"
+      }
+    }
+
     opacity: 1.0
     layer.enabled: true
 
@@ -184,10 +197,10 @@ Item
             radius: 16.0
             samples: 33
             spread: 0
-            color: "darkgray"
+            color: getColorForShadow()
             transparentBorder: true
-            horizontalOffset: getCondShadeOffset(condRectWidth)
-            verticalOffset: getCondShadeOffset(condRectHeight)
+            //horizontalOffset: getCondShadeOffset(condRectWidth)
+            //verticalOffset: getCondShadeOffset(condRectHeight)
         }
     }
     Rectangle
@@ -219,7 +232,7 @@ Item
         }
 
         // работа с тенью
-        layer.enabled: true
+        /*layer.enabled: true
         layer.effect: DropShadow
         {
             anchors.fill: emojiFrom
@@ -230,7 +243,7 @@ Item
             transparentBorder: true
             horizontalOffset: getEmojiShadeOffset(emojiRectWidth)
             verticalOffset: getEmojiShadeOffset(emojiRectHeight)
-        }
+        }*/
 
         Image {
             id: image
@@ -277,10 +290,11 @@ Item
             radius: 16.0
             samples: 33
             spread: 0
-            color: "darkgray"
+            color: getColorForShadow()
+
             transparentBorder: true
-            horizontalOffset: getCondShadeOffset(condRectWidth)
-            verticalOffset: getCondShadeOffset(condRectHeight)
+            //horizontalOffset: getCondShadeOffset(condRectWidth)
+            //verticalOffset: getCondShadeOffset(condRectHeight)
         }
     }
     /* 1 - 333, 2 - dark, 3 - dark + 16 */
@@ -313,7 +327,7 @@ Item
         }
 
         // работа с тенью
-        layer.enabled: true
+        /*layer.enabled: true
         layer.effect: DropShadow
         {
             anchors.fill: emojiTo
@@ -324,7 +338,7 @@ Item
             transparentBorder: true
             horizontalOffset: getEmojiShadeOffset(emojiRectWidth)
             verticalOffset: getEmojiShadeOffset(emojiRectHeight)
-        }
+        }*/
 
         Image {
             id: imageAppearing

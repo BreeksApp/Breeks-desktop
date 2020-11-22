@@ -1,6 +1,7 @@
 #include "Front/mainwindow.h"
 #include <QScrollArea>
 #include <QScrollBar>
+#include <QtConcurrent/QtConcurrent>
 
 void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
 {
@@ -11,22 +12,22 @@ void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
   breeksZone->breeksZoneGroupBox->setFixedHeight(groupBoxHeight);
 	//breeksZone->breeksZoneGroupBox->setContentsMargins(0, 0, 0, 0);
 	breeksZone->breeksZoneGroupBox->setStyleSheet("QGroupBox {background: #F7F7F7; border: 1.5px solid #F1F1F1; border-radius: 20px;}");
-  breeksZone->breeksZoneLayout->setHorizontalSpacing(160);
-  breeksZone->breeksZoneGroupBox->setLayout(breeksZone->breeksZoneLayout);
-	breeksZone->breeksZoneLayout->setMargin(0);
+
+	breeksZone->breeksZoneGroupBox->setLayout(breeksZone->breeksZoneLayout);
+	breeksZone->breeksZoneLayout->setContentsMargins(100, 0, 100, 0);
   breeksZone->flagIfPosFilled = false;
 
   for (int i = 0; i < DAYS_COUNT; ++i) {
 		breeksZone->arrBreeks[i]->setEnabled(false);
 		breeksZone->arrBreeks[i]->setState(false);
 
-		connect(breeksZone->arrBreeks[i], SIGNAL(sendSateToLilDay(int, int, int)), this, SLOT(changeBreeksZoneLilDayState(int, int, int)));
-
 		breeksZone->arrBreeksZoneDays[i]->setFixedSize(90, 90);
 		breeksZone->arrBreeks[i]->setFixedSize(90, 90);
 		breeksZone->arrBreeks[i]->setStyleSheet("background: none;");
 
+		connect(breeksZone->arrBreeks[i], SIGNAL(sendSateToLilDay(int, int, int)), this, SLOT(changeBreeksZoneLilDayState(int, int, int)));
     connect(breeksZone->arrBreeks[i], SIGNAL(moveBreek(int, int, bool)), this, SLOT(moveBreek(int, int, bool)));
+		connect(breeksZone->arrBreeks[i], SIGNAL(isHere(int, int, bool)), this, SLOT(setBreeksZoneLilDayShadow(int, int, bool)));
   }
 
 	//-----DESCRIPTION ZONE-----
@@ -43,16 +44,22 @@ void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
 				"QScrollBar::handle:vertical {"
 					"border: 0.5px solid #c7c7bf;"
 					"border-radius: 4px;"
+					"background: #e3e3df;"
+					"min-height: 0px;}"
+
+				"QScrollBar::handle:vertical:hover {"
+					"border: 0.5px solid #c7c7bf;"
+					"border-radius: 4px;"
 					"background: #c7c7bf;"
 					"min-height: 0px;}"
 
 				"QScrollBar::add-line:vertical {"
-				"border: none;"
-				"background: none;}"
+					"border: none;"
+					"background: none;}"
 
 				"QScrollBar::sub-line:vartical {"
-				"border: none;"
-				"background: none;}");
+					"border: none;"
+					"background: none;}");
 
 
 	QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
@@ -213,9 +220,10 @@ void MainWindow::buildBreeksDescriptionZone()
 
 void MainWindow::setDaysConnect(breeksZone_t* breeksZone)
 {
-  //connect(breeksZone->buttonBreekDays, SIGNAL(clicked()), breeksZone, SLOT(workWithBreekDays()));
   for (int i = 0; i < DAYS_COUNT; ++i) {
-    connect(breeksZone->arrBreeksZoneDays[i], SIGNAL(clicked()), breeksZone->arrBreeks[i], SLOT(changeBreekState()));
+		connect(breeksZone->arrBreeksZoneDays[i], SIGNAL(singleClick()), breeksZone->arrBreeks[i], SLOT(changeBreekState()));
+		connect(breeksZone->arrBreeksZoneDays[i], SIGNAL(doubleClick(int, int)), this, SLOT(descriptionZoneDayDobleClick(int, int)));
+		connect(breeksZone->arrBreeks[i], SIGNAL(changeState(int, int)), this, SLOT(changeLilDayState(int, int)));
   }
 }
 
@@ -233,7 +241,7 @@ void MainWindow::allocateMemoryForBreeks(breeksZone_t* breeksZone)
 
   for (int i = 0; i < DAYS_COUNT; i++) {
     breeksZone->arrBreeks[i] = new Breek;
-    breeksZone->arrBreeksZoneDays[i] = new QPushButton;
+		breeksZone->arrBreeksZoneDays[i] = new DescriptionZoneDayButton(breeksZone->zoneIndex, i);
   }
 }
 
@@ -252,16 +260,99 @@ void MainWindow::changeBreeksZoneLilDayState(int zoneIndex, int dayIndex, int iS
 		return;
 	}
 
+	QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect;
+	shadow->setBlurRadius(9);
+	shadow->setXOffset(0);
+	shadow->setYOffset(0);
+	shadow->setColor("#81C4FF");
+
 	switch (iState) {
 		case 0 :
+			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setGraphicsEffect(shadow);
 			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setStyleSheet("background: #FFFFFF; border-radius: 4px;");
 		break;
 		case 1 :
-			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setStyleSheet("background: #66FF66; border-radius: 4px;");
+			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setGraphicsEffect(nullptr);
+			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setStyleSheet("background: #d0f896; border-radius: 4px;");
 		break;
 		case 2 :
-			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setStyleSheet("background: #FF3366; border-radius: 4px;");
+			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setGraphicsEffect(nullptr);
+			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setStyleSheet("background: #ff8696; border-radius: 4px;");
 	}
+}
+
+void MainWindow::setBreeksZoneLilDayShadow(int zoneIndex, int dayIndex, bool state)
+{
+	QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect;
+	shadow->setBlurRadius(9);
+	shadow->setXOffset(0);
+	shadow->setYOffset(0);
+	shadow->setColor("#81C4FF");
+
+	arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setStyleSheet("background: #FFFFFF; border-radius: 4px;");
+
+	if (state) {
+		arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setGraphicsEffect(shadow);
+		if (dayIndex == iCurrentDay_) {
+			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setStyleSheet("background: #b3defc; border-radius: 4px;");
+		}
+	}
+	else {
+		arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setGraphicsEffect(nullptr);
+		if (dayIndex == iCurrentDay_) {
+			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setStyleSheet("background: #FFFFFF; border-radius: 4px;");
+		}
+	}
+}
+
+void MainWindow::setBreeksDescriptionZoneFocus(int zoneIndex, bool cond)
+{
+	if (cond) {
+		QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect;
+		shadow->setBlurRadius(9);
+		shadow->setXOffset(0);
+		shadow->setYOffset(0);
+		shadow->setColor("#909090");
+
+		arrBreeksZones_[zoneIndex].breeksDescriptionGroupBox->setGraphicsEffect(shadow);
+	}
+	else {
+		arrBreeksZones_[zoneIndex].breeksDescriptionGroupBox->setGraphicsEffect(nullptr);
+	}
+}
+
+void MainWindow::descriptionZoneDayDobleClick(int zoneIndex, int dayIndex)
+{
+	int dayPos = 0;
+
+	switch (dayIndex) {
+		case 0 :
+			dayPos = 0;
+		break;
+		case 1 :
+			dayPos = 0;
+		break;
+		case 2 :
+			dayPos = 350;
+		break;
+		case 3 :
+			dayPos = 680;
+		break;
+		case 4 :
+			dayPos = 1000;
+		break;
+		case 5 :
+			dayPos = 1000;
+		break;
+	}
+
+	workZoneScrollArea_->horizontalScrollBar()->setValue(dayPos);
+	arrBreeksZones_[zoneIndex].arrBreeks[dayIndex]->setFocus();
+}
+
+void MainWindow::changeLilDayState(int zoneIndex, int dayIndex)
+{
+	arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->mousePressEvent(nullptr);
 }
 
 void MainWindow::delay(int millisecondsToWait)
@@ -269,7 +360,104 @@ void MainWindow::delay(int millisecondsToWait)
     QTime dieTime = QTime::currentTime().addMSecs(millisecondsToWait);
     while(QTime::currentTime() < dieTime) {
       QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-    }
+		}
 }
 
+void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
+{
+	if (!arrBreeksZones_[zoneIndex].flagIfPosFilled) {
+		fillBreeksPositions(zoneIndex);
+		arrBreeksZones_[zoneIndex].flagIfPosFilled = true;
+	}
 
+	if (right) {
+
+		if (dayIndex < DAYS_COUNT - 1) {
+			breeksZone_t *zone = &arrBreeksZones_[zoneIndex];
+
+			if (!zone->arrBreeks[dayIndex + 1]->isEnabled()) {
+				Conditions workState = Conditions::GREY_FOREGROUND;
+				zone->arrBreeks[dayIndex]->setColorState(workState);
+				zone->arrBreeks[dayIndex]->connectToQml(zone->arrBreeks[dayIndex]->getEmojiNum(), workState);
+
+				QRect rectFrom = zone->arrBreeks[dayIndex]->geometry();
+				QPoint posFrom = zone->arrBreeks[dayIndex]->pos();
+				QPoint posTo = zone->arrBreeks[dayIndex + 1]->pos();
+
+				QPropertyAnimation *animation = new QPropertyAnimation(zone->arrBreeks[dayIndex], "geometry");
+				QRect rectTo(posTo.x(), posTo.y(), rectFrom.width(), rectFrom.height());
+				animation->setDuration(MOVE_DURATION);
+				animation->setStartValue(rectFrom);
+				animation->setEndValue(rectTo);
+
+				animation->start();
+				delay(MOVE_DURATION + 50);
+
+				zone->arrBreeks[dayIndex]->changeBreekState();
+
+				if (zone->arrBreeks[dayIndex + 1]->getEmojiNum() != zone->arrBreeks[dayIndex]->getEmojiNum()) {
+					zone->arrBreeks[dayIndex + 1]->setEmoj(zone->arrBreeks[dayIndex]->getEmojiNum());
+					zone->arrBreeks[dayIndex + 1]->connectToQml(zone->arrBreeks[dayIndex + 1]->getEmojiNum(), zone->arrBreeks[dayIndex + 1]->getColorState());
+					QThread::msleep(100);
+				}
+
+				zone->arrBreeks[dayIndex + 1]->changeBreekState();
+				zone->arrBreeks[dayIndex]->move(posFrom);
+
+				//workZoneScrollArea_->ensureVisible(zone->arrBreeks[dayIndex + 1]->pos().x() + 530, workZoneScrollArea_->verticalScrollBar()->sliderPosition());
+			}
+			zone->arrBreeks[dayIndex + 1]->setFocus();
+			QThread::msleep(200);
+			descriptionZoneDayDobleClick(zoneIndex, dayIndex + 1);
+
+			return;
+		}
+
+	}
+	else {
+		if (dayIndex > 0) {
+			breeksZone_t *zone = &arrBreeksZones_[zoneIndex];
+			if (!zone->arrBreeks[dayIndex - 1]->isEnabled()) {
+				Conditions workState = Conditions::GREY_FOREGROUND;
+				zone->arrBreeks[dayIndex]->setState(workState);
+				zone->arrBreeks[dayIndex]->connectToQml(zone->arrBreeks[dayIndex]->getEmojiNum(), workState);
+
+				QRect rectFrom = zone->arrBreeks[dayIndex]->geometry();
+				QPoint posFrom = zone->arrBreeks[dayIndex]->pos();
+				QPoint posTo = zone->arrBreeks[dayIndex - 1]->pos();
+
+				QPropertyAnimation *animation = new QPropertyAnimation(zone->arrBreeks[dayIndex], "geometry");
+				QRect rectTo(posTo.x(), posTo.y(), rectFrom.width(), rectFrom.height());
+				animation->setDuration(MOVE_DURATION);
+				animation->setStartValue(rectFrom);
+				animation->setEndValue(rectTo);
+
+				animation->start();
+				delay(MOVE_DURATION + 50);
+
+				zone->arrBreeks[dayIndex]->changeBreekState();
+
+				if (zone->arrBreeks[dayIndex - 1]->getEmojiNum() != zone->arrBreeks[dayIndex]->getEmojiNum()) {
+					zone->arrBreeks[dayIndex - 1]->setEmoj(zone->arrBreeks[dayIndex]->getEmojiNum());
+					zone->arrBreeks[dayIndex - 1]->connectToQml(zone->arrBreeks[dayIndex - 1]->getEmojiNum(), zone->arrBreeks[dayIndex - 1]->getColorState());
+					QThread::msleep(100);
+				}
+				zone->arrBreeks[dayIndex - 1]->changeBreekState();
+				zone->arrBreeks[dayIndex]->move(posFrom);
+				//workZoneScrollArea_->ensureVisible(zone->arrBreeks[dayIndex - 1]->pos().x() - 405, workZoneScrollArea_->verticalScrollBar()->sliderPosition());
+			}
+			zone->arrBreeks[dayIndex - 1]->setFocus();
+			QThread::msleep(200);
+			descriptionZoneDayDobleClick(zoneIndex, dayIndex - 1);
+
+			return;
+		}
+	}
+
+	if (dayIndex == iCurrentDay_) {
+		arrBreeksZones_[zoneIndex].arrBreeksZoneDays[iCurrentDay_]->setStyleSheet("background: #FFFFFF; border-radius: 4px;");
+	}
+	if (iCurrentDay_ < DAYS_COUNT & arrBreeksZones_[zoneIndex].arrBreeks[iCurrentDay_]->getState()) {
+		arrBreeksZones_[zoneIndex].arrBreeksZoneDays[iCurrentDay_]->setStyleSheet("background: #b3defc; border-radius: 4px;");
+	}
+}

@@ -24,6 +24,39 @@ void MainWindow::buildTimeTable()
   workZoneScrollArea_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	workZoneScrollArea_->setStyleSheet("border-radius: 9px;");
 
+	workZoneScrollArea_->horizontalScrollBar()->setStyleSheet(
+				"QScrollBar:horizontal {"
+					"border: 0.1px solid #FFFFFF;"
+					"background: #FFFFFF;"
+					"height: 9px;"
+					"margin: 0px 0px 0px 0px;}"
+
+				"QScrollBar::handle:horizontal {"
+					//"border: 0.5px solid #c7c7bf;"
+					"border-radius: 4px;"
+					"background: #e3e3df;"
+					"min-height: 0px;}"
+
+					"QScrollBar:horizontal:hover {"
+						"border: 0.1px solid #FFFFFF;"
+						"background: #FFFFFF;"
+						"height: 15px;"
+						"margin: 0px 0px 0px 0px;}"
+
+					"QScrollBar::handle:horizontal:hover {"
+						//"border: 0.5px solid #c7c7bf;"
+						"border-radius: 4px;"
+						"background: #c7c7bf;"
+						"min-height: 0px;}"
+
+				"QScrollBar::add-line:horizontal {"
+					"border: none;"
+					"background: none;}"
+
+				"QScrollBar::sub-line:horizontal {"
+					"border: none;"
+					"background: none;}");
+
   bigWidgetInWorkZone_->setLayout(workZoneLayout_);
 	//workZoneLayout_->setContentsMargins(0, 0, 0, 200); //experience par
 
@@ -56,7 +89,7 @@ void MainWindow::buildTimeTable()
 
 void MainWindow::setDayInfo()
 {
-	if (iCurrentDay_ = DAYS_COUNT) {
+	if (iCurrentDay_ == DAYS_COUNT) {
 		iCurrentDay_ = 0;
 	}
 
@@ -64,7 +97,7 @@ void MainWindow::setDayInfo()
 				"QScrollBar:vertical {"
 					"border: 0.1px solid #FFFFFF;"
 					"background: #FFFFFF;"
-					"width: 12px;    "
+					"width: 9px;    "
 					"margin: 0px 0px 0px 0px;}"
 
 				"QScrollBar::handle:vertical {"
@@ -104,7 +137,7 @@ void MainWindow::setDayInfo()
 					"QScrollBar:vertical {"
 						"border: 0.1px solid #FFFFFF;"
 						"background: #FFFFFF;"
-						"width: 12px;    "
+						"width: 9px;    "
 						"margin: 0px 0px 0px 0px;}"
 
 					"QScrollBar::handle:vertical {"
@@ -128,20 +161,20 @@ void MainWindow::setDayInfo()
 
 	switch (iCurrentDay_) {
 		case 1 :
-			workZoneScrollArea_->ensureVisible(scrollPosTue, 0);
+			workZoneScrollArea_->ensureVisible(scrollPosTue, workZoneScrollArea_->verticalScrollBar()->sliderPosition());
 		break;
 		case 2 :
-			workZoneScrollArea_->ensureVisible(scrollPosWed, 0);
+			workZoneScrollArea_->ensureVisible(scrollPosWed, workZoneScrollArea_->verticalScrollBar()->sliderPosition());
 		break;
 		case 3 :
-			workZoneScrollArea_->ensureVisible(scrollPosThu, 0);
+			workZoneScrollArea_->ensureVisible(scrollPosThu, workZoneScrollArea_->verticalScrollBar()->sliderPosition());
 		break;
 		case 4 :
-			workZoneScrollArea_->ensureVisible(scrollPosFri, 0);
+			workZoneScrollArea_->ensureVisible(scrollPosFri, workZoneScrollArea_->verticalScrollBar()->sliderPosition());
 		break;
 
 		default :
-			workZoneScrollArea_->ensureVisible(scrollPosSat, 0);
+			workZoneScrollArea_->ensureVisible(scrollPosSat, workZoneScrollArea_->verticalScrollBar()->sliderPosition());
 	}
 
   //special data for set info about days in the LOOP BELOW: date, name of the day and font effects
@@ -267,7 +300,7 @@ void MainWindow::setDaysStructure()
 					"QScrollBar:vertical {"
 						"border: 0.1px solid #FFFFFF;"
 						"background: #FFFFFF;"
-						"width: 12px;"
+						"width: 9px;"
 						"margin: 0px 0px 0px 0px;}"
 
 					"QScrollBar::handle:vertical {"
@@ -338,7 +371,7 @@ void MainWindow::defineDayMoveFrom(int dayIndex, QString sColor) {
 					"QScrollBar::handle:vertical {"
 						"border: 0.5px solid #E3E3E3;"
 						"border-radius: 2px;"
-						"background: #" + sColor + ";"
+						"background: #" + sColor + ";" //#d0f896
 						"min-height: 0px;}"
 
 					"QScrollBar::add-line:vertical {"
