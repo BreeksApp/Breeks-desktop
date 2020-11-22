@@ -50,55 +50,6 @@ void Breek::keyPressEvent(QKeyEvent *event)
 {
   int iKey = event->key();
 
-<<<<<<< HEAD
-  if (iKey == Qt::Key_W) {
-    if (workState_ == Conditions::RED) {
-      connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::GREY_FOREGROUND);
-      workState_ = Conditions::GREY_FOREGROUND;
-    }
-    else if (workState_ == Conditions::GREY_FOREGROUND) {
-      connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::GREEN);
-      workState_ = Conditions::GREEN;
-    }
-    else if (workState_ == Conditions::GREEN) {
-      connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::GREY_BACKGROUND);
-      workState_ = Conditions::GREY_BACKGROUND;
-    }
-    else {
-      connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::RED);
-      workState_ = Conditions::RED;
-    }
-  }
-
-  if (iKey == Qt::Key_S) {
-    if (workState_ == Conditions::RED) {
-      connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREY_BACKGROUND);
-      workState_ = Conditions::GREY_BACKGROUND;
-    }
-    else if (workState_ == Conditions::GREY_FOREGROUND) {
-      connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::RED);
-      workState_ = Conditions::RED;
-    }
-    else if (workState_ == Conditions::GREEN){
-      connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREY_FOREGROUND);
-      workState_ = Conditions::GREY_FOREGROUND;
-    }
-    else {
-      connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREEN);
-      workState_ = Conditions::GREEN;
-    }
-  }
-
-  if (iKey == Qt::Key_D) {
-                workState_ = Conditions::GREY_FOREGROUND;
-    emit moveBreek(zoneIndex_, dayIndex_, true);
-  }
-
-  if (iKey == Qt::Key_A) {
-                workState_ = Conditions::GREY_FOREGROUND;
-    emit moveBreek(zoneIndex_, dayIndex_, false);
-  }
-=======
 	if (event->modifiers() == 0) {
 		if (iKey == Qt::Key_W || QKeySequence(iKey).toString() == "Ц") {
 			if (workState_ == Conditions::RED) {
@@ -174,7 +125,6 @@ void Breek::keyPressEvent(QKeyEvent *event)
 			}
 		}
 	}
->>>>>>> 5979b45c2f0287ba18a47b0c4080fb3c21811c17
 
 	//for description
 	if (workState_ == Conditions::GREY_FOREGROUND || workState_ == Conditions::GREY_BACKGROUND || !state_) {
