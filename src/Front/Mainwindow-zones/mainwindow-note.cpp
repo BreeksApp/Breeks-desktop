@@ -1,53 +1,54 @@
 #include "Front/mainwindow.h"
+#include "Front/GeneralTextEdit/notemark.h"
 
-void MainWindow::noteMakePageButtonSelectable(QPushButton *button)
+void MainWindow::noteMakePageButtonSelectable(NoteMark *button)
 {
   //set previous button in default state
   switch (ui->note->getNumberCurrentFile()) {
     case 1 :
-      effects::setElementColor<QPushButton>(ui->buttonPage1, paletteDefaultElement_);
+			ui->buttonPage1->setDefaultStyle();
       break;
     case 2 :
-     effects::setElementColor<QPushButton>(ui->buttonPage2, paletteDefaultElement_);
-      break;
+			ui->buttonPage2->setDefaultStyle();
+			break;
     case 3 :
-     effects::setElementColor<QPushButton>(ui->buttonPage3, paletteDefaultElement_);
-      break;
+			ui->buttonPage3->setDefaultStyle();
+			break;
     case 4 :
-     effects::setElementColor<QPushButton>(ui->buttonPage4, paletteDefaultElement_);
-      break;
+			ui->buttonPage4->setDefaultStyle();
+			break;
     case 5 :
-     effects::setElementColor<QPushButton>(ui->buttonPage5, paletteDefaultElement_);
-      break;
+			ui->buttonPage5->setDefaultStyle();
+			break;
     case 6 :
-     effects::setElementColor<QPushButton>(ui->buttonPage6, paletteDefaultElement_);
-      break;
+			ui->buttonPage6->setDefaultStyle();
+			break;
   }
   //make selected
- effects::setElementColor<QPushButton>(button, paletteSelectedPageButton_);
+ button->setSelectableStyle();
 }
 
 void MainWindow::noteMakePageButtonSelectable(int nPage)
 {
   switch (nPage) {
     case 1 :
-			effects::setElementColor<QPushButton>(ui->buttonPage1, paletteSelectedPageButton_);
-      break;
+			ui->buttonPage1->setSelectableStyle();
+			break;
     case 2 :
-			effects::setElementColor<QPushButton>(ui->buttonPage2, paletteSelectedPageButton_);
-      break;
+			ui->buttonPage2->setSelectableStyle();
+			break;
     case 3 :
-			effects::setElementColor<QPushButton>(ui->buttonPage3, paletteSelectedPageButton_);
-      break;
+			ui->buttonPage3->setSelectableStyle();
+			break;
     case 4 :
-			effects::setElementColor<QPushButton>(ui->buttonPage4, paletteSelectedPageButton_);
-      break;
+			ui->buttonPage4->setSelectableStyle();
+			break;
     case 5 :
-			effects::setElementColor< QPushButton >(ui->buttonPage5, paletteSelectedPageButton_);
-      break;
+			ui->buttonPage5->setSelectableStyle();
+			break;
     case 6 :
-			effects::setElementColor<QPushButton>(ui->buttonPage6, paletteSelectedPageButton_);
-      break;
+			ui->buttonPage6->setSelectableStyle();
+			break;
   }
 }
 

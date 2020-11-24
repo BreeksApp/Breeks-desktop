@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QClipboard>
 #include <algorithm>
+#include <QPainter>
 
 #include "gentextedit.h"
 
@@ -28,7 +29,7 @@ GenTextEdit::GenTextEdit(QWidget *parent) :
 //We want to create our Text editor with special functions and hot-keys
 //that is why we override keyPressEvent()
 void GenTextEdit::keyPressEvent(QKeyEvent *event)
-{
+{	
   int iKey = event->key();
   Qt::KeyboardModifiers kmModifiers = event->modifiers();
   int cursorPos = this->textCursor().position();	
@@ -398,8 +399,20 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
     this->textCursor().deleteChar();
 		timer_->stop();
 		timer_->start(1000);
-  }
+	}
 }
+
+/*void GenTextEdit::paintEvent(QPaintEvent *event)
+{
+	// use paintEvent() of base class to do the main work
+		QTextEdit::paintEvent(event);
+		// draw cursor (if widget has focus)
+		if (hasFocus()) {
+			const QRect qRect = cursorRect(textCursor());
+			QPainter qPainter(viewport());
+			qPainter.fillRect(qRect, QColor(Qt::red));
+		}
+}*/
 
 void GenTextEdit::checkSpelling()
 {

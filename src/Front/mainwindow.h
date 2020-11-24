@@ -146,7 +146,7 @@ private:
 //
 
 //for work with NOTE
-  void noteMakePageButtonSelectable(QPushButton *button);
+	void noteMakePageButtonSelectable(NoteMark *button);
   void noteMakePageButtonSelectable(int nPage);
   void noteChangePage(const int n);
 //

@@ -27,7 +27,8 @@ class GenTextEdit : public QTextEdit
 public:
 	explicit GenTextEdit(QWidget *parent = nullptr);
 
-  void keyPressEvent(QKeyEvent *event);
+	void keyPressEvent(QKeyEvent *event) override;
+	//void paintEvent(QPaintEvent *event);
 
   //for work with file system, definition in filesystem.cpp
   void readFromDB(const int currentFile);

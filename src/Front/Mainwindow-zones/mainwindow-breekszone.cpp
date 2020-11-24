@@ -42,7 +42,7 @@ void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
 					"margin: 0px 0px 0px 0px;}"
 
 				"QScrollBar::handle:vertical {"
-					"border: 0.5px solid #c7c7bf;"
+					"border: 0.5px solid #e3e3df;"
 					"border-radius: 4px;"
 					"background: #e3e3df;"
 					"min-height: 0px;}"

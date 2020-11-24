@@ -26,6 +26,7 @@ SOURCES += \
     Front/GeneralTextEdit/gentextedit-keys-realization.cpp \
     Front/GeneralTextEdit/gentextedit-write-read.cpp \
     Front/GeneralTextEdit/gentextedit.cpp \
+    Front/GeneralTextEdit/notemark.cpp \
     Front/GeneralTextEdit/textnewelement.cpp \
     Front/GeneralTextEdit/undoredotext.cpp \
     Front/MainElements/EmojiHub/emojibutton.cpp \
@@ -54,6 +55,7 @@ HEADERS += \
     Front/Dictionary/russiandictionary.h \
     Front/GeneralTextEdit/TimeTable/timetabletextedit.h \
     Front/GeneralTextEdit/gentextedit.h \
+    Front/GeneralTextEdit/notemark.h \
     Front/GeneralTextEdit/textnewelement.h \
     Front/GeneralTextEdit/undoredotext.h \
     Front/MainElements/EmojiHub/emojibutton.h \

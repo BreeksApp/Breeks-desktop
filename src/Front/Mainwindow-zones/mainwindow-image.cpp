@@ -44,9 +44,9 @@ void MainWindow::on_buttonImage_clicked()
 
 void MainWindow::setImageBackgroundView(bool status)
 {
-  QString stylesheet = "background-color: #e6f6ff"; //default
+	QString stylesheet = "background-color: #e6f6ff; border-radius: 6px;"; //default
   if (status == true) {
-    stylesheet = "background-color: #abdfff";
+		stylesheet = "background-color: #abdfff; border-radius: 6px;";
   }
   ui->labelImageBackground->setStyleSheet(stylesheet);
 }

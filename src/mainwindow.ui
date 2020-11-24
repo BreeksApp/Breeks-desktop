@@ -41,7 +41,7 @@
     <property name="styleSheet">
      <string notr="true">QTextEdit{
 	background: #fffff0;
- 	border-radius: 12px;
+ 	border-radius: 10px;
 	padding-left:10; 
 	padding-top:10; 
 	padding-bottom:10; 
@@ -49,7 +49,7 @@
 }</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="buttonPage6">
+   <widget class="NoteMark" name="buttonPage6">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -71,7 +71,7 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="buttonPage1">
+   <widget class="NoteMark" name="buttonPage1">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -111,7 +111,7 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="buttonPage5">
+   <widget class="NoteMark" name="buttonPage5">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -133,7 +133,7 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="buttonPage3">
+   <widget class="NoteMark" name="buttonPage3">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -155,7 +155,7 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="buttonPage2">
+   <widget class="NoteMark" name="buttonPage2">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -180,7 +180,7 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="buttonPage4">
+   <widget class="NoteMark" name="buttonPage4">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -302,7 +302,8 @@ background: none;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: #e6f6ff;</string>
+     <string notr="true">background-color: #e6f6ff;
+border-radius: 10px;</string>
     </property>
     <property name="text">
      <string/>
@@ -352,7 +353,7 @@ background: none;</string>
      <x>0</x>
      <y>0</y>
      <width>1913</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
@@ -373,6 +374,11 @@ background: none;</string>
    <class>AddButtonHover</class>
    <extends>QPushButton</extends>
    <header>addbuttonhover.h</header>
+  </customwidget>
+  <customwidget>
+   <class>NoteMark</class>
+   <extends>QPushButton</extends>
+   <header location="global">notemark.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
