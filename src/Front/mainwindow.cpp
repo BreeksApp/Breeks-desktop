@@ -188,10 +188,10 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, breek
   setBreeksZone(&newZone); // make invisible and connect move event
   setDaysConnect(&newZone); // arrBreeksZoneDays[6] connect clicked() with breeks->changeBreekState
 
-	newZone.breekText->setFocus();
+	//newZone.breekText->setFocus();
 	newZone.breekText->fillCharsAndSetText(newElement.text, newElement.charStyleVector);
 	newZone.breekText->moveCursor(QTextCursor::Start);
-	newZone.breekText->verticalScrollBar()->maximum();
+	newZone.breekText->verticalScrollBar()->minimum();
 
 	if (iCurrentDay_ < DAYS_COUNT & newZone.arrBreeks[iCurrentDay_]->getState()) {
 		newZone.arrBreeksZoneDays[iCurrentDay_]->setStyleSheet("background: #b3defc; border-radius: 4px;");
@@ -211,6 +211,7 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, breek
 
 	bigWidgetInWorkZone_->setFixedHeight(bigWidgetHeight_);
 	bigWidgetInBreeksDescriptionZone_->setFixedHeight(bigWidgetHeight_);
+
 	++breeksZonesCount_;
 
 	//ADD BREEKS

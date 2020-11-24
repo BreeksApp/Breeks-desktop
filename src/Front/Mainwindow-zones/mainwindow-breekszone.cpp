@@ -34,6 +34,28 @@ void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
 	breeksZone->breeksDescriptionGroupBox->setFixedSize(300, groupBoxHeight);
 	breeksZone->breeksDescriptionGroupBox->setStyleSheet("QGroupBox{background: #F7F7F7; border: 1.5px solid #F1F1F1; border-radius: 15px;}");
 
+	breeksDescriptionZoneScrollArea_->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOn);
+	breeksDescriptionZoneScrollArea_->horizontalScrollBar()->setStyleSheet(
+				"QScrollBar:horizontal {"
+					"border: 0.1px solid #FFFFFF;"
+					"background: #FFFFFF;"
+					"height: 9px;"
+					"margin: 0px 0px 0px 0px;}"
+
+				"QScrollBar::handle:horizontal {"
+					"border-radius: 4px;"
+					"background: #FFFFFF;"
+					"min-height: 0px;}"
+
+				"QScrollBar::add-line:horizontal {"
+					"border: none;"
+					"background: none;}"
+
+				"QScrollBar::sub-line:horizontal {"
+					"border: none;"
+					"background: none;}");
+
+
 	breeksDescriptionZoneScrollArea_->verticalScrollBar()->setStyleSheet(
 				"QScrollBar:vertical {"
 					"border: 0.1px solid #FFFFFF;"
