@@ -6,8 +6,8 @@ void MainWindow::setAllElementsEffects()
   paletteSelectedPageButton_.setColor(QPalette::Button, effects::colorSelected); //blue
   paletteDefaultElement_.setColor(QPalette::Button, effects::colorDefault); //grey
 
-  setAllElementsColor();
-  setAllElementsShadow();
+	//setAllElementsColor();
+	setAllElementsShadow();
 
 	noteMakePageButtonSelectable(ui->note->getNumberCurrentFile());
 }
