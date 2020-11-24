@@ -8,3 +8,4 @@ src/fileLastVisit.txt
 src/.qmake*
 src/Makefile
 src/BreeksApp
+src/ui*
