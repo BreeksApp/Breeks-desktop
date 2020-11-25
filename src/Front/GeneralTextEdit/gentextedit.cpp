@@ -4,6 +4,7 @@
 #include <QClipboard>
 #include <algorithm>
 #include <QPainter>
+#include <QScrollBar>
 
 #include "gentextedit.h"
 
@@ -24,6 +25,30 @@ GenTextEdit::GenTextEdit(QWidget *parent) :
 	//add saved text
 	readFromDB(nCurrentFile_);
 	detailsSetCharStyle(globCh);
+
+	this->verticalScrollBar()->setStyleSheet(
+				"QScrollBar:vertical {"
+					"background-color: #FFFFF0;"
+					"width: 9px;"
+					"margin: 0px 0px 0px 0px;}"
+
+				"QScrollBar::handle:vartical {"
+					"border-radius: 4px;"
+					"background: #e3e3df;"
+					"min-height: 0px;}"
+
+				"QScrollBar::handle:vertical:hover {"
+					"border-radius: 4px;"
+					"background: #c7c7bf;"
+					"min-height: 0px;}"
+
+				"QScrollBar::add-line:vertical {"
+					"border: none;"
+					"background: none;}"
+
+				"QScrollBar::sub-line:vertical {"
+					"border: none;"
+					"background: none;}");
 }
 
 //We want to create our Text editor with special functions and hot-keys
@@ -43,7 +68,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 	commandInfo_t command;
 
   //all comands which insert smth
-  if (charCounter_ <= MAX_COUNT_CHAR_) {
+  if (charCounter_ <= MAX_COUNT_CHAR_) {		
 		//letters
     if (kmModifiers == 0 || kmModifiers == Qt::ShiftModifier) {
       if ( (iKey >= Qt::Key_A && iKey <= Qt::Key_Z) ||
@@ -226,9 +251,26 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 
   //Esc canceled all selection
   if (iKey == Qt::Key_Escape) {
-		this->moveCursor(QTextCursor::Right);
+		if (this->textCursor().hasSelection()) {
+			this->moveCursor(QTextCursor::Right);
+		}
     return;
-  }
+	}
+
+	//Home
+	if (iKey == Qt::Key_Home) {
+		QTextCursor c = this->textCursor();
+		c.movePosition(QTextCursor::Start, QTextCursor::MoveAnchor);
+		this->setTextCursor(c);
+		return;
+	}
+	//End
+	if (iKey == Qt::Key_End) {
+		QTextCursor c = this->textCursor();
+		c.movePosition(QTextCursor::End, QTextCursor::MoveAnchor);
+		this->setTextCursor(c);
+		return;
+	}
 
   //Arrows Left, Up, Right, Down - move to chars and lines
   if (kmModifiers == 0) {
