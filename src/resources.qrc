@@ -49,7 +49,6 @@
         <file>Front/Images/Breeks/10.2.png</file>
         <file>Front/Images/Breeks/10.3.png</file>
         <file>Front/Images/Breeks/10.4.png</file>
-        <file>Front/Images/Breeks/10.png</file>
         <file>Front/Images/add.png</file>
         <file>Front/Images/add-background.png</file>
         <file>Front/Images/addButtonDefault.png</file>
@@ -70,6 +69,69 @@
         <file>Front/Images/plus.png</file>
         <file>Front/Images/pluss.png</file>
         <file>Front/Images/plus2.png</file>
+        <file>Front/Images/Breeks/10.png</file>
+        <file>Front/Images/Breeks/11.png</file>
+        <file>Front/Images/Breeks/12.png</file>
+        <file>Front/Images/Breeks/13.png</file>
+        <file>Front/Images/Breeks/14.png</file>
+        <file>Front/Images/Breeks/15.png</file>
+        <file>Front/Images/Breeks/16.png</file>
+        <file>Front/Images/Breeks/17.png</file>
+        <file>Front/Images/Breeks/18.png</file>
+        <file>Front/Images/Breeks/19.png</file>
+        <file>Front/Images/Breeks/20.png</file>
+        <file>Front/Images/Breeks/21.png</file>
+        <file>Front/Images/Breeks/22.png</file>
+        <file>Front/Images/Breeks/23.png</file>
+        <file>Front/Images/Breeks/24.png</file>
+        <file>Front/Images/Breeks/25.png</file>
+        <file>Front/Images/Breeks/26.png</file>
+        <file>Front/Images/Breeks/27.png</file>
+        <file>Front/Images/Breeks/28.png</file>
+        <file>Front/Images/Breeks/29.png</file>
+        <file>Front/Images/Breeks/30.png</file>
+        <file>Front/Images/Breeks/31.png</file>
+        <file>Front/Images/Breeks/32.png</file>
+        <file>Front/Images/Breeks/33.png</file>
+        <file>Front/Images/Breeks/34.png</file>
+        <file>Front/Images/Breeks/35.png</file>
+        <file>Front/Images/Breeks/36.png</file>
+        <file>Front/Images/Breeks/37.png</file>
+        <file>Front/Images/Breeks/38.png</file>
+        <file>Front/Images/Breeks/39.png</file>
+        <file>Front/Images/Breeks/40.png</file>
+        <file>Front/Images/Breeks/41.png</file>
+        <file>Front/Images/Breeks/42.png</file>
+        <file>Front/Images/Breeks/43.png</file>
+        <file>Front/Images/Breeks/44.png</file>
+        <file>Front/Images/Breeks/45.png</file>
+        <file>Front/Images/Breeks/46.png</file>
+        <file>Front/Images/Breeks/47.png</file>
+        <file>Front/Images/Breeks/48.png</file>
+        <file>Front/Images/Breeks/49.png</file>
+        <file>Front/Images/Breeks/50.png</file>
+        <file>Front/Images/Breeks/51.png</file>
+        <file>Front/Images/Breeks/52.png</file>
+        <file>Front/Images/Breeks/53.png</file>
+        <file>Front/Images/Breeks/54.png</file>
+        <file>Front/Images/Breeks/55.png</file>
+        <file>Front/Images/Breeks/56.png</file>
+        <file>Front/Images/Breeks/57.png</file>
+        <file>Front/Images/Breeks/58.png</file>
+        <file>Front/Images/Breeks/59.png</file>
+        <file>Front/Images/Breeks/60.png</file>
+        <file>Front/Images/Breeks/61.png</file>
+        <file>Front/Images/Breeks/62.png</file>
+        <file>Front/Images/Breeks/63.png</file>
+        <file>Front/Images/Breeks/64.png</file>
+        <file>Front/Images/Breeks/65.png</file>
+        <file>Front/Images/Breeks/66.png</file>
+        <file>Front/Images/Breeks/67.png</file>
+        <file>Front/Images/Breeks/68.png</file>
+        <file>Front/Images/Breeks/0.png</file>
+        <file>Front/Images/Breeks/69.png</file>
+        <file>Front/Images/Breeks/70.png</file>
+        <file>Front/Images/Breeks/71.png</file>
     </qresource>
     <qresource prefix="/qml">
         <file>Front/Qml/qml_for_breeks.qml</file>

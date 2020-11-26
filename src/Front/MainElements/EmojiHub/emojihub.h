@@ -37,7 +37,7 @@ signals :
 private:
 	QScrollArea *scrollArea_;
 
-	const static int N_EMOJIES = 20;
+	const static int N_EMOJIES = 71;
 	EmojiButton *arrEmoji_[N_EMOJIES];
 
 	bool isSaturday_;

@@ -57,7 +57,6 @@ EmojiHub::EmojiHub(QWidget *parent) : QGroupBox(parent)
 	for (int i = 0; i < N_EMOJIES; ++i) {
 		arrEmoji_[i] = new EmojiButton(i);
 		arrEmoji_[i]->setFixedSize(40, 40);
-		arrEmoji_[i]->setStyleSheet("background: #111111;");
 		layout2->addWidget(arrEmoji_[i], i / 2, i % 2);
 
 		connect (arrEmoji_[i], SIGNAL(chosed(int)), this, SLOT(chosed(int)));

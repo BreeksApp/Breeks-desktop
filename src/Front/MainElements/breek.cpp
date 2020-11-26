@@ -185,7 +185,7 @@ void Breek::setColorState(Conditions cond)
 
 void Breek::connectToQml(int indexOfEmoji, Conditions cond)
 {
-  if (indexOfEmoji < 0 || indexOfEmoji > 10) return;
+	//if (indexOfEmoji < 0 || indexOfEmoji > 68) return;
 
   // код, связывающий кнопку с qml
   if (quickWidget_ == nullptr) {
@@ -237,7 +237,7 @@ void Breek::connectToQml(Conditions cond, bool isShadow)
 void Breek::connectToQml(int indexOfEmoji, Directions dir,
                          Conditions from, Conditions to)
 {
-  if (indexOfEmoji < 0 || indexOfEmoji > 9) return;
+	//if (indexOfEmoji < 0 || indexOfEmoji > 68) return;
 
   // код, связывающий кнопку с qml
   if (quickWidget_ == nullptr) {
@@ -264,7 +264,7 @@ void Breek::connectToQml(int indexOfEmoji, Directions dir,
 
 void Breek::setEmoj(int numOfEmoji)
 {
-  if (numOfEmoji >= 0 && numOfEmoji < 10) nEmoj_ = numOfEmoji;
+	nEmoj_ = numOfEmoji;
 }
 
 int Breek::getEmojiNum()
@@ -283,8 +283,6 @@ void Breek::changeBreekState()
   state_ = !state_;
 	workState_ = Conditions::GREY_FOREGROUND;
   this->setEnabled(!this->isEnabled());
-
-	qDebug() << dayIndex_ << state_ << this->isEnabled();
 
   if (state_) {
 		connectToQml(nEmoj_, workState_);

@@ -20,7 +20,7 @@
    <widget class="GenTextEdit" name="note">
     <property name="geometry">
      <rect>
-      <x>60</x>
+      <x>70</x>
       <y>130</y>
       <width>311</width>
       <height>531</height>
@@ -52,7 +52,7 @@
    <widget class="NoteMark" name="buttonPage6">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>30</x>
       <y>380</y>
       <width>51</width>
       <height>31</height>
@@ -74,7 +74,7 @@
    <widget class="NoteMark" name="buttonPage1">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>30</x>
       <y>180</y>
       <width>51</width>
       <height>31</height>
@@ -111,7 +111,7 @@
    <widget class="NoteMark" name="buttonPage5">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>30</x>
       <y>340</y>
       <width>51</width>
       <height>31</height>
@@ -133,7 +133,7 @@
    <widget class="NoteMark" name="buttonPage3">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>30</x>
       <y>260</y>
       <width>51</width>
       <height>31</height>
@@ -155,7 +155,7 @@
    <widget class="NoteMark" name="buttonPage2">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>30</x>
       <y>220</y>
       <width>51</width>
       <height>31</height>
@@ -180,7 +180,7 @@
    <widget class="NoteMark" name="buttonPage4">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>30</x>
       <y>300</y>
       <width>51</width>
       <height>31</height>
@@ -264,7 +264,7 @@ background: none;</string>
    <widget class="ImageHover" name="buttonImage">
     <property name="geometry">
      <rect>
-      <x>70</x>
+      <x>80</x>
       <y>710</y>
       <width>291</width>
       <height>171</height>
@@ -292,7 +292,7 @@ background: none;</string>
    <widget class="QLabel" name="labelImageBackground">
     <property name="geometry">
      <rect>
-      <x>60</x>
+      <x>70</x>
       <y>700</y>
       <width>311</width>
       <height>191</height>
@@ -350,7 +350,7 @@ background: none;</string>
      <x>0</x>
      <y>0</y>
      <width>1913</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>
