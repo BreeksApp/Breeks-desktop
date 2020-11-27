@@ -41,6 +41,13 @@ MainWindow::MainWindow(QWidget *parent) :
 	setAllElementsEffects();
 
 	ui->note->setContentsMargins(10, 10, 10, 10);
+
+	//ADD BREEKS FORM
+	connect(this, SIGNAL(sendBreekData(bool*, breeksData_t)), this, SLOT(recieveBreeksZoneData(bool*, breeksData_t)));
+	connect(ui->emojiHub, SIGNAL(changeEmoji(int)), ui->emojiButton, SLOT(changeEmoji(int)));
+	connect(ui->addBreekGB, SIGNAL(focusOut()), ui->emojiHub, SLOT(showThis()));
+	setStyleAddBreeksForm();
+	ui->addBreekGB->hide();
 }
 
 MainWindow::~MainWindow()
@@ -149,7 +156,7 @@ void MainWindow::recieveTimeTableZoneData(bool *daysCheck, const int arrSize, el
   }
 }
 
-void MainWindow::recieveBreeksZoneData(bool *daysCheck, const int arrSize, breeksData_t newElement)
+void MainWindow::recieveBreeksZoneData(bool *daysCheck, breeksData_t newElement)
 {
 //if we arleady have breeks zone with this name
 	for (breeksZone_t &value : arrBreeksZones_) { //value == zone
@@ -343,5 +350,3 @@ void MainWindow::sendElementsHeight(const int height, const int index)
 		arrDays_[index].widgetDay->setFixedHeight(ELEMENT_HEIGHT_ * 3);
   }
 }
-
-

@@ -132,6 +132,10 @@
         <file>Front/Images/Breeks/69.png</file>
         <file>Front/Images/Breeks/70.png</file>
         <file>Front/Images/Breeks/71.png</file>
+        <file>Front/Images/logout.png</file>
+        <file>Front/Images/nextWeek.png</file>
+        <file>Front/Images/prevWeek.png</file>
+        <file>Front/Images/info.png</file>
     </qresource>
     <qresource prefix="/qml">
         <file>Front/Qml/qml_for_breeks.qml</file>

@@ -33,15 +33,18 @@ SOURCES += \
     Front/GeneralTextEdit/textnewelement.cpp \
     Front/GeneralTextEdit/undoredotext.cpp \
     Front/MainElements/EmojiHub/emojibutton.cpp \
+    Front/MainElements/addbreekgb.cpp \
     Front/MainElements/addbuttonhover.cpp \
     Front/MainElements/addelement.cpp \
     Front/MainElements/breek.cpp \
     Front/MainElements/daywidget.cpp \
+    Front/MainElements/demobreek.cpp \
     Front/MainElements/descriptionzonedaybutton.cpp \
     Front/MainElements/elementtemplate.cpp \
     Front/MainElements/imagehover.cpp \
     Front/MainElements/timeedit.cpp \
     Front/Mainwindow-zones/mainwidnow-timetable.cpp \
+    Front/Mainwindow-zones/mainwindow-addbreek.cpp \
     Front/Mainwindow-zones/mainwindow-addelement.cpp \
     Front/Mainwindow-zones/mainwindow-breekszone.cpp \
     Front/Mainwindow-zones/mainwindow-effects.cpp \
@@ -62,10 +65,12 @@ HEADERS += \
     Front/GeneralTextEdit/textnewelement.h \
     Front/GeneralTextEdit/undoredotext.h \
     Front/MainElements/EmojiHub/emojibutton.h \
+    Front/MainElements/addbreekgb.h \
     Front/MainElements/addbuttonhover.h \
     Front/MainElements/addelement.h \
     Front/MainElements/breek.h \
     Front/MainElements/daywidget.h \
+    Front/MainElements/demobreek.h \
     Front/MainElements/descriptionzonedaybutton.h \
     Front/MainElements/elementtemplate.h \
     Front/MainElements/imagehover.h \
