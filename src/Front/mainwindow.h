@@ -15,6 +15,7 @@
 #include <set>
 #include <QDrag>
 
+#include <Front/MainElements/deletebreekszonebutton.h>
 #include <Front/MainElements/descriptionzonedaybutton.h>
 
 #include "ui_mainwindow.h"
@@ -98,6 +99,9 @@ private slots:
 	void descriptionZoneDayDobleClick(int, int);
 	void changeLilDayState(int, int);
 
+	void deleteBreeksZone(int);
+
+//ADD BREEKS
 	void on_mnBreekButton_clicked();
 	void on_tuBreekButton_clicked();
 	void on_weBreekButton_clicked();
@@ -256,7 +260,7 @@ private:
 
     QPushButton *buttonBreekDays;
 		DescriptionZoneDayButton *arrBreeksZoneDays[6];
-    QPushButton *buttonDelete;
+		DeleteBreeksZoneButton *buttonDelete;
 
     int zoneIndex;
   };

@@ -204,8 +204,8 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, breeksData_t newElement)
 		newZone.arrBreeksZoneDays[iCurrentDay_]->setStyleSheet("background: #b3defc; border-radius: 4px;");
 	}
 
-	workZoneLayout_->addWidget(newZone.breeksZoneGroupBox, breeksZonesCount_ + 1, 0, 1, 6, Qt::AlignCenter);
-	breeksDescriptionZoneLayout_->addWidget(newZone.breeksDescriptionGroupBox, breeksZonesCount_ + 1, 0, Qt::AlignCenter);
+	workZoneLayout_->addWidget(newZone.breeksZoneGroupBox, workZoneLayout_->rowCount() + 1, 0, 1, 6, Qt::AlignCenter);
+	breeksDescriptionZoneLayout_->addWidget(newZone.breeksDescriptionGroupBox, breeksDescriptionZoneLayout_->rowCount() + 1, 0, Qt::AlignCenter);
 
   arrBreeksZones_.push_back(newZone);
 

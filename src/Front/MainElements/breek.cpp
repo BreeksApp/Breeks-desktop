@@ -336,5 +336,10 @@ int Breek::getWidth()
 
 int Breek::getHeight()
 {
-  return height_;
+	return height_;
+}
+
+void Breek::setZoneIndex(int zoneIndex)
+{
+	zoneIndex_ = zoneIndex;
 }

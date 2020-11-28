@@ -28,7 +28,10 @@ void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
 		connect(breeksZone->arrBreeks[i], SIGNAL(sendSateToLilDay(int, int, int)), this, SLOT(changeBreeksZoneLilDayState(int, int, int)));
     connect(breeksZone->arrBreeks[i], SIGNAL(moveBreek(int, int, bool)), this, SLOT(moveBreek(int, int, bool)));
 		connect(breeksZone->arrBreeks[i], SIGNAL(isHere(int, int, bool)), this, SLOT(setBreeksZoneLilDayShadow(int, int, bool)));
+
   }
+
+	connect(breeksZone->buttonDelete, SIGNAL(deleteZone(int)), this, SLOT(deleteBreeksZone(int)));
 
 	//-----DESCRIPTION ZONE-----
 	breeksZone->breeksDescriptionGroupBox->setFixedSize(300, groupBoxHeight);
@@ -246,6 +249,7 @@ void MainWindow::setDaysConnect(breeksZone_t* breeksZone)
 		connect(breeksZone->arrBreeksZoneDays[i], SIGNAL(singleClick()), breeksZone->arrBreeks[i], SLOT(changeBreekState()));
 		connect(breeksZone->arrBreeksZoneDays[i], SIGNAL(doubleClick(int, int)), this, SLOT(descriptionZoneDayDobleClick(int, int)));
 		connect(breeksZone->arrBreeks[i], SIGNAL(changeState(int, int)), this, SLOT(changeLilDayState(int, int)));
+		connect(breeksZone->arrBreeksZoneDays[i], SIGNAL(changeZoneIndex(int)), breeksZone->arrBreeks[i], SLOT(setZoneIndex(int)));
   }
 }
 
@@ -259,7 +263,7 @@ void MainWindow::allocateMemoryForBreeks(breeksZone_t* breeksZone)
 
 	breeksZone->breekText = new TimetableTextEdit();
   breeksZone->buttonBreekDays = new QPushButton;
-  breeksZone->buttonDelete = new QPushButton;
+	breeksZone->buttonDelete = new DeleteBreeksZoneButton(breeksZone->zoneIndex);
 
   for (int i = 0; i < DAYS_COUNT; i++) {
     breeksZone->arrBreeks[i] = new Breek;
@@ -375,6 +379,50 @@ void MainWindow::descriptionZoneDayDobleClick(int zoneIndex, int dayIndex)
 void MainWindow::changeLilDayState(int zoneIndex, int dayIndex)
 {
 	arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->mousePressEvent(nullptr);
+}
+
+void MainWindow::deleteBreeksZone(int zoneIndex)
+{
+	auto itemLine = workZoneLayout_->itemAt(zoneIndex + 6);
+	delete itemLine->widget();
+	delete itemLine;
+
+	workZoneLayout_->update();
+
+	auto itemDescription = breeksDescriptionZoneLayout_->itemAt(zoneIndex + 1);
+	delete itemDescription->widget();
+	delete itemDescription;
+
+	breeksDescriptionZoneLayout_->update();
+
+	arrBreeksZones_.erase(arrBreeksZones_.begin() + zoneIndex);
+	--breeksZonesCount_;
+
+	for (int i = zoneIndex; i < breeksZonesCount_; ++i) {
+		arrBreeksZones_[i].buttonDelete->setZoneIndex(i);
+		for (int j = 0; j < 6; ++j) {
+			arrBreeksZones_[i].arrBreeksZoneDays[j]->setZoneIndex(i);
+		}
+
+		/*auto itemLine = workZoneLayout_->itemAt(i + 6);
+		delete itemLine->widget();
+		delete itemLine;
+
+		auto itemDescription = breeksDescriptionZoneLayout_->itemAt(i + 1);
+		delete itemDescription->widget();
+		delete itemDescription;
+
+		//arrBreeksZones_[i].breeksZoneGroupBox->
+
+		workZoneLayout_->addWidget(arrBreeksZones_[i].breeksZoneGroupBox, i + 7, 0, 1, 6, Qt::AlignCenter);
+		qDebug("!");
+		breeksDescriptionZoneLayout_->addWidget(arrBreeksZones_[i].breeksDescriptionGroupBox, i + 2, 0, Qt::AlignCenter);
+		qDebug("!!");*/
+	}
+
+	bigWidgetHeight_ -= 125;
+	bigWidgetInWorkZone_->setFixedHeight(bigWidgetHeight_);
+	bigWidgetInBreeksDescriptionZone_->setFixedHeight(bigWidgetHeight_);
 }
 
 void MainWindow::delay(int millisecondsToWait)

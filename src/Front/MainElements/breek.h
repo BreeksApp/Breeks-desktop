@@ -67,6 +67,7 @@ signals:
 	void changeState(int, int);
 
 public slots:
+	void setZoneIndex(int);
   void changeBreekState();
 	void changeEmoji(int);
 	void closeEmojiHub();
