@@ -15,6 +15,7 @@
 #include <set>
 #include <QDrag>
 
+#include <Front/MainElements/deletebreekszonebutton.h>
 #include <Front/MainElements/descriptionzonedaybutton.h>
 
 #include "ui_mainwindow.h"
@@ -55,7 +56,7 @@ public slots:
   void recieveTimeTableZoneData(bool *, const int, elementData_t);
 
 //slot to set data which was pronted and selected by user in AddElement form for Breeks Zone
-  void recieveBreeksZoneData(bool *, const int, breeksData_t);
+	void recieveBreeksZoneData(bool *, breeksData_t);
 
   void recieveDayAndElementIndex(const int, const int);
 	void recieveDayAndElementIndexAndTagColor(const int, const int, const QString);
@@ -88,6 +89,7 @@ private slots:
 
 //adding new elements
   void on_buttonAdd_clicked();
+	void on_buttonAdd_2_clicked();
 
 //slot to fill original breeks positions in layout when they have been added on it(to avoid "position problem")
   void fillBreeksPositions(int);
@@ -97,8 +99,21 @@ private slots:
 	void descriptionZoneDayDobleClick(int, int);
 	void changeLilDayState(int, int);
 
+	void deleteBreeksZone(int);
+
+//ADD BREEKS
+	void on_mnBreekButton_clicked();
+	void on_tuBreekButton_clicked();
+	void on_weBreekButton_clicked();
+	void on_thBreekButton_clicked();
+	void on_frBreekButton_clicked();
+	void on_stBreekButton_clicked();
+
+	void on_addBreekButton_clicked();
+
 signals:
   void sendUsername(const QString);
+	void sendBreekData(bool *, breeksData_t);
 
 private:
   Ui::MainWindow *ui;
@@ -245,7 +260,7 @@ private:
 
     QPushButton *buttonBreekDays;
 		DescriptionZoneDayButton *arrBreeksZoneDays[6];
-    QPushButton *buttonDelete;
+		DeleteBreeksZoneButton *buttonDelete;
 
     int zoneIndex;
   };
@@ -278,6 +293,13 @@ private:
   QScrollArea *breeksDescriptionZoneScrollArea_;
   QGridLayout *breeksDescriptionZoneLayout_;
 //------------------
+
+	QGraphicsDropShadowEffect* createShadow();
+
+//--------- ADD BREEK-LINE---------
+	void setStyleAddBreeksForm();
+
+	bool arrAddBreekFormDaysCheck_[6];
 };
 
 #endif // MAINWINDOW_H

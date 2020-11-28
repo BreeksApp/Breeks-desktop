@@ -24,3 +24,13 @@ void DescriptionZoneDayButton::mousePressEvent(QMouseEvent *event)
 		emit doubleClick(zoneIndex_, dayIndex_);
 	}
 }
+
+int DescriptionZoneDayButton::getZoneIndex() {
+	return zoneIndex_;
+}
+
+void DescriptionZoneDayButton::setZoneIndex(int zoneIndex)
+{
+	zoneIndex_ = zoneIndex;
+	emit changeZoneIndex(zoneIndex_);
+}

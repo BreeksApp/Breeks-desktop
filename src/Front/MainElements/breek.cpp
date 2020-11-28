@@ -201,6 +201,8 @@ void Breek::connectToQml(int indexOfEmoji, Conditions cond)
   QQmlProperty(graphObject_, "animationOn").write(false);
 	graphObject_->setProperty("indexOfCondFrom", cond);
 	graphObject_->setProperty("indexOfCondTo", cond);
+	graphObject_->setProperty("size1", 80);
+	graphObject_->setProperty("size2", 80);
 
   // работа с фоном сцены
   QColor color;
@@ -228,6 +230,9 @@ void Breek::connectToQml(Conditions cond, bool isShadow)
 		}
 	}
 
+	graphObject_->setProperty("size1", 80);
+	graphObject_->setProperty("size2", 80);
+
 	// работа с фоном сцены
 	QColor color;
 	color.setNamedColor("#F7F7F7");
@@ -253,6 +258,8 @@ void Breek::connectToQml(int indexOfEmoji, Directions dir,
   graphObject_->setProperty("indexOfCondTo", to);
   QQmlProperty(graphObject_, "animationOn").write(false);
 	QQmlProperty(graphObject_, "animationOn").write(true);
+	graphObject_->setProperty("size1", 80);
+	graphObject_->setProperty("size2", 80);
 
   // работа с фоном сцены
 //  QColor color = Qt::GlobalColor::gray;
@@ -329,5 +336,10 @@ int Breek::getWidth()
 
 int Breek::getHeight()
 {
-  return height_;
+	return height_;
+}
+
+void Breek::setZoneIndex(int zoneIndex)
+{
+	zoneIndex_ = zoneIndex;
 }

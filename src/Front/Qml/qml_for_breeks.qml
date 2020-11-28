@@ -99,9 +99,12 @@ Item
     property bool animationOn // включить / отключить анимацию - если хочется смотреть только на один breek
     property int direction // 1 - поворот вверх, 0 - поворот вниз
 
+    property int size1
+    property int size2
+
     // назначается вручную
-    property int pushButtonWidth: 1.125*80 // the same as the breek->quickWidget_->width
-    property int pushButtonHeight: 1.125*80 // the same as the breek->quickWidget_->height
+    property int pushButtonWidth: getSizeN(size1) // the same as the breek->quickWidget_->width
+    property int pushButtonHeight: getSizeN(size2) // the same as the breek->quickWidget_->height
     property var sceneWidth: pushButtonWidth
     property var sceneHeight: pushButtonHeight
     property var offset: 0.05
@@ -139,6 +142,11 @@ Item
     property var shrinkDur2: (direction ? rotationUpDuration : rotationDownDuration) * proportion2
     property var shrinkDur3: (direction ? rotationUpDuration : rotationDownDuration) * proportion3
     property var shrinkDur4: (direction ? rotationUpDuration : rotationDownDuration) * proportion4
+
+    function getSizeN(sizeN)
+    {
+      return 1.125 * sizeN
+    }
 
     function getOffset(absolute, breekSideLength, imageImplic)
     {
@@ -256,7 +264,7 @@ Item
         layer.effect: DropShadow
         {
             anchors.fill: conditionFrom
-            radius: 16.0
+            radius: 12.0
             samples: 33
             spread: 0
             color: getColorForShadow()
@@ -349,7 +357,7 @@ Item
         layer.effect: DropShadow
         {
             anchors.fill: conditionTo
-            radius: 16.0
+            radius: 12.0
             samples: 33
             spread: 0
             color: getColorForShadow()

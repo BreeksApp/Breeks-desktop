@@ -329,6 +329,220 @@ background: none;</string>
      <string/>
     </property>
    </widget>
+   <widget class="QPushButton" name="logoutButton">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>970</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image:url(:/Images/Front/Images/logout.png);
+</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="prevWeekButton">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>70</y>
+      <width>51</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image:url(:/Images/Front/Images/prevWeek.png);\n</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="nextWeekButton">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>70</y>
+      <width>51</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image:url(:/Images/Front/Images/nextWeek.png);
+</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="infoButton">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>970</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image:url(:/Images/Front/Images/info.png);
+</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="AddBreekGB" name="addBreekGB">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>540</y>
+      <width>351</width>
+      <height>241</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string/>
+    </property>
+    <widget class="DemoBreek" name="emojiButton">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>121</width>
+       <height>121</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>PushButton</string>
+     </property>
+    </widget>
+    <widget class="EmojiHub" name="emojiHub">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>140</y>
+       <width>160</width>
+       <height>90</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">width: 160;
+height: 90;</string>
+     </property>
+     <property name="title">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="mnBreekButton">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>110</y>
+       <width>31</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Пн</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="tuBreekButton">
+     <property name="geometry">
+      <rect>
+       <x>240</x>
+       <y>110</y>
+       <width>31</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Вт</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="weBreekButton">
+     <property name="geometry">
+      <rect>
+       <x>280</x>
+       <y>110</y>
+       <width>31</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Ср</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="thBreekButton">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>140</y>
+       <width>31</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Чт</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="frBreekButton">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>140</y>
+       <width>31</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Пт</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="stBreekButton">
+     <property name="geometry">
+      <rect>
+       <x>290</x>
+       <y>140</y>
+       <width>31</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Сб</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="addBreekButton">
+     <property name="geometry">
+      <rect>
+       <x>180</x>
+       <y>180</y>
+       <width>161</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="text">
+      <string>Добавить</string>
+     </property>
+    </widget>
+    <widget class="TimetableTextEdit" name="breekDescription">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>10</y>
+       <width>201</width>
+       <height>91</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
    <zorder>labelImageBackground</zorder>
    <zorder>shadowWidget</zorder>
    <zorder>buttonPage6</zorder>
@@ -343,6 +557,11 @@ background: none;</string>
    <zorder>buttonImage</zorder>
    <zorder>buttonAdd</zorder>
    <zorder>buttonAdd_2</zorder>
+   <zorder>logoutButton</zorder>
+   <zorder>prevWeekButton</zorder>
+   <zorder>nextWeekButton</zorder>
+   <zorder>infoButton</zorder>
+   <zorder>addBreekGB</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -360,7 +579,7 @@ background: none;</string>
   <customwidget>
    <class>GenTextEdit</class>
    <extends>QTextEdit</extends>
-   <header location="global">gentextedit.h</header>
+   <header>gentextedit.h</header>
   </customwidget>
   <customwidget>
    <class>ImageHover</class>
@@ -375,7 +594,29 @@ background: none;</string>
   <customwidget>
    <class>NoteMark</class>
    <extends>QPushButton</extends>
-   <header location="global">notemark.h</header>
+   <header>notemark.h</header>
+  </customwidget>
+  <customwidget>
+   <class>EmojiHub</class>
+   <extends>QGroupBox</extends>
+   <header>emojihub.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>DemoBreek</class>
+   <extends>QPushButton</extends>
+   <header>demobreek.h</header>
+  </customwidget>
+  <customwidget>
+   <class>TimetableTextEdit</class>
+   <extends>QTextEdit</extends>
+   <header location="global">timetabletextedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>AddBreekGB</class>
+   <extends>QGroupBox</extends>
+   <header>addbreekgb.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
