@@ -40,7 +40,7 @@ void MainWindow::readElementsDataFromFile(const int index)
       GenTextEdit::setStylesToChar(ch, charFormat, jChar);
       elemData.charStyleVector.push_back(ch);
     }
-    recieveTimeTableZoneData(arr, DAYS_COUNT, elemData);
+		recieveTimeTableZoneData(arr, elemData);
   }
 }
 

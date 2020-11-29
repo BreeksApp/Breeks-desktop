@@ -13,6 +13,7 @@ int GenTextEdit::getNumberCurrentFile()
 void GenTextEdit::clearCharStyleVector()
 {
   charStyleVector_.clear();
+	charCounter_ = 0;
 }
 
 QVector<charStyle_t> GenTextEdit::getCharStyleVector()

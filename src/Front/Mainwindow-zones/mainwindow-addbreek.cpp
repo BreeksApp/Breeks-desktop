@@ -22,6 +22,8 @@ void MainWindow::setStyleAddBreeksForm()
 																			"padding-top:2;"
 																			"padding-bottom:2;"
 																			"padding-right:2;");
+	ui->breekDescription->clear();
+	ui->breekDescription->clearCharStyleVector();
 
 	for (int i = 0; i < DAYS_COUNT; ++i) {
 		arrAddBreekFormDaysCheck_[i] = false;
@@ -43,12 +45,6 @@ void MainWindow::setStyleAddBreeksForm()
 	ui->stBreekButton->setStyleSheet(dayButtonStyleSheet);
 	ui->stBreekButton->setFont(QFont("Helvetica"));
 
-	QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
-	effect->setBlurRadius(5);
-	effect->setXOffset(0);
-	effect->setYOffset(0);
-	effect->setColor("#BABCBE");
-
 	ui->mnBreekButton->setGraphicsEffect(createShadow());
 	ui->tuBreekButton->setGraphicsEffect(createShadow());
 	ui->weBreekButton->setGraphicsEffect(createShadow());
@@ -59,8 +55,8 @@ void MainWindow::setStyleAddBreeksForm()
 	//ui->baseBreek->setStyleSheet("background: #F7F7F7; border-radius: 4px");
 	//ui->baseBreek->setGraphicsEffect(createShadow());
 
-	ui->addBreekButton->setStyleSheet("QPushButton{background: #81C4FF; border-radius: 20px; color: #e6f6ff; font-size: 12pt; font-weight: bold;} "
-																		"QPushButton:hover{background: #e6f6ff; border-radius: 20px; color: #81C4FF; font-size: 12pt; font-weight: bold;}");
+	ui->addBreekButton->setStyleSheet("QPushButton{background: #81C4FF; border-radius: 24px; color: #e6f6ff; font-size: 12pt; font-weight: bold;} "
+																		"QPushButton:hover{background: #e6f6ff; border-radius: 24px; color: #81C4FF; font-size: 12pt; font-weight: bold;}");
 }
 
 QGraphicsDropShadowEffect* MainWindow::createShadow()
@@ -161,7 +157,6 @@ void MainWindow::on_addBreekButton_clicked()
 
 	emit sendBreekData(arrAddBreekFormDaysCheck_, newElement);
 	setStyleAddBreeksForm();
-	ui->breekDescription->clear();
 
 	ui->emojiHub->showThis();
 	ui->addBreekGB->hide();

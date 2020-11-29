@@ -36,6 +36,7 @@ SOURCES += \
     Front/MainElements/addbreekgb.cpp \
     Front/MainElements/addbuttonhover.cpp \
     Front/MainElements/addelement.cpp \
+    Front/MainElements/addtimetableelementgb.cpp \
     Front/MainElements/breek.cpp \
     Front/MainElements/daywidget.cpp \
     Front/MainElements/deletebreekszonebutton.cpp \
@@ -47,6 +48,7 @@ SOURCES += \
     Front/Mainwindow-zones/mainwidnow-timetable.cpp \
     Front/Mainwindow-zones/mainwindow-addbreek.cpp \
     Front/Mainwindow-zones/mainwindow-addelement.cpp \
+    Front/Mainwindow-zones/mainwindow-addtimetableelement.cpp \
     Front/Mainwindow-zones/mainwindow-breekszone.cpp \
     Front/Mainwindow-zones/mainwindow-effects.cpp \
     Front/Mainwindow-zones/mainwindow-image.cpp \
@@ -69,6 +71,7 @@ HEADERS += \
     Front/MainElements/addbreekgb.h \
     Front/MainElements/addbuttonhover.h \
     Front/MainElements/addelement.h \
+    Front/MainElements/addtimetableelementgb.h \
     Front/MainElements/breek.h \
     Front/MainElements/daywidget.h \
     Front/MainElements/deletebreekszonebutton.h \

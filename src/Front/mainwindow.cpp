@@ -35,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->buttonImage, SIGNAL(imageEnter(bool)), this, SLOT(setImageBackgroundView(bool)));
 	connect(ui->buttonImage, SIGNAL(imageLeave(bool)), this, SLOT(setImageBackgroundView(bool)));
 
+	timetableElementsCount_ = 0;
 	setWorkZone();
 
 	setStatesFromFileLastVisit();
@@ -48,6 +49,11 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->addBreekGB, SIGNAL(focusOut()), ui->emojiHub, SLOT(showThis()));
 	setStyleAddBreeksForm();
 	ui->addBreekGB->hide();
+
+	//ADD TIMETABLE ELEMENT FORM
+	connect(this, SIGNAL(sendTimetableElementData(bool*, elementData_t)), this, SLOT(recieveTimeTableZoneData(bool*, elementData_t)));
+	setStyleAddTimetableElementForm();
+	ui->addTimetableElementGb->hide();
 }
 
 MainWindow::~MainWindow()
@@ -99,35 +105,9 @@ void MainWindow::dropNoChanges()
 	isElementDrag_ = false;
 }
 
-void MainWindow::on_buttonAdd_clicked()
+void MainWindow::recieveTimeTableZoneData(bool *daysCheck, elementData_t newElement)
 {
-  AddElement *addForm = new AddElement(ui->buttonAdd);//have to reset stylesheet in form destuctor
-  addForm->setAttribute(Qt::WA_DeleteOnClose);
-
-  //signal to move info from creating element form to new element on timetable
-  connect(addForm, SIGNAL(sendTimeTableZoneData(bool*, const int, elementData_t)),
-        this, SLOT(recieveTimeTableZoneData(bool*, const int, elementData_t)));
-  connect(addForm, SIGNAL(sendBreeksZoneData(bool*, const int, breeksData_t)),
-        this, SLOT(recieveBreeksZoneData(bool*, const int, breeksData_t)));
-
-  addForm->show();
-  const int a = -25;
-  const int b = 225;
-  const int x = ui->buttonAdd->pos().x() + a;
-  const int y = ui->buttonAdd->pos().y() + b;
-  addForm->move(x, y);
-
-	QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
-	effect->setBlurRadius(10);
-	effect->setXOffset(0);
-	effect->setYOffset(1);
-	effect->setColor("#909090");
-	ui->buttonAdd->setGraphicsEffect(effect);
-}
-
-void MainWindow::recieveTimeTableZoneData(bool *daysCheck, const int arrSize, elementData_t newElement)
-{
-  for (int i = 0; i < arrSize; i++) {
+	for (int i = 0; i < 6; i++) {
     if (daysCheck[i] == true) {
       //add new element data to array
       const int newElementIndex = addNewElementToArray(newElement, i);
@@ -144,14 +124,10 @@ void MainWindow::recieveTimeTableZoneData(bool *daysCheck, const int arrSize, el
       //add new element to layout
       addNewElementToLayout(i, newElementIndex);
 
-      //TODO solve the problem with bad auto moving
-      /*if ((arrDays_[i].elementsCount % 6) == 0) {
-        qDebug() << arrDays_[i].elementsCount;
-        arrDays_[i].groupBoxElementsHeight -= 7;
-      }*/
-
 			arrDays_[i].elementsScaledCount = 0;
       arrDays_[i].labelElementsCount->setText(QString::number(arrDays_[i].elementsCount));
+
+			++timetableElementsCount_;
     }
   }
 }
@@ -276,6 +252,7 @@ void MainWindow::recieveDayAndElementIndex(const int dayElementIndex, const int 
 		arrDays_[dayElementIndex].layoutDayElements->update();
 
 		--arrDays_[dayElementIndex].elementsCount;
+		--timetableElementsCount_;
 
 		if (arrDays_[dayElementIndex].elementsCount <= 3 & arrDays_[dayElementIndex].elementsScaledCount < 3) {
 				arrDays_[dayElementIndex].groupBoxElementsHeight = 370;
@@ -341,7 +318,7 @@ void MainWindow::dropElement(const int dayNumber, const int dayIndex, const int 
     }
   }
 
-  recieveTimeTableZoneData(daysCheck_, 6, elemData);
+	recieveTimeTableZoneData(daysCheck_, elemData);
 }
 
 void MainWindow::sendElementsHeight(const int height, const int index)

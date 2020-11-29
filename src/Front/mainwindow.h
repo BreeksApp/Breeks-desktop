@@ -53,7 +53,7 @@ public slots:
   void setImageBackgroundView(bool);
 
 //slot to set data which was pronted and selected by user in AddElement form for Time Table Zone
-  void recieveTimeTableZoneData(bool *, const int, elementData_t);
+	void recieveTimeTableZoneData(bool *, elementData_t);
 
 //slot to set data which was pronted and selected by user in AddElement form for Breeks Zone
 	void recieveBreeksZoneData(bool *, breeksData_t);
@@ -111,9 +111,22 @@ private slots:
 
 	void on_addBreekButton_clicked();
 
+//ADD TIMETABLE ELEMENT
+	void on_mnTimetableElemnetButton_clicked();
+	void on_tuTimetableElemnetButton_clicked();
+	void on_weTimetableElemnetButton_clicked();
+	void on_thTimetableElemnetButton_clicked();
+	void on_frTimetableElemnetButton_clicked();
+	void on_stTimetableElemnetButton_clicked();
+
+	void on_timetableElementTagColor_clicked();
+
+	void on_addTimetableElementButton_clicked();
+
 signals:
   void sendUsername(const QString);
 	void sendBreekData(bool *, breeksData_t);
+	void sendTimetableElementData(bool *, elementData_t);
 
 private:
   Ui::MainWindow *ui;
@@ -231,6 +244,8 @@ private:
 	const int DAYS_COUNT = 6;
 	day_t arrDays_[6];
 
+	int timetableElementsCount_;
+
 	int iCurrentDay_;
 	QTimer *timer_;
 
@@ -298,8 +313,11 @@ private:
 
 //--------- ADD BREEK-LINE---------
 	void setStyleAddBreeksForm();
-
 	bool arrAddBreekFormDaysCheck_[6];
+//--------- Add TIMETABLE ELEMENT -
+	void setStyleAddTimetableElementForm();
+	bool arrAddTimetableElementFormDaysCheck_[6];
+	int indexCurrentTag_;
 };
 
 #endif // MAINWINDOW_H

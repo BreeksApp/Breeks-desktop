@@ -121,64 +121,64 @@ void AddElement::setEmoji(const int index)
 //-------------------------BUTTONS-------------------------
 void AddElement::on_buttonAdd_clicked()
 {
-  if (!(timeTableZoneCondition_ || breeksZoneCondition_)) {
-    return;
-  }
+	if (!(timeTableZoneCondition_ || breeksZoneCondition_)) {
+		return;
+	}
 
-  QString text = ui->text->toPlainText();
-  if (text.size() == 0) {
-    return;
-  }
-  for (int i = 0; i < text.size(); ++i) {
-    if (text[i] != ' ' && text[i] != '\t' && text[i] != '\n') {
-      break;
-    }
-    if (i + 1 == text.size()) {
-      ui->text->clear();
-      return;
-    }
-  }
-  if (!areSelectedDays()) {
-    return;
-  }
+	QString text = ui->text->toPlainText();
+	if (text.size() == 0) {
+		return;
+	}
+	for (int i = 0; i < text.size(); ++i) {
+		if (text[i] != ' ' && text[i] != '\t' && text[i] != '\n') {
+			break;
+		}
+		if (i + 1 == text.size()) {
+			ui->text->clear();
+			return;
+		}
+	}
+	if (!areSelectedDays()) {
+		return;
+	}
 
-  if (timeTableZoneCondition_ == true) {
-    elementData_t newElement;
+	if (timeTableZoneCondition_ == true) {
+		elementData_t newElement;
 
-    newElement.text = text;
+		newElement.text = text;
 
 		if ((ui->timeStart->time() < ui->timeEnd->time()) || (ui->timeEnd->time().toString() == "00:00:00")) {
 			newElement.timeStart = ui->timeStart->time().toString();
 			newElement.timeEnd = ui->timeEnd->time().toString();
-    }
+		}
 		else if (ui->timeStart == ui->timeEnd){
 			newElement.timeStart = ui->timeStart->time().toString();
 			newElement.timeEnd = "00:00:00";
-    }
-    else {
-      //reverse time
+		}
+		else {
+			//reverse time
 			newElement.timeStart = ui->timeEnd->time().toString();
 			newElement.timeEnd = ui->timeStart->time().toString();
-    }
+		}
 		//newElement.timeStart.remove(5, 3);
 		//newElement.timeEnd.remove(5, 3);
 
 		newElement.tagColor = currentTagColor_;
-    newElement.charStyleVector = ui->text->getCharStyleVector();
-
-    emit sendTimeTableZoneData(daysCheck_, DAYS_CHECK_COUNT, newElement);
-  }
-  else if (breeksZoneCondition_ == true) {
-    breeksData_t newElement;
-    newElement.text = text;
 		newElement.charStyleVector = ui->text->getCharStyleVector();
-    newElement.nEmoji = currentEmoji - 1;
 
-    emit sendBreeksZoneData(daysCheck_, DAYS_CHECK_COUNT, newElement);
-  }
+		emit sendTimeTableZoneData(daysCheck_, DAYS_CHECK_COUNT, newElement);
+	}
+	else if (breeksZoneCondition_ == true) {
+		breeksData_t newElement;
+		newElement.text = text;
+		newElement.charStyleVector = ui->text->getCharStyleVector();
+		newElement.nEmoji = currentEmoji - 1;
+
+		emit sendBreeksZoneData(daysCheck_, DAYS_CHECK_COUNT, newElement);
+	}
 
 	returnButtonsInitialCondition();
-  this->close();
+	this->close();
 }
 
 void AddElement::on_buttonMonday_clicked()

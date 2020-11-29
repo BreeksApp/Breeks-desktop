@@ -56,7 +56,7 @@ ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
 	deleteButton_->setFixedSize(20, 20);
 	deleteButton_->setStyleSheet("background: none");
 
-	timeStart_->setFocusPolicy(Qt::FocusPolicy::WheelFocus);
+	//timeStart_->setFocusPolicy(Qt::FocusPolicy::WheelFocus);
 	timeStart_->setFixedSize(50, 20);
 	timeStart_->setStyleSheet("QTimeEdit::up-button {"
 														"border-image:url(:/Images/Front/Images/caret-up.png);"
@@ -271,7 +271,7 @@ void ElementTemplate::scaleTextEdit()
 		elementLayout_->addWidget(text_, 0, 1, 3, 3);
 
 		text_->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded);
-		text_->verticalScrollBar()->setStyleSheet(
+		/*text_->verticalScrollBar()->setStyleSheet(
 					"QScrollBar:vertical {"
 						"border: 0.1px solid #FFFFFF;"
 						"background: #FFFFFF;"
@@ -290,7 +290,7 @@ void ElementTemplate::scaleTextEdit()
 
 					"QScrollBar::sub-line:vartical {"
 					"border: none;"
-					"background: none;}");
+					"background: none;}");*/
 	}
 	else {
 		diff = -48;
