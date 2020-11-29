@@ -42,6 +42,11 @@ EmojiHub::EmojiHub(QWidget *parent) : QGroupBox(parent)
 					"background: #e3e3df;"
 					"min-height: 40px;}"
 
+				"QScrollBar::handle:vertical:hover {"
+					"border-radius: 4px;"
+					"background: #c7c7bf;"
+					"min-height: 40px;}"
+
 				"QScrollBar::add-line:vertical {"
 					"border: none;"
 					"background: none;}"

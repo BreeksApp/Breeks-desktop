@@ -403,21 +403,6 @@ void MainWindow::deleteBreeksZone(int zoneIndex)
 		for (int j = 0; j < 6; ++j) {
 			arrBreeksZones_[i].arrBreeksZoneDays[j]->setZoneIndex(i);
 		}
-
-		/*auto itemLine = workZoneLayout_->itemAt(i + 6);
-		delete itemLine->widget();
-		delete itemLine;
-
-		auto itemDescription = breeksDescriptionZoneLayout_->itemAt(i + 1);
-		delete itemDescription->widget();
-		delete itemDescription;
-
-		//arrBreeksZones_[i].breeksZoneGroupBox->
-
-		workZoneLayout_->addWidget(arrBreeksZones_[i].breeksZoneGroupBox, i + 7, 0, 1, 6, Qt::AlignCenter);
-		qDebug("!");
-		breeksDescriptionZoneLayout_->addWidget(arrBreeksZones_[i].breeksDescriptionGroupBox, i + 2, 0, Qt::AlignCenter);
-		qDebug("!!");*/
 	}
 
 	bigWidgetHeight_ -= 125;

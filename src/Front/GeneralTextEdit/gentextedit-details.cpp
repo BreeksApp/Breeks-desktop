@@ -164,7 +164,7 @@ void GenTextEdit::detailsSetCharStyle(charStyle_t &ch, const int style)
   else if (style == charStyle::Star) {
 		ch.item = false;
     ch.star = true;
-		ch.sColor = colors::marina;
+		//ch.sColor = colors::marina;
   }
 }
 

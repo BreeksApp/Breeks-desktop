@@ -143,7 +143,7 @@ void GenTextEdit::addStar()
 	int pos = c.position();
 
 	QTextCharFormat fmt;
-	fmt.setBackground(QColor(colors::marina));
+	//fmt.setBackground(QColor(colors::marina));
 	c.insertHtml(warrningSign_);
 	c.movePosition(QTextCursor::StartOfBlock, QTextCursor::KeepAnchor);
 	c.setCharFormat(fmt);
@@ -176,17 +176,10 @@ void GenTextEdit::addTab(int& cursorPos)
 
 	QTextCursor c = this->textCursor();
 	bool isItem = false;
+	if (c.hasSelection()) {
+		c.clearSelection();
+	}
 	c.movePosition(QTextCursor::StartOfLine, QTextCursor::MoveAnchor);
-
-	/*if (charCounter_ != 0 && charStyleVector_[std::max(0, pos - 1)].item == true) {
-		QTextCursor tmp = c;
-		tmp.movePosition(QTextCursor::StartOfBlock, QTextCursor::MoveAnchor);
-		int nMove = std::min(ITEM_LENGTH, c.position() - tmp.position());
-
-		c.movePosition(QTextCursor::Left, QTextCursor::MoveAnchor, nMove);
-		pos = c.position();
-		isItem = true;
-	}*/
 
 	detailsSetCharStyle(ch, charStyle::Item);
 	int pos = c.position();
@@ -197,10 +190,9 @@ void GenTextEdit::addTab(int& cursorPos)
 		++charCounter_;
 	}
 
-	/*if (isItem) {
-		c.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, cursorPos + ITEM_LENGTH);
-	}*/
-	c.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, cursorPos + ITEM_LENGTH);
+	c.movePosition(QTextCursor::EndOfLine, QTextCursor::MoveAnchor);
+	this->setTextCursor(c);
+
 //Add command to UndoRedoBuffer
 	commandInfo_t command;
 	QString sTab = "";
@@ -208,7 +200,6 @@ void GenTextEdit::addTab(int& cursorPos)
 	setCommandInfo(command, command::insertStr, pos, sTab, TAB_LENGTH);
 	undoRedoBuffer_->pushUndoCommand(command);
 //
-	this->setTextCursor(c);
 }
 
 //---------BackTab
@@ -410,9 +401,9 @@ void GenTextEdit::makeCharNormal()
 	int last = this->textCursor().selectionEnd();
 
 	for (int i = first; i < last; ++i) {
-		if (charStyleVector_[i].item == true) {
+		/*if (charStyleVector_[i].item == true) {
 			continue;
-		}
+		}*/
 		this->textCursor().setPosition(i);
 		detailsSetCharStyle(charStyleVector_[i]);
 		this->textCursor().setCharFormat(textFormat);

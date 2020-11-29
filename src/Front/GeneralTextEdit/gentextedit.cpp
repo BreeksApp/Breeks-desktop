@@ -153,9 +153,9 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 			}
 		 //Tab
 			case Qt::Key_Tab : {
-				if (this->textCursor().selectedText() != "") {
-					detailsEraseSelectedText(cursorPos);
-        }
+//				if (this->textCursor().selectedText() != "") {
+//					detailsEraseSelectedText(cursorPos);
+//        }
 				addTab(cursorPos);
 				timer_->stop();
 				timer_->start(1000);

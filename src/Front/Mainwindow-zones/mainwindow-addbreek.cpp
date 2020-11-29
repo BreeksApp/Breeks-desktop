@@ -26,14 +26,22 @@ void MainWindow::setStyleAddBreeksForm()
 	for (int i = 0; i < DAYS_COUNT; ++i) {
 		arrAddBreekFormDaysCheck_[i] = false;
 	}
-	QString dayButtonStyleSheet = "QPushButton{background: #F7F7F7; border-radius: 4px} "
-																"QPushButton:hover{background: #e6f6ff; border-radius: 4px}";
+	QString dayButtonStyleSheet = "QPushButton{background: #F7F7F7; border-radius: 4px;"
+																"font-size: 10pt;}"
+																"QPushButton:hover{background: #e6f6ff; border-radius: 4px;"
+																"font-size: 10pt;}";
 	ui->mnBreekButton->setStyleSheet(dayButtonStyleSheet);
+	ui->mnBreekButton->setFont(QFont("Helvetica"));
 	ui->tuBreekButton->setStyleSheet(dayButtonStyleSheet);
+	ui->tuBreekButton->setFont(QFont("Helvetica"));
 	ui->weBreekButton->setStyleSheet(dayButtonStyleSheet);
+	ui->weBreekButton->setFont(QFont("Helvetica"));
 	ui->thBreekButton->setStyleSheet(dayButtonStyleSheet);
+	ui->thBreekButton->setFont(QFont("Helvetica"));
 	ui->frBreekButton->setStyleSheet(dayButtonStyleSheet);
+	ui->frBreekButton->setFont(QFont("Helvetica"));
 	ui->stBreekButton->setStyleSheet(dayButtonStyleSheet);
+	ui->stBreekButton->setFont(QFont("Helvetica"));
 
 	QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
 	effect->setBlurRadius(5);
@@ -51,8 +59,8 @@ void MainWindow::setStyleAddBreeksForm()
 	//ui->baseBreek->setStyleSheet("background: #F7F7F7; border-radius: 4px");
 	//ui->baseBreek->setGraphicsEffect(createShadow());
 
-	ui->addBreekButton->setStyleSheet("QPushButton{background: #81C4FF; border-radius: 20px; color: #e6f6ff; font-size: 10pt; font-weight: bold;} "
-																		"QPushButton:hover{background: #e6f6ff; border-radius: 20px; color: #81C4FF; font-size: 10pt; font-weight: bold;}");
+	ui->addBreekButton->setStyleSheet("QPushButton{background: #81C4FF; border-radius: 20px; color: #e6f6ff; font-size: 12pt; font-weight: bold;} "
+																		"QPushButton:hover{background: #e6f6ff; border-radius: 20px; color: #81C4FF; font-size: 12pt; font-weight: bold;}");
 }
 
 QGraphicsDropShadowEffect* MainWindow::createShadow()

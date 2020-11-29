@@ -101,7 +101,7 @@ private:
 	const QString dashSign_ = "—";
 	const QString pointSign_ = "•";
 	const QString minusSign_ = "-";
-	const QString warrningSign_ = "❐";
+	const QString warrningSign_ = "⚠";
 	const int ITEM_LENGTH = 4;
 	const int TAB_LENGTH = 4;
 	const uint RUS_YO_UNICODE = 0x0435;

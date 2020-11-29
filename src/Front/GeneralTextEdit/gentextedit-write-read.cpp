@@ -30,6 +30,7 @@ void GenTextEdit::readFromDB(const int currentFile)
 		detailsColorText(c, ch.sColor);
 	}
 	checkSpelling();
+	undoRedoBuffer_ = new UndoRedoText;
 }
 
 void GenTextEdit::writeToDB(const int currentFile)

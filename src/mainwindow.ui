@@ -254,7 +254,7 @@
      <enum>Qt::TabFocus</enum>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-image:url(:/Images/Front/Images/pluss.png);
+     <string notr="true">border-image:url(:/Images/Front/Images/plus2.png);
 background: none;</string>
     </property>
     <property name="text">
@@ -322,7 +322,7 @@ border-radius: 10px;</string>
      <enum>Qt::TabFocus</enum>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-image:url(:/Images/Front/Images/plus2.png);
+     <string notr="true">border-image:url(:/Images/Front/Images/pluss.png);
 background: none;</string>
     </property>
     <property name="text">
@@ -569,7 +569,7 @@ height: 90;</string>
      <x>0</x>
      <y>0</y>
      <width>1913</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
