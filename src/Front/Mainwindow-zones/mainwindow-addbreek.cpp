@@ -56,7 +56,7 @@ void MainWindow::setStyleAddBreeksForm()
 	//ui->baseBreek->setGraphicsEffect(createShadow());
 
 	ui->addBreekButton->setStyleSheet("QPushButton{background: #81C4FF; border-radius: 24px; color: #e6f6ff; font-size: 12pt; font-weight: bold;} "
-																		"QPushButton:hover{background: #e6f6ff; border-radius: 24px; color: #81C4FF; font-size: 12pt; font-weight: bold;}");
+																		"QPushButton:hover{background: #b0d7ff; border-radius: 24px; color: #81C4FF; font-size: 12pt; font-weight: bold;}");
 }
 
 QGraphicsDropShadowEffect* MainWindow::createShadow()
@@ -73,12 +73,12 @@ QGraphicsDropShadowEffect* MainWindow::createShadow()
 void MainWindow::on_mnBreekButton_clicked()
 {
 	if (arrAddBreekFormDaysCheck_[0] == false) {
-		ui->mnBreekButton->setStyleSheet("QPushButton{background: #81C4FF; border-radius: 4px} "
-																		 "QPushButton:hover{background: #e6f6ff; border-radius: 4px}");
+		ui->mnBreekButton->setStyleSheet("QPushButton{background: #81C4FF; border-radius: 4px; font-size: 10pt;} "
+																		 "QPushButton:hover{background: #e6f6ff; border-radius: 4px; font-size: 10pt;}");
 	}
 	else {
-		ui->mnBreekButton->setStyleSheet("QPushButton{background: #F7F7F7; border-radius: 4px} "
-																		 "QPushButton:hover{background: #e6f6ff; border-radius: 4px}");
+		ui->mnBreekButton->setStyleSheet("QPushButton{background: #F7F7F7; border-radius: 4px; font-size: 10pt;} "
+																		 "QPushButton:hover{background: #e6f6ff; border-radius: 4px; font-size: 10pt;}");
 	}
 	arrAddBreekFormDaysCheck_[0] = !arrAddBreekFormDaysCheck_[0];
 }
@@ -86,12 +86,12 @@ void MainWindow::on_mnBreekButton_clicked()
 void MainWindow::on_tuBreekButton_clicked()
 {
 	if (arrAddBreekFormDaysCheck_[1] == false) {
-		ui->tuBreekButton->setStyleSheet("QPushButton{background: #81C4FF; border-radius: 4px} "
-																		 "QPushButton:hover{background: #e6f6ff; border-radius: 4px}");
+		ui->tuBreekButton->setStyleSheet("QPushButton{background: #81C4FF; border-radius: 4px; font-size: 10pt;} "
+																		 "QPushButton:hover{background: #e6f6ff; border-radius: 4px; font-size: 10pt;}");
 	}
 	else {
-		ui->tuBreekButton->setStyleSheet("QPushButton{background: #F7F7F7; border-radius: 4px} "
-																		 "QPushButton:hover{background: #e6f6ff; border-radius: 4px}");
+		ui->tuBreekButton->setStyleSheet("QPushButton{background: #F7F7F7; border-radius: 4px; font-size: 10pt;} "
+																		 "QPushButton:hover{background: #e6f6ff; border-radius: 4px; font-size: 10pt;}");
 	}
 	arrAddBreekFormDaysCheck_[1] = !arrAddBreekFormDaysCheck_[1];
 }
@@ -99,12 +99,12 @@ void MainWindow::on_tuBreekButton_clicked()
 void MainWindow::on_weBreekButton_clicked()
 {
 	if (arrAddBreekFormDaysCheck_[2] == false) {
-		ui->weBreekButton->setStyleSheet("QPushButton{background: #81C4FF; border-radius: 4px} "
-																		 "QPushButton:hover{background: #e6f6ff; border-radius: 4px}");
+		ui->weBreekButton->setStyleSheet("QPushButton{background: #81C4FF; border-radius: 4px; font-size: 10pt;} "
+																		 "QPushButton:hover{background: #e6f6ff; border-radius: 4px; font-size: 10pt;}");
 	}
 	else {
-		ui->weBreekButton->setStyleSheet("QPushButton{background: #F7F7F7; border-radius: 4px} "
-																		 "QPushButton:hover{background: #e6f6ff; border-radius: 4px}");
+		ui->weBreekButton->setStyleSheet("QPushButton{background: #F7F7F7; border-radius: 4px; font-size: 10pt;} "
+																		 "QPushButton:hover{background: #e6f6ff; border-radius: 4px; font-size: 10pt;}");
 	}
 	arrAddBreekFormDaysCheck_[2] = !arrAddBreekFormDaysCheck_[2];
 }
@@ -112,12 +112,12 @@ void MainWindow::on_weBreekButton_clicked()
 void MainWindow::on_thBreekButton_clicked()
 {
 	if (arrAddBreekFormDaysCheck_[3] == false) {
-		ui->thBreekButton->setStyleSheet("QPushButton{background: #81C4FF; border-radius: 4px} "
-																		 "QPushButton:hover{background: #e6f6ff; border-radius: 4px}");
+		ui->thBreekButton->setStyleSheet("QPushButton{background: #81C4FF; border-radius: 4px; font-size: 10pt;} "
+																		 "QPushButton:hover{background: #e6f6ff; border-radius: 4px; font-size: 10pt;}");
 	}
 	else {
-		ui->thBreekButton->setStyleSheet("QPushButton{background: #F7F7F7; border-radius: 4px} "
-																		 "QPushButton:hover{background: #e6f6ff; border-radius: 4px}");
+		ui->thBreekButton->setStyleSheet("QPushButton{background: #F7F7F7; border-radius: 4px; font-size: 10pt;} "
+																		 "QPushButton:hover{background: #e6f6ff; border-radius: 4px; font-size: 10pt;}");
 	}
 	arrAddBreekFormDaysCheck_[3] = !arrAddBreekFormDaysCheck_[3];
 }
@@ -125,12 +125,12 @@ void MainWindow::on_thBreekButton_clicked()
 void MainWindow::on_frBreekButton_clicked()
 {
 	if (arrAddBreekFormDaysCheck_[4] == false) {
-		ui->frBreekButton->setStyleSheet("QPushButton{background: #81C4FF; border-radius: 4px} "
-																		 "QPushButton:hover{background: #e6f6ff; border-radius: 4px}");
+		ui->frBreekButton->setStyleSheet("QPushButton{background: #81C4FF; border-radius: 4px; font-size: 10pt;} "
+																		 "QPushButton:hover{background: #e6f6ff; border-radius: 4px; font-size: 10pt;}");
 	}
 	else {
-		ui->frBreekButton->setStyleSheet("QPushButton{background: #F7F7F7; border-radius: 4px} "
-																		 "QPushButton:hover{background: #e6f6ff; border-radius: 4px}");
+		ui->frBreekButton->setStyleSheet("QPushButton{background: #F7F7F7; border-radius: 4px; font-size: 10pt;} "
+																		 "QPushButton:hover{background: #e6f6ff; border-radius: 4px; font-size: 10pt;}");
 	}
 	arrAddBreekFormDaysCheck_[4] = !arrAddBreekFormDaysCheck_[4];
 }
@@ -138,12 +138,12 @@ void MainWindow::on_frBreekButton_clicked()
 void MainWindow::on_stBreekButton_clicked()
 {
 	if (arrAddBreekFormDaysCheck_[5] == false) {
-		ui->stBreekButton->setStyleSheet("QPushButton{background: #81C4FF; border-radius: 4px} "
-																		 "QPushButton:hover{background: #e6f6ff; border-radius: 4px}");
+		ui->stBreekButton->setStyleSheet("QPushButton{background: #81C4FF; border-radius: 4px; font-size: 10pt;} "
+																		 "QPushButton:hover{background: #e6f6ff; border-radius: 4px; font-size: 10pt;}");
 	}
 	else {
-		ui->stBreekButton->setStyleSheet("QPushButton{background: #F7F7F7; border-radius: 4px} "
-																		 "QPushButton:hover{background: #e6f6ff; border-radius: 4px}");
+		ui->stBreekButton->setStyleSheet("QPushButton{background: #F7F7F7; border-radius: 4px; font-size: 10pt;} "
+																		 "QPushButton:hover{background: #e6f6ff; border-radius: 4px; font-size: 10pt;}");
 	}
 	arrAddBreekFormDaysCheck_[5] = !arrAddBreekFormDaysCheck_[5];
 }

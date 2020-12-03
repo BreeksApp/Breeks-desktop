@@ -54,7 +54,7 @@ void MainWindow::setStyleAddTimetableElementForm()
 	ui->stTimetableElemnetButton->setGraphicsEffect(createShadow());
 
 	ui->addTimetableElementButton->setStyleSheet("QPushButton{background: #b9de6f; border-radius: 20px; border: 0.2px solid #d7eba9; color: #ffffff; font-size: 12pt; font-weight: bold;} "
-																							 "QPushButton:hover{background: #f9fcf1; border-radius: 20px; color: #b9de6f; font-size: 12pt; font-weight: bold;}");
+																							 "QPushButton:hover{background: #d2e9a0; border-radius: 20px; color: #b9de6f; font-size: 12pt; font-weight: bold;}");
 
 	//ui->timetableElementTimeStart->setFixedSize(50, 20);
 	ui->timetableElementTimeStart->setStyleSheet("QTimeEdit{background: #F7F7F7; border-radius: 8px;}"

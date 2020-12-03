@@ -235,10 +235,10 @@ void MainWindow::buildBreeksDescriptionZone()
 //GroupBox to describe posibilities of breeks
 	QGroupBox *mfc = new QGroupBox;
 
-	//const int descriptionWidth = 270;
+	const int descriptionWidth = 300;
   const int descriptionHeight = 480;
 
-	mfc->setFixedHeight(descriptionHeight);
+	mfc->setFixedSize(descriptionWidth, descriptionHeight);
 	mfc->setStyleSheet("QGroupBox{background: #F7F7F7; border-radius: 6px;}");
 	breeksDescriptionZoneLayout_->addWidget(mfc, 0, 0, Qt::AlignCenter);
 }
