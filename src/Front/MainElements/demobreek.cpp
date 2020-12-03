@@ -2,6 +2,7 @@
 #include <QKeyEvent>
 #include <QQmlProperty>
 #include <QQuickItem>
+#include <QtConcurrent/QtConcurrent>
 
 DemoBreek::DemoBreek(QWidget *parent) :
 	QPushButton(parent),
@@ -19,41 +20,47 @@ void DemoBreek::keyPressEvent(QKeyEvent *event)
 {
 	int iKey = event->key();
 
-	if (iKey == Qt::Key_W || QKeySequence(iKey).toString() == "Ц") {
-		if (workState_ == Conditions::RED) {
-		    connectToQml(nEmoji_, Directions::UPSIDE, workState_, Conditions::GREY_BACKGROUND);
-		    workState_ = Conditions::GREY_BACKGROUND;
+	if (event->modifiers() == 0 && !isAnimated_) {
+		if (iKey == Qt::Key_W || QKeySequence(iKey).toString() == "Ц") {
+			isAnimated_ = true;
+			if (workState_ == Conditions::RED) {
+				connectToQml(nEmoji_, Directions::DOWNSIDE, workState_, Conditions::GREY_FOREGROUND);
+				workState_ = Conditions::GREY_FOREGROUND;
+			}
+			else if (workState_ == Conditions::GREY_FOREGROUND) {
+				connectToQml(nEmoji_, Directions::DOWNSIDE, workState_, Conditions::GREEN);
+				workState_ = Conditions::GREEN;
+			}
+			else if (workState_ == Conditions::GREEN) {
+				connectToQml(nEmoji_, Directions::DOWNSIDE, workState_, Conditions::GREY_BACKGROUND);
+				workState_ = Conditions::GREY_BACKGROUND;
+			}
+			else {
+				connectToQml(nEmoji_, Directions::DOWNSIDE, workState_, Conditions::RED);
+				workState_ = Conditions::RED;
+			}
+			QFuture<void> future = QtConcurrent::run(this, &DemoBreek::waitAnimationEnd);
 		}
-		else if (workState_ == Conditions::GREY_FOREGROUND) {
-		    connectToQml(nEmoji_, Directions::UPSIDE, workState_, Conditions::RED);
-		    workState_ = Conditions::RED;
-		}
-		else if (workState_ == Conditions::GREEN) {
-		    connectToQml(nEmoji_, Directions::UPSIDE, workState_, Conditions::GREY_FOREGROUND);
-		    workState_ = Conditions::GREY_FOREGROUND;
-		}
-		else {
-		    connectToQml(nEmoji_, Directions::UPSIDE, workState_, Conditions::GREEN);
-		    workState_ = Conditions::GREEN;
-		}
-	}
 
-	if (iKey == Qt::Key_S || QKeySequence(iKey).toString() == "Ы") {
-		if (workState_ == Conditions::RED) {
-		    connectToQml(nEmoji_, Directions::DOWNSIDE, workState_, Conditions::GREY_FOREGROUND);
-		    workState_ = Conditions::GREY_FOREGROUND;
-		}
-		else if (workState_ == Conditions::GREY_FOREGROUND) {
-		    connectToQml(nEmoji_, Directions::DOWNSIDE, workState_, Conditions::GREEN);
-		    workState_ = Conditions::GREEN;
-		}
-		else if (workState_ == Conditions::GREEN){
-		    connectToQml(nEmoji_, Directions::DOWNSIDE, workState_, Conditions::GREY_BACKGROUND);
-		    workState_ = Conditions::GREY_BACKGROUND;
-		}
-		else {
-		    connectToQml(nEmoji_, Directions::DOWNSIDE, workState_, Conditions::RED);
-		    workState_ = Conditions::RED;
+		if (iKey == Qt::Key_S || QKeySequence(iKey).toString() == "Ы") {
+			isAnimated_ = true;
+			if (workState_ == Conditions::RED) {
+				connectToQml(nEmoji_, Directions::UPSIDE, workState_, Conditions::GREY_BACKGROUND);
+				workState_ = Conditions::GREY_BACKGROUND;
+			}
+			else if (workState_ == Conditions::GREY_FOREGROUND) {
+				connectToQml(nEmoji_, Directions::UPSIDE, workState_, Conditions::RED);
+				workState_ = Conditions::RED;
+			}
+			else if (workState_ == Conditions::GREEN){
+				connectToQml(nEmoji_, Directions::UPSIDE, workState_, Conditions::GREY_FOREGROUND);
+				workState_ = Conditions::GREY_FOREGROUND;
+			}
+			else {
+				connectToQml(nEmoji_, Directions::UPSIDE, workState_, Conditions::GREEN);
+				workState_ = Conditions::GREEN;
+			}
+			QFuture<void> future = QtConcurrent::run(this, &DemoBreek::waitAnimationEnd);
 		}
 	}
 }
@@ -169,4 +176,10 @@ void DemoBreek::changeEmoji(int nEmoji)
 	nEmoji_ = nEmoji;
 	connectToQml(nEmoji_, workState_);
 	this->setFocus();
+}
+
+void DemoBreek::waitAnimationEnd()
+{
+	QThread::msleep(500);
+	isAnimated_ = false;
 }
