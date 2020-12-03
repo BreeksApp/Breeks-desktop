@@ -1,4 +1,4 @@
-QT       += core gui sql qml quick quickwidgets
+QT       += core gui sql qml quick quickwidgets network
 
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -21,6 +21,8 @@ RC_ICONS += icon.ico
 SOURCES += \
     Back/FileSystem/databaseIO.cpp \
     Back/FileSystem/filesystem.cpp \
+    Back/secret-data.cpp \
+    Back/server-connection.cpp \
     Front/Dictionary/russiandictionary.cpp \
     Front/GeneralTextEdit/TimeTable/timetable-write-read.cpp \
     Front/GeneralTextEdit/TimeTable/timetabletextedit.cpp \
@@ -61,6 +63,8 @@ SOURCES += \
 
 HEADERS += \
     Back/filesystem.h \
+    Back/secret-data.h \
+    Back/server-connection.h \
     Front/Dictionary/russiandictionary.h \
     Front/GeneralTextEdit/TimeTable/timetabletextedit.h \
     Front/GeneralTextEdit/gentextedit.h \

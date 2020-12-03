@@ -36,16 +36,16 @@ namespace colors { //#ade9ff is breeks color
 
 struct elementData_t {
   QString text;
-	QString tagColor;
-	QString timeStart;
-	QString timeEnd;
-	//QString color;
+  QString tagColor;
+  QString timeStart;
+  QString timeEnd;
+  //QString color;
   QVector<charStyle_t> charStyleVector;
 };
-\
+
 struct breeksData_t {
   QString text;
-	QVector<charStyle_t> charStyleVector;
+  QVector<charStyle_t> charStyleVector;
   int nEmoji;
 };
 

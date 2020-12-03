@@ -6,6 +6,8 @@
 #include <QtConcurrent/QtConcurrent>
 #include <QThread>
 #include <Front/MainElements/EmojiHub/emojihub.h>
+#include <Back/secret-data.h>
+#include <Back/server-connection.h>
 
 #include "mainwindow.h"
 #include "Front/GeneralTextEdit/gentextedit.h"
@@ -54,6 +56,11 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(this, SIGNAL(sendTimetableElementData(bool*, elementData_t)), this, SLOT(recieveTimeTableZoneData(bool*, elementData_t)));
 	setStyleAddTimetableElementForm();
 	ui->addTimetableElementGb->hide();
+
+	Network::ServerConnection * serverConnection = new Network::ServerConnection("http://localhost:8080", new QNetworkAccessManager);
+	Network::UserData * userData = new Network::UserData;
+	connect(serverConnection, SIGNAL(initSecretData(QString, QString)), userData, SLOT(initSecretData(QString, QString)));
+	serverConnection->sendAuthRequest("George", "123ewq");
 }
 
 MainWindow::~MainWindow()

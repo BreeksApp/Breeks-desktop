@@ -85,7 +85,6 @@ void filesystem::pushDataToDBTextEdit(QJsonDocument &jDoc, QJsonObject &jObject,
   jObject.insert("textEdit", notes);
   jDoc.setObject(jObject);
   QString strJson(jDoc.toJson(QJsonDocument::Compact));
-  qDebug() << strJson;
   QSqlQuery query("UPDATE Employee SET Notes ='"+strJson+"' WHERE Username ='1'");
 }
 
