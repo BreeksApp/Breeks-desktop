@@ -46,6 +46,9 @@ public:
 private:
   bool state_;
 
+	bool isAnimated_;
+	void waitAnimationEnd();
+
   Conditions workState_;
   int zoneIndex_;
   int dayIndex_;

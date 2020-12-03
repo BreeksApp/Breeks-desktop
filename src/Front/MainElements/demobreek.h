@@ -33,6 +33,9 @@ private:
 	QQuickWidget *quickWidget_;
 	QObject *graphObject_;
 
+	bool isAnimated_;
+	void waitAnimationEnd();
+
 	const int width_;
 	const int height_;
 };

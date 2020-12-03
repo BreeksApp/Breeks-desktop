@@ -5,6 +5,7 @@
 #include <QKeyEvent>
 #include <QQmlProperty>
 #include <QQuickItem>
+#include <QtConcurrent/QtConcurrent>
 
 #include <iostream>
 
@@ -50,8 +51,10 @@ void Breek::keyPressEvent(QKeyEvent *event)
 {
   int iKey = event->key();
 
-	if (event->modifiers() == 0) {
+	if (event->modifiers() == 0 && !isAnimated_) {
 		if (iKey == Qt::Key_W || QKeySequence(iKey).toString() == "Ц") {
+			isAnimated_ = true;
+
 			if (workState_ == Conditions::RED) {
 				connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::GREY_FOREGROUND);
 				workState_ = Conditions::GREY_FOREGROUND;
@@ -68,9 +71,13 @@ void Breek::keyPressEvent(QKeyEvent *event)
 				connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::RED);
 				workState_ = Conditions::RED;
 			}
+
+			QFuture<void> future = QtConcurrent::run(this, &Breek::waitAnimationEnd);
 		}
 
 		if (iKey == Qt::Key_S || QKeySequence(iKey).toString() == "Ы") {
+			isAnimated_ = true;
+
 			if (workState_ == Conditions::RED) {
 				connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREY_BACKGROUND);
 				workState_ = Conditions::GREY_BACKGROUND;
@@ -87,20 +94,26 @@ void Breek::keyPressEvent(QKeyEvent *event)
 				connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREEN);
 				workState_ = Conditions::GREEN;
 			}
+
+			QFuture<void> future = QtConcurrent::run(this, &Breek::waitAnimationEnd);
 		}
 
 		if (iKey == Qt::Key_D || QKeySequence(iKey).toString() == "В") {
+			isAnimated_ = true;
 			if (callHub_) {
 				emit doubleClicked();
 			}
 			emit moveBreek(zoneIndex_, dayIndex_, true);
+			QFuture<void> future = QtConcurrent::run(this, &Breek::waitAnimationEnd);
 		}
 
 		if (iKey == Qt::Key_A || QKeySequence(iKey).toString() == "Ф") {
+			isAnimated_ = true;
 			if (callHub_) {
 				emit doubleClicked();
 			}
 			emit moveBreek(zoneIndex_, dayIndex_, false);
+			QFuture<void> future = QtConcurrent::run(this, &Breek::waitAnimationEnd);
 		}
 
 		if (iKey == Qt::Key_E || QKeySequence(iKey).toString() == "У") {
@@ -260,7 +273,6 @@ void Breek::connectToQml(int indexOfEmoji, Directions dir,
 	QQmlProperty(graphObject_, "animationOn").write(true);
 	graphObject_->setProperty("size1", 80);
 	graphObject_->setProperty("size2", 80);
-
   // работа с фоном сцены
 //  QColor color = Qt::GlobalColor::gray;
 //  quickWidget_->quickWindow()->setColor(color);
@@ -337,6 +349,12 @@ int Breek::getWidth()
 int Breek::getHeight()
 {
 	return height_;
+}
+
+void Breek::waitAnimationEnd()
+{
+	QThread::msleep(500);
+	isAnimated_ = false;
 }
 
 void Breek::setZoneIndex(int zoneIndex)
