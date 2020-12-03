@@ -21,39 +21,39 @@ void DemoBreek::keyPressEvent(QKeyEvent *event)
 
 	if (iKey == Qt::Key_W || QKeySequence(iKey).toString() == "Ц") {
 		if (workState_ == Conditions::RED) {
-			connectToQml(nEmoji_, Directions::DOWNSIDE, workState_, Conditions::GREY_FOREGROUND);
-			workState_ = Conditions::GREY_FOREGROUND;
+		    connectToQml(nEmoji_, Directions::UPSIDE, workState_, Conditions::GREY_BACKGROUND);
+		    workState_ = Conditions::GREY_BACKGROUND;
 		}
 		else if (workState_ == Conditions::GREY_FOREGROUND) {
-			connectToQml(nEmoji_, Directions::DOWNSIDE, workState_, Conditions::GREEN);
-			workState_ = Conditions::GREEN;
+		    connectToQml(nEmoji_, Directions::UPSIDE, workState_, Conditions::RED);
+		    workState_ = Conditions::RED;
 		}
 		else if (workState_ == Conditions::GREEN) {
-			connectToQml(nEmoji_, Directions::DOWNSIDE, workState_, Conditions::GREY_BACKGROUND);
-			workState_ = Conditions::GREY_BACKGROUND;
+		    connectToQml(nEmoji_, Directions::UPSIDE, workState_, Conditions::GREY_FOREGROUND);
+		    workState_ = Conditions::GREY_FOREGROUND;
 		}
 		else {
-			connectToQml(nEmoji_, Directions::DOWNSIDE, workState_, Conditions::RED);
-			workState_ = Conditions::RED;
+		    connectToQml(nEmoji_, Directions::UPSIDE, workState_, Conditions::GREEN);
+		    workState_ = Conditions::GREEN;
 		}
 	}
 
 	if (iKey == Qt::Key_S || QKeySequence(iKey).toString() == "Ы") {
 		if (workState_ == Conditions::RED) {
-			connectToQml(nEmoji_, Directions::UPSIDE, workState_, Conditions::GREY_BACKGROUND);
-			workState_ = Conditions::GREY_BACKGROUND;
+		    connectToQml(nEmoji_, Directions::DOWNSIDE, workState_, Conditions::GREY_FOREGROUND);
+		    workState_ = Conditions::GREY_FOREGROUND;
 		}
 		else if (workState_ == Conditions::GREY_FOREGROUND) {
-			connectToQml(nEmoji_, Directions::UPSIDE, workState_, Conditions::RED);
-			workState_ = Conditions::RED;
+		    connectToQml(nEmoji_, Directions::DOWNSIDE, workState_, Conditions::GREEN);
+		    workState_ = Conditions::GREEN;
 		}
 		else if (workState_ == Conditions::GREEN){
-			connectToQml(nEmoji_, Directions::UPSIDE, workState_, Conditions::GREY_FOREGROUND);
-			workState_ = Conditions::GREY_FOREGROUND;
+		    connectToQml(nEmoji_, Directions::DOWNSIDE, workState_, Conditions::GREY_BACKGROUND);
+		    workState_ = Conditions::GREY_BACKGROUND;
 		}
 		else {
-			connectToQml(nEmoji_, Directions::UPSIDE, workState_, Conditions::GREEN);
-			workState_ = Conditions::GREEN;
+		    connectToQml(nEmoji_, Directions::DOWNSIDE, workState_, Conditions::RED);
+		    workState_ = Conditions::RED;
 		}
 	}
 }

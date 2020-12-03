@@ -118,7 +118,7 @@ Item
     property var offsetWidthLeave: getOffset(10, emojiRectWidth, image.implicitWidth)
 
     property var rotationUpDuration: 500
-    property var rotationDownDuration: 700
+    property var rotationDownDuration: 450
     property var borderWidth: 0.01 // убрал границу прямоугольников
     property var radiuS: 10 // радиус закругления прямоугольников в углах
 

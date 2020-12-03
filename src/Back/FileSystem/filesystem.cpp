@@ -14,7 +14,7 @@ QString filesystem::getDataFromDB(QString queryStr)
 {
   QSqlQuery query;
   query.exec(queryStr);
-	QString data;
+  QString data;
 
   while (query.next()) {
     QSqlRecord record = query.record();
@@ -85,6 +85,7 @@ void filesystem::pushDataToDBTextEdit(QJsonDocument &jDoc, QJsonObject &jObject,
   jObject.insert("textEdit", notes);
   jDoc.setObject(jObject);
   QString strJson(jDoc.toJson(QJsonDocument::Compact));
+  qDebug() << strJson;
   QSqlQuery query("UPDATE Employee SET Notes ='"+strJson+"' WHERE Username ='1'");
 }
 
