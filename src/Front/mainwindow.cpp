@@ -9,7 +9,6 @@
 
 #include "mainwindow.h"
 #include "Front/GeneralTextEdit/gentextedit.h"
-#include "Front/MainElements/addelement.h"
 #include "Front/MainElements/elementtemplate.h"
 #include "Front/datastructures.h"
 
@@ -140,8 +139,8 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, breeksData_t newElement)
 
       for (int i = 0; i < DAYS_COUNT; i++) {
         Breek * breek = value.arrBreeks[i];
-        if (breek->getEmojiNum() != newElement.nEmoji) {
-          breek->setEmoj(newElement.nEmoji);
+				if (breek->getEmojiNum() != newElement.arrNEmoji[i]) {
+					breek->setEmoj(newElement.arrNEmoji[i]);
           breek->changeBreekState();
           breek->changeBreekState();
 
@@ -209,7 +208,7 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, breeksData_t newElement)
 			arrBreeksZones_[breeksZonesCount_ - 1].breeksZoneLayout->addWidget(emojiHub, 1, i + 1, Qt::AlignCenter);
 		}
 
-		arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->setEmoj(newElement.nEmoji);
+		arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->setEmoj(newElement.arrNEmoji[i / 2]);
 		arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->setIndex(newZone.zoneIndex, i / 2);
 
 		if (daysCheck[i / 2] == true) {

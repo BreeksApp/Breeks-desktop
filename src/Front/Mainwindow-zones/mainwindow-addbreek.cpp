@@ -153,7 +153,9 @@ void MainWindow::on_addBreekButton_clicked()
 	breeksData_t newElement;
 	newElement.text = ui->breekDescription->toPlainText();
 	newElement.charStyleVector = ui->breekDescription->getCharStyleVector();
-	newElement.nEmoji = ui->emojiButton->getEmojiIndex();
+	for (int i = 0; i < DAYS_COUNT; ++i) {
+		newElement.arrNEmoji[i] = ui->emojiButton->getEmojiIndex();
+	}
 
 	emit sendBreekData(arrAddBreekFormDaysCheck_, newElement);
 	setStyleAddBreeksForm();

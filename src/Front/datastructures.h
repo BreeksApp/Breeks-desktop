@@ -42,11 +42,11 @@ struct elementData_t {
 	//QString color;
   QVector<charStyle_t> charStyleVector;
 };
-\
+
 struct breeksData_t {
   QString text;
 	QVector<charStyle_t> charStyleVector;
-  int nEmoji;
+	int arrNEmoji[6];
 };
 
 struct tagElement_t {

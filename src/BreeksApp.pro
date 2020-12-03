@@ -35,7 +35,6 @@ SOURCES += \
     Front/MainElements/EmojiHub/emojibutton.cpp \
     Front/MainElements/addbreekgb.cpp \
     Front/MainElements/addbuttonhover.cpp \
-    Front/MainElements/addelement.cpp \
     Front/MainElements/addtimetableelementgb.cpp \
     Front/MainElements/breek.cpp \
     Front/MainElements/daywidget.cpp \
@@ -70,7 +69,6 @@ HEADERS += \
     Front/MainElements/EmojiHub/emojibutton.h \
     Front/MainElements/addbreekgb.h \
     Front/MainElements/addbuttonhover.h \
-    Front/MainElements/addelement.h \
     Front/MainElements/addtimetableelementgb.h \
     Front/MainElements/breek.h \
     Front/MainElements/daywidget.h \
