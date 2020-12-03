@@ -56,20 +56,20 @@ void Breek::keyPressEvent(QKeyEvent *event)
 			isAnimated_ = true;
 
 			if (workState_ == Conditions::RED) {
-			    connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREY_BACKGROUND);
-			    workState_ = Conditions::GREY_BACKGROUND;
+					connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREY_FOREGROUND);
+					workState_ = Conditions::GREY_FOREGROUND;
 			}
 			else if (workState_ == Conditions::GREY_FOREGROUND) {
-			    connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::RED);
-			    workState_ = Conditions::RED;
+					connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREEN);
+					workState_ = Conditions::GREEN;
 			}
 			else if (workState_ == Conditions::GREEN) {
-			    connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREY_FOREGROUND);
-			    workState_ = Conditions::GREY_FOREGROUND;
+					connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREY_BACKGROUND);
+					workState_ = Conditions::GREY_BACKGROUND;
 			}
 			else {
-			    connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::GREEN);
-			    workState_ = Conditions::GREEN;
+					connectToQml(nEmoj_, Directions::UPSIDE, workState_, Conditions::RED);
+					workState_ = Conditions::RED;
 			}
 
 			QFuture<void> future = QtConcurrent::run(this, &Breek::waitAnimationEnd);
@@ -79,20 +79,20 @@ void Breek::keyPressEvent(QKeyEvent *event)
 			isAnimated_ = true;
 
 			if (workState_ == Conditions::RED) {
-			    connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::GREY_FOREGROUND);
-			    workState_ = Conditions::GREY_FOREGROUND;
+					connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::GREY_BACKGROUND);
+					workState_ = Conditions::GREY_BACKGROUND;
 			}
 			else if (workState_ == Conditions::GREY_FOREGROUND) {
-			    connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::GREEN);
-			    workState_ = Conditions::GREEN;
+					connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::RED);
+					workState_ = Conditions::RED;
 			}
 			else if (workState_ == Conditions::GREEN){
-			    connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::GREY_BACKGROUND);
-			    workState_ = Conditions::GREY_BACKGROUND;
+					connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::GREY_FOREGROUND);
+					workState_ = Conditions::GREY_FOREGROUND;
 			}
 			else {
-			    connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::RED);
-			    workState_ = Conditions::RED;
+					connectToQml(nEmoj_, Directions::DOWNSIDE, workState_, Conditions::GREEN);
+					workState_ = Conditions::GREEN;
 			}
 
 			QFuture<void> future = QtConcurrent::run(this, &Breek::waitAnimationEnd);
