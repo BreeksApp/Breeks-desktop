@@ -27,8 +27,14 @@ void DayWidget::dropEvent(QDropEvent *event)
   elementData_t elemData;
   QByteArray data = event->mimeData()->data("elemData");
   QDataStream out(&data, QIODevice::ReadOnly);
-	out >> elemData.text >> elemData.timeStart >> elemData.timeEnd >> elemData.tagColor >> dragPos_;
-  QByteArray indexes = event->mimeData()->data("indexes");
+
+	QString sId;
+	out >> sId >> elemData.text >> elemData.timeStart >> elemData.timeEnd >> elemData.tagColorNum >> dragPos_;
+	elemData.idOnServer = sId.toLong();
+	qDebug() << elemData.idOnServer;
+	elemData.tagColor = tag::ARR_COLORS[elemData.tagColorNum];
+
+	QByteArray indexes = event->mimeData()->data("indexes");
   QDataStream outIndexes(&indexes, QIODevice::ReadOnly);
   outIndexes >> dayIndex_ >> elemIndex_;
 
@@ -44,7 +50,7 @@ void DayWidget::dropEvent(QDropEvent *event)
 
   if (dayNumber_ != dayIndex_) {
 		emit dropElement(dayNumber_, dayIndex_, elemIndex_, elemData);
-		emit sendDayAndElementIndex(dayIndex_, elemIndex_);
+		emit sendDayAndElementIndex(dayIndex_, elemIndex_, false);
   }
 	emit elementLeaveArea(dayNumber_);
 

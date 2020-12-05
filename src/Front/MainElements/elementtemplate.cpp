@@ -4,8 +4,13 @@
 #include <QGraphicsDropShadowEffect>
 #include <QScrollBar>
 
-ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
+ElementTemplate::ElementTemplate(QGroupBox *parent) :
+	QGroupBox(parent),
+	timer_(new QTimer())
 {
+	timer_->setSingleShot(true);
+	connect(timer_, SIGNAL(timeout()), this, SLOT(sendServerRequest()));
+
 	this->setFixedSize(ELEMENT_WIDTH, ELEMENT_HEIGHT);
 	this->setStyleSheet("ElementTemplate {background: #F9F9F9; border: 0.4px solid #cbcbcb; border-radius: 8px;}");
 
@@ -25,7 +30,7 @@ ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
 	scaleButton_->setEnabled(false);
 	scaleButton_->setFlat(true);
 
-  deleteButton_ = new QPushButton;
+	deleteButton_ = new DeleteTimetableElementButton;
 	//deleteButton_->setStyleSheet("border-image:url(:/images/images/recycle-bin.png)");
   deleteButton_->setEnabled(false);
   deleteButton_->setFlat(true);
@@ -40,6 +45,9 @@ ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
 	//timeEnd_->setFocusPolicy(Qt::NoFocus);
 	timeStart_->setAlignment(Qt::AlignCenter);
 	timeEnd_->setAlignment(Qt::AlignCenter);
+
+	connect(timeStart_, SIGNAL(timeChanged(const QTime)), this, SLOT(updateElementTime()));
+	connect(timeEnd_, SIGNAL(timeChanged(const QTime)), this, SLOT(updateElementTime()));
 
   for (int i = 0; i < TAGS_COUNT; ++i) {
     arrTags_[i].condition = false;
@@ -77,6 +85,8 @@ ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
 	QFont font("Helvetica", 11);
 	text_->setFont(font);
 
+	connect(text_, SIGNAL(textChanged()), this, SLOT(updateElementText()));
+
 	elementLayout_->addWidget(tagButton_, 0, 0);
 	elementLayout_->addWidget(text_, 0, 1, 2, 3);
 	elementLayout_->addWidget(deleteButton_, 2, 0);
@@ -86,7 +96,7 @@ ElementTemplate::ElementTemplate(QGroupBox *parent) : QGroupBox(parent)
 
   this->setLayout(elementLayout_);
 
-  connect(deleteButton_, SIGNAL (clicked()), this, SLOT (deleteElement()));
+	connect(deleteButton_, SIGNAL (deleteElement()), this, SLOT (deleteElement()));
   connect(tagButton_, SIGNAL (clicked()), this, SLOT (changeTagColor()));
 	connect(scaleButton_, SIGNAL(clicked()), this, SLOT (scaleTextEdit()));
 }
@@ -95,7 +105,6 @@ void ElementTemplate::mousePressEvent(QMouseEvent *event)
 {
   if (event->button() == Qt::LeftButton) {
      dragStartPosition_ = event->pos();
-
   }
   elementData_t data;
   data.text = text_->toPlainText();
@@ -115,8 +124,7 @@ void ElementTemplate::mouseMoveEvent(QMouseEvent *event)
 
   QByteArray data;
   QDataStream inData(&data, QIODevice::WriteOnly);
-	inData << this->text_->toPlainText() << this->timeStart_->time().toString() << this->timeEnd_->time().toString() << this->getTagColor() << dragStartPosition_;
-
+	inData << QString::number(this->idOnServer_) << this->text_->toPlainText() << this->timeStart_->time().toString() << this->timeEnd_->time().toString() << this->tagColorNum_ << dragStartPosition_;
   QByteArray charVector;
   QDataStream inVector(&charVector, QIODevice::WriteOnly);
   inVector << this->getCharStyleVector().size();
@@ -148,7 +156,7 @@ void ElementTemplate::mouseMoveEvent(QMouseEvent *event)
 	emit defineDayMoveFrom(dayIndex_, "d0f896");
 
 	if (!this->isHidden()) {
-		emit deleteItem(dayIndex_, elementIndex_);
+		emit deleteItem(dayIndex_, elementIndex_, false);
 	}
 	else {
 		this->show();
@@ -199,6 +207,40 @@ int ElementTemplate::getWidth()
 	return this->width();
 }
 
+long ElementTemplate::getId()
+{
+	return idOnServer_;
+}
+
+void ElementTemplate::setId(long id)
+{
+	if (idOnServer_ == -1) {
+		idOnServer_ = id;
+		//qDebug() << "SET ID: " << idOnServer_;
+		emit updateId(dayIndex_, elementIndex_, idOnServer_);
+	}
+}
+
+void ElementTemplate::sendServerRequest()
+{
+	emit sendEditRequest(dayIndex_, elementIndex_);
+}
+
+void ElementTemplate::updateElementTime()
+{
+	timer_->stop();
+	timer_->start(1500);
+
+	emit changeTime(dayIndex_, elementIndex_, timeStart_->time().toString(), timeEnd_->time().toString());
+}
+
+void ElementTemplate::updateElementText()
+{
+	timer_->stop();
+	timer_->start(1500);
+	emit changeText(dayIndex_, elementIndex_, text_->toPlainText(), getCharStyleVector());
+}
+
 void ElementTemplate::setText(QString text, const QVector<charStyle_t>& charArr)
 {
 	text_->setFocus();
@@ -230,16 +272,23 @@ void ElementTemplate::setTagColor(const QString sColor)
   for (int i = 0; i < TAGS_COUNT; i++) {
 		if (tagColor_ == arrTags_[i].sColor) {
       arrTags_[i].condition = true;
+			tagColorNum_ = i;
     }
     else {
       arrTags_[i].condition = false;
     }
-  }
+	}
+}
+
+void ElementTemplate::setIdOnServer(long id)
+{
+	idOnServer_ = id;
+	//qDebug() << "CHANGE ID: " << idOnServer_;
 }
 
 void ElementTemplate::deleteElement()
 {
-  emit sendDayAndElementIndex(dayIndex_, elementIndex_);
+	emit sendDayAndElementIndex(dayIndex_, elementIndex_, true);
 }
 
 void ElementTemplate::scaleTextEdit()
@@ -340,7 +389,10 @@ void ElementTemplate::changeTagColor()
 			setTagColor(arrTags_[(i + 1) % TAGS_COUNT].sColor);
       arrTags_[(i + 1) % TAGS_COUNT].condition = true;
       arrTags_[i].condition = false;
-			emit sendDayAndElementIndexAndTagColor(dayIndex_, elementIndex_, tagColor_);
+			emit sendDayAndElementIndexAndTagColor(dayIndex_, elementIndex_, tagColorNum_);
+
+			timer_->stop();
+			timer_->start(1000);
 
       break;
     }

@@ -12,35 +12,39 @@ namespace Network {
     Q_OBJECT
   public:
     ServerConnection(QObject *parent = nullptr);
-    ServerConnection(QString, QNetworkAccessManager *, QObject *parent = nullptr);
-
-    QString getServerUrl();
-    void setServerUrl(QString);
+		ServerConnection(QNetworkAccessManager *, QObject *parent = nullptr);
 
     QString resolveAccessTokenFromRequest();
     QString resolveRefreshTokenFromRequest();
 
     QNetworkReply * sendRegisterRequest(QString, QString, QString);
     void sendAuthRequest(QString, QString);
+		void sendPostRequestWithBearerToken(QUrl url, QByteArray data, QString token);
+		void sendPutRequestWithBearerToken(QUrl url, QByteArray data, QString token);
+		void sendDeleteRequestWithBearerToken(QUrl url, QString token);
 
     void sendBreeksDataToServer();
 
   private:
-    QString serverUrl_;
-    QNetworkAccessManager * networkAccessManager_;
+		QNetworkAccessManager * networkAccessManager_;
 
   public slots:
     void onfinish(QNetworkReply *);
 
   signals:
     void initSecretData(QString, QString);
+		void initTEidOnServer(long);
   };
 
 
   // ===================
-  // API Properties
+	//	 API Properties
   //====================
+	const QString serverUrl = "http://localhost:8080";
   const QString authUrl = "/auth/signin";
+	const QString addTTElementUrl = "/timetableElement/addTimetableElement";
+	const QString editTTElementUrl = "/timetableElement/editTimetableElement";
+	const QString deleteTTElementUrl = "/timetableElement/deleteTimetableElement";
 }
 
 #endif // SERVERCONNECTION_H

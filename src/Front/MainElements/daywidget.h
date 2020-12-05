@@ -30,7 +30,7 @@ private:
 
 signals:
   void dropElement(const int, const int, const int, const elementData_t);
-  void sendDayAndElementIndex(const int, const int);
+	void sendDayAndElementIndex(const int, const int, bool);
   void sendElementsHeight(const int, const int);
 	void moveElement();
 	void dropNoChanges();

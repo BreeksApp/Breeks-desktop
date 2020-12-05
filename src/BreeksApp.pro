@@ -41,6 +41,7 @@ SOURCES += \
     Front/MainElements/breek.cpp \
     Front/MainElements/daywidget.cpp \
     Front/MainElements/deletebreekszonebutton.cpp \
+    Front/MainElements/deletetimetableelementbutton.cpp \
     Front/MainElements/demobreek.cpp \
     Front/MainElements/descriptionzonedaybutton.cpp \
     Front/MainElements/elementtemplate.cpp \
@@ -77,6 +78,7 @@ HEADERS += \
     Front/MainElements/breek.h \
     Front/MainElements/daywidget.h \
     Front/MainElements/deletebreekszonebutton.h \
+    Front/MainElements/deletetimetableelementbutton.h \
     Front/MainElements/demobreek.h \
     Front/MainElements/descriptionzonedaybutton.h \
     Front/MainElements/elementtemplate.h \

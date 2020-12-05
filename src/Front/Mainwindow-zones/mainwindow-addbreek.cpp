@@ -56,7 +56,7 @@ void MainWindow::setStyleAddBreeksForm()
 	//ui->baseBreek->setGraphicsEffect(createShadow());
 
 	ui->addBreekButton->setStyleSheet("QPushButton{background: #81C4FF; border-radius: 24px; color: #e6f6ff; font-size: 12pt; font-weight: bold;} "
-																		"QPushButton:hover{background: #b0d7ff; border-radius: 24px; color: #81C4FF; font-size: 12pt; font-weight: bold;}");
+																		"QPushButton:hover{background: #b0d7ff; border-radius: 24px; color: #e6f6ff; font-size: 12pt; font-weight: bold;}");
 }
 
 QGraphicsDropShadowEffect* MainWindow::createShadow()

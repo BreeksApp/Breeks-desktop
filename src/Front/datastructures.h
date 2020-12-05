@@ -35,8 +35,10 @@ namespace colors { //#ade9ff is breeks color
 };
 
 struct elementData_t {
+	long idOnServer;
   QString text;
   QString tagColor;
+	int tagColorNum;
   QString timeStart;
   QString timeEnd;
   //QString color;

@@ -18,6 +18,9 @@
 #include <Front/MainElements/deletebreekszonebutton.h>
 #include <Front/MainElements/descriptionzonedaybutton.h>
 
+#include <Back/secret-data.h>
+#include <Back/server-connection.h>
+
 #include "ui_mainwindow.h"
 #include "Front/MainElements/elementtemplate.h"
 #include "Front/GeneralTextEdit/textnewelement.h"
@@ -58,14 +61,16 @@ public slots:
 //slot to set data which was pronted and selected by user in AddElement form for Breeks Zone
 	void recieveBreeksZoneData(bool *, breeksData_t);
 
-  void recieveDayAndElementIndex(const int, const int);
-	void recieveDayAndElementIndexAndTagColor(const int, const int, const QString);
+	void recieveDayAndElementIndex(const int, const int, bool);
+	void recieveDayAndElementIndexAndTagColor(const int, const int, const int);
   void recieveUsername();
   void recieveMimeData(const elementData_t, const QPixmap);
 	void changeElementsLayoutHeight(const int, const int);
+	void recieveTimetableElementDayAndElemIndexAndTime(int, int, QString, QString);
+	void recieveTimetableDayAndElementIndexAndText(int, int, QString, QVector<charStyle_t>);
 
   void moveBreek(int, int, bool);
-  void dropElement(const int, const int, const int, const elementData_t);
+	void dropElement(const int, const int, const int, const elementData_t);
   void sendElementsHeight(const int, const int);
 	void mousePressedByDragElement();
 	void dropNoChanges();
@@ -76,6 +81,8 @@ public slots:
 private slots:
 //timetable
 	void setDayInfo();
+	void updateTTElementIdOnServer(int, int, long);
+	void sendPutRequest(int, int);
 //note
   //buttons to change pages
   void on_buttonPage1_clicked();
@@ -130,6 +137,9 @@ signals:
 
 private:
   Ui::MainWindow *ui;
+
+	Network::UserData *userData;
+	Network::ServerConnection *server;
 
 //last visit data about image and page in notes
   const QString fileLastVisitName_ = "fileLastVisit.txt";
@@ -216,6 +226,7 @@ private:
     QVBoxLayout *layoutFullDay;
 
     QHBoxLayout *layoutDayInfo;
+		QDate date;
     QLabel *labelDate;
     QLabel *labelElementsCount;
 

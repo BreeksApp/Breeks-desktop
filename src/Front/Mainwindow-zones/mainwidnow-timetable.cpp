@@ -200,12 +200,7 @@ void MainWindow::setDayInfo()
 
     //set font for label with day info
     arrDays_[i].labelDate->setFont(font);
-    //set font style for elements count label
-    for (int i = 0; i < DAYS_COUNT; ++i) {
-      arrDays_[i].labelElementsCount->setFont(fontCounter);
-			arrDays_[i].labelElementsCount->setStyleSheet("background: none; color: #000000; "
-																										"font: italic;");
-    }
+		arrDays_[i].date = tmpDate;
 
     //work with HTML to set style for a part of line
 		QString strHTML = "<b>" + daysNamesRu[i] + "</b>";
@@ -223,10 +218,38 @@ void MainWindow::setDayInfo()
 		}
   }
 
+	//set font style for elements count label
+	for (int i = 0; i < DAYS_COUNT; ++i) {
+		arrDays_[i].labelElementsCount->setFont(fontCounter);
+		arrDays_[i].labelElementsCount->setStyleSheet("background: none; color: #000000; "
+																									"font: italic;");
+	}
+
 	int iTime = QDateTime::currentDateTime().msecsTo(
 				QDateTime::currentDateTime().date().startOfDay().addDays(1));
 	timer_->start(iTime);
 	//qDebug() << iTime;
+}
+
+void MainWindow::updateTTElementIdOnServer(int dayIndex, int elemIndex, long id)
+{
+	arrDaysData_[dayIndex][elemIndex].idOnServer = id;
+}
+
+void MainWindow::sendPutRequest(int dayIndex, int elemIndex)
+{
+	elementData_t ttElem = arrDaysData_[dayIndex][elemIndex];
+
+	QJsonObject json;
+	json.insert("tagColorNum", ttElem.tagColorNum);
+	json.insert("mainText", ttElem.text);
+	json.insert("timeFrom", ttElem.timeStart);
+	json.insert("timeTo", ttElem.timeEnd);
+	json.insert("date", QDateTime(arrDays_[dayIndex].date).toMSecsSinceEpoch());
+	QJsonDocument jsonDoc(json);
+
+	QUrl url = QUrl(Network::serverUrl + Network::editTTElementUrl + '/' + QString::number(ttElem.idOnServer));
+	server->sendPutRequestWithBearerToken(url , jsonDoc.toJson(), userData->getAccessToken());
 }
 
 void MainWindow::allocateMemoryForDays()
@@ -248,8 +271,8 @@ void MainWindow::allocateMemoryForDays()
 
     connect(arrDays_[i].widgetDay, SIGNAL(dropElement(const int, const int, const int, const elementData_t)),
             this, SLOT(dropElement(const int, const int, const int, const elementData_t)));
-    connect(arrDays_[i].widgetDay, SIGNAL(sendDayAndElementIndex(const int, const int)),
-            this, SLOT(recieveDayAndElementIndex(const int, const int)));
+		connect(arrDays_[i].widgetDay, SIGNAL(sendDayAndElementIndex(const int, const int, bool)),
+						this, SLOT(recieveDayAndElementIndex(const int, const int, bool)));
 
 		connect(arrDays_[i].widgetDay, SIGNAL(sendElementsHeight(const int, const int)),
 						this, SLOT(sendElementsHeight(const int, const int)));
@@ -405,4 +428,16 @@ void MainWindow::changeElementsLayoutHeight(const int dayIndex, const int diffHe
 		arrDays_[dayIndex].groupBoxElementsHeight = 370;
 	}
 	arrDays_[dayIndex].widgetDay->setFixedHeight(arrDays_[dayIndex].groupBoxElementsHeight);
+}
+
+void MainWindow::recieveTimetableElementDayAndElemIndexAndTime(int dayIndex, int elemIndex, QString timeStart, QString timeEnd)
+{
+	arrDaysData_[dayIndex][elemIndex].timeStart = timeStart;
+	arrDaysData_[dayIndex][elemIndex].timeEnd = timeEnd;
+}
+
+void MainWindow::recieveTimetableDayAndElementIndexAndText(int dayIndex, int elemIndex, QString text, QVector<charStyle_t> vectorStyles)
+{
+	arrDaysData_[dayIndex][elemIndex].text = text;
+	arrDaysData_[dayIndex][elemIndex].charStyleVector = vectorStyles;
 }

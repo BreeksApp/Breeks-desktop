@@ -27,6 +27,13 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   ui->setupUi(this);
 
+//TEST NETWORK
+	server = new Network::ServerConnection(new QNetworkAccessManager);
+	userData = new Network::UserData;
+	connect(server, SIGNAL(initSecretData(QString, QString)), userData, SLOT(initSecretData(QString, QString)));
+	server->sendAuthRequest("Yar", "1");
+//
+
 	this->setStyleSheet("background: #F9F9F9");
 
   loginForm_ = new LoginForm;
@@ -56,10 +63,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	setStyleAddTimetableElementForm();
 	ui->addTimetableElementGb->hide();
 
-	Network::ServerConnection * serverConnection = new Network::ServerConnection("http://localhost:8080", new QNetworkAccessManager);
-	Network::UserData * userData = new Network::UserData;
-	connect(serverConnection, SIGNAL(initSecretData(QString, QString)), userData, SLOT(initSecretData(QString, QString)));
-	serverConnection->sendAuthRequest("George", "123ewq");
 }
 
 MainWindow::~MainWindow()
@@ -241,8 +244,15 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, breeksData_t newElement)
 	}
 }
 
-void MainWindow::recieveDayAndElementIndex(const int dayElementIndex, const int elementIndex)
+void MainWindow::recieveDayAndElementIndex(const int dayElementIndex, const int elementIndex, bool isDeleting)
 {
+	//SERVER REQUEST
+	if (isDeleting) {
+		QUrl url = QUrl(Network::serverUrl + Network::deleteTTElementUrl+ '/' + QString::number(arrDaysData_[dayElementIndex][elementIndex].idOnServer));
+		server->sendDeleteRequestWithBearerToken(url, userData->getAccessToken());
+	}
+	//---------
+
   auto item = arrDays_[dayElementIndex].layoutDayElements->itemAt(elementIndex);
 
 	if (!item->widget()->isHidden()) {
@@ -294,9 +304,9 @@ void MainWindow::recieveDayAndElementIndex(const int dayElementIndex, const int 
 	}
 }
 
-void MainWindow::recieveDayAndElementIndexAndTagColor(const int dayIndex, const int elementIndex, const QString sColor)
+void MainWindow::recieveDayAndElementIndexAndTagColor(const int dayIndex, const int elementIndex, const int colorNum)
 {
-		arrDaysData_[dayIndex][elementIndex].tagColor = sColor;
+		arrDaysData_[dayIndex][elementIndex].tagColorNum = colorNum;
 }
 
 void MainWindow::recieveUsername()

@@ -54,7 +54,7 @@ void MainWindow::setStyleAddTimetableElementForm()
 	ui->stTimetableElemnetButton->setGraphicsEffect(createShadow());
 
 	ui->addTimetableElementButton->setStyleSheet("QPushButton{background: #b9de6f; border-radius: 20px; border: 0.2px solid #d7eba9; color: #ffffff; font-size: 12pt; font-weight: bold;} "
-																							 "QPushButton:hover{background: #d2e9a0; border-radius: 20px; color: #b9de6f; font-size: 12pt; font-weight: bold;}");
+																							 "QPushButton:hover{background: #d2e9a0; border-radius: 20px; color: #FFFFFF; font-size: 12pt; font-weight: bold;}");
 
 	//ui->timetableElementTimeStart->setFixedSize(50, 20);
 	ui->timetableElementTimeStart->setStyleSheet("QTimeEdit{background: #F7F7F7; border-radius: 8px;}"
@@ -236,7 +236,29 @@ void MainWindow::on_addTimetableElementButton_clicked()
 	}
 
 	newElement.tagColor = tag::ARR_COLORS[indexCurrentTag_];
+	newElement.tagColorNum = indexCurrentTag_;
 	newElement.charStyleVector = ui->timetableElementDescription->getCharStyleVector();
+	newElement.idOnServer = -1;
+
+	//server request
+	QJsonObject json;
+	json.insert("tagColorNum", newElement.tagColorNum);
+	json.insert("mainText", newElement.text);
+	json.insert("timeFrom", newElement.timeStart);
+	json.insert("timeTo", newElement.timeEnd);
+
+	QUrl url = QUrl(Network::serverUrl + Network::addTTElementUrl);
+
+	for (int i = 0; i < DAYS_COUNT; ++i) {
+		if (arrAddTimetableElementFormDaysCheck_[i]) {
+			json.insert("date", QDateTime(arrDays_[i].date).toMSecsSinceEpoch());
+			QJsonDocument jsonDoc(json);
+
+			server->sendPostRequestWithBearerToken(url , jsonDoc.toJson(), userData->getAccessToken());
+		}
+
+	}
+	//---------
 
 	emit sendTimetableElementData(arrAddTimetableElementFormDaysCheck_, newElement);
 
