@@ -18,6 +18,7 @@ void DescriptionZoneDayButton::mousePressEvent(QMouseEvent *event)
 
 	if (event->button() == Qt::LeftButton) {
 		emit singleClick();
+		emit singleClick(zoneIndex_);
 	}
 
 	if (event->button() == Qt::RightButton) {

@@ -36,7 +36,7 @@ void GenTextEdit::readFromDB(const int currentFile)
 void GenTextEdit::writeToDB(const int currentFile)
 {
   textInfo_t info;
-  QJsonArray jChars;
+	QJsonArray jChars;
 
 	foreach(charStyle_t ch, charStyleVector_) {
     QJsonObject jChar;

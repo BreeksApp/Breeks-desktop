@@ -61,6 +61,7 @@ namespace Network {
 
   // BreeksLines
 	const QString addBreeksLineUrl = "/breeks/addLine";
+	const QString editBreeksLineUrl = "/breeks/editLine";
   const QString getAllLinesInWeekUrl = "/breeks/listOfLines/";
 
   // Notes

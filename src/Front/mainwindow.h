@@ -61,28 +61,31 @@ public slots:
 //slot to set data which was pronted and selected by user in AddElement form for Breeks Zone
 	void recieveBreeksZoneData(bool *, breeksData_t);
 
+	void recieveUsername();
+
 	void recieveDayAndElementIndex(const int, const int, bool);
 	void recieveDayAndElementIndexAndTagColor(const int, const int, const int);
-  void recieveUsername();
   void recieveMimeData(const elementData_t, const QPixmap);
-	void changeElementsLayoutHeight(const int, const int);
 	void recieveTimetableElementDayAndElemIndexAndTime(int, int, QString, QString);
 	void recieveTimetableDayAndElementIndexAndText(int, int, QString, QVector<charStyle_t>);
 
-  void moveBreek(int, int, bool);
-	void dropElement(const int, const int, const int, const elementData_t);
-  void sendElementsHeight(const int, const int);
-	void mousePressedByDragElement();
 	void dropNoChanges();
+	void dropElement(const int, const int, const int, const elementData_t);
 	void enterDayArea(int);
 	void leaveDayArea(int);
 	void defineDayMoveFrom(int, QString);
+	void mousePressedByDragElement();
+
+	void sendElementsHeight(const int, const int);
+	void changeElementsLayoutHeight(const int, const int);
+
+	void moveBreek(int, int, bool);
 
 private slots:
 //timetable
 	void setDayInfo();
 	void updateTTElementIdOnServer(int, int, long);
-	void sendPutRequest(int, int);
+	void sendPutRequestTte(int, int);
 //note
   //buttons to change pages
   void on_buttonPage1_clicked();
@@ -119,6 +122,7 @@ private slots:
 	void on_addBreekButton_clicked();
 
 	void setBLIdOnServer(long);
+	void sendPutRequestBl(int);
 
 //ADD TIMETABLE ELEMENT
 	void on_mnTimetableElemnetButton_clicked();

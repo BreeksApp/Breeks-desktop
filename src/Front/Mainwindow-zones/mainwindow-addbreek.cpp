@@ -184,9 +184,9 @@ void MainWindow::on_addBreekButton_clicked()
 			sConditions += QString::number(arrAddBreekFormDaysCheck_[i]);
 	}
 	bool isCovert;
-	json.insert("conditions", sConditions.toInt(&isCovert, 2));
+	json.insert("conditions", sConditions.toShort(&isCovert, 2));
 
-	json.insert("states", QString("000000").toInt(&isCovert, 4));
+	json.insert("states", QString("000000").toShort(&isCovert, 4));
 	json.insert("date", QDateTime(arrDays_[0].date).toMSecsSinceEpoch()); //first day of week
 
 	QUrl url = QUrl(Network::serverUrl + Network::addBreeksLineUrl);
@@ -206,6 +206,7 @@ void MainWindow::setBLIdOnServer(long id)
 	for (breeksZone_t line : arrBreeksZones_) {
 		if (line.idOnServer == -1) {
 			line.idOnServer = id;
+			qDebug() << line.idOnServer;
 			return;
 		}
 	}

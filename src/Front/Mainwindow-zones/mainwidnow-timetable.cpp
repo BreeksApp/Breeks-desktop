@@ -236,7 +236,7 @@ void MainWindow::updateTTElementIdOnServer(int dayIndex, int elemIndex, long id)
 	arrDaysData_[dayIndex][elemIndex].idOnServer = id;
 }
 
-void MainWindow::sendPutRequest(int dayIndex, int elemIndex)
+void MainWindow::sendPutRequestTte(int dayIndex, int elemIndex)
 {
 	elementData_t ttElem = arrDaysData_[dayIndex][elemIndex];
 

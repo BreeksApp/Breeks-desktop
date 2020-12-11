@@ -97,7 +97,7 @@ void MainWindow::addNewElementToLayout(const int index, const int newElementInde
 
 		connect(server, SIGNAL(initTEidOnServer(long)), elem, SLOT(setId(long)));
 		connect(elem, SIGNAL(updateId(int, int, long)), this, SLOT(updateTTElementIdOnServer(int, int, long)));
-		connect(elem, SIGNAL(sendEditRequest(int, int)), this, SLOT(sendPutRequest(int, int)));
+		connect(elem, SIGNAL(sendEditRequest(int, int)), this, SLOT(sendPutRequestTte(int, int)));
 
     connect(elem, SIGNAL(sendMimeData(const elementData_t, const QPixmap)), this, SLOT(recieveMimeData(const elementData_t, const QPixmap)));
 		connect(elem, SIGNAL(dropNoChanges()), this, SLOT(dropNoChanges()));

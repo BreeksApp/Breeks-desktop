@@ -6,8 +6,8 @@
 RussianDictionary::RussianDictionary()
 {
 //.DIC
-  QString path = "/home/george/Work/BREEKS/Breeks-App/src/Front/RusDic/RusDic.txt";
-//  QString path = "C:/Users/ypyla/PROJECTS/Breeks-desktop/src/Front/RusDic/RusDic.txt";
+	//QString path = "/home/george/Work/BREEKS/Breeks-App/src/Front/RusDic/RusDic.txt";
+	QString path = "C:/Users/ypyla/PROJECTS/Breeks-desktop/src/Front/RusDic/RusDic.txt";
   QFile fDic(path);
 
   if (!fDic.open(QIODevice::ReadOnly | QIODevice::Text)) {

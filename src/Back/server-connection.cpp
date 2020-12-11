@@ -89,8 +89,12 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply) {
   const QJsonDocument doc = QJsonDocument::fromJson(reply->readAll());
   const QJsonObject json = doc.object();
 
-	qDebug() << reply->attribute( QNetworkRequest::HttpReasonPhraseAttribute ).toString();
 	qDebug() << doc;
+
+	if (reply->attribute( QNetworkRequest::HttpStatusCodeAttribute).toString() != "200") {
+		//TODO
+		return;
+	}
 
 	if (json.value("token").toString() != "" && json.value("tokenRefresh").toString() != "") {
 		emit initSecretData(json.value("token").toString(), json.value("tokenRefresh").toString());

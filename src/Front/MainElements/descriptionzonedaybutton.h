@@ -14,6 +14,7 @@ public:
 
 signals:
 	void singleClick();
+	void singleClick(int);
 	void doubleClick(int, int);
 
 	void changeZoneIndex(int);

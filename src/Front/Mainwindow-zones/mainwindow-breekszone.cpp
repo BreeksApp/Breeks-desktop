@@ -28,7 +28,6 @@ void MainWindow::setBreeksZone(breeksZone_t* breeksZone)
 		connect(breeksZone->arrBreeks[i], SIGNAL(sendSateToLilDay(int, int, int)), this, SLOT(changeBreeksZoneLilDayState(int, int, int)));
     connect(breeksZone->arrBreeks[i], SIGNAL(moveBreek(int, int, bool)), this, SLOT(moveBreek(int, int, bool)));
 		connect(breeksZone->arrBreeks[i], SIGNAL(isHere(int, int, bool)), this, SLOT(setBreeksZoneLilDayShadow(int, int, bool)));
-
   }
 
 	connect(breeksZone->buttonDelete, SIGNAL(deleteZone(int)), this, SLOT(deleteBreeksZone(int)));
@@ -247,6 +246,7 @@ void MainWindow::setDaysConnect(breeksZone_t* breeksZone)
 {
   for (int i = 0; i < DAYS_COUNT; ++i) {
 		connect(breeksZone->arrBreeksZoneDays[i], SIGNAL(singleClick()), breeksZone->arrBreeks[i], SLOT(changeBreekState()));
+		connect(breeksZone->arrBreeksZoneDays[i], SIGNAL(singleClick(int)), this, SLOT(sendPutRequestBl(int)));
 		connect(breeksZone->arrBreeksZoneDays[i], SIGNAL(doubleClick(int, int)), this, SLOT(descriptionZoneDayDobleClick(int, int)));
 		connect(breeksZone->arrBreeks[i], SIGNAL(changeState(int, int)), this, SLOT(changeLilDayState(int, int)));
 		connect(breeksZone->arrBreeksZoneDays[i], SIGNAL(changeZoneIndex(int)), breeksZone->arrBreeks[i], SLOT(setZoneIndex(int)));
@@ -305,6 +305,8 @@ void MainWindow::changeBreeksZoneLilDayState(int zoneIndex, int dayIndex, int iS
 			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setGraphicsEffect(nullptr);
 			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setStyleSheet("background: #ff8696; border-radius: 4px;");
 	}
+
+	sendPutRequestBl(zoneIndex);
 }
 
 void MainWindow::setBreeksZoneLilDayShadow(int zoneIndex, int dayIndex, bool state)
@@ -515,4 +517,50 @@ void MainWindow::moveBreek(int zoneIndex, int dayIndex, bool right)
 	if (iCurrentDay_ < DAYS_COUNT & arrBreeksZones_[zoneIndex].arrBreeks[iCurrentDay_]->getState()) {
 		arrBreeksZones_[zoneIndex].arrBreeksZoneDays[iCurrentDay_]->setStyleSheet("background: #b3defc; border-radius: 4px;");
 	}
+
+	sendPutRequestBl(zoneIndex);
 }
+
+void MainWindow::sendPutRequestBl(int zoneIndex)
+{
+	breeksZone_t newElement = arrBreeksZones_[zoneIndex];
+
+	QJsonObject json;
+	json.insert("description", newElement.breekText->toPlainText());
+
+	QJsonArray jArr;
+	foreach(charStyle_t ch, newElement.breekText->getCharStyleVector()) {
+			QJsonObject jChar;
+			jChar.insert("bold", ch.bold);
+			jChar.insert("italic", ch.italic);
+			jChar.insert("underline", ch.underline);
+			jChar.insert("strike", ch.strike);
+			jChar.insert("item", ch.item);
+			jChar.insert("star", ch.star);
+			jChar.insert("sColor", ch.sColor);
+			jChar.insert("spellChecker", ch.spellChecker);
+			jArr.push_back(jChar);
+	}
+	QJsonDocument jDoc;
+	jDoc.setArray(jArr);
+	json.insert("effects", QString(jDoc.toJson()));
+
+	QString sConditions = "";
+	for (int i = 0; i < DAYS_COUNT; ++i) {
+			sConditions += QString::number(newElement.arrBreeks[i]->getState());
+	}
+	bool isCovert;
+	json.insert("conditions", sConditions.toShort(&isCovert, 2));
+
+	QString sStates = "";
+	for (int i = 0; i < DAYS_COUNT; ++i) {
+			sStates += QString::number(newElement.arrBreeks[i]->getColorState());
+	}
+	json.insert("states", sStates.toShort(&isCovert, 4));
+	json.insert("date", QDateTime(arrDays_[0].date).toMSecsSinceEpoch()); //first day of week
+
+	QUrl url = QUrl(Network::serverUrl + Network::editBreeksLineUrl + "/" + QString::number(newElement.idOnServer));
+	QJsonDocument jsonDoc(json);
+	server->sendPutRequestWithBearerToken(url , jsonDoc.toJson(), userData->getAccessToken());
+}
+
