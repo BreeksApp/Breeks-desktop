@@ -8,6 +8,24 @@ int MainWindow::addNewElementToArray(const elementData_t& newElement, const int 
 		QJsonObject json;
 		json.insert("tagColorNum", newElement.tagColorNum);
 		json.insert("mainText", newElement.text);
+
+		QJsonArray jArr;
+		foreach(charStyle_t ch, newElement.charStyleVector) {
+				QJsonObject jChar;
+				jChar.insert("bold", ch.bold);
+				jChar.insert("italic", ch.italic);
+				jChar.insert("underline", ch.underline);
+				jChar.insert("strike", ch.strike);
+				jChar.insert("item", ch.item);
+				jChar.insert("star", ch.star);
+				jChar.insert("sColor", ch.sColor);
+				jChar.insert("spellChecker", ch.spellChecker);
+				jArr.push_back(jChar);
+		}
+		QJsonDocument jDoc;
+		jDoc.setArray(jArr);
+		json.insert("effects", QString(jDoc.toJson()));
+
 		json.insert("timeFrom", newElement.timeStart);
 		json.insert("timeTo", newElement.timeEnd);
 		json.insert("date", QDateTime(arrDays_[index].date).toMSecsSinceEpoch());

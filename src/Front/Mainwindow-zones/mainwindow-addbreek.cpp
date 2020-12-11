@@ -162,6 +162,23 @@ void MainWindow::on_addBreekButton_clicked()
 	QJsonObject json;
 	json.insert("description", newElement.text);
 
+	QJsonArray jArr;
+	foreach(charStyle_t ch, newElement.charStyleVector) {
+			QJsonObject jChar;
+			jChar.insert("bold", ch.bold);
+			jChar.insert("italic", ch.italic);
+			jChar.insert("underline", ch.underline);
+			jChar.insert("strike", ch.strike);
+			jChar.insert("item", ch.item);
+			jChar.insert("star", ch.star);
+			jChar.insert("sColor", ch.sColor);
+			jChar.insert("spellChecker", ch.spellChecker);
+			jArr.push_back(jChar);
+	}
+	QJsonDocument jDoc;
+	jDoc.setArray(jArr);
+	json.insert("effects", QString(jDoc.toJson()));
+
 	QString sConditions = "";
 	for (int i = 0; i < DAYS_COUNT; ++i) {
 			sConditions += QString::number(arrAddBreekFormDaysCheck_[i]);
