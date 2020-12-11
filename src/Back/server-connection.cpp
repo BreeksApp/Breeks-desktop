@@ -15,7 +15,7 @@ Network::ServerConnection::ServerConnection(QNetworkAccessManager * networkAcces
   QObject(parent),
   networkAccessManager_(networkAccessManager)
 {
-	connect(networkAccessManager_,SIGNAL(finished(QNetworkReply*)),this,SLOT(onfinish(QNetworkReply*)));
+  connect(networkAccessManager_,SIGNAL(finished(QNetworkReply*)),this,SLOT(onfinish(QNetworkReply*)));
 }
 
 void Network::ServerConnection::sendAuthRequest(QString username, QString password) {
@@ -29,7 +29,7 @@ void Network::ServerConnection::sendAuthRequest(QString username, QString passwo
   request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
   request.setHeader(QNetworkRequest::ContentLengthHeader, QByteArray::number(jsonData.size()));
 
-	networkAccessManager_->post(request, jsonData);
+  networkAccessManager_->post(request, jsonData);
 }
 
 void Network::ServerConnection::sendPostRequestWithBearerToken(QUrl url, QByteArray data, QString token)
@@ -71,6 +71,18 @@ void Network::ServerConnection::sendDeleteRequestWithBearerToken(QUrl url, QStri
 
 void Network::ServerConnection::sendBreeksDataToServer() {
 
+}
+
+QNetworkReply *Network::ServerConnection::getBreeksLinesFromServer(long timeInMs, QString token)
+{
+  QString sTimeInMs;
+  sTimeInMs.setNum(timeInMs);
+
+  QNetworkRequest request(getAllLinesInWeekUrl + sTimeInMs);
+  auto tokenHeader = QString("Bearer %1").arg(token);
+  request.setRawHeader(QByteArray("Authorization"), tokenHeader.toUtf8());
+
+  networkAccessManager_->get(request);
 }
 
 void Network::ServerConnection::onfinish(QNetworkReply * reply) {
