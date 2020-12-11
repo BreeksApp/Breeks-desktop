@@ -83,7 +83,12 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply) {
 	if (json.value("token").toString() != "" && json.value("tokenRefresh").toString() != "") {
 		emit initSecretData(json.value("token").toString(), json.value("tokenRefresh").toString());
 	}
-	else if (json.value("id").toInt() != 0) {
-		emit initTEidOnServer(json.value("id").toInt());
+	else if (json.value("elementId").toInt() != 0) {
+		qDebug("ELEMENT");
+		emit initTEidOnServer(json.value("elementId").toInt());
+	}
+	else if (json.value("lineId").toInt() != 0) {
+		qDebug("LINE");
+		emit initBLidOnServer(json.value("lineId").toInt());
 	}
 }

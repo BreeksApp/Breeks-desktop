@@ -151,15 +151,45 @@ void MainWindow::on_stBreekButton_clicked()
 void MainWindow::on_addBreekButton_clicked()
 {
 	breeksData_t newElement;
+	newElement.idOnServer = -1;
 	newElement.text = ui->breekDescription->toPlainText();
 	newElement.charStyleVector = ui->breekDescription->getCharStyleVector();
 	for (int i = 0; i < DAYS_COUNT; ++i) {
 		newElement.arrNEmoji[i] = ui->emojiButton->getEmojiIndex();
 	}
 
+	//server request
+	QJsonObject json;
+	json.insert("description", newElement.text);
+
+	QString sConditions = "";
+	for (int i = 0; i < DAYS_COUNT; ++i) {
+			sConditions += QString::number(arrAddBreekFormDaysCheck_[i]);
+	}
+	bool isCovert;
+	json.insert("conditions", sConditions.toInt(&isCovert, 2));
+
+	json.insert("states", QString("000000").toInt(&isCovert, 4));
+	json.insert("date", QDateTime(arrDays_[0].date).toMSecsSinceEpoch()); //first day of week
+
+	QUrl url = QUrl(Network::serverUrl + Network::addBreeksLineUrl);
+	QJsonDocument jsonDoc(json);
+	server->sendPostRequestWithBearerToken(url , jsonDoc.toJson(), userData->getAccessToken());
+	//---------
+
 	emit sendBreekData(arrAddBreekFormDaysCheck_, newElement);
 	setStyleAddBreeksForm();
 
 	ui->emojiHub->showThis();
 	ui->addBreekGB->hide();
+}
+
+void MainWindow::setBLIdOnServer(long id)
+{
+	for (breeksZone_t line : arrBreeksZones_) {
+		if (line.idOnServer == -1) {
+			line.idOnServer = id;
+			return;
+		}
+	}
 }

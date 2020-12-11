@@ -181,6 +181,7 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, breeksData_t newElement)
   setDaysConnect(&newZone); // arrBreeksZoneDays[6] connect clicked() with breeks->changeBreekState
 
 	//newZone.breekText->setFocus();
+	newZone.idOnServer = newElement.idOnServer;
 	newZone.breekText->fillCharsAndSetText(newElement.text, newElement.charStyleVector);
 	newZone.breekText->moveCursor(QTextCursor::Start);
 	newZone.breekText->verticalScrollBar()->minimum();
@@ -193,6 +194,7 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, breeksData_t newElement)
 	breeksDescriptionZoneLayout_->addWidget(newZone.breeksDescriptionGroupBox, breeksDescriptionZoneLayout_->rowCount() + 1, 0, Qt::AlignCenter);
 
   arrBreeksZones_.push_back(newZone);
+	connect(server, SIGNAL(initBLidOnServer(long)), this, SLOT(setBLIdOnServer(long)));
 
 	if (breeksZonesCount_ == 0) {
 		bigWidgetHeight_ += 125;

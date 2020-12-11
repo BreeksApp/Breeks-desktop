@@ -34,6 +34,7 @@ namespace Network {
   signals:
     void initSecretData(QString, QString);
 		void initTEidOnServer(long);
+		void initBLidOnServer(long);
   };
 
 
@@ -45,6 +46,7 @@ namespace Network {
 	const QString addTTElementUrl = "/timetableElement/addTimetableElement";
 	const QString editTTElementUrl = "/timetableElement/editTimetableElement";
 	const QString deleteTTElementUrl = "/timetableElement/deleteTimetableElement";
+	const QString addBreeksLineUrl = "/breeks/addLine";
 }
 
 #endif // SERVERCONNECTION_H

@@ -118,6 +118,8 @@ private slots:
 
 	void on_addBreekButton_clicked();
 
+	void setBLIdOnServer(long);
+
 //ADD TIMETABLE ELEMENT
 	void on_mnTimetableElemnetButton_clicked();
 	void on_tuTimetableElemnetButton_clicked();
@@ -274,6 +276,8 @@ private:
   const int MOVE_DURATION = 350;
 
   struct breeksZone_t {
+		long idOnServer;
+
     QGroupBox *breeksZoneGroupBox;
     QGridLayout *breeksZoneLayout;
     Breek *arrBreeks[6];
