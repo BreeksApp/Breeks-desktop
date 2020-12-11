@@ -6,20 +6,23 @@
 RussianDictionary::RussianDictionary()
 {
 //.DIC
-	QFile fDic("C:/Users/ypyla/PROJECTS/Breeks-desktop/src/Front/RusDic/RusDic.txt");
-	if (!fDic.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		qDebug() << "FILE OPENING CRASHED!";
-	}
-	QString sDic = fDic.readAll();
-	QTextStream sourceDic(&sDic);
-	size_t nWords = 0;
-	sourceDic >> nWords;
-	QString word = "";
+  QString path = "/home/george/Work/BREEKS/Breeks-App/src/Front/RusDic/RusDic.txt";
+//  QString path = "C:/Users/ypyla/PROJECTS/Breeks-desktop/src/Front/RusDic/RusDic.txt";
+  QFile fDic(path);
+
+  if (!fDic.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    qDebug() << "FILE OPENING CRASHED!";
+  }
+  QString sDic = fDic.readAll();
+  QTextStream sourceDic(&sDic);
+  size_t nWords = 0;
+  sourceDic >> nWords;
+  QString word = "";
 //---------
-	for (size_t i = 0; i < nWords - 1; ++i) {
-		sourceDic >> word;
-		detailsAddWord(word);
-	}
+  for (size_t i = 0; i < nWords - 1; ++i) {
+    sourceDic >> word;
+    detailsAddWord(word);
+  }
 }
 
 bool RussianDictionary::isCorrectWord(const QString &word)
