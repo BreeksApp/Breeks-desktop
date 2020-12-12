@@ -29,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 //TEST NETWORK
 	server = new Network::ServerConnection(new QNetworkAccessManager, new Network::UserData);
+	userData = server->getUserData();
 
 //	server->sendAuthRequest("Yar", "1");
 	server->sendAuthRequest("George", "123ewq");

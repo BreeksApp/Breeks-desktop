@@ -81,6 +81,8 @@ void Network::ServerConnection::sendPutRequestWithBearerToken(const QUrl & url, 
 {
 	qDebug() << url.toString();
 
+	qDebug() << "ГДЕ ТОКЕН БЛЯ" << token;
+
 	QNetworkRequest request(url);
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 	request.setHeader(QNetworkRequest::ContentLengthHeader, QByteArray::number(data.size()));
@@ -115,7 +117,7 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
   const QJsonDocument doc = QJsonDocument::fromJson(reply->readAll());
   const QJsonObject json = doc.object();
 
-//  qDebug() << doc;
+  qDebug() << doc;
 
   bool ok = true;
   int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt(&ok);

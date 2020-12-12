@@ -27,6 +27,7 @@ bool MainWindow::openImageFromDisk(const QString& imageName)
 			qDebug() << jsonDoc.toJson();
 
 			server->sendPostRequestWithBearerToken(url , jsonDoc.toJson(), userData->getAccessToken());
+//			qDebug() << userData->getAccessToken();
 
       return true;
     }
