@@ -48,5 +48,6 @@ void MainWindow::setImageBackgroundView(bool status)
   if (status == true) {
 		stylesheet = "background-color: #abdfff; border-radius: 6px;";
   }
+	ui->buttonImage->setStyleSheet(stylesheet);
   ui->labelImageBackground->setStyleSheet(stylesheet);
 }

@@ -90,6 +90,7 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply) {
   const QJsonObject json = doc.object();
 
 	qDebug() << doc;
+	qDebug() << reply->attribute( QNetworkRequest::HttpStatusCodeAttribute).toString();
 
 	if (reply->attribute( QNetworkRequest::HttpStatusCodeAttribute).toString() != "200") {
 		//TODO

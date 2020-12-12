@@ -50,6 +50,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	setAllElementsEffects();
 
 	ui->note->setContentsMargins(10, 10, 10, 10);
+	connect(ui->note, SIGNAL(sendServerRequest(int)), this, SLOT(sendPutRequestNote(int)));
 
 	//ADD BREEKS FORM
 	connect(this, SIGNAL(sendBreekData(bool*, breeksData_t)), this, SLOT(recieveBreeksZoneData(bool*, breeksData_t)));

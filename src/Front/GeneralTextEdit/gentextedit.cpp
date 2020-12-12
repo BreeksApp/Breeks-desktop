@@ -12,12 +12,16 @@ RussianDictionary *GenTextEdit::rusDic_ = new RussianDictionary();
 
 GenTextEdit::GenTextEdit(QWidget *parent) :
 	QTextEdit(parent),
-	timer_(new QTimer())
+	timer_(new QTimer()),
+	requestTimer_(new QTimer())
 {
 	undoRedoBuffer_ = new UndoRedoText;
 	//rusDic_ = new RussianDictionary;
 	timer_->setSingleShot(true);
 	connect(timer_, SIGNAL(timeout()), this, SLOT(checkSpelling()));
+
+	requestTimer_->setSingleShot(true);
+	connect(requestTimer_, SIGNAL(timeout()), SLOT(sendServerRequest()));
 
 	this->setTextColor(QColor(0, 0, 0));
   nCurrentFile_ = 1;
@@ -442,6 +446,8 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 		timer_->stop();
 		timer_->start(1000);
 	}
+
+	requestTimer_->start(500);
 }
 
 /*void GenTextEdit::paintEvent(QPaintEvent *event)
@@ -486,4 +492,9 @@ void GenTextEdit::checkSpelling()
 	if (!word.isEmpty()) {
 		detailsCheckSpelling(word, charCounter_);
 	}
+}
+
+void GenTextEdit::sendServerRequest()
+{
+	emit sendServerRequest(nCurrentFile_);
 }

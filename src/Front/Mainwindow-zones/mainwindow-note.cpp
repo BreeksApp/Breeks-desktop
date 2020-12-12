@@ -121,3 +121,34 @@ void MainWindow::on_buttonPage6_clicked()
 
   writeDataToFileLastVisit();
 }
+
+
+void MainWindow::sendPutRequestNote(int page)
+{
+	QJsonObject json;
+	json.insert("text", ui->note->toPlainText());
+
+	QJsonArray jArr;
+	foreach(charStyle_t ch, ui->note->getCharStyleVector()) {
+			QJsonObject jChar;
+			jChar.insert("bold", ch.bold);
+			jChar.insert("italic", ch.italic);
+			jChar.insert("underline", ch.underline);
+			jChar.insert("strike", ch.strike);
+			jChar.insert("item", ch.item);
+			jChar.insert("star", ch.star);
+			jChar.insert("sColor", ch.sColor);
+			jChar.insert("spellChecker", ch.spellChecker);
+			jArr.push_back(jChar);
+	}
+	QJsonDocument jDoc;
+	jDoc.setArray(jArr);
+	json.insert("effects", QString(jDoc.toJson()));
+
+	json.insert("page", page);
+	json.insert("date", QDateTime(arrDays_[0].date).toMSecsSinceEpoch());
+
+	QUrl url = QUrl(Network::serverUrl + Network::editNoteUrl);
+	QJsonDocument jsonDoc(json);
+	server->sendPutRequestWithBearerToken(url , jsonDoc.toJson(), userData->getAccessToken());
+}
