@@ -385,6 +385,9 @@ void MainWindow::changeLilDayState(int zoneIndex, int dayIndex)
 
 void MainWindow::deleteBreeksZone(int zoneIndex)
 {
+	QUrl url = QUrl(Network::serverUrl + Network::deleteBreeksLineUrl + "/" + QString::number(arrBreeksZones_[zoneIndex].idOnServer));
+	server->sendDeleteRequestWithBearerToken(url, userData->getAccessToken());
+
 	auto itemLine = workZoneLayout_->itemAt(zoneIndex + 6);
 	delete itemLine->widget();
 	delete itemLine;
@@ -410,6 +413,7 @@ void MainWindow::deleteBreeksZone(int zoneIndex)
 	bigWidgetHeight_ -= 125;
 	bigWidgetInWorkZone_->setFixedHeight(bigWidgetHeight_);
 	bigWidgetInBreeksDescriptionZone_->setFixedHeight(bigWidgetHeight_);
+
 }
 
 void MainWindow::delay(int millisecondsToWait)
@@ -557,6 +561,15 @@ void MainWindow::sendPutRequestBl(int zoneIndex)
 			sStates += QString::number(newElement.arrBreeks[i]->getColorState());
 	}
 	json.insert("states", sStates.toShort(&isCovert, 4));
+
+	QJsonArray jArrEmojies;
+	for (int i = 0; i < DAYS_COUNT; ++i) {
+		QJsonObject jObj;
+		jObj.insert("emojiNum", newElement.arrBreeks[i]->getEmojiNum());
+		jArrEmojies.push_back(jObj);
+	}
+	json.insert("emojies", jArrEmojies);
+
 	json.insert("date", QDateTime(arrDays_[0].date).toMSecsSinceEpoch()); //first day of week
 
 	QUrl url = QUrl(Network::serverUrl + Network::editBreeksLineUrl + "/" + QString::number(newElement.idOnServer));

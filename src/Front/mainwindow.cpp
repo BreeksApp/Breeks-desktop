@@ -194,6 +194,7 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, breeksData_t newElement)
 
   arrBreeksZones_.push_back(newZone);
 	connect(server, SIGNAL(initBLidOnServer(long)), this, SLOT(setBLIdOnServer(long)));
+	connect(arrBreeksZones_[breeksZonesCount_].breekText, SIGNAL(textChanged()), arrBreeksZones_[breeksZonesCount_].arrBreeksZoneDays[0], SLOT(sendPutRequestBl()));
 
 	if (breeksZonesCount_ == 0) {
 		bigWidgetHeight_ += 125;
@@ -240,6 +241,7 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, breeksData_t newElement)
 		}
 
 		connect(arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2], SIGNAL(setZoneFocus(int, bool)), this, SLOT(setBreeksDescriptionZoneFocus(int, bool)));
+		connect(arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2], SIGNAL(changeEmojiOnServer(int)), this, SLOT(sendPutRequestBl(int)));
 
 		i += 2;
 	}

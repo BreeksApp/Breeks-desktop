@@ -168,7 +168,7 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
 		emit initTEidOnServer(json.value("elementId").toInt());
 	}
 	else if (json.value("lineId").toInt() != 0) {
-		qDebug("LINE");
+		qDebug() << "LINE " << json.value("lineId").toInt();
 		emit initBLidOnServer(json.value("lineId").toInt());
 	}
 }

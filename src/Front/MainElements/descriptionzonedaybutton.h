@@ -12,12 +12,16 @@ public:
 	int getZoneIndex();
 	void setZoneIndex(int);
 
+public slots:
+		void sendPutRequestBl();
+
 signals:
 	void singleClick();
 	void singleClick(int);
 	void doubleClick(int, int);
 
 	void changeZoneIndex(int);
+
 
 private:
 	int zoneIndex_;
