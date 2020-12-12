@@ -31,6 +31,10 @@ MainWindow::MainWindow(QWidget *parent) :
 	server = new Network::ServerConnection(new QNetworkAccessManager, new Network::UserData);
 //	server->sendAuthRequest("Yar", "1");
 	server->sendAuthRequest("George", "123ewq");
+//	QThread::currentThread()->sleep(3);
+//	QUrl url(Network::serverUrl + Network::getAllLinesInWeekUrl + "1606174673000");
+//	qDebug() << "ТОКЕН НА КЛИЕНТЕ СЕЙЧАС: " << server->getUserData()->getAccessToken();
+//	server->sendGetRequestWithBearerToken(url, server->getUserData()->getAccessToken());
 //
 
 	this->setStyleSheet("background: #F9F9F9");

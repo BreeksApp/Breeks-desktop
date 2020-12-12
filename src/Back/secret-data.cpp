@@ -49,9 +49,7 @@ void Network::UserData::setRefreshToken(QString refreshToken) {
 
 void Network::UserData::initSecretData(QString username, QString accessToken, QString refreshToken)
 {
-  this->username_ = username
+  this->username_ = username;
   this->accessToken_ = accessToken;
   this->refreshToken_ = refreshToken;
-
-  qDebug() << accessToken_ << refreshToken_;
 }
