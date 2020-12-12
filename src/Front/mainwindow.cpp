@@ -28,10 +28,9 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->setupUi(this);
 
 //TEST NETWORK
-	server = new Network::ServerConnection(new QNetworkAccessManager);
-	userData = new Network::UserData;
-	connect(server, SIGNAL(initSecretData(QString, QString)), userData, SLOT(initSecretData(QString, QString)));
-	server->sendAuthRequest("Yar", "1");
+	server = new Network::ServerConnection(new QNetworkAccessManager, new Network::UserData);
+//	server->sendAuthRequest("Yar", "1");
+	server->sendAuthRequest("George", "123ewq");
 //
 
 	this->setStyleSheet("background: #F9F9F9");

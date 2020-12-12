@@ -6,6 +6,7 @@
 #include <QNetworkReply>
 #include <QObject>
 
+#include "Back/secret-data.h"
 
 namespace Network {
   class ServerConnection: public QObject
@@ -13,35 +14,50 @@ namespace Network {
     Q_OBJECT
   public:
     ServerConnection(QObject *parent = nullptr);
-    ServerConnection(QNetworkAccessManager *, QObject *parent = nullptr);
+    ServerConnection(QNetworkAccessManager *, Network::UserData * , QObject *parent = nullptr);
+
+    Network::UserData * getUserData();
 
     QString resolveAccessTokenFromRequest();
     QString resolveRefreshTokenFromRequest();
 
-    QNetworkReply * sendRegisterRequest(QString, QString, QString);
-    void sendAuthRequest(QString, QString);
-    void sendPostRequestWithBearerToken(QUrl url, QByteArray data, QString token);
-    void sendPutRequestWithBearerToken(QUrl url, QByteArray data, QString token);
-    void sendDeleteRequestWithBearerToken(QUrl url, QString token);
+    // ====================================
+    //  Auth requests below:
+    // ====================================
+    QNetworkReply * sendRegisterRequest(const QString&, const QString&, const QString&);
+    void sendAuthRequest(const QString&, const QString&);
+    void sendPostRefreshRequest(const QString&, const QString&);
 
+    // ====================================
+    //  POST data to server methods below:
+    // ====================================
+    void sendPostRequestWithBearerToken(const QUrl&, const QByteArray&, const QString&);
     void sendBreeksDataToServer();
 
     // ====================================
-    //  GET data from server methods below:
+    //  PUT data to server methods below:
     // ====================================
-    QNetworkReply * getBreeksLinesFromServer(long, QString);
-    QNetworkReply * getTTElementsFromServer(long, QString);
-    QNetworkReply * getNotesFromServer(long, short, QString);
-    QNetworkReply * getImageLinkFromServer(long, QString);
+    void sendPutRequestWithBearerToken(const QUrl&, const QByteArray&, const QString&);
+
+    // ====================================
+    //  DELETE data from server methods below:
+    // ====================================
+    void sendDeleteRequestWithBearerToken(const QUrl&, const QString&);
+
+    // ====================================
+    //  GET data from server methods below:
+    // ====================================    
+    void sendGetRequestWithBearerToken(const QUrl&, const QString&);
 
   private:
     QNetworkAccessManager * networkAccessManager_;
+    Network::UserData * userData_;
 
   public slots:
     void onfinish(QNetworkReply *);
 
   signals:
-    void initSecretData(QString, QString);
+    void initSecretData(QString, QString, QString);
 		void initTEidOnServer(long);
 		void initBLidOnServer(long);
   };
@@ -52,6 +68,7 @@ namespace Network {
   //====================
   const QString serverUrl = "http://localhost:8080";
   const QString authUrl = "/auth/signin";
+  const QString refreshUrl = "/auth/refresh";
 
   // TimetableElements
   const QString addTTElementUrl = "/timetableElement/addTimetableElement";
