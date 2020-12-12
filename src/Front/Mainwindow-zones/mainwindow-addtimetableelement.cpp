@@ -274,7 +274,6 @@ void MainWindow::on_addTimetableElementButton_clicked()
 
 			server->sendPostRequestWithBearerToken(url , jsonDoc.toJson(), userData->getAccessToken());
 		}
-
 	}
 	//---------
 

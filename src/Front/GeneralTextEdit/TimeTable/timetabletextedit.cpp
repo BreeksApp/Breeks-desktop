@@ -1,11 +1,38 @@
 #include "timetabletextedit.h"
 
+#include <QScrollBar>
+
 TimetableTextEdit::TimetableTextEdit(QWidget *parent)
         :GenTextEdit(parent)
 {
   this->clearCharStyleVector();
   this->clear();
   this->setCharCounter(0);
+
+	this->verticalScrollBar()->setStyleSheet(
+				"QScrollBar:vertical {"
+					"background-color: #FFFFF0;"
+					"width: 7px;"
+					"margin: 0px 0px 0px 0px;"
+					"border: 0.1px solid #FFFFFF;}"
+
+				"QScrollBar::handle:vartical {"
+					"border-radius: 3px;"
+					"background: #e3e3df;"
+					"min-height: 30px;}"
+
+				"QScrollBar::handle:vertical:hover {"
+					"border-radius: 3px;"
+					"background: #c7c7bf;"
+					"min-height: 30px;}"
+
+				"QScrollBar::add-line:vertical {"
+					"border: none;"
+					"background: none;}"
+
+				"QScrollBar::sub-line:vertical {"
+					"border: none;"
+					"background: none;}");
 }
 
 void TimetableTextEdit::fillCharsAndSetText(QString text, const QVector<charStyle_t>& arr)
