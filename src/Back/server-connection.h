@@ -83,6 +83,7 @@ namespace Network {
   const QString getAllLinesInWeekUrl = "/breeks/listOfLines/";
 
   // Notes
+	const QString editNoteUrl = "/note/editNote";
   const QString getNoteByDateAndPageUrl = "/note/getNoteByDateAndPage/";
 
   // Image

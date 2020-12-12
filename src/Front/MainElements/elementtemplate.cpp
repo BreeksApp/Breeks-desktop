@@ -320,26 +320,6 @@ void ElementTemplate::scaleTextEdit()
 		elementLayout_->addWidget(text_, 0, 1, 3, 3);
 
 		text_->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded);
-		/*text_->verticalScrollBar()->setStyleSheet(
-					"QScrollBar:vertical {"
-						"border: 0.1px solid #FFFFFF;"
-						"background: #FFFFFF;"
-						"width: 9px;"
-						"margin: 0px 0px 0px 0px;}"
-
-					"QScrollBar::handle:vertical {"
-						"border: 0.5px solid #c7c7bf;"
-						"border-radius: 4px;"
-						"background: #c7c7bf;"
-						"min-height: 0px;}"
-
-					"QScrollBar::add-line:vertical {"
-					"border: none;"
-					"background: none;}"
-
-					"QScrollBar::sub-line:vartical {"
-					"border: none;"
-					"background: none;}");*/
 	}
 	else {
 		diff = -48;

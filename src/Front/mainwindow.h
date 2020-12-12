@@ -87,6 +87,8 @@ private slots:
 	void updateTTElementIdOnServer(int, int, long);
 	void sendPutRequestTte(int, int);
 //note
+	void sendPutRequestNote(int);
+
   //buttons to change pages
   void on_buttonPage1_clicked();
   void on_buttonPage2_clicked();
@@ -298,6 +300,8 @@ private:
 
     int zoneIndex;
   };
+
+	QTimer *breeksLineTimer_;
 
   QVector<breeksZone_t> arrBreeksZones_;
 

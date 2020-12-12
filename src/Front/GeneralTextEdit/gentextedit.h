@@ -69,6 +69,10 @@ public:
 public slots:
   void recieveUsername(const QString);
 	void checkSpelling();
+	void sendServerRequest();
+
+signals:
+	void sendServerRequest(int);
 
 private:
 	UndoRedoText *undoRedoBuffer_;
@@ -76,6 +80,7 @@ private:
 				const int pos, const QString text, int lenght = -1);
 	static RussianDictionary *rusDic_;
 	QTimer *timer_;
+	QTimer *requestTimer_;
 
 //it is data storage
 	QString username_;
