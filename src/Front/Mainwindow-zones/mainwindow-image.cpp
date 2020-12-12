@@ -10,24 +10,17 @@ bool MainWindow::openImageFromDisk(const QString& imageName)
     bool valid = image.load(imageName);
 
 		if (valid) {
-
 			qDebug("IMAGE");
-
-			QByteArray ba;
-			QBuffer bu(&ba);
-			image.save(&bu);
-
+//			QByteArray ba;
+//			QBuffer bu(&ba);
+//			image.save(&bu, "PNG");
 			QJsonObject json;
-			json.insert("linkToImage", QString::fromLatin1(ba.toBase64()));
+			json.insert("linkToImage", imageName);
 			json.insert("date", QDateTime(arrDays_[0].date).toMSecsSinceEpoch());
 
 			QUrl url = QUrl(Network::serverUrl + "/image/addImage");
 			QJsonDocument jsonDoc(json);
-
-			qDebug() << jsonDoc.toJson();
-
 			server->sendPostRequestWithBearerToken(url , jsonDoc.toJson(), userData->getAccessToken());
-//			qDebug() << userData->getAccessToken();
 
       return true;
     }
