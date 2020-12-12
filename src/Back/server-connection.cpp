@@ -93,7 +93,7 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply) {
 
 	if (reply->attribute( QNetworkRequest::HttpStatusCodeAttribute).toString() != "200") {
 		//TODO
-		return;
+		//return;
 	}
 
 	if (json.value("token").toString() != "" && json.value("tokenRefresh").toString() != "") {
@@ -104,7 +104,7 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply) {
 		emit initTEidOnServer(json.value("elementId").toInt());
 	}
 	else if (json.value("lineId").toInt() != 0) {
-		qDebug("LINE");
+		qDebug() << "LINE " << json.value("lineId").toInt();
 		emit initBLidOnServer(json.value("lineId").toInt());
 	}
 }

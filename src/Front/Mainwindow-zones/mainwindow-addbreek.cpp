@@ -187,6 +187,15 @@ void MainWindow::on_addBreekButton_clicked()
 	json.insert("conditions", sConditions.toShort(&isCovert, 2));
 
 	json.insert("states", QString("000000").toShort(&isCovert, 4));
+
+	QJsonArray jArrEmojies;
+	for (int i = 0; i < DAYS_COUNT; ++i) {
+		QJsonObject jObj;
+		jObj.insert("emojiNum", newElement.arrNEmoji[i]);
+		jArrEmojies.push_back(jObj);
+	}
+	json.insert("emojies", jArrEmojies);
+
 	json.insert("date", QDateTime(arrDays_[0].date).toMSecsSinceEpoch()); //first day of week
 
 	QUrl url = QUrl(Network::serverUrl + Network::addBreeksLineUrl);
@@ -203,10 +212,10 @@ void MainWindow::on_addBreekButton_clicked()
 
 void MainWindow::setBLIdOnServer(long id)
 {
-	for (breeksZone_t line : arrBreeksZones_) {
-		if (line.idOnServer == -1) {
-			line.idOnServer = id;
-			qDebug() << line.idOnServer;
+	for (int i = 0; i < breeksZonesCount_; ++i ) {
+		if (arrBreeksZones_[i].idOnServer == -1) {
+			arrBreeksZones_[i].idOnServer = id;
+			qDebug() << "SET ID " << arrBreeksZones_[i].idOnServer;
 			return;
 		}
 	}

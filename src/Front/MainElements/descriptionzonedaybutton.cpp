@@ -35,3 +35,8 @@ void DescriptionZoneDayButton::setZoneIndex(int zoneIndex)
 	zoneIndex_ = zoneIndex;
 	emit changeZoneIndex(zoneIndex_);
 }
+
+void DescriptionZoneDayButton::sendPutRequestBl()
+{
+	emit singleClick(zoneIndex_);
+}

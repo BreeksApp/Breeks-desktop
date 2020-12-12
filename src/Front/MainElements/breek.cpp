@@ -323,6 +323,8 @@ void Breek::changeEmoji(int nEmoji)
 	nEmoj_ = nEmoji;
 	connectToQml(nEmoj_, Conditions::YELLOW);
 	this->setFocus();
+
+	emit changeEmojiOnServer(zoneIndex_);
 }
 
 void Breek::closeEmojiHub()

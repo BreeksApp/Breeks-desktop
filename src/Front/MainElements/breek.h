@@ -68,6 +68,7 @@ signals:
 	void doubleClicked();
 	void setZoneFocus(int, bool);
 	void changeState(int, int);
+	void changeEmojiOnServer(int);
 
 public slots:
 	void setZoneIndex(int);
