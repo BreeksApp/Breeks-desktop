@@ -33,7 +33,7 @@ void MainWindow::on_infoButton_clicked()
 
 void MainWindow::infoGBEnter()
 {
-	ui->infoButton->setFixedWidth(191);
+	ui->infoButton->setFixedWidth(181);
 }
 
 void MainWindow::infoGBLeave()

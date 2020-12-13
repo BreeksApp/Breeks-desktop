@@ -54,7 +54,18 @@ void Network::ServerConnection::sendPostRefreshRequest(const QString & username,
   request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
   request.setHeader(QNetworkRequest::ContentLengthHeader, QByteArray::number(jsonData.size()));
 
-  networkAccessManager_->post(request, jsonData);
+	networkAccessManager_->post(request, jsonData);
+}
+
+void Network::ServerConnection::sendPostRequest(const QUrl& url, const QByteArray & data)
+{
+	qDebug() << url.toString();
+
+	QNetworkRequest request(url);
+	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+	request.setHeader(QNetworkRequest::ContentLengthHeader, QByteArray::number(data.size()));
+
+	networkAccessManager_->post(request, data);
 }
 
 void Network::ServerConnection::sendPostRequestWithBearerToken(const QUrl & url, const QByteArray & data,
@@ -139,7 +150,8 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
 
   // 401 - if refreshToken has expired or is invalid
   if (ok && statusCode == 401) {
-    // Close mainwindow and redirect to auth form
+		emit loginReply(false);
+
     return;
   }
 
@@ -164,6 +176,7 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
     json.value("tokenRefresh").toString() != "") {
     emit initSecretData(json.value("userName").toString(), json.value("token").toString(),
                         json.value("tokenRefresh").toString());
+		emit loginReply(true);
   }
   else if (json.value("elementId").toInt() != 0) {
     qDebug("ELEMENT");

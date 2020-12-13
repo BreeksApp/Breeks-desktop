@@ -24,13 +24,13 @@ namespace Network {
     // ====================================
     //  Auth requests below:
     // ====================================
-    QNetworkReply * sendRegisterRequest(const QString&, const QString&, const QString&);
     void sendAuthRequest(const QString&, const QString&);
     void sendPostRefreshRequest(const QString&, const QString&);
 
     // ====================================
     //  POST data to server methods below:
     // ====================================
+		void sendPostRequest(const QUrl&, const QByteArray&);
     void sendPostRequestWithBearerToken(const QUrl&, const QByteArray&, const QString&);
     void sendBreeksDataToServer();
 
@@ -60,6 +60,7 @@ namespace Network {
     void initSecretData(QString, QString, QString);
 		void initTEidOnServer(long);
 		void initBLidOnServer(long);
+		void loginReply(bool);
   };
 
 
@@ -67,6 +68,7 @@ namespace Network {
   //  API Properties
   //====================
   const QString serverUrl = "http://localhost:8080";
+	const QString registrationUrl = "/user/registration";
   const QString authUrl = "/auth/signin";
   const QString refreshUrl = "/auth/refresh";
 
@@ -87,6 +89,7 @@ namespace Network {
   const QString getNoteByDateAndPageUrl = "/note/getNoteByDateAndPage/";
 
   // Image
+	const QString addImageUrl = "/image/addImage";
   const QString getImageUrl = "/image/getImage/";
 }
 

@@ -142,6 +142,11 @@ private slots:
 	void infoGBEnter();
 	void infoGBLeave();
 
+	void on_reg_clicked();
+
+	void on_login_clicked();
+	void loginReply(bool);
+
 signals:
   void sendUsername(const QString);
 	void sendBreekData(bool *, breeksData_t);

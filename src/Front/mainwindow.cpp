@@ -4,6 +4,7 @@
 #include "QScrollBar"
 
 #include <QtConcurrent/QtConcurrent>
+#include <QMessageBox>
 #include <QThread>
 #include <Front/MainElements/EmojiHub/emojihub.h>
 #include <Back/secret-data.h>
@@ -27,11 +28,11 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   ui->setupUi(this);
 
+	this->showMaximized();
+
 //TEST NETWORK
 	server = new Network::ServerConnection(new QNetworkAccessManager, new Network::UserData);
 	userData = server->getUserData();
-
-	server->sendAuthRequest("Yar", "1");
 	//server->sendAuthRequest("George", "123ewq");
 //	QThread::currentThread()->sleep(3);
 //	QUrl url(Network::serverUrl + Network::getAllLinesInWeekUrl + "1606174673000");
@@ -40,10 +41,6 @@ MainWindow::MainWindow(QWidget *parent) :
 //
 
 	this->setStyleSheet("background: #F9F9F9");
-
-  loginForm_ = new LoginForm;
-  connect(loginForm_, SIGNAL(firstWindow()), this, SLOT(recieveUsername())); //Connect login and Mainwindow form
-  connect(loginForm_, SIGNAL(sendUsername(const QString)), ui->note, SLOT(recieveUsername(const QString))); //Send username to TextEdit
 
 	connect(ui->buttonImage, SIGNAL(imageEnter(bool)), this, SLOT(setImageBackgroundView(bool)));
 	connect(ui->buttonImage, SIGNAL(imageLeave(bool)), this, SLOT(setImageBackgroundView(bool)));
@@ -71,6 +68,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	//INFO BUTTONS
 	setInfoButtonsStyle();
+
+	//REGISTRATION
+	ui->message->hide();
+	connect(server, SIGNAL(loginReply(bool)), this, SLOT(loginReply(bool)));
 }
 
 MainWindow::~MainWindow()
@@ -354,4 +355,72 @@ void MainWindow::sendElementsHeight(const int height, const int index)
   if (arrDays_[index].elementsCount < 3) {
 		arrDays_[index].widgetDay->setFixedHeight(ELEMENT_HEIGHT_ * 3);
   }
+}
+
+void MainWindow::on_reg_clicked()
+{
+	 if (ui->mailReg->text().isEmpty() || ui->passwordReg->text().isEmpty() || ui->password2Reg->text().isEmpty()) {
+		 QMessageBox message;
+		 message.setText("Вы заполнили не все поля");
+		 message.exec();
+
+		 return;
+	 }
+	 if (ui->passwordReg->text() != ui->password2Reg->text()) {
+		 QMessageBox message;
+		 message.setText("Пароли не совпадают");
+		 message.exec();
+
+		 return;
+	 }
+
+	 QRegExp rx("[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+");
+	 if (!rx.exactMatch(ui->mailReg->text())) {
+		 QMessageBox message;
+		 message.setText("Вы ввели некорректный адрес электронной почты");
+		 message.exec();
+
+		 return;
+	 }
+
+	 QJsonObject json;
+	 json.insert("userName", ui->mailReg->text());
+	 json.insert("password", ui->passwordReg->text());
+
+	 QUrl url = QUrl(Network::serverUrl + Network::registrationUrl);
+	 QJsonDocument jsonDoc(json);
+	 server->sendPostRequest(url , jsonDoc.toJson());
+
+	 ui->message->show();
+	 ui->mailReg->clear();
+	 ui->passwordReg->clear();
+	 ui->password2Reg->clear();
+}
+
+void MainWindow::on_login_clicked()
+{
+	if (ui->mail->text().isEmpty() || ui->password->text().isEmpty()) {
+		QMessageBox message;
+		message.setText("Вы заполнили не все поля");
+		message.exec();
+
+		return;
+	}
+
+	server->sendAuthRequest(ui->mail->text(), ui->password->text());
+}
+
+void MainWindow::loginReply(bool login)
+{
+	if (login) {
+		ui->authFrom->hide();
+		ui->mail->clear();
+		ui->password->clear();
+	}
+	else {
+		QMessageBox message;
+		message.setText("Мимо");
+		message.exec();
+		ui->password->clear();
+	}
 }

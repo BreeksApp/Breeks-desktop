@@ -14,7 +14,7 @@ bool MainWindow::openImageFromDisk(const QString& imageName)
 			json.insert("linkToImage", imageName);
 			json.insert("date", QDateTime(arrDays_[0].date).toMSecsSinceEpoch());
 
-			QUrl url = QUrl(Network::serverUrl + "/image/addImage");
+			QUrl url = QUrl(Network::serverUrl + Network::addImageUrl);
 			QJsonDocument jsonDoc(json);
 			server->sendPostRequestWithBearerToken(url , jsonDoc.toJson(), userData->getAccessToken());
 
