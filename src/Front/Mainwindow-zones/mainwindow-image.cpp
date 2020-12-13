@@ -15,7 +15,7 @@ bool MainWindow::openImageFromDisk(const QString& imageName)
 
 			QByteArray ba;
 			QBuffer bu(&ba);
-			image.save(&bu);
+			image.save(&bu, "PNG");
 
 			QJsonObject json;
 			json.insert("linkToImage", QString::fromLatin1(ba.toBase64()));
@@ -24,9 +24,9 @@ bool MainWindow::openImageFromDisk(const QString& imageName)
 			QUrl url = QUrl(Network::serverUrl + "/image/addImage");
 			QJsonDocument jsonDoc(json);
 
-			qDebug() << jsonDoc.toJson();
+//			qDebug() << jsonDoc.toJson();
 
-			server->sendPostRequestWithBearerToken(url , jsonDoc.toJson(), userData->getAccessToken());
+//                        server->sendPostRequestWithBearerToken(url , jsonDoc.toJson(), userData->getAccessToken());
 //			qDebug() << userData->getAccessToken();
 
       return true;
