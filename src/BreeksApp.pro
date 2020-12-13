@@ -11,8 +11,6 @@ CONFIG += c++14
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
 
-RC_ICONS += ee-icon.ico
-
 # You can also make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
@@ -46,6 +44,7 @@ SOURCES += \
     Front/MainElements/descriptionzonedaybutton.cpp \
     Front/MainElements/elementtemplate.cpp \
     Front/MainElements/imagehover.cpp \
+    Front/MainElements/infogb.cpp \
     Front/MainElements/timeedit.cpp \
     Front/Mainwindow-zones/mainwidnow-timetable.cpp \
     Front/Mainwindow-zones/mainwindow-addbreek.cpp \
@@ -54,6 +53,7 @@ SOURCES += \
     Front/Mainwindow-zones/mainwindow-breekszone.cpp \
     Front/Mainwindow-zones/mainwindow-effects.cpp \
     Front/Mainwindow-zones/mainwindow-image.cpp \
+    Front/Mainwindow-zones/mainwindow-infobuttons.cpp \
     Front/Mainwindow-zones/mainwindow-note.cpp \
     Front/Mainwindow-zones/mainwindow-workzone.cpp \
     Front/MainElements/EmojiHub/emojihub.cpp \
@@ -83,6 +83,7 @@ HEADERS += \
     Front/MainElements/descriptionzonedaybutton.h \
     Front/MainElements/elementtemplate.h \
     Front/MainElements/imagehover.h \
+    Front/MainElements/infogb.h \
     Front/MainElements/timeedit.h \
     Front/datastructures.h \
     Front/effects.hpp \

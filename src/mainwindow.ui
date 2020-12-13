@@ -10,6 +10,12 @@
     <height>1095</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -208,6 +214,12 @@
       <height>991</height>
      </rect>
     </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
     <property name="styleSheet">
      <string notr="true"/>
     </property>
@@ -223,6 +235,12 @@
       <width>351</width>
       <height>991</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
     </property>
     <property name="title">
      <string/>
@@ -329,23 +347,6 @@ background: none;</string>
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="logoutButton">
-    <property name="geometry">
-     <rect>
-      <x>70</x>
-      <y>970</y>
-      <width>41</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-image:url(:/Images/Front/Images/logout.png);
-</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
    <widget class="QPushButton" name="prevWeekButton">
     <property name="geometry">
      <rect>
@@ -373,23 +374,6 @@ background: none;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">border-image:url(:/Images/Front/Images/nextWeek.png);
-</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="infoButton">
-    <property name="geometry">
-     <rect>
-      <x>120</x>
-      <y>970</y>
-      <width>41</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-image:url(:/Images/Front/Images/info.png);
 </string>
     </property>
     <property name="text">
@@ -706,6 +690,69 @@ height: 90;</string>
      </property>
     </widget>
    </widget>
+   <widget class="InfoGB" name="infoGb">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>930</y>
+      <width>311</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QGroupBox {background: none; border-radius: 8px;}</string>
+    </property>
+    <property name="title">
+     <string/>
+    </property>
+    <widget class="QPushButton" name="logoutButton">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>10</y>
+       <width>41</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-image:url(:/Images/Front/Images/logout.png);
+</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="showInfoButton">
+     <property name="geometry">
+      <rect>
+       <x>260</x>
+       <y>10</y>
+       <width>41</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-image:url(:/Images/Front/Images/info.png);
+</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="infoButton">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>201</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </widget>
    <zorder>labelImageBackground</zorder>
    <zorder>shadowWidget</zorder>
    <zorder>buttonPage6</zorder>
@@ -720,12 +767,11 @@ height: 90;</string>
    <zorder>buttonImage</zorder>
    <zorder>buttonAdd</zorder>
    <zorder>buttonAdd_2</zorder>
-   <zorder>logoutButton</zorder>
    <zorder>prevWeekButton</zorder>
    <zorder>nextWeekButton</zorder>
-   <zorder>infoButton</zorder>
    <zorder>addBreekGB</zorder>
    <zorder>addTimetableElementGb</zorder>
+   <zorder>infoGb</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -786,6 +832,12 @@ height: 90;</string>
    <class>AddTimetableElementGB</class>
    <extends>QGroupBox</extends>
    <header>addtimetableelementgb.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>InfoGB</class>
+   <extends>QGroupBox</extends>
+   <header location="global">infogb.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

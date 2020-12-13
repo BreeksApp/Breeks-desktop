@@ -69,6 +69,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	setStyleAddTimetableElementForm();
 	ui->addTimetableElementGb->hide();
 
+	//INFO BUTTONS
+	setInfoButtonsStyle();
 }
 
 MainWindow::~MainWindow()
