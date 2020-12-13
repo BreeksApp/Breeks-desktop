@@ -138,6 +138,15 @@ private slots:
 
 	void on_addTimetableElementButton_clicked();
 
+	void on_infoButton_clicked();
+	void infoGBEnter();
+	void infoGBLeave();
+
+	void on_reg_clicked();
+
+	void on_login_clicked();
+	void loginReply(bool);
+
 signals:
   void sendUsername(const QString);
 	void sendBreekData(bool *, breeksData_t);
@@ -341,6 +350,14 @@ private:
 	void setStyleAddTimetableElementForm();
 	bool arrAddTimetableElementFormDaysCheck_[6];
 	int indexCurrentTag_;
+
+// INFO BUTTONS
+	void setInfoButtonsStyle();
+	void setInfoButtonColor(QString sColor);
+
+	const int TAGS_COUNT = 6;
+	tagElement_t arrTags_[6];
+	int infoButtonColorNum;
 };
 
 #endif // MAINWINDOW_H

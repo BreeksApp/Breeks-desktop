@@ -238,7 +238,7 @@ void MainWindow::buildBreeksDescriptionZone()
   const int descriptionHeight = 480;
 
 	mfc->setFixedSize(descriptionWidth, descriptionHeight);
-	mfc->setStyleSheet("QGroupBox{background: #F7F7F7; border-radius: 6px;}");
+	mfc->setStyleSheet("QGroupBox{background: none; border-radius: 6px;}");
 	breeksDescriptionZoneLayout_->addWidget(mfc, 0, 0, Qt::AlignCenter);
 }
 

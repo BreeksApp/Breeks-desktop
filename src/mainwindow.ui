@@ -10,6 +10,12 @@
     <height>1095</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -208,6 +214,12 @@
       <height>991</height>
      </rect>
     </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
     <property name="styleSheet">
      <string notr="true"/>
     </property>
@@ -223,6 +235,12 @@
       <width>351</width>
       <height>991</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
     </property>
     <property name="title">
      <string/>
@@ -329,23 +347,6 @@ background: none;</string>
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="logoutButton">
-    <property name="geometry">
-     <rect>
-      <x>70</x>
-      <y>970</y>
-      <width>41</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-image:url(:/Images/Front/Images/logout.png);
-</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
    <widget class="QPushButton" name="prevWeekButton">
     <property name="geometry">
      <rect>
@@ -373,23 +374,6 @@ background: none;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">border-image:url(:/Images/Front/Images/nextWeek.png);
-</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="infoButton">
-    <property name="geometry">
-     <rect>
-      <x>120</x>
-      <y>970</y>
-      <width>41</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-image:url(:/Images/Front/Images/info.png);
 </string>
     </property>
     <property name="text">
@@ -706,6 +690,354 @@ height: 90;</string>
      </property>
     </widget>
    </widget>
+   <widget class="InfoGB" name="infoGb">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>930</y>
+      <width>311</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QGroupBox {background: none; border-radius: 8px;}</string>
+    </property>
+    <property name="title">
+     <string/>
+    </property>
+    <widget class="QPushButton" name="logoutButton">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>10</y>
+       <width>41</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-image:url(:/Images/Front/Images/logout.png);
+</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="showInfoButton">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>10</y>
+       <width>41</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-image:url(:/Images/Front/Images/info.png);
+</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="infoButton">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>311</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="authFrom">
+    <property name="geometry">
+     <rect>
+      <x>1540</x>
+      <y>40</y>
+      <width>311</width>
+      <height>491</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QGroupBox{background: #ffffff; border-radius: 12px; border: 1.5 px solid #F1F1F1}</string>
+    </property>
+    <property name="title">
+     <string/>
+    </property>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>4</x>
+       <y>0</y>
+       <width>301</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei UI</family>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background: #FFFFFF;</string>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:24pt; color:#a9d750;&quot;&gt;BREEKS&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="mailReg">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>80</y>
+       <width>211</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background: #d9ebff;
+border-radius: 10px;
+</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="reg">
+     <property name="geometry">
+      <rect>
+       <x>72</x>
+       <y>230</y>
+       <width>171</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton:hover{background: #b9de6f; border-radius: 15px; border: 0.2px solid #d7eba9; color: #ffffff; font-size: 9pt; font-weight: bold;}	
+																	QPushButton{background: #d9d9d9; border-radius: 15px; color: #262626; font-size: 9pt; font-weight: bold;}</string>
+     </property>
+     <property name="text">
+      <string>Зарегистрироваться</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>60</y>
+       <width>311</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Helvetica</family>
+       <pointsize>9</pointsize>
+       <weight>75</weight>
+       <italic>true</italic>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background: #FFFFFF;</string>
+     </property>
+     <property name="text">
+      <string>E-mail</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="passwordReg">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>140</y>
+       <width>211</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background: #d9ebff;
+border-radius: 10px;
+</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>120</y>
+       <width>311</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Helvetica</family>
+       <pointsize>9</pointsize>
+       <weight>75</weight>
+       <italic>true</italic>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background: #FFFFFF;</string>
+     </property>
+     <property name="text">
+      <string>Пароль</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="password2Reg">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>180</y>
+       <width>211</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background: #d9ebff;
+border-radius: 10px;
+</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="message">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>270</y>
+       <width>311</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Helvetica</family>
+       <pointsize>8</pointsize>
+       <weight>75</weight>
+       <italic>true</italic>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background: #FFFFFF;</string>
+     </property>
+     <property name="text">
+      <string>Потдвердите электронный адрес</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="login">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>440</y>
+       <width>171</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton:hover{background: #81C4FF; border-radius: 15px; color: #e6f6ff; font-size: 9pt; font-weight: bold;} 
+QPushButton{background: #d9d9d9; border-radius: 15px; color: #262626; font-size: 9pt; font-weight: bold;}</string>
+     </property>
+     <property name="text">
+      <string>Войти</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="password">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>400</y>
+       <width>211</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background: #d7eba9;
+border-radius: 10px;
+</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="mail">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>360</y>
+       <width>211</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background: #d7eba9;
+border-radius: 10px;
+</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>300</y>
+       <width>311</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei UI</family>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background: #FFFFFF;</string>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt; color:#81c4ff;&quot;&gt;BUILD YOUR WEEKS&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </widget>
    <zorder>labelImageBackground</zorder>
    <zorder>shadowWidget</zorder>
    <zorder>buttonPage6</zorder>
@@ -720,12 +1052,12 @@ height: 90;</string>
    <zorder>buttonImage</zorder>
    <zorder>buttonAdd</zorder>
    <zorder>buttonAdd_2</zorder>
-   <zorder>logoutButton</zorder>
    <zorder>prevWeekButton</zorder>
    <zorder>nextWeekButton</zorder>
-   <zorder>infoButton</zorder>
    <zorder>addBreekGB</zorder>
    <zorder>addTimetableElementGb</zorder>
+   <zorder>infoGb</zorder>
+   <zorder>authFrom</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -788,7 +1120,56 @@ height: 90;</string>
    <header>addtimetableelementgb.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>InfoGB</class>
+   <extends>QGroupBox</extends>
+   <header location="global">infogb.h</header>
+   <container>1</container>
+  </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>mailReg</tabstop>
+  <tabstop>passwordReg</tabstop>
+  <tabstop>password2Reg</tabstop>
+  <tabstop>reg</tabstop>
+  <tabstop>mail</tabstop>
+  <tabstop>password</tabstop>
+  <tabstop>login</tabstop>
+  <tabstop>buttonAdd</tabstop>
+  <tabstop>timetableElementTagColor</tabstop>
+  <tabstop>timetableElementDescription</tabstop>
+  <tabstop>mnTimetableElemnetButton</tabstop>
+  <tabstop>tuTimetableElemnetButton</tabstop>
+  <tabstop>weTimetableElemnetButton</tabstop>
+  <tabstop>thTimetableElemnetButton</tabstop>
+  <tabstop>frTimetableElemnetButton</tabstop>
+  <tabstop>stTimetableElemnetButton</tabstop>
+  <tabstop>timetableElementTimeStart</tabstop>
+  <tabstop>timetableElementTimeEnd</tabstop>
+  <tabstop>addTimetableElementButton</tabstop>
+  <tabstop>buttonAdd_2</tabstop>
+  <tabstop>emojiButton</tabstop>
+  <tabstop>mnBreekButton</tabstop>
+  <tabstop>tuBreekButton</tabstop>
+  <tabstop>weBreekButton</tabstop>
+  <tabstop>thBreekButton</tabstop>
+  <tabstop>frBreekButton</tabstop>
+  <tabstop>stBreekButton</tabstop>
+  <tabstop>breekDescription</tabstop>
+  <tabstop>addBreekButton</tabstop>
+  <tabstop>buttonPage1</tabstop>
+  <tabstop>buttonPage2</tabstop>
+  <tabstop>buttonPage3</tabstop>
+  <tabstop>buttonPage4</tabstop>
+  <tabstop>buttonPage5</tabstop>
+  <tabstop>buttonPage6</tabstop>
+  <tabstop>buttonImage</tabstop>
+  <tabstop>infoButton</tabstop>
+  <tabstop>prevWeekButton</tabstop>
+  <tabstop>nextWeekButton</tabstop>
+  <tabstop>showInfoButton</tabstop>
+  <tabstop>logoutButton</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

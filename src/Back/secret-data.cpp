@@ -52,6 +52,4 @@ void Network::UserData::initSecretData(QString username, QString accessToken, QS
   this->username_ = username;
   this->accessToken_ = accessToken;
   this->refreshToken_ = refreshToken;
-
-  qDebug() << "Заходит он сюда" << accessToken_;
 }
