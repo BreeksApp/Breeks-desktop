@@ -167,6 +167,10 @@ private:
 //last visit data about image and page in notes
   const QString fileLastVisitName_ = "fileLastVisit.txt";
   QFile fileLastVisit_;
+
+  void clearWeekData();
+  void deleteBreeksZoneClientOnly(int);
+
   void setStatesFromFileLastVisit();
   void writeDataToFileLastVisit();
 //

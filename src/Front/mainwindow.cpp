@@ -518,5 +518,10 @@ void MainWindow::loginReply(bool login)
 		message.setText("Мимо");
 		message.exec();
 		ui->password->clear();
-	}
+	  }
+}
+
+void MainWindow::clearWeekData()
+{
+
 }
