@@ -82,6 +82,12 @@ public slots:
 	void moveBreek(int, int, bool);
 
 private slots:
+// load week from server
+	void initWeekData(const QString&);
+	void initBreeksLines(const QList<breeksData_t>&);
+	void initTTElements(const QList<elementData_t>&);
+	void initNote(const note_t&);
+	void initImage(const image_t&);
 //timetable
 	void setDayInfo();
 	void updateTTElementIdOnServer(int, int, long);

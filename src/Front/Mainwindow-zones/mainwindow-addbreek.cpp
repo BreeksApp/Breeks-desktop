@@ -196,7 +196,8 @@ void MainWindow::on_addBreekButton_clicked()
 	}
 	json.insert("emojies", jArrEmojies);
 
-	json.insert("date", QDateTime(arrDays_[0].date).toMSecsSinceEpoch()); //first day of week
+	// temporal hardcode
+	json.insert("date", "1606174673000"/*QDateTime(arrDays_[0].date).toMSecsSinceEpoch()*/); //first day of week
 
 	QUrl url = QUrl(Network::serverUrl + Network::addBreeksLineUrl);
 	QJsonDocument jsonDoc(json);

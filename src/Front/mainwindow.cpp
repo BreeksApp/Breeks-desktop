@@ -39,6 +39,21 @@ MainWindow::MainWindow(QWidget *parent) :
 //	qDebug() << "ТОКЕН НА КЛИЕНТЕ СЕЙЧАС: " << server->getUserData()->getAccessToken();
 //	server->sendGetRequestWithBearerToken(url, server->getUserData()->getAccessToken());
 //
+	// init week signals from server
+	connect(server, SIGNAL(initWeekData(const QString&)),
+		this, SLOT(initWeekData(const QString&)));
+
+	connect(server, SIGNAL(sendBreeksLinesToGUI(const QList<breeksData_t>&)),
+		this, SLOT(initBreeksLines(const QList<breeksData_t>&)));
+
+	connect(server, SIGNAL(sendTTElementsToGUI(const QList<elementData_t>&)),
+		this, SLOT(initTTElements(const QList<elementData_t>&)));
+
+	connect(server, SIGNAL(sendNoteToGUI(const note_t&)),
+		this, SLOT(initNote(const note_t&)));
+
+	connect(server, SIGNAL(sendImageToGUI(const image_t&)),
+		this, SLOT(initImage(const image_t&)));
 
 	this->setStyleSheet("background: #F9F9F9");
 
@@ -83,6 +98,87 @@ MainWindow::~MainWindow()
   }
 
   delete ui;
+}
+
+// hardcode
+void MainWindow::initWeekData(const QString & token)
+{
+  // тут вызывай запросы с разными датами и разное количество раз
+
+  QUrl url(Network::serverUrl + Network::getAllLinesInWeekUrl + "1606174673000");
+  server->sendGetRequestWithBearerToken(url, token);
+
+  // 1606396541000
+  url = Network::serverUrl + Network::getTTElementsForDayUrl + "1608249757000";
+  server->sendGetRequestWithBearerToken(url, token);
+
+  url = Network::serverUrl + Network::getNoteByDateAndPageUrl + "1607904157000" + "/" + "1";
+  server->sendGetRequestWithBearerToken(url, token);
+
+  url = Network::serverUrl + Network::getImageUrl + "1607904157000";
+  server->sendGetRequestWithBearerToken(url, token);
+}
+
+void MainWindow::initBreeksLines(const QList<breeksData_t> & listOfLines)
+{
+  qDebug() << "==================== LINES FROM SERVER: ";
+  for (auto breeksLine : listOfLines) {
+    qDebug() << "START LINE: ";
+    qDebug() << breeksLine.idOnServer;
+    qDebug() << breeksLine.text;
+    for (auto charStyle : breeksLine.charStyleVector) {
+      qDebug() << charStyle.bold;
+    }
+    qDebug() << breeksLine.conditions;
+    qDebug() << breeksLine.states;
+    int * emojies = breeksLine.arrNEmoji;
+    qDebug() << emojies[0] << " " << emojies[1] << " "
+             << emojies[2] << " " << emojies[3] << " "
+             << emojies[4] << " " << emojies[5] << " ";
+    qDebug() << breeksLine.date;
+    qDebug() << "END LINE";
+  }
+  qDebug() << "==================== END OF LINES FROM SERVER";
+}
+
+void MainWindow::initTTElements(const QList<elementData_t> & listOfTTElements)
+{
+  qDebug() << "==================== TTElements FROM SERVER: ";
+  for (auto element : listOfTTElements) {
+    qDebug() << "START TTElement: ";
+    qDebug() << element.idOnServer;
+    qDebug() << element.text;
+    qDebug() << element.tagColor;
+    qDebug() << element.tagColorNum;
+    qDebug() << element.timeStart;
+    qDebug() << element.timeEnd;
+    for (auto charStyle : element.charStyleVector) {
+      qDebug() << charStyle.bold;
+    }
+    qDebug() << element.date;
+    qDebug() << "END TTElement";
+  }
+  qDebug() << "==================== END OF TTElements FROM SERVER";
+}
+
+void MainWindow::initNote(const note_t & note)
+{
+  qDebug() << "==================== Note FROM SERVER: ";
+  qDebug() << note.text;
+  for (auto charStyle : note.charStyleVector) {
+    qDebug() << charStyle.bold;
+  }
+  qDebug() << note.page;
+  qDebug() << note.date;
+  qDebug() << "==================== END OF Note FROM SERVER";
+}
+
+void MainWindow::initImage(const image_t & image)
+{
+  qDebug() << "==================== Image FROM SERVER: ";
+  qDebug() << image.imageLocation;
+  qDebug() << image.date;
+  qDebug() << "==================== END OF Image FROM SERVER";
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)

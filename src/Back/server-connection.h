@@ -7,6 +7,7 @@
 #include <QObject>
 
 #include "Back/secret-data.h"
+#include "Front/datastructures.h"
 
 namespace Network {
   class ServerConnection: public QObject
@@ -58,9 +59,16 @@ namespace Network {
 
   signals:
     void initSecretData(QString, QString, QString);
-		void initTEidOnServer(long);
-		void initBLidOnServer(long);
-		void loginReply(bool);
+    void initTEidOnServer(long);
+    void initBLidOnServer(long);
+    void loginReply(bool);
+    void sendBreeksLinesToGUI(const QList<breeksData_t>&);
+    void sendTTElementsToGUI(const QList<elementData_t>&);
+    void sendNoteToGUI(const note_t&);
+    void sendImageToGUI(const image_t&);
+
+    // this signal is emitted whenever we want to (re-)load all data of the week
+    void initWeekData(const QString&);
   };
 
 
@@ -85,7 +93,8 @@ namespace Network {
   const QString getAllLinesInWeekUrl = "/breeks/listOfLines/";
 
   // Notes
-	const QString editNoteUrl = "/note/editNote";
+  const QString addNoteUrl = "/note/addNote";
+  const QString editNoteUrl = "/note/editNote";
   const QString getNoteByDateAndPageUrl = "/note/getNoteByDateAndPage/";
 
   // Image

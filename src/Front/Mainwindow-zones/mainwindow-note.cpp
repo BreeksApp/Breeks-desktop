@@ -126,7 +126,9 @@ void MainWindow::on_buttonPage6_clicked()
 void MainWindow::sendPutRequestNote(int page)
 {
 	QJsonObject json;
-	json.insert("text", ui->note->toPlainText());
+
+	QString noteText = ui->note->toPlainText();
+	json.insert("text", noteText);
 
 	QJsonArray jArr;
 	foreach(charStyle_t ch, ui->note->getCharStyleVector()) {
@@ -148,7 +150,8 @@ void MainWindow::sendPutRequestNote(int page)
 	json.insert("page", page);
 	json.insert("date", QDateTime(arrDays_[0].date).toMSecsSinceEpoch());
 
-	QUrl url = QUrl(Network::serverUrl + Network::editNoteUrl);
 	QJsonDocument jsonDoc(json);
+
+	QUrl url = QUrl(Network::serverUrl + Network::editNoteUrl);
 	server->sendPutRequestWithBearerToken(url , jsonDoc.toJson(), userData->getAccessToken());
 }

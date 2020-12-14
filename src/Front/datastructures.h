@@ -20,7 +20,7 @@ struct charStyle_t {
   bool underline;
   bool strike;
   bool item;
-	bool spellChecker;
+  bool spellChecker;
   bool star;
   QString sColor;
 };
@@ -43,13 +43,17 @@ struct elementData_t {
   QString timeEnd;
   //QString color;
   QVector<charStyle_t> charStyleVector;
+  long date;
 };
 
 struct breeksData_t {
 	long idOnServer;
   QString text;
 	QVector<charStyle_t> charStyleVector;
+	int conditions;
+	int states;
 	int arrNEmoji[6];
+	long date;
 };
 
 struct tagElement_t {
@@ -65,6 +69,18 @@ namespace tag {
 struct textInfo_t {
   QJsonArray jArr;
   QString text;
+};
+
+struct note_t {
+  QString text;
+  QVector<charStyle_t> charStyleVector;
+  int page;
+  long date;
+};
+
+struct image_t {
+  QString imageLocation;
+  long date;
 };
 
 enum Directions
