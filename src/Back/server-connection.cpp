@@ -84,6 +84,21 @@ void Network::ServerConnection::sendPostRequestWithBearerToken(const QUrl & url,
 	networkAccessManager_->post(request, data);
 }
 
+QNetworkReply * Network::ServerConnection::sendPostRequestWhenSwitchingNotePages(const QUrl & url,
+                                                                                 const QByteArray & data,
+                                                                                 const QString & token)
+{
+  qDebug() << url.toString();
+
+  QNetworkRequest request(url);
+  request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+  request.setHeader(QNetworkRequest::ContentLengthHeader, QByteArray::number(data.size()));
+  auto tokenHeader = QString("Bearer %1").arg(token);
+  request.setRawHeader(QByteArray("Authorization"), tokenHeader.toUtf8());
+
+  return networkAccessManager_->post(request, data);
+}
+
 void Network::ServerConnection::sendBreeksDataToServer()
 {
 

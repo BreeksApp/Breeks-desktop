@@ -31,8 +31,11 @@ namespace Network {
     // ====================================
     //  POST data to server methods below:
     // ====================================
-		void sendPostRequest(const QUrl&, const QByteArray&);
+    void sendPostRequest(const QUrl&, const QByteArray&);
     void sendPostRequestWithBearerToken(const QUrl&, const QByteArray&, const QString&);
+    QNetworkReply * sendPostRequestWhenSwitchingNotePages(const QUrl & url,
+                                                          const QByteArray & data,
+                                                          const QString & token);
     void sendBreeksDataToServer();
 
     // ====================================

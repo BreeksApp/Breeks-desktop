@@ -216,7 +216,11 @@ private:
 //
 
 //for work with NOTE
-	void noteMakePageButtonSelectable(NoteMark *button);
+  QUrl createGetNoteUrl(const int);
+  QUrl createPostNoteUrl();
+  QByteArray createJsonForSendingNote(int);
+  void changeNotePage(const int, NoteMark*);
+  void noteMakePageButtonSelectable(NoteMark *button);
   void noteMakePageButtonSelectable(int nPage);
   void noteChangePage(const int n);
 //

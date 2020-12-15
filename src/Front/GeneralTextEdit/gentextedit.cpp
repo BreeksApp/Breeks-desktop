@@ -27,7 +27,7 @@ GenTextEdit::GenTextEdit(QWidget *parent) :
   nCurrentFile_ = 1;
   charCounter_ = 0;
 	//add saved text
-	readFromDB(nCurrentFile_);
+//	readFromDB(nCurrentFile_); this line is old, now we load notes' text from remote server
 	detailsSetCharStyle(globCh);
 
 	this->verticalScrollBar()->setStyleSheet(
@@ -496,5 +496,5 @@ void GenTextEdit::checkSpelling()
 
 void GenTextEdit::sendServerRequest()
 {
-	emit sendServerRequest(nCurrentFile_);
+  emit sendServerRequest(nCurrentFile_);
 }
