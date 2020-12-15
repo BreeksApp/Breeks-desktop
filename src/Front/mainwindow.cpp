@@ -149,8 +149,8 @@ void MainWindow::initBreeksLines(const QList<breeksData_t> & listOfLines)
     for (auto charStyle : breeksLine.charStyleVector) {
       qDebug() << charStyle.bold;
     }
-    qDebug() << breeksLine.conditions;
-    qDebug() << breeksLine.states;
+    qDebug() << QString("000000").number(breeksLine.conditions, 2);
+    qDebug() << QString("000000").number(breeksLine.states, 4);
     int * emojies = breeksLine.arrNEmoji;
     qDebug() << emojies[0] << " " << emojies[1] << " "
              << emojies[2] << " " << emojies[3] << " "
@@ -179,6 +179,18 @@ void MainWindow::initTTElements(const QList<elementData_t> & listOfTTElements)
     qDebug() << "END TTElement";
   }
   qDebug() << "==================== END OF TTElements FROM SERVER";
+
+//  for (auto element : listOfTTElements) {
+
+//    bool arr[6] = {false};
+//    QDateTime date = QDateTime();
+//    date.setMSecsSinceEpoch(element.date);
+//    int dayOfWeek = date.date().dayOfWeek() - 1;
+
+//    arr[dayOfWeek] = true;
+
+//    recieveTimeTableZoneData(arr, element, false);
+//  }
 }
 
 void MainWindow::initNote(const note_t & note)
@@ -239,12 +251,13 @@ void MainWindow::dropNoChanges()
 	isElementDrag_ = false;
 }
 
-void MainWindow::recieveTimeTableZoneData(bool *daysCheck, elementData_t newElement)
+void MainWindow::recieveTimeTableZoneData(bool *daysCheck, elementData_t newElement, bool withRequest)
 {
+  qDebug() << "================== ЗДЕСЬ ОН БУДЕТ " << newElement.text;
 	for (int i = 0; i < 6; i++) {
     if (daysCheck[i] == true) {
       //add new element data to array
-      const int newElementIndex = addNewElementToArray(newElement, i);
+      const int newElementIndex = addNewElementToArray(newElement, i, withRequest);
 
       //increase scroll area of this day
       if (arrDays_[i].elementsCount < 3) {

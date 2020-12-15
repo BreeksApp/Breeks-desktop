@@ -37,6 +37,7 @@ TimetableTextEdit::TimetableTextEdit(QWidget *parent)
 
 void TimetableTextEdit::fillCharsAndSetText(QString text, const QVector<charStyle_t>& arr)
 {
+  qDebug() << "===================================== TimetableTextEdit::fillCharsAndSetText " << text;
   this->clearCharStyleVector();
   this->setCharCounter(arr.size());
 
@@ -66,6 +67,9 @@ void TimetableTextEdit::fillCharsAndSetText(QString text, const QVector<charStyl
     int cursorPos = this->textCursor().position();
     this->fillCharStyleVector(cursorPos, 1, ch);
     out >> tmpChar;
+
+    qDebug() << "================================================ TMPCHAR: " << tmpChar;
+
     this->textCursor().insertText(static_cast<QString>(tmpChar), charFormat);
   }
 }

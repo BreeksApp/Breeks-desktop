@@ -1,9 +1,10 @@
 #include "Front/mainwindow.h"
 
-int MainWindow::addNewElementToArray(const elementData_t& newElement, const int index)
+int MainWindow::addNewElementToArray(const elementData_t& newElement, const int index, bool withRequest)
 {
 	//TODO: UPDATE DATE REQUEST HERE
-	if (newElement.idOnServer != -1) {
+	if (newElement.idOnServer != -1 && withRequest) {
+	    qDebug() << "============================================= БУЛЕВА ПЕРЕМЕННАЯ: " << withRequest;
 		//server request
 		QJsonObject json;
 		json.insert("tagColorNum", newElement.tagColorNum);
@@ -23,7 +24,7 @@ int MainWindow::addNewElementToArray(const elementData_t& newElement, const int 
 				jArr.push_back(jChar);
 		}
 		QJsonDocument jDoc;
-		jDoc.setArray(jArr);
+		jDoc.setArray(jArr);		
 		json.insert("effects", QString(jDoc.toJson()));
 
 		json.insert("timeFrom", newElement.timeStart);
@@ -104,6 +105,7 @@ void MainWindow::addNewElementToLayout(const int index, const int newElementInde
 		connect(elem, SIGNAL(defineDayMoveFrom(int, QString)), this, SLOT (defineDayMoveFrom(int, QString)));
 		connect(elem, SIGNAL(deleteItem(int, int, bool)), this, SLOT(recieveDayAndElementIndex(int, int, bool)));
 
+                qDebug() << "==================== КУДА ДЕЛСЯ ТЕКСТ ????? " << arrDaysData_[index][j].text;
     elem->setText(arrDaysData_[index][j].text, arrDaysData_[index][j].charStyleVector);
 		elem->setTime(arrDaysData_[index][j].timeStart, arrDaysData_[index][j].timeEnd);
 

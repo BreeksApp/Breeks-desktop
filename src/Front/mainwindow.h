@@ -56,7 +56,7 @@ public slots:
   void setImageBackgroundView(bool);
 
 //slot to set data which was pronted and selected by user in AddElement form for Time Table Zone
-	void recieveTimeTableZoneData(bool *, elementData_t);
+        void recieveTimeTableZoneData(bool *, elementData_t, bool withRequest = true);
 
 //slot to set data which was pronted and selected by user in AddElement form for Breeks Zone
 	void recieveBreeksZoneData(bool *, breeksData_t);
@@ -299,7 +299,7 @@ private:
 	bool isElementDrag_;
 	QString oldStyle_;
 
-  int addNewElementToArray(const elementData_t& newElement, const int index);
+  int addNewElementToArray(const elementData_t& newElement, const int index, bool withRequest);
   void addNewElementToLayout(const int index, const int newElementIndex);
 
 	void moveTimetableElement();
