@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
 //TEST NETWORK
 	server = new Network::ServerConnection(new QNetworkAccessManager, new Network::UserData);
 	userData = server->getUserData();
-	//server->sendAuthRequest("George", "123ewq");
+
 //	QThread::currentThread()->sleep(3);
 //	QUrl url(Network::serverUrl + Network::getAllLinesInWeekUrl + "1606174673000");
 //	qDebug() << "ТОКЕН НА КЛИЕНТЕ СЕЙЧАС: " << server->getUserData()->getAccessToken();
@@ -68,10 +68,18 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	//INFO BUTTONS
 	setInfoButtonsStyle();
+	QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+	effect->setBlurRadius(5);
+	effect->setXOffset(0);
+	effect->setYOffset(1);
+	effect->setColor("#909090");
+	ui->infoButton->setGraphicsEffect(effect);
 
 	//REGISTRATION
 	ui->message->hide();
 	connect(server, SIGNAL(loginReply(bool)), this, SLOT(loginReply(bool)));
+	setShadow(ui->reg);
+	setShadow(ui->login);
 }
 
 MainWindow::~MainWindow()
@@ -419,7 +427,7 @@ void MainWindow::loginReply(bool login)
 	}
 	else {
 		QMessageBox message;
-		message.setText("Мимо");
+		message.setText("Неверный логин или пароль");
 		message.exec();
 		ui->password->clear();
 	}

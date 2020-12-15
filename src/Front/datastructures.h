@@ -58,8 +58,8 @@ struct tagElement_t {
 };
 namespace tag {
   const int N_COLORS = 6;
-	const QString ARR_COLORS[6] = {"#0000FF", "#FF3366", "#FFFF66",
-																"#CC66FF", "#ECEAEC", "#66FF66"};
+	const QString ARR_COLORS[6] = {"#ffa542", "#FF6666", "#81c4ff",
+																"#cAcAcA", "#beff5a", "#CC66FF"};
 }
 
 struct textInfo_t {

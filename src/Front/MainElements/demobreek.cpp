@@ -25,20 +25,20 @@ void DemoBreek::keyPressEvent(QKeyEvent *event)
 				isAnimated_ = true;
 
 				if (workState_ == Conditions::RED) {
-					connectToQml(nEmoji_, Directions::UPSIDE, workState_, Conditions::GREY_BACKGROUND);
-					workState_ = Conditions::GREY_BACKGROUND;
+						connectToQml(nEmoji_, Directions::UPSIDE, workState_, Conditions::GREY_FOREGROUND);
+						workState_ = Conditions::GREY_FOREGROUND;
 				}
 				else if (workState_ == Conditions::GREY_FOREGROUND) {
-					connectToQml(nEmoji_, Directions::UPSIDE, workState_, Conditions::RED);
-					workState_ = Conditions::RED;
+						connectToQml(nEmoji_, Directions::UPSIDE, workState_, Conditions::GREEN);
+						workState_ = Conditions::GREEN;
 				}
 				else if (workState_ == Conditions::GREEN) {
-					connectToQml(nEmoji_, Directions::UPSIDE, workState_, Conditions::GREY_FOREGROUND);
-					workState_ = Conditions::GREY_FOREGROUND;
+						connectToQml(nEmoji_, Directions::UPSIDE, workState_, Conditions::GREY_BACKGROUND);
+						workState_ = Conditions::GREY_BACKGROUND;
 				}
 				else {
-					connectToQml(nEmoji_, Directions::UPSIDE, workState_, Conditions::GREEN);
-					workState_ = Conditions::GREEN;
+						connectToQml(nEmoji_, Directions::UPSIDE, workState_, Conditions::RED);
+						workState_ = Conditions::RED;
 				}
 
 				QFuture<void> future = QtConcurrent::run(this, &DemoBreek::waitAnimationEnd);

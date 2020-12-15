@@ -34,5 +34,15 @@ void MainWindow::setWorkZone()
 	//ui->groupBoxWorkZone->setStyleSheet("background: none;");
 
   buildTimeTable();
-  buildBreeksDescriptionZone();
+	buildBreeksDescriptionZone();
+}
+
+void MainWindow::setShadow(QWidget *object)
+{
+	QGraphicsDropShadowEffect *effect1 = new QGraphicsDropShadowEffect;
+	effect1->setBlurRadius(5);
+	effect1->setXOffset(0);
+	effect1->setYOffset(1);
+	effect1->setColor("#909090");
+	object->setGraphicsEffect(effect1);
 }

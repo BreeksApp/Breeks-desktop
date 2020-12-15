@@ -218,6 +218,8 @@ private:
   void setWorkZone();
   int bigWidgetHeight_;
 
+	void setShadow(QWidget *);
+
                    //---------TIMETABLE---------
   enum eDay {
     Monday,

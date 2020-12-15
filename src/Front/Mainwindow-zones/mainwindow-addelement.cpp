@@ -2,7 +2,6 @@
 
 int MainWindow::addNewElementToArray(const elementData_t& newElement, const int index)
 {
-	//TODO: UPDATE DATE REQUEST HERE
 	if (newElement.idOnServer != -1) {
 		//server request
 		QJsonObject json;

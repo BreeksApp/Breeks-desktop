@@ -413,7 +413,6 @@ void MainWindow::deleteBreeksZone(int zoneIndex)
 	bigWidgetHeight_ -= 125;
 	bigWidgetInWorkZone_->setFixedHeight(bigWidgetHeight_);
 	bigWidgetInBreeksDescriptionZone_->setFixedHeight(bigWidgetHeight_);
-
 }
 
 void MainWindow::delay(int millisecondsToWait)
