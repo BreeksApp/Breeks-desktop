@@ -106,22 +106,36 @@ void MainWindow::clearAndInitWeekData(const QString & token)
   initWeekData(token);
 }
 
-// hardcode
 void MainWindow::initWeekData(const QString & token)
 {
-  // тут вызывай запросы с разными датами и разное количество раз
+  QString sDateFirstDayWeek = "";
+  sDateFirstDayWeek.setNum(QDateTime(arrDays_[0].date).toMSecsSinceEpoch());
 
-  QUrl url(Network::serverUrl + Network::getAllLinesInWeekUrl + "1606174673000");
+  // get breeks lines
+  QUrl url(Network::serverUrl + Network::getAllLinesInWeekUrl + sDateFirstDayWeek);
   server->sendGetRequestWithBearerToken(url, token);
 
   // 1606396541000
-  url = Network::serverUrl + Network::getTTElementsForDayUrl + "1608249757000";
-  server->sendGetRequestWithBearerToken(url, token);
+  // get TTElements
+  for (auto day : arrDays_) {
+    QString sDate = "";
+    sDate.setNum(QDateTime(day.date).toMSecsSinceEpoch());
 
-  url = Network::serverUrl + Network::getNoteByDateAndPageUrl + "1607904157000" + "/" + "1";
-  server->sendGetRequestWithBearerToken(url, token);
+    url = Network::serverUrl + Network::getTTElementsForDayUrl + sDate;
+    server->sendGetRequestWithBearerToken(url, token);
+  }
 
-  url = Network::serverUrl + Network::getImageUrl + "1607904157000";
+  // get notes
+  for (unsigned i = 1; i <= 6; ++i) {
+    QString sNumPage = "";
+    sNumPage.setNum(i);
+
+    url = Network::serverUrl + Network::getNoteByDateAndPageUrl + sDateFirstDayWeek + "/" + sNumPage;
+    server->sendGetRequestWithBearerToken(url, token);
+  }
+
+  // get image location
+  url = Network::serverUrl + Network::getImageUrl + sDateFirstDayWeek;
   server->sendGetRequestWithBearerToken(url, token);
 }
 
