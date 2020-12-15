@@ -389,14 +389,17 @@ void MainWindow::deleteBreeksZone(int zoneIndex)
 	server->sendDeleteRequestWithBearerToken(url, userData->getAccessToken());
 
 	auto itemLine = workZoneLayout_->itemAt(zoneIndex + 6);
-	delete itemLine->widget();
-	delete itemLine;
+
+	if (itemLine != nullptr) {
+	    delete itemLine->widget();
+//	    delete itemLine;
+	  }
 
 	workZoneLayout_->update();
 
 	auto itemDescription = breeksDescriptionZoneLayout_->itemAt(zoneIndex + 1);
 	delete itemDescription->widget();
-	delete itemDescription;
+//	delete itemDescription;
 
 	breeksDescriptionZoneLayout_->update();
 

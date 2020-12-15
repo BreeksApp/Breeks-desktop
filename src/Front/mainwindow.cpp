@@ -112,6 +112,7 @@ void MainWindow::initWeekData(const QString & token)
   sDateFirstDayWeek.setNum(QDateTime(arrDays_[0].date).toMSecsSinceEpoch());
 
   // get breeks lines
+  qDebug() << "==================================== ДАТА" << sDateFirstDayWeek;
   QUrl url(Network::serverUrl + Network::getAllLinesInWeekUrl + sDateFirstDayWeek);
   server->sendGetRequestWithBearerToken(url, token);
 
@@ -159,6 +160,30 @@ void MainWindow::initBreeksLines(const QList<breeksData_t> & listOfLines)
     qDebug() << "END LINE";
   }
   qDebug() << "==================== END OF LINES FROM SERVER";
+
+  for (auto breeksLine : listOfLines) {
+
+    bool arrConditions[6] = {false};
+    QString sConditions = QString("000000").number(breeksLine.conditions, 2);
+    while (sConditions.length() != 6) {
+      sConditions = "0" + sConditions;
+    }
+    qDebug() << sConditions;
+    for (int i = 0; i < DAYS_COUNT; ++i) {
+      arrConditions[i] = sConditions.at(i).digitValue();
+    }
+
+    int arrStates[6];
+    QString sStates = QString("000000").number(breeksLine.states, 4);
+    while (sStates.length() != 6) {
+      sStates = "0" + sStates;
+    }
+    for (int i = 0; i < DAYS_COUNT; ++i) {
+      arrStates[i] = sStates.at(i).digitValue();
+    }
+
+    recieveBreeksZoneData(arrConditions, breeksLine, arrStates);
+  }
 }
 
 void MainWindow::initTTElements(const QList<elementData_t> & listOfTTElements)
@@ -180,17 +205,17 @@ void MainWindow::initTTElements(const QList<elementData_t> & listOfTTElements)
   }
   qDebug() << "==================== END OF TTElements FROM SERVER";
 
-//  for (auto element : listOfTTElements) {
+  for (auto element : listOfTTElements) {
 
-//    bool arr[6] = {false};
-//    QDateTime date = QDateTime();
-//    date.setMSecsSinceEpoch(element.date);
-//    int dayOfWeek = date.date().dayOfWeek() - 1;
+    bool arr[6] = {false};
+    QDateTime date = QDateTime();
+    date.setMSecsSinceEpoch(element.date);
+    int dayOfWeek = date.date().dayOfWeek() - 1;
 
-//    arr[dayOfWeek] = true;
+    arr[dayOfWeek] = true;
 
-//    recieveTimeTableZoneData(arr, element, false);
-//  }
+    recieveTimeTableZoneData(arr, element, false);
+  }
 }
 
 void MainWindow::initNote(const note_t & note)
@@ -279,7 +304,7 @@ void MainWindow::recieveTimeTableZoneData(bool *daysCheck, elementData_t newElem
   }
 }
 
-void MainWindow::recieveBreeksZoneData(bool *daysCheck, breeksData_t newElement)
+void MainWindow::recieveBreeksZoneData(bool *daysCheck, breeksData_t newElement, int * states)
 {
 //if we arleady have breeks zone with this name
 	for (breeksZone_t &value : arrBreeksZones_) { //value == zone
@@ -361,6 +386,10 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, breeksData_t newElement)
 
 		arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->setEmoj(newElement.arrNEmoji[i / 2]);
 		arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->setIndex(newZone.zoneIndex, i / 2);
+		if (states != nullptr) {
+		  arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->setColorState(Conditions(states[i / 2]));
+		}
+
 
 		if (daysCheck[i / 2] == true) {
 			arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->changeBreekState();

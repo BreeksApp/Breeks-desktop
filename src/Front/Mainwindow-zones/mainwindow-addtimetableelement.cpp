@@ -260,7 +260,6 @@ void MainWindow::on_addTimetableElementButton_clicked()
 	}
 	QJsonDocument jDoc;
 	jDoc.setArray(jArr);
-	qDebug() << "=========================== JDOC" << QString(jDoc.toJson());
 	json.insert("effects", QString(jDoc.toJson()));
 
 	json.insert("timeFrom", newElement.timeStart);

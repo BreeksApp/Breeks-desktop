@@ -59,7 +59,7 @@ public slots:
         void recieveTimeTableZoneData(bool *, elementData_t, bool withRequest = true);
 
 //slot to set data which was pronted and selected by user in AddElement form for Breeks Zone
-	void recieveBreeksZoneData(bool *, breeksData_t);
+	void recieveBreeksZoneData(bool *, breeksData_t, int * states = nullptr);
 
 	void recieveUsername();
 
