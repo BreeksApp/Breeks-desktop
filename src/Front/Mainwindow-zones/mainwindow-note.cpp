@@ -123,7 +123,7 @@ void MainWindow::on_buttonPage6_clicked()
 }
 
 
-void MainWindow::sendPutRequestNote(int page)
+void MainWindow::sendPostRequestNote(int page)
 {
 	QJsonObject json;
 
@@ -152,6 +152,6 @@ void MainWindow::sendPutRequestNote(int page)
 
 	QJsonDocument jsonDoc(json);
 
-	QUrl url = QUrl(Network::serverUrl + Network::editNoteUrl);
-	server->sendPutRequestWithBearerToken(url , jsonDoc.toJson(), userData->getAccessToken());
+	QUrl url = QUrl(Network::serverUrl + Network::addNoteUrl);
+	server->sendPostRequestWithBearerToken(url , jsonDoc.toJson(), userData->getAccessToken());
 }

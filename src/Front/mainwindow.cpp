@@ -41,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
 //
 	// init week signals from server
 	connect(server, SIGNAL(initWeekData(const QString&)),
-		this, SLOT(initWeekData(const QString&)));
+		this, SLOT(clearAndInitWeekData(const QString&)));
 
 	connect(server, SIGNAL(sendBreeksLinesToGUI(const QList<breeksData_t>&)),
 		this, SLOT(initBreeksLines(const QList<breeksData_t>&)));
@@ -67,7 +67,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	setAllElementsEffects();
 
 	ui->note->setContentsMargins(10, 10, 10, 10);
-	connect(ui->note, SIGNAL(sendServerRequest(int)), this, SLOT(sendPutRequestNote(int)));
+	connect(ui->note, SIGNAL(sendServerRequest(int)), this, SLOT(sendPostRequestNote(int)));
 
 	//ADD BREEKS FORM
 	connect(this, SIGNAL(sendBreekData(bool*, breeksData_t)), this, SLOT(recieveBreeksZoneData(bool*, breeksData_t)));
@@ -98,6 +98,12 @@ MainWindow::~MainWindow()
   }
 
   delete ui;
+}
+
+void MainWindow::clearAndInitWeekData(const QString & token)
+{
+  clearWeekData();
+  initWeekData(token);
 }
 
 // hardcode
@@ -523,5 +529,32 @@ void MainWindow::loginReply(bool login)
 
 void MainWindow::clearWeekData()
 {
+  // clear breeks lines
+  while (breeksZonesCount_ != 0) {
+    deleteBreeksZoneClientOnly(breeksZonesCount_ - 1);
+  }
 
+  // clear TTElements
+  for (int i = 0; i < DAYS_COUNT; ++i) {
+    while (arrDays_[i].elementsCount != 0) {
+      recieveDayAndElementIndex(i, arrDays_[i].elementsCount - 1, false);
+    }
+  }
+
+  // clear Notes
+  deleteNotes();
+
+  // delete Image(set default)
+  deleteImage();
+}
+
+void MainWindow::deleteNotes()
+{
+  int pageNum = ui->note->getNumberCurrentFile();
+  ui->note->clear();
+}
+
+void MainWindow::deleteImage()
+{
+  setImage(defaultImageName_);
 }

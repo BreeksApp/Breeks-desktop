@@ -359,6 +359,4 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
           emit sendImageToGUI(image);
       }
   }
-
-  qDebug() << "!!!";
 }

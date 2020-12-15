@@ -83,7 +83,8 @@ public slots:
 
 private slots:
 // load week from server
-	void initWeekData(const QString&);
+	void clearAndInitWeekData(const QString&);
+
 	void initBreeksLines(const QList<breeksData_t>&);
 	void initTTElements(const QList<elementData_t>&);
 	void initNote(const note_t&);
@@ -93,7 +94,7 @@ private slots:
 	void updateTTElementIdOnServer(int, int, long);
 	void sendPutRequestTte(int, int);
 //note
-	void sendPutRequestNote(int);
+	void sendPostRequestNote(int);
 
   //buttons to change pages
   void on_buttonPage1_clicked();
@@ -168,8 +169,12 @@ private:
   const QString fileLastVisitName_ = "fileLastVisit.txt";
   QFile fileLastVisit_;
 
+  void initWeekData(const QString&);
   void clearWeekData();
   void deleteBreeksZoneClientOnly(int);
+  // delete TTElements - recieveDayAndElementIndex
+  void deleteNotes(); // clear the current page and load the current page
+  void deleteImage(); // set default image
 
   void setStatesFromFileLastVisit();
   void writeDataToFileLastVisit();
