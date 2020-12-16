@@ -145,7 +145,7 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
   const QJsonDocument doc = QJsonDocument::fromJson(reply->readAll());
   const QJsonObject json = doc.object();
 
-  qDebug() << doc;
+	//qDebug() << doc;
 
   int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
@@ -327,9 +327,6 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
       }
   }
   else if (url.contains(getNoteByDateAndPageUrl)) {
-      qDebug() << "url " << getNoteByDateAndPageUrl << " success";
-      qDebug() << json;
-
     // парсим jsonvalue в ответе
       if (json.isEmpty()) {
         return;

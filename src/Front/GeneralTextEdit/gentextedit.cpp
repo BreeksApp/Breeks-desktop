@@ -72,6 +72,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 	commandInfo_t command;
 
   //all comands which insert smth
+
   if (charCounter_ <= MAX_COUNT_CHAR_) {
       requestTimer_->start(500);
 		//letters
@@ -446,7 +447,7 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
     this->textCursor().deleteChar();
 		timer_->stop();
 		timer_->start(1000);
-	}	
+	}
 }
 
 /*void GenTextEdit::paintEvent(QPaintEvent *event)

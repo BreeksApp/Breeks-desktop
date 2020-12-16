@@ -49,7 +49,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(server, SIGNAL(sendTTElementsToGUI(const QList<elementData_t>&)),
 		this, SLOT(initTTElements(const QList<elementData_t>&)));
 
-	connect(server, SIGNAL(sendNoteToGUI(const note_t&)),
+	connect(server, SIGNAL(sendNoteToGUI(note_t&)),
 		this, SLOT(initNote(note_t&)));
 
 	connect(server, SIGNAL(sendImageToGUI(const image_t&)),
@@ -117,7 +117,7 @@ void MainWindow::clearAndInitWeekData(const QString & token)
 void MainWindow::initWeekData(const QString & token)
 {
   QString sDateFirstDayWeek = "";
-  sDateFirstDayWeek.setNum(QDateTime(arrDays_[0].date).toMSecsSinceEpoch());
+	sDateFirstDayWeek.setNum(QDateTime(arrDays_[0].date).toMSecsSinceEpoch());
 
   // get breeks lines
   qDebug() << "==================================== ДАТА" << sDateFirstDayWeek;
@@ -135,7 +135,7 @@ void MainWindow::initWeekData(const QString & token)
   }
 
   // get notes
-  for (unsigned i = 1; i <= 6; ++i) {
+	for (unsigned i = 1; i <= 1; ++i) {
     QString sNumPage = "";
     sNumPage.setNum(i);
     qDebug() << "НОМЕР СТРАНИЦЫ" << sNumPage;
@@ -628,6 +628,7 @@ void MainWindow::clearWeekData()
       recieveDayAndElementIndex(i, arrDays_[i].elementsCount - 1, false);
     }
   }
+	iCurrentDay_ = 0;
 
   // clear Notes
   deleteNotes();
@@ -645,4 +646,16 @@ void MainWindow::deleteNotes()
 void MainWindow::deleteImage()
 {
   setImage(defaultImageName_);
+}
+
+void MainWindow::on_prevWeekButton_clicked()
+{
+	setDayInfo(currentDate_.addDays(-7));
+	clearAndInitWeekData(server->getUserData()->getAccessToken());
+}
+
+void MainWindow::on_nextWeekButton_clicked()
+{
+	setDayInfo(currentDate_.addDays(7));
+	clearAndInitWeekData(server->getUserData()->getAccessToken());
 }

@@ -24,6 +24,8 @@ QByteArray MainWindow::createJsonForSendingNote(int page)
   QString noteText = ui->note->toPlainText();
   json.insert("text", noteText);
 
+	qDebug() << "PUTREQUEST" << noteText;
+
   QJsonArray jArr;
   foreach(charStyle_t ch, ui->note->getCharStyleVector()) {
                   QJsonObject jChar;

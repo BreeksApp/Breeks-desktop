@@ -67,7 +67,7 @@ namespace Network {
     void loginReply(bool);
     void sendBreeksLinesToGUI(const QList<breeksData_t>&);
     void sendTTElementsToGUI(const QList<elementData_t>&);
-    void sendNoteToGUI(const note_t&);
+		void sendNoteToGUI(note_t&);
     void sendImageToGUI(const image_t&);
 
     // this signal is emitted whenever we want to (re-)load all data of the week
