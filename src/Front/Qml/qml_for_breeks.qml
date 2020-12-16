@@ -84,11 +84,11 @@ Item
 
     property variant conditions:
     [
-        "#FF3366", // red
+        "#FF6666", // red
         "#F7F7F7", // grey - foreground
         "#F7F7F7", // grey - background
-        "#66FF66", // green
-        "#FFFF66", // yellow
+        "#beff5a", // green
+        "#fce903", // yellow
         "#768477"
     ]
     property int indexOfCondFrom

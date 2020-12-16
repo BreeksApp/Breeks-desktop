@@ -15,14 +15,14 @@
 #include <QTimeEdit>
 
 struct charStyle_t {
-  bool bold;
-  bool italic;
-  bool underline;
-  bool strike;
-  bool item;
-  bool spellChecker;
-  bool star;
-  QString sColor;
+	bool bold;
+	bool italic;
+	bool underline;
+	bool strike;
+	bool item;
+	bool spellChecker;
+	bool star;
+	QString sColor;
 };
 namespace colors { //#ade9ff is breeks color
 	const QString nocolor = "";
@@ -36,19 +36,19 @@ namespace colors { //#ade9ff is breeks color
 
 struct elementData_t {
 	long idOnServer;
-  QString text;
-  QString tagColor;
+	QString text;
+	QString tagColor;
 	int tagColorNum;
-  QString timeStart;
-  QString timeEnd;
-  //QString color;
-  QVector<charStyle_t> charStyleVector;
-  long date;
+	QString timeStart;
+	QString timeEnd;
+	//QString color;
+	QVector<charStyle_t> charStyleVector;
+	long date;
 };
 
 struct breeksData_t {
 	long idOnServer;
-  QString text;
+	QString text;
 	QVector<charStyle_t> charStyleVector;
 	int conditions;
 	int states;
@@ -57,30 +57,30 @@ struct breeksData_t {
 };
 
 struct tagElement_t {
-  bool condition;
+	bool condition;
 	QString sColor;
 };
 namespace tag {
-  const int N_COLORS = 6;
+	const int N_COLORS = 6;
 	const QString ARR_COLORS[6] = {"#0000FF", "#FF3366", "#FFFF66",
 																"#CC66FF", "#ECEAEC", "#66FF66"};
 }
 
 struct textInfo_t {
-  QJsonArray jArr;
-  QString text;
+	QJsonArray jArr;
+	QString text;
 };
 
 struct note_t {
-  QString text;
-  QVector<charStyle_t> charStyleVector;
-  int page;
-  long date;
+	QString text;
+	QVector<charStyle_t> charStyleVector;
+	int page;
+	long date;
 };
 
 struct image_t {
-  QString imageLocation;
-  long date;
+	QString imageLocation;
+	long date;
 };
 
 enum Directions

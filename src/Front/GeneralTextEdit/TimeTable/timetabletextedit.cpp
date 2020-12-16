@@ -64,10 +64,9 @@ void TimetableTextEdit::fillCharsAndSetText(QString text, const QVector<charStyl
     QJsonObject jChar = jArr[i].toObject();
     GenTextEdit::setStylesToChar(ch, charFormat, jChar);
     int cursorPos = this->textCursor().position();
-    this->fillCharStyleVector(cursorPos, 1, ch);
+		this->fillCharStyleVector(cursorPos, 1, ch);
     out >> tmpChar;
-
-    this->textCursor().insertText(static_cast<QString>(tmpChar), charFormat);
+		this->textCursor().insertText(static_cast<QString>(tmpChar), charFormat);
   }
 }
 

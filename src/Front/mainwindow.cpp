@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
 //TEST NETWORK
 	server = new Network::ServerConnection(new QNetworkAccessManager, new Network::UserData);
 	userData = server->getUserData();
-	//server->sendAuthRequest("George", "123ewq");
+
 //	QThread::currentThread()->sleep(3);
 //	QUrl url(Network::serverUrl + Network::getAllLinesInWeekUrl + "1606174673000");
 //	qDebug() << "ТОКЕН НА КЛИЕНТЕ СЕЙЧАС: " << server->getUserData()->getAccessToken();
@@ -83,10 +83,18 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	//INFO BUTTONS
 	setInfoButtonsStyle();
+	QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+	effect->setBlurRadius(5);
+	effect->setXOffset(0);
+	effect->setYOffset(1);
+	effect->setColor("#909090");
+	ui->infoButton->setGraphicsEffect(effect);
 
 	//REGISTRATION
 	ui->message->hide();
 	connect(server, SIGNAL(loginReply(bool)), this, SLOT(loginReply(bool)));
+	setShadow(ui->reg);
+	setShadow(ui->login);
 }
 
 MainWindow::~MainWindow()
@@ -179,6 +187,9 @@ void MainWindow::initBreeksLines(const QList<breeksData_t> & listOfLines)
     while (sStates.length() != 6) {
       sStates = "0" + sStates;
     }
+
+		qDebug() << "STATES ON SERVER" << sStates << " : " << breeksLine.states;
+
     for (int i = 0; i < DAYS_COUNT; ++i) {
       arrStates[i] = sStates.at(i).digitValue();
     }
@@ -389,14 +400,30 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, breeksData_t newElement,
 
 		arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->setEmoj(newElement.arrNEmoji[i / 2]);
 		arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->setIndex(newZone.zoneIndex, i / 2);
-		if (states != nullptr) {
-		  arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->setColorState(Conditions(states[i / 2]));
-//		  arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->connectToQml(Conditions(states[i / 2]));
-		}
-
 
 		if (daysCheck[i / 2] == true) {
 			arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->changeBreekState();
+		}
+
+		if (states != nullptr) {
+			arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->setColorState(Conditions(states[i / 2]));
+
+			if (states[i / 2] != 1 && states[i / 2] != 2) {
+				arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->connectToQml(newElement.arrNEmoji[i / 2], Conditions(states[i / 2]));
+				int iState = 0;
+				switch (states[i / 2]) {
+					case 0 :
+						iState = 2;
+					break;
+					case 1 :
+						iState = 0;
+					break;
+					case 3 :
+						iState = 1;
+					break;
+				}
+				changeBreeksZoneLilDayState(breeksZonesCount_ - 1, i/2, iState);
+			}
 		}
 
 		if (i / 2 < 5) {
@@ -414,6 +441,7 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, breeksData_t newElement,
 
 		connect(arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2], SIGNAL(setZoneFocus(int, bool)), this, SLOT(setBreeksDescriptionZoneFocus(int, bool)));
 		connect(arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2], SIGNAL(changeEmojiOnServer(int)), this, SLOT(sendPutRequestBl(int)));
+		connect(arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2], SIGNAL(sendPutRequest()), arrBreeksZones_[breeksZonesCount_ - 1].arrBreeksZoneDays[0], SLOT(sendPutRequestBl()));
 
 		i += 2;
 	}
@@ -581,7 +609,7 @@ void MainWindow::loginReply(bool login)
 	}
 	else {
 		QMessageBox message;
-		message.setText("Мимо");
+		message.setText("Неверный логин или пароль");
 		message.exec();
 		ui->password->clear();
 	  }

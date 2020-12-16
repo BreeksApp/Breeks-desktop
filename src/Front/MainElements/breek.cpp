@@ -123,6 +123,7 @@ void Breek::keyPressEvent(QKeyEvent *event)
 
 		if (iKey == Qt::Key_Q || QKeySequence(iKey).toString() == "Й") {
 			emit changeState(zoneIndex_, dayIndex_);
+			emit sendPutRequest();
 		}
 	}
 
