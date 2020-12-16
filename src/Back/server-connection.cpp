@@ -5,6 +5,8 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 
+#include "Back/utils/utils.h"
+
 Network::ServerConnection::ServerConnection(QObject *parent):
   QObject(parent)
 {
@@ -82,6 +84,21 @@ void Network::ServerConnection::sendPostRequestWithBearerToken(const QUrl & url,
 	networkAccessManager_->post(request, data);
 }
 
+QNetworkReply * Network::ServerConnection::sendPostRequestWhenSwitchingNotePages(const QUrl & url,
+                                                                                 const QByteArray & data,
+                                                                                 const QString & token)
+{
+  qDebug() << url.toString();
+
+  QNetworkRequest request(url);
+  request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+  request.setHeader(QNetworkRequest::ContentLengthHeader, QByteArray::number(data.size()));
+  auto tokenHeader = QString("Bearer %1").arg(token);
+  request.setRawHeader(QByteArray("Authorization"), tokenHeader.toUtf8());
+
+  return networkAccessManager_->post(request, data);
+}
+
 void Network::ServerConnection::sendBreeksDataToServer()
 {
 
@@ -130,12 +147,18 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
 
   qDebug() << doc;
 
-  bool ok = true;
-  int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt(&ok);
+  int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
   QString url = reply->url().toString();
+  qDebug() << statusCode;
+  // 400 Bad Request if the user types an invalid email when registering
+  if (statusCode == 400) {
+    qDebug() << "Bad email " << url;
+    return;
+  }
 
   // 403 - if accessToken has expired or is invalid
-  if (ok && statusCode == 403) {
+  if (statusCode == 403) {
     QString username = userData_->getUsername();
     QString refreshToken = userData_->getRefreshToken();
     if (username != "" && refreshToken != "") {
@@ -149,54 +172,206 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
   }
 
   // 401 - if refreshToken has expired or is invalid
-  if (ok && statusCode == 401) {
+  if (statusCode == 401) {
 		emit loginReply(false);
 
     return;
   }
 
   // 404 - endpoint not found
-  if (ok && statusCode == 404) {
+  if (statusCode == 404) {
     qDebug() << "URL " << url << " not found: " << statusCode << '\n';
     return;
   }
 
-  if (ok && statusCode >= 500) {
+  if (statusCode >= 500) {
     // Server internal error
     qDebug() << "Server internal error: " << statusCode << '\n';
     return;
   }
 
-  if (ok && statusCode == 304) {
+  // code activation exception falls here as well
+  if (statusCode == 304) {
     qDebug() << "URL " << url << " not modified: " << statusCode << '\n';
     return;
   }
 
-  if (json.value("userName").toString() != "" && json.value("token").toString() != "" &&
-    json.value("tokenRefresh").toString() != "") {
-    emit initSecretData(json.value("userName").toString(), json.value("token").toString(),
-                        json.value("tokenRefresh").toString());
-		emit loginReply(true);
+  // if we don't get any data from reply
+  // (only for Note and Image, line and TTE returns empty list)
+  if (statusCode == 204) {
+    qDebug() << "URL " << url << " no content: " << statusCode << '\n';
+    return;
   }
-  else if (json.value("elementId").toInt() != 0) {
-    qDebug("ELEMENT");
-    emit initTEidOnServer(json.value("elementId").toInt());
+
+  if (url.contains(authUrl)) {
+      QString username = json.value("userName").toString();
+      QString token = json.value("token").toString();
+      QString tokenRefresh = json.value("tokenRefresh").toString();
+
+      if (username != "" && token != "" && tokenRefresh != "") {
+        emit initSecretData(username, token, tokenRefresh);
+        emit loginReply(true);
+        emit initWeekData(token);
+      }
   }
-  else if (json.value("lineId").toInt() != 0) {
-    qDebug() << "LINE " << json.value("lineId").toInt();
-    emit initBLidOnServer(json.value("lineId").toInt());
+  else if (url.contains(addTTElementUrl)) {
+      if (json.value("elementId").toInt() != 0) {
+          qDebug("ELEMENT");
+          emit initTEidOnServer(json.value("elementId").toInt());
+        }
+  }
+  else if (url.contains(addBreeksLineUrl)) {
+      if (json.value("lineId").toInt() != 0) {
+          qDebug() << "LINE " << json.value("lineId").toInt();
+          emit initBLidOnServer(json.value("lineId").toInt());
+        }
   }
   else if (url.contains(getAllLinesInWeekUrl)) {
-      qDebug() << "url success";
+      qDebug() << "url " << getAllLinesInWeekUrl << " success";
+
     // парсим jsonarray в ответе
+      QJsonArray jsonArrBLines = doc.array();
+      if (jsonArrBLines.isEmpty()) {
+        return;
+      }
+      else {
+        QList<breeksData_t> listOfBreeksLines = QList<breeksData_t>();
+
+        for (auto jsonIterator : jsonArrBLines) {
+            QJsonObject json = jsonIterator.toObject();
+
+            qDebug() << json;
+
+            long date = json.value("date").toVariant().toDate().startOfDay().toMSecsSinceEpoch();
+
+            QJsonArray jsonEffectsArr = jsonArrayFromString(json.value("effects").toString());
+
+            QVector<charStyle_t> charStyleVector = QVector<charStyle_t>();
+            if (!jsonEffectsArr.isEmpty()) {
+              qDebug() << "Effects is array!";
+              qDebug() << jsonEffectsArr;
+
+              createCharStyleVector(charStyleVector, jsonEffectsArr);
+            }
+
+            int arrNEmoji[6] = {0,0,0,0,0,0};
+            QJsonValue jsonEmojies = json.value("emojies");
+            if (jsonEmojies.isArray()) {
+              qDebug() << "Emojies is array!";
+
+              QJsonArray jsonEmojiesArr = jsonEmojies.toArray();
+              createArrNEmoji(arrNEmoji, 6, jsonEmojiesArr);
+            }
+
+            breeksData_t breeksLine = {
+              json.value("lineId").toInt(),
+              json.value("description").toString(),
+              charStyleVector,
+              json.value("conditions").toInt(),
+              json.value("states").toInt(),
+              {0,0,0,0,0,0},
+              date
+            };
+            for (unsigned i = 0; i < 6; ++i) breeksLine.arrNEmoji[i] = arrNEmoji[i];
+
+            listOfBreeksLines.append(breeksLine);
+        }
+
+        emit sendBreeksLinesToGUI(listOfBreeksLines);
+      }
   }
   else if (url.contains(getTTElementsForDayUrl)) {
+      qDebug() << "url " << getTTElementsForDayUrl << " success";
+
     // парсим jsonarray в ответе
+      QJsonArray jsonArrTTElements = doc.array();
+      if (jsonArrTTElements.isEmpty()) {
+        return;
+      }
+      else {
+        QList<elementData_t> listOfTTElements = QList<elementData_t>();
+
+        for (auto jsonIterator : jsonArrTTElements) {
+            QJsonObject json = jsonIterator.toObject();
+
+            qDebug() << json;
+
+            long date = json.value("date").toVariant().toDate().startOfDay().toMSecsSinceEpoch();
+
+            QJsonArray jsonEffectsArr = jsonArrayFromString(json.value("effects").toString());
+
+            QVector<charStyle_t> charStyleVector = QVector<charStyle_t>();
+            if (!jsonEffectsArr.isEmpty()) {
+              qDebug() << "Effects is array!";
+              qDebug() << jsonEffectsArr;
+
+              createCharStyleVector(charStyleVector, jsonEffectsArr);
+            }
+
+            int tagColorNum = json.value("tagColorNum").toInt();
+            elementData_t ttelement = {
+              json.value("elementId").toInt(),
+              json.value("mainText").toString(),
+              tag::ARR_COLORS[tagColorNum],
+              tagColorNum,
+              json.value("timeFrom").toString(),
+              json.value("timeTo").toString(),
+              charStyleVector,
+              date
+            };
+
+            listOfTTElements.append(ttelement);
+        }
+
+        emit sendTTElementsToGUI(listOfTTElements);
+      }
   }
   else if (url.contains(getNoteByDateAndPageUrl)) {
+      qDebug() << "url " << getNoteByDateAndPageUrl << " success";
+
     // парсим jsonvalue в ответе
+      if (json.isEmpty()) {
+        return;
+      }
+      else {
+          long date = json.value("date").toVariant().toDate().startOfDay().toMSecsSinceEpoch();
+
+          QJsonArray jsonEffectsArr = jsonArrayFromString(json.value("effects").toString());
+
+          QVector<charStyle_t> charStyleVector = QVector<charStyle_t>();
+          if (!jsonEffectsArr.isEmpty()) {
+            qDebug() << "Effects is array!";
+            qDebug() << jsonEffectsArr;
+
+            createCharStyleVector(charStyleVector, jsonEffectsArr);
+          }
+
+          note_t note = {
+            json.value("text").toString(),
+            charStyleVector,
+            json.value("page").toInt(),
+            date
+          };
+
+          emit sendNoteToGUI(note);
+      }
   }
   else if (url.contains(getImageUrl)) {
+      qDebug() << "url " << getImageUrl << " success";
+
     // парсим jsonvalue в ответе
+      if (json.isEmpty()) {
+        return;
+      }
+      else {
+          long date = json.value("date").toVariant().toDate().startOfDay().toMSecsSinceEpoch();
+
+          image_t image = {
+            json.value("linkToImage").toString(),
+            date
+          };
+
+          emit sendImageToGUI(image);
+      }
   }
 }

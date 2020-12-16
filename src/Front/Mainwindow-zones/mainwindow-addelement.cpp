@@ -1,8 +1,9 @@
 #include "Front/mainwindow.h"
 
-int MainWindow::addNewElementToArray(const elementData_t& newElement, const int index)
+int MainWindow::addNewElementToArray(const elementData_t& newElement, const int index, bool withRequest)
 {
-	if (newElement.idOnServer != -1) {
+
+	if (newElement.idOnServer != -1 && withRequest) {
 		//server request
 		QJsonObject json;
 		json.insert("tagColorNum", newElement.tagColorNum);
@@ -22,7 +23,7 @@ int MainWindow::addNewElementToArray(const elementData_t& newElement, const int 
 				jArr.push_back(jChar);
 		}
 		QJsonDocument jDoc;
-		jDoc.setArray(jArr);
+		jDoc.setArray(jArr);		
 		json.insert("effects", QString(jDoc.toJson()));
 
 		json.insert("timeFrom", newElement.timeStart);

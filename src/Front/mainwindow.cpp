@@ -39,6 +39,21 @@ MainWindow::MainWindow(QWidget *parent) :
 //	qDebug() << "ТОКЕН НА КЛИЕНТЕ СЕЙЧАС: " << server->getUserData()->getAccessToken();
 //	server->sendGetRequestWithBearerToken(url, server->getUserData()->getAccessToken());
 //
+	// init week signals from server
+	connect(server, SIGNAL(initWeekData(const QString&)),
+		this, SLOT(clearAndInitWeekData(const QString&)));
+
+	connect(server, SIGNAL(sendBreeksLinesToGUI(const QList<breeksData_t>&)),
+		this, SLOT(initBreeksLines(const QList<breeksData_t>&)));
+
+	connect(server, SIGNAL(sendTTElementsToGUI(const QList<elementData_t>&)),
+		this, SLOT(initTTElements(const QList<elementData_t>&)));
+
+	connect(server, SIGNAL(sendNoteToGUI(const note_t&)),
+		this, SLOT(initNote(const note_t&)));
+
+	connect(server, SIGNAL(sendImageToGUI(const image_t&)),
+		this, SLOT(initImage(const image_t&)));
 
 	this->setStyleSheet("background: #F9F9F9");
 
@@ -52,7 +67,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	setAllElementsEffects();
 
 	ui->note->setContentsMargins(10, 10, 10, 10);
-	connect(ui->note, SIGNAL(sendServerRequest(int)), this, SLOT(sendPutRequestNote(int)));
+	connect(ui->note, SIGNAL(sendServerRequest(int)), this, SLOT(sendPostRequestNote(int)));
 
 	//ADD BREEKS FORM
 	connect(this, SIGNAL(sendBreekData(bool*, breeksData_t)), this, SLOT(recieveBreeksZoneData(bool*, breeksData_t)));
@@ -93,6 +108,147 @@ MainWindow::~MainWindow()
   delete ui;
 }
 
+void MainWindow::clearAndInitWeekData(const QString & token)
+{
+  clearWeekData();
+  initWeekData(token);
+}
+
+void MainWindow::initWeekData(const QString & token)
+{
+  QString sDateFirstDayWeek = "";
+  sDateFirstDayWeek.setNum(QDateTime(arrDays_[0].date).toMSecsSinceEpoch());
+
+  // get breeks lines
+  qDebug() << "==================================== ДАТА" << sDateFirstDayWeek;
+  QUrl url(Network::serverUrl + Network::getAllLinesInWeekUrl + sDateFirstDayWeek);
+  server->sendGetRequestWithBearerToken(url, token);
+
+  // 1606396541000
+  // get TTElements
+  for (auto day : arrDays_) {
+    QString sDate = "";
+    sDate.setNum(QDateTime(day.date).toMSecsSinceEpoch());
+
+    url = Network::serverUrl + Network::getTTElementsForDayUrl + sDate;
+    server->sendGetRequestWithBearerToken(url, token);
+  }
+
+  // get notes
+  for (unsigned i = 1; i <= 6; ++i) {
+    QString sNumPage = "";
+    sNumPage.setNum(i);
+
+    url = Network::serverUrl + Network::getNoteByDateAndPageUrl + sDateFirstDayWeek + "/" + sNumPage;
+    server->sendGetRequestWithBearerToken(url, token);
+  }
+
+  // get image location
+  url = Network::serverUrl + Network::getImageUrl + sDateFirstDayWeek;
+  server->sendGetRequestWithBearerToken(url, token);
+}
+
+void MainWindow::initBreeksLines(const QList<breeksData_t> & listOfLines)
+{
+  qDebug() << "==================== LINES FROM SERVER: ";
+  for (auto breeksLine : listOfLines) {
+    qDebug() << "START LINE: ";
+    qDebug() << breeksLine.idOnServer;
+    qDebug() << breeksLine.text;
+    for (auto charStyle : breeksLine.charStyleVector) {
+      qDebug() << charStyle.bold;
+    }
+    qDebug() << QString("000000").number(breeksLine.conditions, 2);
+    qDebug() << QString("000000").number(breeksLine.states, 4);
+    int * emojies = breeksLine.arrNEmoji;
+    qDebug() << emojies[0] << " " << emojies[1] << " "
+             << emojies[2] << " " << emojies[3] << " "
+             << emojies[4] << " " << emojies[5] << " ";
+    qDebug() << breeksLine.date;
+    qDebug() << "END LINE";
+  }
+  qDebug() << "==================== END OF LINES FROM SERVER";
+
+  for (auto breeksLine : listOfLines) {
+
+    bool arrConditions[6] = {false};
+    QString sConditions = QString("000000").number(breeksLine.conditions, 2);
+    while (sConditions.length() != 6) {
+      sConditions = "0" + sConditions;
+    }
+    qDebug() << sConditions;
+    for (int i = 0; i < DAYS_COUNT; ++i) {
+      arrConditions[i] = sConditions.at(i).digitValue();
+    }
+
+    int arrStates[6];
+    QString sStates = QString("000000").number(breeksLine.states, 4);
+    while (sStates.length() != 6) {
+      sStates = "0" + sStates;
+    }
+
+		qDebug() << "STATES ON SERVER" << sStates << " : " << breeksLine.states;
+
+    for (int i = 0; i < DAYS_COUNT; ++i) {
+      arrStates[i] = sStates.at(i).digitValue();
+    }
+
+    recieveBreeksZoneData(arrConditions, breeksLine, arrStates);
+  }
+}
+
+void MainWindow::initTTElements(const QList<elementData_t> & listOfTTElements)
+{
+  qDebug() << "==================== TTElements FROM SERVER: ";
+  for (auto element : listOfTTElements) {
+    qDebug() << "START TTElement: ";
+    qDebug() << element.idOnServer;
+    qDebug() << element.text;
+    qDebug() << element.tagColor;
+    qDebug() << element.tagColorNum;
+    qDebug() << element.timeStart;
+    qDebug() << element.timeEnd;
+    for (auto charStyle : element.charStyleVector) {
+      qDebug() << charStyle.bold;
+    }
+    qDebug() << element.date;
+    qDebug() << "END TTElement";
+  }
+  qDebug() << "==================== END OF TTElements FROM SERVER";
+
+  for (auto element : listOfTTElements) {
+
+    bool arr[6] = {false};
+    QDateTime date = QDateTime();
+    date.setMSecsSinceEpoch(element.date);
+    int dayOfWeek = date.date().dayOfWeek() - 1;
+
+    arr[dayOfWeek] = true;
+
+    recieveTimeTableZoneData(arr, element, false);
+  }
+}
+
+void MainWindow::initNote(const note_t & note)
+{
+  qDebug() << "==================== Note FROM SERVER: ";
+  qDebug() << note.text;
+  for (auto charStyle : note.charStyleVector) {
+    qDebug() << charStyle.bold;
+  }
+  qDebug() << note.page;
+  qDebug() << note.date;
+  qDebug() << "==================== END OF Note FROM SERVER";
+}
+
+void MainWindow::initImage(const image_t & image)
+{
+  qDebug() << "==================== Image FROM SERVER: ";
+  qDebug() << image.imageLocation;
+  qDebug() << image.date;
+  qDebug() << "==================== END OF Image FROM SERVER";
+}
+
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
 	//qDebug("Pressed");
@@ -131,12 +287,13 @@ void MainWindow::dropNoChanges()
 	isElementDrag_ = false;
 }
 
-void MainWindow::recieveTimeTableZoneData(bool *daysCheck, elementData_t newElement)
+void MainWindow::recieveTimeTableZoneData(bool *daysCheck, elementData_t newElement, bool withRequest)
 {
+  qDebug() << "================== ЗДЕСЬ ОН БУДЕТ " << newElement.text;
 	for (int i = 0; i < 6; i++) {
     if (daysCheck[i] == true) {
       //add new element data to array
-      const int newElementIndex = addNewElementToArray(newElement, i);
+      const int newElementIndex = addNewElementToArray(newElement, i, withRequest);
 
       //increase scroll area of this day
       if (arrDays_[i].elementsCount < 3) {
@@ -158,7 +315,7 @@ void MainWindow::recieveTimeTableZoneData(bool *daysCheck, elementData_t newElem
   }
 }
 
-void MainWindow::recieveBreeksZoneData(bool *daysCheck, breeksData_t newElement)
+void MainWindow::recieveBreeksZoneData(bool *daysCheck, breeksData_t newElement, int * states)
 {
 //if we arleady have breeks zone with this name
 	for (breeksZone_t &value : arrBreeksZones_) { //value == zone
@@ -241,8 +398,30 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, breeksData_t newElement)
 		arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->setEmoj(newElement.arrNEmoji[i / 2]);
 		arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->setIndex(newZone.zoneIndex, i / 2);
 
+
 		if (daysCheck[i / 2] == true) {
 			arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->changeBreekState();
+		}
+
+		if (states != nullptr) {
+			arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->setColorState(Conditions(states[i / 2]));
+
+			if (states[i / 2] != 1 && states[i / 2] != 2) {
+				arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->connectToQml(newElement.arrNEmoji[i / 2], Conditions(states[i / 2]));
+				int iState = 0;
+				switch (states[i / 2]) {
+					case 0 :
+						iState = 2;
+					break;
+					case 1 :
+						iState = 0;
+					break;
+					case 3 :
+						iState = 1;
+					break;
+				}
+				changeBreeksZoneLilDayState(breeksZonesCount_ - 1, i/2, iState);
+			}
 		}
 
 		if (i / 2 < 5) {
@@ -260,6 +439,7 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, breeksData_t newElement)
 
 		connect(arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2], SIGNAL(setZoneFocus(int, bool)), this, SLOT(setBreeksDescriptionZoneFocus(int, bool)));
 		connect(arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2], SIGNAL(changeEmojiOnServer(int)), this, SLOT(sendPutRequestBl(int)));
+		connect(arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2], SIGNAL(sendPutRequest()), arrBreeksZones_[breeksZonesCount_ - 1].arrBreeksZoneDays[0], SLOT(sendPutRequestBl()));
 
 		i += 2;
 	}
@@ -430,5 +610,37 @@ void MainWindow::loginReply(bool login)
 		message.setText("Неверный логин или пароль");
 		message.exec();
 		ui->password->clear();
-	}
+	  }
+}
+
+void MainWindow::clearWeekData()
+{
+  // clear breeks lines
+  while (breeksZonesCount_ != 0) {
+    deleteBreeksZoneClientOnly(breeksZonesCount_ - 1);
+  }
+
+  // clear TTElements
+  for (int i = 0; i < DAYS_COUNT; ++i) {
+    while (arrDays_[i].elementsCount != 0) {
+      recieveDayAndElementIndex(i, arrDays_[i].elementsCount - 1, false);
+    }
+  }
+
+  // clear Notes
+  deleteNotes();
+
+  // delete Image(set default)
+  deleteImage();
+}
+
+void MainWindow::deleteNotes()
+{
+  int pageNum = ui->note->getNumberCurrentFile();
+  ui->note->clear();
+}
+
+void MainWindow::deleteImage()
+{
+  setImage(defaultImageName_);
 }

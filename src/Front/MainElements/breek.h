@@ -69,6 +69,7 @@ signals:
 	void setZoneFocus(int, bool);
 	void changeState(int, int);
 	void changeEmojiOnServer(int);
+	void sendPutRequest();
 
 public slots:
 	void setZoneIndex(int);

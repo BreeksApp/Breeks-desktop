@@ -34,6 +34,7 @@ void MainWindow::writeDataToFileLastVisit()
 {
   if (!fileLastVisit_.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
     qDebug() << "FILE LAST_VISIT OPENING CRASHED";
+    return;
   }
   QTextStream out(&fileLastVisit_);
 

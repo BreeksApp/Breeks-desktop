@@ -21,6 +21,7 @@ SOURCES += \
     Back/FileSystem/filesystem.cpp \
     Back/secret-data.cpp \
     Back/server-connection.cpp \
+    Back/utils/utils.cpp \
     Front/Dictionary/russiandictionary.cpp \
     Front/GeneralTextEdit/TimeTable/timetable-write-read.cpp \
     Front/GeneralTextEdit/TimeTable/timetabletextedit.cpp \
@@ -65,6 +66,7 @@ HEADERS += \
     Back/filesystem.h \
     Back/secret-data.h \
     Back/server-connection.h \
+    Back/utils/utils.h \
     Front/Dictionary/russiandictionary.h \
     Front/GeneralTextEdit/TimeTable/timetabletextedit.h \
     Front/GeneralTextEdit/gentextedit.h \

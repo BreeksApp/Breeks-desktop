@@ -368,13 +368,13 @@ void GenTextEdit::detailsUpdateCharStyle(const int pos, QTextCharFormat& fmt)
 
 bool GenTextEdit::detailsCheckSpelling(QString &word, const int indexLastChar)
 {
+    if (!(word.at(0).toLower() >= "а" && word.at(0).toLower() <= "я")) {
+            return true;
+    }
 	int pos = indexLastChar - word.length();
 	//if first letter is not russian, we will skip this word
 	if (word.length() > 1) {
 		//if it isn't rus letter
-		if (!(word.at(0).toLower() >= "а" && word.at(0).toLower() <= "я")) {
-			return true;
-		}
 		//if word was like абв-где- (we don't need last '-')
 		word = (word.at(word.length() - 1) == "-") ? word.left(word.length() - 1) : word;
 	}

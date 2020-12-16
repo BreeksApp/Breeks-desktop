@@ -56,10 +56,10 @@ public slots:
   void setImageBackgroundView(bool);
 
 //slot to set data which was pronted and selected by user in AddElement form for Time Table Zone
-	void recieveTimeTableZoneData(bool *, elementData_t);
+        void recieveTimeTableZoneData(bool *, elementData_t, bool withRequest = true);
 
 //slot to set data which was pronted and selected by user in AddElement form for Breeks Zone
-	void recieveBreeksZoneData(bool *, breeksData_t);
+	void recieveBreeksZoneData(bool *, breeksData_t, int * states = nullptr);
 
 	void recieveUsername();
 
@@ -82,12 +82,19 @@ public slots:
 	void moveBreek(int, int, bool);
 
 private slots:
+// load week from server
+	void clearAndInitWeekData(const QString&);
+
+	void initBreeksLines(const QList<breeksData_t>&);
+	void initTTElements(const QList<elementData_t>&);
+	void initNote(const note_t&);
+	void initImage(const image_t&);
 //timetable
 	void setDayInfo();
 	void updateTTElementIdOnServer(int, int, long);
 	void sendPutRequestTte(int, int);
 //note
-	void sendPutRequestNote(int);
+	void sendPostRequestNote(int);
 
   //buttons to change pages
   void on_buttonPage1_clicked();
@@ -161,6 +168,14 @@ private:
 //last visit data about image and page in notes
   const QString fileLastVisitName_ = "fileLastVisit.txt";
   QFile fileLastVisit_;
+
+  void initWeekData(const QString&);
+  void clearWeekData();
+  void deleteBreeksZoneClientOnly(int);
+  // delete TTElements - recieveDayAndElementIndex
+  void deleteNotes(); // clear the current page and load the current page
+  void deleteImage(); // set default image
+
   void setStatesFromFileLastVisit();
   void writeDataToFileLastVisit();
 //
@@ -201,7 +216,11 @@ private:
 //
 
 //for work with NOTE
-	void noteMakePageButtonSelectable(NoteMark *button);
+  QUrl createGetNoteUrl(const int);
+  QUrl createPostNoteUrl();
+  QByteArray createJsonForSendingNote(int);
+  void changeNotePage(const int, NoteMark*);
+  void noteMakePageButtonSelectable(NoteMark *button);
   void noteMakePageButtonSelectable(int nPage);
   void noteChangePage(const int n);
 //
@@ -282,7 +301,7 @@ private:
 	bool isElementDrag_;
 	QString oldStyle_;
 
-  int addNewElementToArray(const elementData_t& newElement, const int index);
+  int addNewElementToArray(const elementData_t& newElement, const int index, bool withRequest);
   void addNewElementToLayout(const int index, const int newElementIndex);
 
 	void moveTimetableElement();

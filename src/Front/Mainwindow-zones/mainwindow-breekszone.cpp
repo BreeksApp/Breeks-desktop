@@ -389,6 +389,39 @@ void MainWindow::deleteBreeksZone(int zoneIndex)
 	server->sendDeleteRequestWithBearerToken(url, userData->getAccessToken());
 
 	auto itemLine = workZoneLayout_->itemAt(zoneIndex + 6);
+
+	if (itemLine != nullptr) {
+	    delete itemLine->widget();
+			delete itemLine;
+	  }
+
+	workZoneLayout_->update();
+
+	auto itemDescription = breeksDescriptionZoneLayout_->itemAt(zoneIndex + 1);
+	delete itemDescription->widget();
+	delete itemDescription;
+
+	breeksDescriptionZoneLayout_->update();
+
+	arrBreeksZones_.erase(arrBreeksZones_.begin() + zoneIndex);
+	--breeksZonesCount_;
+
+	for (int i = zoneIndex; i < breeksZonesCount_; ++i) {
+		arrBreeksZones_[i].buttonDelete->setZoneIndex(i);
+		for (int j = 0; j < 6; ++j) {
+			arrBreeksZones_[i].arrBreeksZoneDays[j]->setZoneIndex(i);
+		}
+	}
+
+	bigWidgetHeight_ -= 125;
+	bigWidgetInWorkZone_->setFixedHeight(bigWidgetHeight_);
+	bigWidgetInBreeksDescriptionZone_->setFixedHeight(bigWidgetHeight_);
+
+}
+
+void MainWindow::deleteBreeksZoneClientOnly(int zoneIndex)
+{
+	auto itemLine = workZoneLayout_->itemAt(zoneIndex + 6);
 	delete itemLine->widget();
 	delete itemLine;
 
@@ -560,6 +593,8 @@ void MainWindow::sendPutRequestBl(int zoneIndex)
 			sStates += QString::number(newElement.arrBreeks[i]->getColorState());
 	}
 	json.insert("states", sStates.toShort(&isCovert, 4));
+
+	qDebug() << "STATES" << sStates << " : " <<sStates.toShort(&isCovert, 4);
 
 	QJsonArray jArrEmojies;
 	for (int i = 0; i < DAYS_COUNT; ++i) {
