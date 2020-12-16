@@ -92,9 +92,7 @@ HEADERS += \
     Front/mainwindow.h
 
 FORMS += \
-    loginform.ui \
-    mainwindow.ui \
-    addelement.ui
+    mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
