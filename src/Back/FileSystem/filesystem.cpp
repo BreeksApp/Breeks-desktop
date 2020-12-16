@@ -76,7 +76,7 @@ void filesystem::writeTimeTableToDB(QJsonArray &jDayElements, const int index)
 }
 
 void filesystem::pushDataToDBTextEdit(QJsonDocument &jDoc, QJsonObject &jObject, QJsonObject &notes, QJsonObject &note,
-															textInfo_t &info, const int currentFile)
+                                        textInfo_t &info, const int currentFile)
 {
   note.insert("charStyleVector", info.jArr);
   note.insert("text", info.text);

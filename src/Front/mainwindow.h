@@ -45,8 +45,6 @@ public:
 
 	void mousePressEvent(QMouseEvent *event);
 
-  LoginForm *loginForm_;
-
   //files of timetable
   //void writeElementsDataToFile(const int index);
   //void readElementsDataFromFile(const int index);
