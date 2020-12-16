@@ -105,6 +105,7 @@ void Breek::keyPressEvent(QKeyEvent *event)
 			}
 			emit moveBreek(zoneIndex_, dayIndex_, true);
 			QFuture<void> future = QtConcurrent::run(this, &Breek::waitAnimationEnd);
+			emit sendPutRequest();
 		}
 
 		if (iKey == Qt::Key_A || QKeySequence(iKey).toString() == "Ф") {
@@ -114,6 +115,7 @@ void Breek::keyPressEvent(QKeyEvent *event)
 			}
 			emit moveBreek(zoneIndex_, dayIndex_, false);
 			QFuture<void> future = QtConcurrent::run(this, &Breek::waitAnimationEnd);
+			emit sendPutRequest();
 		}
 
 		if (iKey == Qt::Key_E || QKeySequence(iKey).toString() == "У") {
