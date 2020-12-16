@@ -89,30 +89,28 @@ void MainWindow::buildTimeTable()
 
 void MainWindow::setDayInfo(QDate date)
 {
-	if (iCurrentDay_ == DAYS_COUNT) {
-		iCurrentDay_ = 0;
+	if (iCurrentDay_ < DAYS_COUNT) {
+		arrDays_[iCurrentDay_].scrollArea->verticalScrollBar()->setStyleSheet(
+					"QScrollBar:vertical {"
+						"border: 0.1px solid #FFFFFF;"
+						"background: #FFFFFF;"
+						"width: 9px;    "
+						"margin: 0px 0px 0px 0px;}"
+
+					"QScrollBar::handle:vertical {"
+						"border: 0.5px solid #E3E3E3;"
+						"border-radius: 4px;"
+						"background: #FCFCFC;"
+						"min-height: 0px;}"
+
+					"QScrollBar::add-line:vertical {"
+						"border: none;"
+						"background: none;}"
+
+					"QScrollBar::sub-line:vartical {"
+						"border: none;"
+						"background: none;}");
 	}
-
-	arrDays_[iCurrentDay_].scrollArea->verticalScrollBar()->setStyleSheet(
-				"QScrollBar:vertical {"
-					"border: 0.1px solid #FFFFFF;"
-					"background: #FFFFFF;"
-					"width: 9px;    "
-					"margin: 0px 0px 0px 0px;}"
-
-				"QScrollBar::handle:vertical {"
-					"border: 0.5px solid #E3E3E3;"
-					"border-radius: 4px;"
-					"background: #FCFCFC;"
-					"min-height: 0px;}"
-
-				"QScrollBar::add-line:vertical {"
-					"border: none;"
-					"background: none;}"
-
-				"QScrollBar::sub-line:vartical {"
-					"border: none;"
-					"background: none;}");
 
 	//for days in description zone
 	for (int i = 0; i < breeksZonesCount_; ++i) {
@@ -129,29 +127,34 @@ void MainWindow::setDayInfo(QDate date)
 
 	//identify current day of week
 	iCurrentDay_ = date.dayOfWeek() - 1;
-	currentDate_ = date.addDays(0 - iCurrentDay_);
+	currentDate_ = date;
 
 	for (int i = 0; i < breeksZonesCount_; ++i) {
 		arrBreeksZones_[i].arrBreeksZoneDays[iCurrentDay_]->setStyleSheet("background: #b3defc; border-radius: 4px;");
 	}
 
+	int dayPos = 0;
 	switch (iCurrentDay_) {
+		case 0 :
+			dayPos = 0;
+		break;
 		case 1 :
-			workZoneScrollArea_->ensureVisible(scrollPosTue, workZoneScrollArea_->verticalScrollBar()->sliderPosition());
+			dayPos = 0;
 		break;
 		case 2 :
-			workZoneScrollArea_->ensureVisible(scrollPosWed, workZoneScrollArea_->verticalScrollBar()->sliderPosition());
+			dayPos = 350;
 		break;
 		case 3 :
-			workZoneScrollArea_->ensureVisible(scrollPosThu, workZoneScrollArea_->verticalScrollBar()->sliderPosition());
+			dayPos = 680;
 		break;
 		case 4 :
-			workZoneScrollArea_->ensureVisible(scrollPosFri, workZoneScrollArea_->verticalScrollBar()->sliderPosition());
+			dayPos = 1000;
 		break;
-
-		default :
-			workZoneScrollArea_->ensureVisible(scrollPosSat, workZoneScrollArea_->verticalScrollBar()->sliderPosition());
+		case 5 :
+			dayPos = 1000;
+		break;
 	}
+	workZoneScrollArea_->horizontalScrollBar()->setValue(dayPos);
 
   //special data for set info about days in the LOOP BELOW: date, name of the day and font effects
   const QString arrMonthsRu[12] = { "января", "февраля", "марта", "апреля", "мая",
@@ -190,35 +193,41 @@ void MainWindow::setDayInfo(QDate date)
 			arrDays_[i].labelDate->setText(tr(charHTML) + sCurrentDate);
 		}
 		else {
-			arrDays_[i].labelDate->setText(QString(tr(charHTML)).toUpper() + sCurrentDate);
+			if (date == QDate::currentDate()) {
+				arrDays_[i].labelDate->setText(QString(tr(charHTML)).toUpper() + sCurrentDate);
+			}
+			else {
+				arrDays_[i].labelDate->setText(tr(charHTML) + sCurrentDate);
+			}
 		}
   }
 
-	/*if (date != QDate::currentDate()) {
+	if (date == QDate::currentDate()) {
+		if (iCurrentDay_ < DAYS_COUNT) {
+			arrDays_[iCurrentDay_].scrollArea->verticalScrollBar()->setStyleSheet(
+						"QScrollBar:vertical {"
+							"border: 0.1px solid #FFFFFF;"
+							"background: #FFFFFF;"
+							"width: 9px;    "
+							"margin: 0px 0px 0px 0px;}"
+
+						"QScrollBar::handle:vertical {"
+							"border: 0.5px solid #b3defc;"
+							"border-radius: 2px;"
+							"background: #b3defc;"
+							"min-height: 0px;}"
+
+						"QScrollBar::add-line:vertical {"
+							"border: none;"
+							"background: none;}"
+
+						"QScrollBar::sub-line:vartical {"
+							"border: none;"
+							"background: none;}");
+		}
+	}
+	else {
 		iCurrentDay_ = DAYS_COUNT;
-	}*/
-
-	if (iCurrentDay_ < DAYS_COUNT) {
-		arrDays_[iCurrentDay_].scrollArea->verticalScrollBar()->setStyleSheet(
-					"QScrollBar:vertical {"
-						"border: 0.1px solid #FFFFFF;"
-						"background: #FFFFFF;"
-						"width: 9px;    "
-						"margin: 0px 0px 0px 0px;}"
-
-					"QScrollBar::handle:vertical {"
-						"border: 0.5px solid #b3defc;"
-						"border-radius: 2px;"
-						"background: #b3defc;"
-						"min-height: 0px;}"
-
-					"QScrollBar::add-line:vertical {"
-						"border: none;"
-						"background: none;}"
-
-					"QScrollBar::sub-line:vartical {"
-						"border: none;"
-						"background: none;}");
 	}
 
 	//set font style for elements count label
@@ -230,7 +239,6 @@ void MainWindow::setDayInfo(QDate date)
 	int iTime = QDateTime::currentDateTime().msecsTo(
 				QDateTime::currentDateTime().date().startOfDay().addDays(1));
 	timer_->start(iTime);
-	//qDebug() << iTime;
 }
 
 void MainWindow::updateTTElementIdOnServer(int dayIndex, int elemIndex, long id)

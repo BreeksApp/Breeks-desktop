@@ -137,6 +137,9 @@ void GenTextEdit::fillCharsAndSetTextt(QString & text, QVector<charStyle_t> & st
 					detailsSetCharStyle(ch, charStyle::Star);
 					charFormat.setFontWeight(QFont::Normal);
 			}
+			if (color != "") {
+				charFormat.setBackground(QColor(color));
+			}
 			ch.sColor = color;
 
 			int cursorPos = this->textCursor().position();

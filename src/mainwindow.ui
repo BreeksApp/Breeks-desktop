@@ -356,8 +356,13 @@ background: none;</string>
       <height>41</height>
      </rect>
     </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
     <property name="styleSheet">
-     <string notr="true">border-image:url(:/Images/Front/Images/prevWeek.png);\n</string>
+     <string notr="true">QPushButton{border-image:url(:/Images/Front/Images/rewind-left-grey.png);}
+QPushButton:hover{border-image:url(:/Images/Front/Images/rewind-left-green.png);}
+</string>
     </property>
     <property name="text">
      <string/>
@@ -372,8 +377,12 @@ background: none;</string>
       <height>41</height>
      </rect>
     </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
     <property name="styleSheet">
-     <string notr="true">border-image:url(:/Images/Front/Images/nextWeek.png);
+     <string notr="true">QPushButton{border-image:url(:/Images/Front/Images/rewind-right-grey.png);}
+QPushButton:hover{border-image:url(:/Images/Front/Images/rewind-right-green.png);}
 </string>
     </property>
     <property name="text">
@@ -714,6 +723,9 @@ height: 90;</string>
        <height>41</height>
       </rect>
      </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
      <property name="styleSheet">
       <string notr="true">border-image:url(:/Images/Front/Images/logout.png);
 </string>
@@ -730,6 +742,9 @@ height: 90;</string>
        <width>41</width>
        <height>41</height>
       </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="styleSheet">
       <string notr="true">border-image:url(:/Images/Front/Images/info.png);
@@ -766,7 +781,7 @@ height: 90;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">QGroupBox{background: #ffffff; border-radius: 12px; border: 1.5 px solid #F1F1F1}</string>
+     <string notr="true">QGroupBox{background: #ffffff; border-radius: 12px; border: 2px solid #E3E3E3}</string>
     </property>
     <property name="title">
      <string/>
@@ -775,7 +790,7 @@ height: 90;</string>
      <property name="geometry">
       <rect>
        <x>4</x>
-       <y>0</y>
+       <y>5</y>
        <width>301</width>
        <height>51</height>
       </rect>
@@ -818,7 +833,10 @@ height: 90;</string>
      <property name="styleSheet">
       <string notr="true">background: #d9ebff;
 border-radius: 10px;
-</string>
+padding-left: 10;</string>
+     </property>
+     <property name="text">
+      <string/>
      </property>
     </widget>
     <widget class="QPushButton" name="reg">
@@ -844,9 +862,9 @@ border-radius: 10px;
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>10</x>
        <y>60</y>
-       <width>311</width>
+       <width>291</width>
        <height>20</height>
       </rect>
      </property>
@@ -887,7 +905,7 @@ border-radius: 10px;
      <property name="styleSheet">
       <string notr="true">background: #d9ebff;
 border-radius: 10px;
-</string>
+padding-left:10;</string>
      </property>
      <property name="text">
       <string/>
@@ -899,9 +917,9 @@ border-radius: 10px;
     <widget class="QLabel" name="label_3">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>10</x>
        <y>120</y>
-       <width>311</width>
+       <width>291</width>
        <height>20</height>
       </rect>
      </property>
@@ -942,7 +960,7 @@ border-radius: 10px;
      <property name="styleSheet">
       <string notr="true">background: #d9ebff;
 border-radius: 10px;
-</string>
+padding-left:10;</string>
      </property>
      <property name="text">
       <string/>
@@ -954,9 +972,9 @@ border-radius: 10px;
     <widget class="QLabel" name="message">
      <property name="geometry">
       <rect>
-       <x>0</x>
-       <y>260</y>
-       <width>311</width>
+       <x>10</x>
+       <y>265</y>
+       <width>291</width>
        <height>21</height>
       </rect>
      </property>
@@ -1017,6 +1035,7 @@ QPushButton{background: #d9d9d9; border-radius: 15px; color: #262626; font-size:
      <property name="styleSheet">
       <string notr="true">background: #d7eba9;
 border-radius: 10px;
+padding-left:10;
 </string>
      </property>
      <property name="text">
@@ -1044,15 +1063,16 @@ border-radius: 10px;
      <property name="styleSheet">
       <string notr="true">background: #d7eba9;
 border-radius: 10px;
+padding-left:10;
 </string>
      </property>
     </widget>
     <widget class="QLabel" name="labelBuild">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>10</x>
        <y>277</y>
-       <width>311</width>
+       <width>291</width>
        <height>51</height>
       </rect>
      </property>
@@ -1076,6 +1096,37 @@ border-radius: 10px;
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
+    <zorder>labelBreeks</zorder>
+    <zorder>mailReg</zorder>
+    <zorder>reg</zorder>
+    <zorder>label_2</zorder>
+    <zorder>passwordReg</zorder>
+    <zorder>label_3</zorder>
+    <zorder>password2Reg</zorder>
+    <zorder>login</zorder>
+    <zorder>password</zorder>
+    <zorder>mail</zorder>
+    <zorder>labelBuild</zorder>
+    <zorder>message</zorder>
+   </widget>
+   <widget class="QLabel" name="demoLable">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>950</y>
+      <width>1011</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background: #fffff0; border-radius: 10px;</string>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Вы находитесь в демо-режиме, сейчас вам можно все, но без &lt;/span&gt;&lt;span style=&quot; font-size:10pt; font-weight:600; font-style:italic;&quot;&gt;авторизации&lt;/span&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt; все изменения будут утеряны&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
    </widget>
    <zorder>labelImageBackground</zorder>
    <zorder>shadowWidget</zorder>
@@ -1097,6 +1148,7 @@ border-radius: 10px;
    <zorder>addTimetableElementGb</zorder>
    <zorder>infoGb</zorder>
    <zorder>authFrom</zorder>
+   <zorder>demoLable</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -1104,7 +1156,7 @@ border-radius: 10px;
      <x>0</x>
      <y>0</y>
      <width>1913</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>

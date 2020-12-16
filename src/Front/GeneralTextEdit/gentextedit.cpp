@@ -53,6 +53,7 @@ GenTextEdit::GenTextEdit(QWidget *parent) :
 				"QScrollBar::sub-line:vertical {"
 					"border: none;"
 					"background: none;}");
+	this->setContextMenuPolicy(Qt::ContextMenuPolicy::NoContextMenu);
 }
 
 //We want to create our Text editor with special functions and hot-keys

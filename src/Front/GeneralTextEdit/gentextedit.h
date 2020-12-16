@@ -28,7 +28,6 @@ public:
 	explicit GenTextEdit(QWidget *parent = nullptr);
 
 	void keyPressEvent(QKeyEvent *event) override;
-	//void paintEvent(QPaintEvent *event);
 
   //for work with file system, definition in filesystem.cpp
   void readFromDB(const int currentFile);
@@ -43,13 +42,13 @@ public:
 
   //for work with char styles
   enum charStyle {
-    Normal,    // = 0
-    Bold,      // = 1
-    Italic,    // = 2
-    Underline, // = 3
-		Strike,    // = 4
-		Item,      // = 5
-		Star,			 // = 6
+			Normal,    // = 0
+			Bold,      // = 1
+			Italic,    // = 2
+			Underline, // = 3
+			Strike,    // = 4
+			Item,      // = 5
+			Star,			 // = 6
 		SpellChecker // = 7
 	};
 	using iterator = QVector< charStyle_t >::iterator;

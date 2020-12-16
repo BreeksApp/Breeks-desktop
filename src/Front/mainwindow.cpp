@@ -117,6 +117,7 @@ void MainWindow::logout()
   server->getUserData()->setAccessToken("");
   server->getUserData()->setRefreshToken("");
   ui->authFrom->show();
+	ui->demoLable->show();
 }
 
 void MainWindow::clearAndInitWeekData(const QString & token)
@@ -146,14 +147,8 @@ void MainWindow::initWeekData(const QString & token)
   }
 
   // get notes
-	for (unsigned i = 1; i <= 1; ++i) {
-    QString sNumPage = "";
-    sNumPage.setNum(i);
-    qDebug() << "НОМЕР СТРАНИЦЫ" << sNumPage;
-
-    url = Network::serverUrl + Network::getNoteByDateAndPageUrl + sDateFirstDayWeek + "/" + sNumPage;
-    server->sendGetRequestWithBearerToken(url, token);
-  }
+	url = Network::serverUrl + Network::getNoteByDateAndPageUrl + sDateFirstDayWeek + "/" + QString::number(ui->note->getNumberCurrentFile());
+	server->sendGetRequestWithBearerToken(url, token);
 
   // get image location
   url = Network::serverUrl + Network::getImageUrl + sDateFirstDayWeek;
@@ -618,6 +613,7 @@ void MainWindow::loginReply(bool login)
 		ui->authFrom->hide();
 		ui->mail->clear();
 		ui->password->clear();
+		ui->demoLable->hide();
 	}
 	else {
 		QMessageBox message;
@@ -640,7 +636,7 @@ void MainWindow::clearWeekData()
       recieveDayAndElementIndex(i, arrDays_[i].elementsCount - 1, false);
     }
   }
-	iCurrentDay_ = 0;
+	//iCurrentDay_ = 0;
 
   // clear Notes
   deleteNotes();
