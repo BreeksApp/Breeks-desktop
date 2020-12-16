@@ -89,6 +89,61 @@ void GenTextEdit::fillCharsAndSetText(QString text, const QJsonArray jArr)
 		}
 }
 
+void GenTextEdit::fillCharsAndSetTextt(QString & text, QVector<charStyle_t> & styles)
+{
+		this->clearCharStyleVector();
+		this->setCharCounter(styles.size());
+
+		QTextStream out(&text);
+		QChar tmpChar;
+		charStyle_t ch;
+
+		for (int i = 0; i < this->getCharCounter(); ++i) {
+			detailsSetCharStyle(ch);
+			QTextCharFormat charFormat;
+			charFormat.setFontWeight(QFont::Normal);
+
+			bool boldStatus = styles[i].bold;
+			bool italicStatus = styles[i].italic;
+			bool underlineStatus = styles[i].underline;
+			bool strikeStatus = styles[i].strike;
+			bool itemStatus = styles[i].item;
+			bool starStatus = styles[i].star;
+			QString color = styles[i].sColor;
+
+			if (boldStatus == true) {
+					detailsSetCharStyle(ch, charStyle::Bold);
+					charFormat.setFontWeight(QFont::Bold);
+			}
+			if (italicStatus == true) {
+					detailsSetCharStyle(ch, charStyle::Italic);
+					charFormat.setFontItalic(true);
+			}
+			if (underlineStatus == true) {
+					detailsSetCharStyle(ch, charStyle::Underline);
+					charFormat.setFontUnderline(true);
+			}
+			if (strikeStatus == true) {
+					detailsSetCharStyle(ch, charStyle::Strike);
+					charFormat.setFontStrikeOut(true);
+			}
+			if (itemStatus == true) {
+					detailsSetCharStyle(ch, charStyle::Item);
+					charFormat.setFontWeight(QFont::Normal);
+			}
+			if (starStatus == true) {
+					detailsSetCharStyle(ch, charStyle::Star);
+					charFormat.setFontWeight(QFont::Normal);
+			}
+			ch.sColor = color;
+
+			int cursorPos = this->textCursor().position();
+			this->fillCharStyleVector(cursorPos, 1, ch);
+			out >> tmpChar;
+			this->textCursor().insertText(static_cast<QString>(tmpChar), charFormat);
+		}
+}
+
 void GenTextEdit::setStylesToChar(charStyle_t& ch, QTextCharFormat& charFormat, const QJsonObject jChar)
 {
   GenTextEdit::detailsSetCharStyle(ch);

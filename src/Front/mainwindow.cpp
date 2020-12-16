@@ -50,7 +50,7 @@ MainWindow::MainWindow(QWidget *parent) :
 		this, SLOT(initTTElements(const QList<elementData_t>&)));
 
 	connect(server, SIGNAL(sendNoteToGUI(const note_t&)),
-		this, SLOT(initNote(const note_t&)));
+		this, SLOT(initNote(note_t&)));
 
 	connect(server, SIGNAL(sendImageToGUI(const image_t&)),
 		this, SLOT(initImage(const image_t&)));
@@ -130,6 +130,7 @@ void MainWindow::initWeekData(const QString & token)
   for (unsigned i = 1; i <= 6; ++i) {
     QString sNumPage = "";
     sNumPage.setNum(i);
+    qDebug() << "НОМЕР СТРАНИЦЫ" << sNumPage;
 
     url = Network::serverUrl + Network::getNoteByDateAndPageUrl + sDateFirstDayWeek + "/" + sNumPage;
     server->sendGetRequestWithBearerToken(url, token);
@@ -218,7 +219,7 @@ void MainWindow::initTTElements(const QList<elementData_t> & listOfTTElements)
   }
 }
 
-void MainWindow::initNote(const note_t & note)
+void MainWindow::initNote(note_t & note)
 {
   qDebug() << "==================== Note FROM SERVER: ";
   qDebug() << note.text;
@@ -228,6 +229,8 @@ void MainWindow::initNote(const note_t & note)
   qDebug() << note.page;
   qDebug() << note.date;
   qDebug() << "==================== END OF Note FROM SERVER";
+
+  ui->note->fillCharsAndSetTextt(note.text, note.charStyleVector);
 }
 
 void MainWindow::initImage(const image_t & image)
@@ -388,6 +391,7 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, breeksData_t newElement,
 		arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->setIndex(newZone.zoneIndex, i / 2);
 		if (states != nullptr) {
 		  arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->setColorState(Conditions(states[i / 2]));
+//		  arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->connectToQml(Conditions(states[i / 2]));
 		}
 
 

@@ -53,36 +53,36 @@ void MainWindow::changeNotePage(const int nButton, NoteMark * buttonPage)
 {
   //  ui->note->writeToDB(ui->note->getNumberCurrentFile());
 
-  QTimer timer;
-  timer.setInterval(10000);
-  timer.setSingleShot(true);
+//  QTimer timer;
+//  timer.setInterval(10000);
+//  timer.setSingleShot(true);
 
-  QEventLoop loop;
+//  QEventLoop loop;
 
-  QNetworkReply * reply =
-    server->sendPostRequestWhenSwitchingNotePages(
-          createPostNoteUrl(),
-          createJsonForSendingNote(ui->note->getNumberCurrentFile()),
-          userData->getAccessToken()
-    );
+//  QNetworkReply * reply =
+//    server->sendPostRequestWhenSwitchingNotePages(
+//          createPostNoteUrl(),
+//          createJsonForSendingNote(ui->note->getNumberCurrentFile()),
+//          userData->getAccessToken()
+//    );
 
-  QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-  QObject::connect(&timer, &QTimer::timeout, reply, &QNetworkReply::abort);
+//  QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+//  QObject::connect(&timer, &QTimer::timeout, reply, &QNetworkReply::abort);
 
-  timer.start();
-  loop.exec();
+//  timer.start();
+//  loop.exec();
 
-  if (reply->isFinished() && reply->error() == QNetworkReply::NoError) {
+//  if (reply->isFinished() && reply->error() == QNetworkReply::NoError) {
     noteMakePageButtonSelectable(buttonPage);
     noteChangePage(nButton);
 
     writeDataToFileLastVisit();
-  }
-  else {
-    // GUI warning "no connection with server"
-  }
+//  }
+//  else {
+//    // GUI warning "no connection with server"
+//  }
 
-  reply->deleteLater();
+//  reply->deleteLater();
 }
 
 void MainWindow::noteMakePageButtonSelectable(NoteMark *button)

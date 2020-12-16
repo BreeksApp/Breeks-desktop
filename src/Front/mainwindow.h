@@ -87,7 +87,7 @@ private slots:
 
 	void initBreeksLines(const QList<breeksData_t>&);
 	void initTTElements(const QList<elementData_t>&);
-	void initNote(const note_t&);
+	void initNote(note_t&);
 	void initImage(const image_t&);
 //timetable
 	void setDayInfo();

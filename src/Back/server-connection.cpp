@@ -328,6 +328,7 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
   }
   else if (url.contains(getNoteByDateAndPageUrl)) {
       qDebug() << "url " << getNoteByDateAndPageUrl << " success";
+      qDebug() << json;
 
     // парсим jsonvalue в ответе
       if (json.isEmpty()) {
