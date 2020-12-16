@@ -72,9 +72,9 @@ void GenTextEdit::keyPressEvent(QKeyEvent *event)
 	commandInfo_t command;
 
   //all comands which insert smth
-	if (charCounter_ <= MAX_COUNT_CHAR_) {
-		requestTimer_->start(500);
 
+  if (charCounter_ <= MAX_COUNT_CHAR_) {
+      requestTimer_->start(500);
 		//letters
     if (kmModifiers == 0 || kmModifiers == Qt::ShiftModifier) {
       if ( (iKey >= Qt::Key_A && iKey <= Qt::Key_Z) ||

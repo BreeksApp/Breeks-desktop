@@ -65,6 +65,7 @@ public:
 	void setCharStyle(const int style, const bool forBuffer = false);
 	void addTodoList();
   void fillCharsAndSetText(QString text, const QJsonArray jArr);
+  void fillCharsAndSetTextt(QString&, QVector<charStyle_t>&);
   
 public slots:
   void recieveUsername(const QString);

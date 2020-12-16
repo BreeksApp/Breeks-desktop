@@ -87,10 +87,10 @@ private slots:
 
 	void initBreeksLines(const QList<breeksData_t>&);
 	void initTTElements(const QList<elementData_t>&);
-	void initNote(const note_t&);
+	void initNote(note_t&);
 	void initImage(const image_t&);
 //timetable
-	void setDayInfo();
+	void setDayInfo(QDate = QDate::currentDate());
 	void updateTTElementIdOnServer(int, int, long);
 	void sendPutRequestTte(int, int);
 //note
@@ -153,6 +153,10 @@ private slots:
 
 	void on_login_clicked();
 	void loginReply(bool);
+
+	void on_prevWeekButton_clicked();
+
+	void on_nextWeekButton_clicked();
 
 signals:
   void sendUsername(const QString);
@@ -295,6 +299,7 @@ private:
 
 	int timetableElementsCount_;
 
+	QDate currentDate_;
 	int iCurrentDay_;
 	QTimer *timer_;
 

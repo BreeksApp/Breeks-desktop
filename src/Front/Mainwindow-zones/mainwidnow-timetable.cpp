@@ -87,7 +87,7 @@ void MainWindow::buildTimeTable()
 	isElementDrag_ = false;
 }
 
-void MainWindow::setDayInfo()
+void MainWindow::setDayInfo(QDate date)
 {
 	if (iCurrentDay_ == DAYS_COUNT) {
 		iCurrentDay_ = 0;
@@ -119,8 +119,6 @@ void MainWindow::setDayInfo()
 		arrBreeksZones_[i].arrBreeksZoneDays[iCurrentDay_]->setStyleSheet("background: #FFFFFF; border-radius: 4px;");
 	}
 
-	QDate date = QDate::currentDate();
-
   //to auto-set current day in the center of screen
   const int scrollPosTue = 700;
   const int scrollPosWed = 1000;
@@ -131,29 +129,7 @@ void MainWindow::setDayInfo()
 
 	//identify current day of week
 	iCurrentDay_ = date.dayOfWeek() - 1;
-
-	if (iCurrentDay_ < DAYS_COUNT) {
-		arrDays_[iCurrentDay_].scrollArea->verticalScrollBar()->setStyleSheet(
-					"QScrollBar:vertical {"
-						"border: 0.1px solid #FFFFFF;"
-						"background: #FFFFFF;"
-						"width: 9px;    "
-						"margin: 0px 0px 0px 0px;}"
-
-					"QScrollBar::handle:vertical {"
-						"border: 0.5px solid #b3defc;"
-						"border-radius: 2px;"
-						"background: #b3defc;"
-						"min-height: 0px;}"
-
-					"QScrollBar::add-line:vertical {"
-						"border: none;"
-						"background: none;}"
-
-					"QScrollBar::sub-line:vartical {"
-						"border: none;"
-						"background: none;}");
-	}
+	currentDate_ = date.addDays(0 - iCurrentDay_);
 
 	for (int i = 0; i < breeksZonesCount_; ++i) {
 		arrBreeksZones_[i].arrBreeksZoneDays[iCurrentDay_]->setStyleSheet("background: #b3defc; border-radius: 4px;");
@@ -218,11 +194,37 @@ void MainWindow::setDayInfo()
 		}
   }
 
+	/*if (date != QDate::currentDate()) {
+		iCurrentDay_ = DAYS_COUNT;
+	}*/
+
+	if (iCurrentDay_ < DAYS_COUNT) {
+		arrDays_[iCurrentDay_].scrollArea->verticalScrollBar()->setStyleSheet(
+					"QScrollBar:vertical {"
+						"border: 0.1px solid #FFFFFF;"
+						"background: #FFFFFF;"
+						"width: 9px;    "
+						"margin: 0px 0px 0px 0px;}"
+
+					"QScrollBar::handle:vertical {"
+						"border: 0.5px solid #b3defc;"
+						"border-radius: 2px;"
+						"background: #b3defc;"
+						"min-height: 0px;}"
+
+					"QScrollBar::add-line:vertical {"
+						"border: none;"
+						"background: none;}"
+
+					"QScrollBar::sub-line:vartical {"
+						"border: none;"
+						"background: none;}");
+	}
+
 	//set font style for elements count label
 	for (int i = 0; i < DAYS_COUNT; ++i) {
 		arrDays_[i].labelElementsCount->setFont(fontCounter);
-		arrDays_[i].labelElementsCount->setStyleSheet("background: none; color: #000000; "
-																									"font: italic;");
+		arrDays_[i].labelElementsCount->setStyleSheet("background: none; color: #000000; font: italic;");
 	}
 
 	int iTime = QDateTime::currentDateTime().msecsTo(

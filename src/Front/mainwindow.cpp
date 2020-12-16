@@ -49,8 +49,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(server, SIGNAL(sendTTElementsToGUI(const QList<elementData_t>&)),
 		this, SLOT(initTTElements(const QList<elementData_t>&)));
 
-	connect(server, SIGNAL(sendNoteToGUI(const note_t&)),
-		this, SLOT(initNote(const note_t&)));
+	connect(server, SIGNAL(sendNoteToGUI(note_t&)),
+		this, SLOT(initNote(note_t&)));
 
 	connect(server, SIGNAL(sendImageToGUI(const image_t&)),
 		this, SLOT(initImage(const image_t&)));
@@ -117,7 +117,7 @@ void MainWindow::clearAndInitWeekData(const QString & token)
 void MainWindow::initWeekData(const QString & token)
 {
   QString sDateFirstDayWeek = "";
-  sDateFirstDayWeek.setNum(QDateTime(arrDays_[0].date).toMSecsSinceEpoch());
+	sDateFirstDayWeek.setNum(QDateTime(arrDays_[0].date).toMSecsSinceEpoch());
 
   // get breeks lines
   qDebug() << "==================================== ДАТА" << sDateFirstDayWeek;
@@ -135,9 +135,10 @@ void MainWindow::initWeekData(const QString & token)
   }
 
   // get notes
-  for (unsigned i = 1; i <= 6; ++i) {
+	for (unsigned i = 1; i <= 1; ++i) {
     QString sNumPage = "";
     sNumPage.setNum(i);
+    qDebug() << "НОМЕР СТРАНИЦЫ" << sNumPage;
 
     url = Network::serverUrl + Network::getNoteByDateAndPageUrl + sDateFirstDayWeek + "/" + sNumPage;
     server->sendGetRequestWithBearerToken(url, token);
@@ -229,7 +230,7 @@ void MainWindow::initTTElements(const QList<elementData_t> & listOfTTElements)
   }
 }
 
-void MainWindow::initNote(const note_t & note)
+void MainWindow::initNote(note_t & note)
 {
   qDebug() << "==================== Note FROM SERVER: ";
   qDebug() << note.text;
@@ -239,6 +240,8 @@ void MainWindow::initNote(const note_t & note)
   qDebug() << note.page;
   qDebug() << note.date;
   qDebug() << "==================== END OF Note FROM SERVER";
+
+  ui->note->fillCharsAndSetTextt(note.text, note.charStyleVector);
 }
 
 void MainWindow::initImage(const image_t & image)
@@ -397,7 +400,6 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, breeksData_t newElement,
 
 		arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->setEmoj(newElement.arrNEmoji[i / 2]);
 		arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->setIndex(newZone.zoneIndex, i / 2);
-
 
 		if (daysCheck[i / 2] == true) {
 			arrBreeksZones_[breeksZonesCount_ - 1].arrBreeks[i / 2]->changeBreekState();
@@ -626,6 +628,7 @@ void MainWindow::clearWeekData()
       recieveDayAndElementIndex(i, arrDays_[i].elementsCount - 1, false);
     }
   }
+	iCurrentDay_ = 0;
 
   // clear Notes
   deleteNotes();
@@ -643,4 +646,16 @@ void MainWindow::deleteNotes()
 void MainWindow::deleteImage()
 {
   setImage(defaultImageName_);
+}
+
+void MainWindow::on_prevWeekButton_clicked()
+{
+	setDayInfo(currentDate_.addDays(-7));
+	clearAndInitWeekData(server->getUserData()->getAccessToken());
+}
+
+void MainWindow::on_nextWeekButton_clicked()
+{
+	setDayInfo(currentDate_.addDays(7));
+	clearAndInitWeekData(server->getUserData()->getAccessToken());
 }
