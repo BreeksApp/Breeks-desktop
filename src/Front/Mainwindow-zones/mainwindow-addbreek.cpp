@@ -200,6 +200,7 @@ void MainWindow::on_addBreekButton_clicked()
 
 	QUrl url = QUrl(Network::serverUrl + Network::addBreeksLineUrl);
 	QJsonDocument jsonDoc(json);
+
 	server->sendPostRequestWithBearerToken(url , jsonDoc.toJson(), userData->getAccessToken());
 //	qDebug() << userData->getAccessToken();
 	//---------

@@ -14,6 +14,12 @@
 #include <QtSql>
 #include <QTimeEdit>
 
+struct lastRequest_t {
+  QUrl url;
+  QByteArray data;
+  QString reqType;
+};
+
 struct charStyle_t {
 	bool bold;
 	bool italic;

@@ -280,7 +280,7 @@ void MainWindow::fillBreeksPositions(int zoneIndex)
 	}
 }
 
-void MainWindow::changeBreeksZoneLilDayState(int zoneIndex, int dayIndex, int iState)
+void MainWindow::changeBreeksZoneLilDayState(int zoneIndex, int dayIndex, int iState, bool withRequest)
 {
 	if (dayIndex == iCurrentDay_) {
 		return;
@@ -306,7 +306,9 @@ void MainWindow::changeBreeksZoneLilDayState(int zoneIndex, int dayIndex, int iS
 			arrBreeksZones_[zoneIndex].arrBreeksZoneDays[dayIndex]->setStyleSheet("background: #ff8696; border-radius: 4px;");
 	}
 
-	sendPutRequestBl(zoneIndex);
+	if (withRequest) {
+	  sendPutRequestBl(zoneIndex);
+	}
 }
 
 void MainWindow::setBreeksZoneLilDayShadow(int zoneIndex, int dayIndex, bool state)
@@ -392,14 +394,14 @@ void MainWindow::deleteBreeksZone(int zoneIndex)
 
 	if (itemLine != nullptr) {
 	    delete itemLine->widget();
-			delete itemLine;
+//			delete itemLine;
 	  }
 
 	workZoneLayout_->update();
 
 	auto itemDescription = breeksDescriptionZoneLayout_->itemAt(zoneIndex + 1);
 	delete itemDescription->widget();
-	delete itemDescription;
+//	delete itemDescription;
 
 	breeksDescriptionZoneLayout_->update();
 
@@ -423,13 +425,13 @@ void MainWindow::deleteBreeksZoneClientOnly(int zoneIndex)
 {
 	auto itemLine = workZoneLayout_->itemAt(zoneIndex + 6);
 	delete itemLine->widget();
-	delete itemLine;
+//	delete itemLine;
 
 	workZoneLayout_->update();
 
 	auto itemDescription = breeksDescriptionZoneLayout_->itemAt(zoneIndex + 1);
 	delete itemDescription->widget();
-	delete itemDescription;
+//	delete itemDescription;
 
 	breeksDescriptionZoneLayout_->update();
 

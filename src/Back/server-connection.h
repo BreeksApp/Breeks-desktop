@@ -32,30 +32,28 @@ namespace Network {
     //  POST data to server methods below:
     // ====================================
     void sendPostRequest(const QUrl&, const QByteArray&);
-    void sendPostRequestWithBearerToken(const QUrl&, const QByteArray&, const QString&);
-    QNetworkReply * sendPostRequestWhenSwitchingNotePages(const QUrl & url,
-                                                          const QByteArray & data,
-                                                          const QString & token);
-    void sendBreeksDataToServer();
+    void sendPostRequestWithBearerToken(const QUrl&, const QByteArray&, const QString&); // !
 
     // ====================================
     //  PUT data to server methods below:
     // ====================================
-    void sendPutRequestWithBearerToken(const QUrl&, const QByteArray&, const QString&);
+    void sendPutRequestWithBearerToken(const QUrl&, const QByteArray&, const QString&); // !
 
     // ====================================
     //  DELETE data from server methods below:
     // ====================================
-    void sendDeleteRequestWithBearerToken(const QUrl&, const QString&);
+    void sendDeleteRequestWithBearerToken(const QUrl&, const QString&); // !
 
     // ====================================
     //  GET data from server methods below:
     // ====================================    
-    void sendGetRequestWithBearerToken(const QUrl&, const QString&);
+    void sendGetRequestWithBearerToken(const QUrl&, const QString&); // !
 
   private:
     QNetworkAccessManager * networkAccessManager_;
     Network::UserData * userData_;
+    QList<lastRequest_t> listOfLastRequests_;
+    bool mutex = false;
 
   public slots:
     void onfinish(QNetworkReply *);
@@ -72,6 +70,8 @@ namespace Network {
 
     // this signal is emitted whenever we want to (re-)load all data of the week
     void initWeekData(const QString&);
+
+    void logout();
   };
 
 

@@ -81,6 +81,8 @@ public slots:
 
 	void moveBreek(int, int, bool);
 
+	void logout();
+
 private slots:
 // load week from server
 	void clearAndInitWeekData(const QString&);
@@ -112,7 +114,7 @@ private slots:
 
 //slot to fill original breeks positions in layout when they have been added on it(to avoid "position problem")
   void fillBreeksPositions(int);
-	void changeBreeksZoneLilDayState(int, int, int);
+        void changeBreeksZoneLilDayState(int, int, int, bool withRequest = true);
 	void setBreeksZoneLilDayShadow(int, int, bool);
 	void setBreeksDescriptionZoneFocus(int, bool);
 	void descriptionZoneDayDobleClick(int, int);
@@ -157,6 +159,8 @@ private slots:
 	void on_prevWeekButton_clicked();
 
 	void on_nextWeekButton_clicked();
+
+	void on_logoutButton_clicked();
 
 signals:
   void sendUsername(const QString);

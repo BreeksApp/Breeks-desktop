@@ -8,7 +8,8 @@
 #include "Back/utils/utils.h"
 
 Network::ServerConnection::ServerConnection(QObject *parent):
-  QObject(parent)
+  QObject(parent),
+  listOfLastRequests_(QList<lastRequest_t>())
 {
 
 }
@@ -17,7 +18,8 @@ Network::ServerConnection::ServerConnection(QNetworkAccessManager * networkAcces
                                             Network::UserData * userData, QObject *parent):
   QObject(parent),
   networkAccessManager_(networkAccessManager),
-  userData_(userData)
+  userData_(userData),
+  listOfLastRequests_(QList<lastRequest_t>())
 {
   connect(networkAccessManager_,SIGNAL(finished(QNetworkReply*)),this,SLOT(onfinish(QNetworkReply*)));
   connect(this,SIGNAL(initSecretData(QString, QString, QString)),
@@ -81,27 +83,9 @@ void Network::ServerConnection::sendPostRequestWithBearerToken(const QUrl & url,
 	auto tokenHeader = QString("Bearer %1").arg(token);
 	request.setRawHeader(QByteArray("Authorization"), tokenHeader.toUtf8());
 
+	if (!mutex) listOfLastRequests_.append({url, data, "PostWithToken"});
+
 	networkAccessManager_->post(request, data);
-}
-
-QNetworkReply * Network::ServerConnection::sendPostRequestWhenSwitchingNotePages(const QUrl & url,
-                                                                                 const QByteArray & data,
-                                                                                 const QString & token)
-{
-  qDebug() << url.toString();
-
-  QNetworkRequest request(url);
-  request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-  request.setHeader(QNetworkRequest::ContentLengthHeader, QByteArray::number(data.size()));
-  auto tokenHeader = QString("Bearer %1").arg(token);
-  request.setRawHeader(QByteArray("Authorization"), tokenHeader.toUtf8());
-
-  return networkAccessManager_->post(request, data);
-}
-
-void Network::ServerConnection::sendBreeksDataToServer()
-{
-
 }
 
 void Network::ServerConnection::sendPutRequestWithBearerToken(const QUrl & url, const QByteArray & data,
@@ -117,6 +101,8 @@ void Network::ServerConnection::sendPutRequestWithBearerToken(const QUrl & url, 
 	auto tokenHeader = QString("Bearer %1").arg(token);
 	request.setRawHeader(QByteArray("Authorization"), tokenHeader.toUtf8());
 
+	if (!mutex) listOfLastRequests_.append({url, data, "PutWithToken"});
+
 	networkAccessManager_->put(request, data);
 }
 
@@ -128,6 +114,8 @@ void Network::ServerConnection::sendDeleteRequestWithBearerToken(const QUrl & ur
 	auto tokenHeader = QString("Bearer %1").arg(token);
 	request.setRawHeader(QByteArray("Authorization"), tokenHeader.toUtf8());
 
+	if (!mutex) listOfLastRequests_.append({url, QByteArray(), "DeleteWithToken"});
+
 	networkAccessManager_->deleteResource(request);
 }
 
@@ -138,6 +126,13 @@ void Network::ServerConnection::sendGetRequestWithBearerToken(const QUrl & url, 
   request.setRawHeader(QByteArray("Authorization"), tokenHeader.toUtf8());
 
   networkAccessManager_->get(request);
+
+  if (!mutex) {
+    for (auto request : listOfLastRequests_) {
+      if (request.reqType == "GetWithToken") return;
+    }
+    listOfLastRequests_.append({QUrl(), QByteArray(), "GetWithToken"});
+  }
 }
 
 void Network::ServerConnection::onfinish(QNetworkReply * reply)
@@ -172,9 +167,13 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
   }
 
   // 401 - if refreshToken has expired or is invalid
-  if (statusCode == 401) {
-		emit loginReply(false);
-
+  if (statusCode == 401) {      
+    if (url.contains(authUrl)) {
+      emit loginReply(false);
+      return;
+    }
+    listOfLastRequests_.clear();
+    emit logout();
     return;
   }
 
@@ -213,6 +212,31 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
         emit loginReply(true);
         emit initWeekData(token);
       }
+  }
+  else if (url.contains(refreshUrl)) {
+    QString username = json.value("userName").toString();
+    QString token = json.value("token").toString();
+    QString tokenRefresh = json.value("tokenRefresh").toString();
+
+    if (username != "" && token != "" && tokenRefresh != "") {
+      emit initSecretData(username, token, tokenRefresh);
+      mutex = true;
+      for (auto request : listOfLastRequests_) {
+        if (request.reqType == "PostWithToken") {
+          sendPostRequestWithBearerToken(request.url, request.data, token);
+        }
+        else if (request.reqType == "PutWithToken") {
+          sendPutRequestWithBearerToken(request.url, request.data, token);
+        }
+        else if (request.reqType == "DeleteWithToken") {
+          sendDeleteRequestWithBearerToken(request.url, token);
+        }
+        else if (request.reqType == "GetWithToken") {
+          emit initWeekData(token);
+        }
+      }
+      mutex = false;
+    }
   }
   else if (url.contains(addTTElementUrl)) {
       if (json.value("elementId").toInt() != 0) {
@@ -372,4 +396,6 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
           emit sendImageToGUI(image);
       }
   }
+
+  if (!mutex) listOfLastRequests_.clear();
 }

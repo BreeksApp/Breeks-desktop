@@ -55,6 +55,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(server, SIGNAL(sendImageToGUI(const image_t&)),
 		this, SLOT(initImage(const image_t&)));
 
+	// logout signal
+	connect(server, SIGNAL(logout()), this, SLOT(logout()));
+
 	this->setStyleSheet("background: #F9F9F9");
 
 	connect(ui->buttonImage, SIGNAL(imageEnter(bool)), this, SLOT(setImageBackgroundView(bool)));
@@ -106,6 +109,14 @@ MainWindow::~MainWindow()
   }
 
   delete ui;
+}
+
+void MainWindow::logout()
+{
+  clearWeekData();
+  server->getUserData()->setAccessToken("");
+  server->getUserData()->setRefreshToken("");
+  ui->authFrom->show();
 }
 
 void MainWindow::clearAndInitWeekData(const QString & token)
@@ -250,6 +261,7 @@ void MainWindow::initImage(const image_t & image)
   qDebug() << image.imageLocation;
   qDebug() << image.date;
   qDebug() << "==================== END OF Image FROM SERVER";
+  setImage(image.imageLocation);
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
@@ -422,7 +434,7 @@ void MainWindow::recieveBreeksZoneData(bool *daysCheck, breeksData_t newElement,
 						iState = 1;
 					break;
 				}
-				changeBreeksZoneLilDayState(breeksZonesCount_ - 1, i/2, iState);
+				changeBreeksZoneLilDayState(breeksZonesCount_ - 1, i/2, iState, false);
 			}
 		}
 
@@ -658,4 +670,9 @@ void MainWindow::on_nextWeekButton_clicked()
 {
 	setDayInfo(currentDate_.addDays(7));
 	clearAndInitWeekData(server->getUserData()->getAccessToken());
+}
+
+void MainWindow::on_logoutButton_clicked()
+{
+    logout();
 }
