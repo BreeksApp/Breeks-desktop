@@ -27,7 +27,6 @@
 #include "datastructures.h"
 #include "effects.hpp"
 #include "Front/MainElements/breek.h"
-#include "loginform.h"
 #include "Front/MainElements/daywidget.h"
 
 
@@ -44,8 +43,6 @@ public:
   ~MainWindow();
 
 	void mousePressEvent(QMouseEvent *event);
-
-  LoginForm *loginForm_;
 
   //files of timetable
   //void writeElementsDataToFile(const int index);

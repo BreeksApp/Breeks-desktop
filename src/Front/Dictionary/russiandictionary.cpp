@@ -2,12 +2,14 @@
 
 #include <QDebug>
 #include <QFile>
+#include <QDir>
 
 RussianDictionary::RussianDictionary()
 {
 //.DIC
-	//QString path = "/home/george/Work/BREEKS/Breeks-App/src/Front/RusDic/RusDic.txt";
-	QString path = "C:/Users/ypyla/PROJECTS/Breeks-desktop/src/Front/RusDic/RusDic.txt";
+  QString path = QDir::current().path() + "/Front/RusDic/RusDic.txt";
+  qDebug() << path;
+
   QFile fDic(path);
 
   if (!fDic.open(QIODevice::ReadOnly | QIODevice::Text)) {
