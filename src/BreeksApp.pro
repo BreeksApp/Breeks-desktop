@@ -59,7 +59,6 @@ SOURCES += \
     Front/Mainwindow-zones/mainwindow-workzone.cpp \
     Front/MainElements/EmojiHub/emojihub.cpp \
     Front/mainwindow.cpp \
-    loginform.cpp \
     main.cpp
 
 HEADERS += \
@@ -90,8 +89,7 @@ HEADERS += \
     Front/datastructures.h \
     Front/effects.hpp \
     Front/MainElements/EmojiHub/emojihub.h \
-    Front/mainwindow.h \
-    loginform.h
+    Front/mainwindow.h
 
 FORMS += \
     loginform.ui \
