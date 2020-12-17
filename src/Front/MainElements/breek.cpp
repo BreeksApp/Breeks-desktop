@@ -25,6 +25,7 @@ Breek::Breek(QWidget *parent):
   this->setFlat(true);
 
 	callHub_ = false;
+	isAnimated_ = false;
 }
 
 Breek::Breek(int width, int height, QWidget *parent):
@@ -118,7 +119,7 @@ void Breek::keyPressEvent(QKeyEvent *event)
 			emit sendPutRequest();
 		}
 
-		if (iKey == Qt::Key_E || QKeySequence(iKey).toString() == "У") {
+		if (iKey == Qt::Key_F || QKeySequence(iKey).toString() == "А") {
 			qDebug() << dayIndex_;
 			emit doubleClicked();
 		}

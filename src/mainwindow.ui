@@ -16,6 +16,12 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>1913</width>
+    <height>1095</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -827,16 +833,20 @@ height: 90;</string>
      <property name="font">
       <font>
        <family>Helvetica</family>
-       <pointsize>9</pointsize>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="styleSheet">
       <string notr="true">background: #d9ebff;
 border-radius: 10px;
-padding-left: 10;</string>
+padding-left: 10;
+padding-right: 10;</string>
      </property>
      <property name="text">
       <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
     <widget class="QPushButton" name="reg">
@@ -905,13 +915,17 @@ padding-left: 10;</string>
      <property name="styleSheet">
       <string notr="true">background: #d9ebff;
 border-radius: 10px;
-padding-left:10;</string>
+padding-left:10;
+padding-right: 10;</string>
      </property>
      <property name="text">
       <string/>
      </property>
      <property name="echoMode">
       <enum>QLineEdit::Password</enum>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
     <widget class="QLabel" name="label_3">
@@ -960,13 +974,17 @@ padding-left:10;</string>
      <property name="styleSheet">
       <string notr="true">background: #d9ebff;
 border-radius: 10px;
-padding-left:10;</string>
+padding-left:10;
+padding-right: 10;</string>
      </property>
      <property name="text">
       <string/>
      </property>
      <property name="echoMode">
       <enum>QLineEdit::Password</enum>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
     <widget class="QLabel" name="message">
@@ -1036,6 +1054,7 @@ QPushButton{background: #d9d9d9; border-radius: 15px; color: #262626; font-size:
       <string notr="true">background: #d7eba9;
 border-radius: 10px;
 padding-left:10;
+padding-right: 10;
 </string>
      </property>
      <property name="text">
@@ -1043,6 +1062,9 @@ padding-left:10;
      </property>
      <property name="echoMode">
       <enum>QLineEdit::Password</enum>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
     <widget class="QLineEdit" name="mail">
@@ -1057,14 +1079,18 @@ padding-left:10;
      <property name="font">
       <font>
        <family>Helvetica</family>
-       <pointsize>9</pointsize>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="styleSheet">
       <string notr="true">background: #d7eba9;
 border-radius: 10px;
 padding-left:10;
+padding-right: 10;
 </string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
     <widget class="QLabel" name="labelBuild">
@@ -1122,10 +1148,23 @@ padding-left:10;
      <string notr="true">background: #fffff0; border-radius: 10px;</string>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Вы находитесь в демо-режиме, сейчас вам можно все, но без &lt;/span&gt;&lt;span style=&quot; font-size:10pt; font-weight:600; font-style:italic;&quot;&gt;авторизации&lt;/span&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt; все изменения будут утеряны&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Вы находитесь в демо-режиме, сейчас вам &lt;/span&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;можно все&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;, но без &lt;/span&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;авторизации&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt; изменения не сохранятся&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QWidget" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1911</width>
+      <height>1041</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background: #FFFFFF;</string>
     </property>
    </widget>
    <zorder>labelImageBackground</zorder>
@@ -1149,6 +1188,7 @@ padding-left:10;
    <zorder>infoGb</zorder>
    <zorder>authFrom</zorder>
    <zorder>demoLable</zorder>
+   <zorder>widget</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

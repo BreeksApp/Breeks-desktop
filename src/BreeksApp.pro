@@ -38,6 +38,7 @@ SOURCES += \
     Front/MainElements/addbuttonhover.cpp \
     Front/MainElements/addtimetableelementgb.cpp \
     Front/MainElements/breek.cpp \
+    Front/MainElements/calendarweek.cpp \
     Front/MainElements/daywidget.cpp \
     Front/MainElements/deletebreekszonebutton.cpp \
     Front/MainElements/deletetimetableelementbutton.cpp \
@@ -77,6 +78,7 @@ HEADERS += \
     Front/MainElements/addbuttonhover.h \
     Front/MainElements/addtimetableelementgb.h \
     Front/MainElements/breek.h \
+    Front/MainElements/calendarweek.h \
     Front/MainElements/daywidget.h \
     Front/MainElements/deletebreekszonebutton.h \
     Front/MainElements/deletetimetableelementbutton.h \

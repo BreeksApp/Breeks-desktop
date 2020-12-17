@@ -13,6 +13,7 @@ DemoBreek::DemoBreek(QWidget *parent) :
 	width_(110),
 	height_(110)
 {
+	isAnimated_ = false;
 	connectToQml(nEmoji_, workState_);
 }
 

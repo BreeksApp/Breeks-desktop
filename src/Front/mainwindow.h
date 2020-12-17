@@ -15,6 +15,7 @@
 #include <set>
 #include <QDrag>
 
+#include <Front/MainElements/calendarweek.h>
 #include <Front/MainElements/deletebreekszonebutton.h>
 #include <Front/MainElements/descriptionzonedaybutton.h>
 
@@ -66,6 +67,9 @@ public slots:
 	void recieveTimetableElementDayAndElemIndexAndTime(int, int, QString, QString);
 	void recieveTimetableDayAndElementIndexAndText(int, int, QString, QVector<charStyle_t>);
 
+	void setDayInfo(QDate = QDate::currentDate());
+	void changeWeek(qint64);
+
 	void dropNoChanges();
 	void dropElement(const int, const int, const int, const elementData_t);
 	void enterDayArea(int);
@@ -89,7 +93,6 @@ private slots:
 	void initNote(note_t&);
 	void initImage(const image_t&);
 //timetable
-	void setDayInfo(QDate = QDate::currentDate());
 	void updateTTElementIdOnServer(int, int, long);
 	void sendPutRequestTte(int, int);
 //note
@@ -205,9 +208,6 @@ private:
 
   using iterType = QVector<elementData_t>::iterator;
   QVector<elementData_t> arrDaysData_[6]; //conteiner with elements data by days
-
-  void writeElementsDataToFile(const int index);
-  void readElementsDataFromFile(const int index);
 //
 
 //work with effects
@@ -370,6 +370,8 @@ private:
 
 	QGraphicsDropShadowEffect* createShadow();
 
+	QVector<CalendarWeek*> calendarWeeks;
+
 //--------- ADD BREEK-LINE---------
 	void setStyleAddBreeksForm();
 	bool arrAddBreekFormDaysCheck_[6];
@@ -385,6 +387,9 @@ private:
 	const int TAGS_COUNT = 6;
 	tagElement_t arrTags_[6];
 	int infoButtonColorNum;
+
+//CALENDAR
+	QScrollArea *calendarScrollArea;
 };
 
 #endif // MAINWINDOW_H

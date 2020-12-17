@@ -26,9 +26,19 @@ void MainWindow::on_infoButton_clicked()
 			arrTags_[(i + 1) % TAGS_COUNT].condition = true;
 			arrTags_[i].condition = false;
 
+			for (int j = 0; j < 53; ++j) { //53 - counts of week in 2021
+				CalendarWeek *week = calendarWeeks[j];
+
+				if (week->date->toMSecsSinceEpoch() >= QDateTime::currentDateTime().toMSecsSinceEpoch()) {
+					week->setStyleSheet("QPushButton{background: " + tag::ARR_LIGHT_COLORS[(i + 1) % TAGS_COUNT] + "; border-radius: 5px; "
+															"font-size: 12px;font-family: Arial;color: #323232; font-weight: bold; font-style: italic; text-align:left; padding-left: 7px}");
+				}
+			}
+
 			break;
 		}
 	}
+
 }
 
 void MainWindow::infoGBEnter()

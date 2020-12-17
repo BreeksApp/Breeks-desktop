@@ -98,15 +98,13 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(server, SIGNAL(loginReply(bool)), this, SLOT(loginReply(bool)));
 	setShadow(ui->reg);
 	setShadow(ui->login);
+
+	ui->widget->hide();
 }
 
 MainWindow::~MainWindow()
 {
   ui->note->writeToDB(ui->note->getNumberCurrentFile());
-
-  for (int i = 0; i < 6; ++i) {
-        writeElementsDataToFile(i);
-  }
 
   delete ui;
 }

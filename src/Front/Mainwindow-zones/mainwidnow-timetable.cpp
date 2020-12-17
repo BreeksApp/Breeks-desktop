@@ -73,10 +73,6 @@ void MainWindow::buildTimeTable()
   //build a day
   setDaysStructure();
 
-  for (int i = 0; i < DAYS_COUNT; ++i) {
-		readElementsDataFromFile(i);
-  }
-
 	timer_ = new QTimer();
 	timer_->setSingleShot(true);
 	connect(timer_, SIGNAL(timeout()), this, SLOT(setDayInfo()));
@@ -126,8 +122,16 @@ void MainWindow::setDayInfo(QDate date)
 	//const int scrollPosSun = workZoneScrollArea_->width();
 
 	//identify current day of week
-	iCurrentDay_ = date.dayOfWeek() - 1;
-	currentDate_ = date;
+
+	if (abs(QDate::currentDate().daysTo(date)) <= 7 - QDate::currentDate().dayOfWeek()) {
+		iCurrentDay_ = QDate::currentDate().dayOfWeek() - 1;
+		currentDate_ = QDate::currentDate();
+	}
+	else {
+		iCurrentDay_ = date.dayOfWeek() - 1;
+		currentDate_ = date;
+	}
+
 
 	for (int i = 0; i < breeksZonesCount_; ++i) {
 		arrBreeksZones_[i].arrBreeksZoneDays[iCurrentDay_]->setStyleSheet("background: #b3defc; border-radius: 4px;");
@@ -202,7 +206,9 @@ void MainWindow::setDayInfo(QDate date)
 		}
   }
 
-	if (date == QDate::currentDate()) {
+	qDebug() << currentDate_ << " : " << QDate::currentDate();
+
+	if (currentDate_ == QDate::currentDate()) {
 		if (iCurrentDay_ < DAYS_COUNT) {
 			arrDays_[iCurrentDay_].scrollArea->verticalScrollBar()->setStyleSheet(
 						"QScrollBar:vertical {"

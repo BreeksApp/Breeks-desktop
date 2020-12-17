@@ -74,7 +74,7 @@ void EmojiHub::keyPressEvent(QKeyEvent *event)
 {
 	int iKey = event->key();
 
-	if (iKey == Qt::Key_E || QKeySequence(iKey).toString() == "У") {
+	if (iKey == Qt::Key_F || QKeySequence(iKey).toString() == "А") {
 		this->setStyleSheet("background: none; border-radius: 9px; border: 0.4px solid #FFFFFF;");
 		scrollArea_->hide();
 

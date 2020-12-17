@@ -232,14 +232,149 @@ void MainWindow::buildBreeksDescriptionZone()
   bigWidgetInBreeksDescriptionZone_->setLayout(breeksDescriptionZoneLayout_);
 
 //GroupBox to describe posibilities of breeks
+	QVBoxLayout *lay1 = new QVBoxLayout;
+
 	QGroupBox *mfc = new QGroupBox;
 
 	const int descriptionWidth = 300;
-  const int descriptionHeight = 480;
+	const int descriptionHeight = 480;
 
-	mfc->setFixedSize(descriptionWidth, descriptionHeight);
-	mfc->setStyleSheet("QGroupBox{background: none; border-radius: 6px;}");
-	breeksDescriptionZoneLayout_->addWidget(mfc, 0, 0, Qt::AlignCenter);
+	calendarScrollArea = new QScrollArea;
+	calendarScrollArea->setFixedSize(descriptionWidth, descriptionHeight);
+	calendarScrollArea->setStyleSheet("QScrollArea{background: #FFFFFF}");
+	calendarScrollArea->setWidgetResizable(true);
+
+	calendarScrollArea->setWidget(mfc);
+	mfc->setFixedSize(descriptionWidth - 25, descriptionHeight - 45);
+	mfc->setStyleSheet("QGroupBox{background: #FFFFFF; border-radius: 6px;}");
+	mfc->setLayout(lay1);
+
+	QVBoxLayout *lay2 = new QVBoxLayout;
+	lay1->addLayout(lay2);
+
+	lay2->setContentsMargins(30, 10, 0, 10);
+
+	QDateTime date = QDateTime::currentDateTime();
+	QString prevMonth = "";
+
+	for (int i = 0; i < 53; ++i) { //53 - counts of week in 2021
+		mfc->setFixedHeight(40 * (i + 1));
+		CalendarWeek *week = new CalendarWeek;
+		week->date->setMSecsSinceEpoch(1609113600000); //28.12.2020
+		week->date->setDate(week->date->addDays(7 * i).date());
+
+		if (week->date->toMSecsSinceEpoch() < date.toMSecsSinceEpoch()) {
+			week->setStyleSheet("QPushButton{background: #dfe0df; border-radius: 5px; "
+													"font-size: 12px;font-family: Helvetica;color: #323232; font-weight: bold; font-style: italic; text-align:left; padding-left: 7px}");
+		}
+		else {
+			week->setStyleSheet("QPushButton{background: " + tag::ARR_LIGHT_COLORS[0] + "; border-radius: 5px; "
+													"font-size: 12px;font-family: Arial;color: #323232; font-weight: bold; font-style: italic; text-align:left; padding-left: 7px}");
+
+			QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+			effect->setBlurRadius(5);
+			effect->setXOffset(0);
+			effect->setYOffset(0);
+			effect->setColor("#909090");
+
+			week->setGraphicsEffect(effect);
+		}
+		week->setFixedSize(200, 30);
+		week->setCursor(Qt::PointingHandCursor);
+
+		QString monthName;
+		switch (week->date->date().month()) {
+			case (1) :
+				monthName = "января";
+			break;
+			case (2) :
+				monthName = "февраля";
+			break;
+			case (3) :
+				monthName = "марта";
+			break;
+			case (4) :
+				monthName = "апреля";
+			break;
+			case (5) :
+				monthName = "мая";
+			break;
+			case (6) :
+				monthName = "июня";
+			break;
+			case (7) :
+				monthName = "июля";
+			break;
+			case (8) :
+				monthName = "августа";
+			break;
+			case (9) :
+				monthName = "сентября";
+			break;
+			case (10) :
+				monthName = "октября";
+			break;
+			case (11) :
+				monthName = "ноября";
+			break;
+			case (12) :
+				monthName = "декабря";
+			break;
+		}
+
+		week->setContentsMargins(10, 0, 0, 0);
+
+		QString sDates = "";
+		int day = week->date->date().day();
+
+		if (day < 10) {
+			sDates = sDates + "  ";
+		}
+
+		sDates += QString::number(day);
+		week->setText(sDates + " " + monthName);
+
+		if (monthName != prevMonth && prevMonth != "") {
+			lay2->addSpacing(15);
+		}
+		prevMonth = monthName;
+		connect(week, SIGNAL(changeCalendarWeek(qint64)), this, SLOT(changeWeek(qint64)));
+
+		lay2->addWidget(week, Qt::AlignCenter);
+		calendarWeeks.append(week);
+
+	}
+
+
+	breeksDescriptionZoneLayout_->addWidget(calendarScrollArea, 0, 0, Qt::AlignCenter);
+	calendarScrollArea->verticalScrollBar()->setValue(500);
+
+	calendarScrollArea->verticalScrollBar()->setStyleSheet(
+				"QScrollBar:vertical {"
+					"border: 0.1px solid #FFFFFF;"
+					"background: #FFFFFF;"
+					"width: 9px;"
+					"margin: 0px 0px 0px 0px;}"
+
+				"QScrollBar::handle:vertical {"
+					"border: 0.5px solid #e3e3df;"
+					"border-radius: 4px;"
+					"background: #e3e3df;"
+					"min-height: 0px;}"
+
+				"QScrollBar::handle:vertical:hover {"
+					"border: 0.5px solid #c7c7bf;"
+					"border-radius: 4px;"
+					"background: #c7c7bf;"
+					"min-height: 0px;}"
+
+				"QScrollBar::add-line:vertical {"
+					"border: none;"
+					"background: none;}"
+
+				"QScrollBar::sub-line:vartical {"
+					"border: none;"
+					"background: none;}");
 }
 
 void MainWindow::setDaysConnect(breeksZone_t* breeksZone)
@@ -611,5 +746,12 @@ void MainWindow::sendPutRequestBl(int zoneIndex)
 	QUrl url = QUrl(Network::serverUrl + Network::editBreeksLineUrl + "/" + QString::number(newElement.idOnServer));
 	QJsonDocument jsonDoc(json);
 	server->sendPutRequestWithBearerToken(url , jsonDoc.toJson(), userData->getAccessToken());
+}
+
+void MainWindow::changeWeek(qint64 msecs)
+{
+	QDateTime date;
+	date.setMSecsSinceEpoch(msecs);
+	setDayInfo(date.date());
 }
 

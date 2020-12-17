@@ -7,7 +7,7 @@
 RussianDictionary::RussianDictionary()
 {
 //.DIC
-  QString path = QDir::current().path() + "/Front/RusDic/RusDic.txt";
+	QString path = "C:/Users/ypyla/PROJECTS/Breeks-desktop/src/Front/RusDic/RusDic.txt";
   qDebug() << path;
 
   QFile fDic(path);
