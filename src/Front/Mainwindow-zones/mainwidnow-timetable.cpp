@@ -123,7 +123,10 @@ void MainWindow::setDayInfo(QDate date)
 
 	//identify current day of week
 
-	if (abs(QDate::currentDate().daysTo(date)) <= 7 - QDate::currentDate().dayOfWeek()) {
+	qDebug() << "DDDAAAATEEEE: " << QDate::currentDate().daysTo(date);
+
+	if (QDate::currentDate().daysTo(date) > -6 && QDate::currentDate().daysTo(date) <= 0) {
+		qDebug() << "!!!!";
 		iCurrentDay_ = QDate::currentDate().dayOfWeek() - 1;
 		currentDate_ = QDate::currentDate();
 	}
@@ -171,14 +174,14 @@ void MainWindow::setDayInfo(QDate date)
 	const QString daysNamesEng[7] = {"Monday", "Tuesday", "Wednesday",
 																	 "Thursday", "Friday", "Saturday", "Sunday"};
 
-	QDate tmpDate = date;
+	QDate tmpDate = currentDate_;
 
 	QFont font("Helvetica", 12);
 	QFont fontCounter("Helvetica", 11);
   //-------
 	for (int i = 0; i < DAYS_COUNT; ++i) {
 		//identify month of day
-		tmpDate = date.addDays(i - iCurrentDay_);
+		tmpDate = currentDate_.addDays(i - iCurrentDay_);
 		QString nameMonth = tmpDate.toString("MMMM");
 
     //set font for label with day info
@@ -197,7 +200,7 @@ void MainWindow::setDayInfo(QDate date)
 			arrDays_[i].labelDate->setText(tr(charHTML) + sCurrentDate);
 		}
 		else {
-			if (date == QDate::currentDate()) {
+			if (currentDate_ == QDate::currentDate()) {
 				arrDays_[i].labelDate->setText(QString(tr(charHTML)).toUpper() + sCurrentDate);
 			}
 			else {

@@ -4,6 +4,7 @@
 #include "QScrollBar"
 
 #include <QtConcurrent/QtConcurrent>
+#include <QDesktopServices>
 #include <QMessageBox>
 #include <QThread>
 #include <Front/MainElements/EmojiHub/emojihub.h>
@@ -616,4 +617,9 @@ void MainWindow::on_hideCalendar_clicked()
 		calendarScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
 	}
+}
+
+void MainWindow::on_showInfoButton_clicked()
+{
+	QDesktopServices::openUrl(QUrl("https://github.com/BreeksApp/Breeks-presentation"));
 }

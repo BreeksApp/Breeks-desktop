@@ -164,6 +164,8 @@ private slots:
 
 	void on_hideCalendar_clicked();
 
+	void on_showInfoButton_clicked();
+
 signals:
   void sendUsername(const QString);
 	void sendBreekData(bool *, breeksData_t);
