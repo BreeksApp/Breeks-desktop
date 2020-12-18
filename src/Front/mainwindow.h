@@ -162,6 +162,8 @@ private slots:
 
 	void on_logoutButton_clicked();
 
+	void on_hideCalendar_clicked();
+
 signals:
   void sendUsername(const QString);
 	void sendBreekData(bool *, breeksData_t);
@@ -371,6 +373,7 @@ private:
 	QGraphicsDropShadowEffect* createShadow();
 
 	QVector<CalendarWeek*> calendarWeeks;
+	QGroupBox *calendarWidget;
 
 //--------- ADD BREEK-LINE---------
 	void setStyleAddBreeksForm();

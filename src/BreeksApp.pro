@@ -3,6 +3,8 @@ QT       += core gui sql qml quick quickwidgets network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+RC_ICONS = eeicon.ico
+
 CONFIG += c++14
 
 # The following define makes your compiler emit warnings if you use

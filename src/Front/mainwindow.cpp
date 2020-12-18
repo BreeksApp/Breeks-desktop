@@ -100,6 +100,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	setShadow(ui->login);
 
 	ui->widget->hide();
+	ui->hideCalendar->hide();
 }
 
 MainWindow::~MainWindow()
@@ -159,17 +160,17 @@ void MainWindow::initBreeksLines(const QList<breeksData_t> & listOfLines)
   for (auto breeksLine : listOfLines) {
     qDebug() << "START LINE: ";
     qDebug() << breeksLine.idOnServer;
-    qDebug() << breeksLine.text;
+		//qDebug() << breeksLine.text;
     for (auto charStyle : breeksLine.charStyleVector) {
-      qDebug() << charStyle.bold;
+			//qDebug() << charStyle.bold;
     }
     qDebug() << QString("000000").number(breeksLine.conditions, 2);
     qDebug() << QString("000000").number(breeksLine.states, 4);
     int * emojies = breeksLine.arrNEmoji;
-    qDebug() << emojies[0] << " " << emojies[1] << " "
-             << emojies[2] << " " << emojies[3] << " "
-             << emojies[4] << " " << emojies[5] << " ";
-    qDebug() << breeksLine.date;
+//		qDebug() << emojies[0] << " " << emojies[1] << " "
+//             << emojies[2] << " " << emojies[3] << " "
+//             << emojies[4] << " " << emojies[5] << " ";
+		//qDebug() << breeksLine.date;
     qDebug() << "END LINE";
   }
   qDebug() << "==================== END OF LINES FROM SERVER";
@@ -179,7 +180,7 @@ void MainWindow::initBreeksLines(const QList<breeksData_t> & listOfLines)
     bool arrConditions[6] = {false};
     QString sConditions = QString("000000").number(breeksLine.conditions, 2);
     while (sConditions.length() != 6) {
-      sConditions = "0" + sConditions;
+			sConditions = "0" + sConditions;
     }
     qDebug() << sConditions;
     for (int i = 0; i < DAYS_COUNT; ++i) {
@@ -189,7 +190,7 @@ void MainWindow::initBreeksLines(const QList<breeksData_t> & listOfLines)
     int arrStates[6];
     QString sStates = QString("000000").number(breeksLine.states, 4);
     while (sStates.length() != 6) {
-      sStates = "0" + sStates;
+			sStates = "1" + sStates;
     }
 
 		qDebug() << "STATES ON SERVER" << sStates << " : " << breeksLine.states;
@@ -204,29 +205,28 @@ void MainWindow::initBreeksLines(const QList<breeksData_t> & listOfLines)
 
 void MainWindow::initTTElements(const QList<elementData_t> & listOfTTElements)
 {
-  qDebug() << "==================== TTElements FROM SERVER: ";
-  for (auto element : listOfTTElements) {
-    qDebug() << "START TTElement: ";
-    qDebug() << element.idOnServer;
-    qDebug() << element.text;
-    qDebug() << element.tagColor;
-    qDebug() << element.tagColorNum;
-    qDebug() << element.timeStart;
-    qDebug() << element.timeEnd;
-    for (auto charStyle : element.charStyleVector) {
-      qDebug() << charStyle.bold;
-    }
-    qDebug() << element.date;
-    qDebug() << "END TTElement";
-  }
-  qDebug() << "==================== END OF TTElements FROM SERVER";
+//  qDebug() << "==================== TTElements FROM SERVER: ";
+	for (auto element : listOfTTElements) {
+//    qDebug() << "START TTElement: ";
+//    qDebug() << element.idOnServer;
+//    qDebug() << element.text;
+//    qDebug() << element.tagColor;
+//    qDebug() << element.tagColorNum;
+//    qDebug() << element.timeStart;
+//    qDebug() << element.timeEnd;
+//    for (auto charStyle : element.charStyleVector) {
+//      qDebug() << charStyle.bold;
+//    }
+//    qDebug() << "END TTElement";
+	}
+//  qDebug() << "==================== END OF TTElements FROM SERVER";
 
   for (auto element : listOfTTElements) {
 
     bool arr[6] = {false};
     QDateTime date = QDateTime();
     date.setMSecsSinceEpoch(element.date);
-    int dayOfWeek = date.date().dayOfWeek() - 1;
+		int dayOfWeek = date.date().dayOfWeek() - 1;
 
     arr[dayOfWeek] = true;
 
@@ -236,24 +236,24 @@ void MainWindow::initTTElements(const QList<elementData_t> & listOfTTElements)
 
 void MainWindow::initNote(note_t & note)
 {
-  qDebug() << "==================== Note FROM SERVER: ";
-  qDebug() << note.text;
-  for (auto charStyle : note.charStyleVector) {
-    qDebug() << charStyle.bold;
-  }
-  qDebug() << note.page;
-  qDebug() << note.date;
-  qDebug() << "==================== END OF Note FROM SERVER";
+//  qDebug() << "==================== Note FROM SERVER: ";
+//  qDebug() << note.text;
+//  for (auto charStyle : note.charStyleVector) {
+//    qDebug() << charStyle.bold;
+//  }
+//  qDebug() << note.page;
+//  qDebug() << note.date;
+//  qDebug() << "==================== END OF Note FROM SERVER";
 
   ui->note->fillCharsAndSetTextt(note.text, note.charStyleVector);
 }
 
 void MainWindow::initImage(const image_t & image)
 {
-  qDebug() << "==================== Image FROM SERVER: ";
-  qDebug() << image.imageLocation;
-  qDebug() << image.date;
-  qDebug() << "==================== END OF Image FROM SERVER";
+//  qDebug() << "==================== Image FROM SERVER: ";
+//  qDebug() << image.imageLocation;
+//  qDebug() << image.date;
+//  qDebug() << "==================== END OF Image FROM SERVER";
   setImage(image.imageLocation);
 }
 
@@ -612,6 +612,7 @@ void MainWindow::loginReply(bool login)
 		ui->mail->clear();
 		ui->password->clear();
 		ui->demoLable->hide();
+		ui->hideCalendar->show();
 	}
 	else {
 		QMessageBox message;
@@ -669,4 +670,19 @@ void MainWindow::on_nextWeekButton_clicked()
 void MainWindow::on_logoutButton_clicked()
 {
     logout();
+}
+
+void MainWindow::on_hideCalendar_clicked()
+{
+	if (!calendarWidget->isHidden()) {
+		ui->hideCalendar->setStyleSheet("border-image:url(:/Images/Front/Images/show.png); background: none;");
+		calendarWidget->hide();
+		calendarScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	}
+	else {
+		ui->hideCalendar->setStyleSheet("border-image:url(:/Images/Front/Images/hide.png); background: none;");
+		calendarWidget->show();
+		calendarScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+
+	}
 }

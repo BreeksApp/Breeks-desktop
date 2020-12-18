@@ -138,6 +138,10 @@
         <file>Front/Images/rewind-left-grey.png</file>
         <file>Front/Images/rewind-right-green.png</file>
         <file>Front/Images/rewind-right-grey.png</file>
+        <file>Front/Images/hide.svg</file>
+        <file>Front/Images/show.svg</file>
+        <file>Front/Images/hide.png</file>
+        <file>Front/Images/show.png</file>
     </qresource>
     <qresource prefix="/qml">
         <file>Front/Qml/qml_for_breeks.qml</file>
