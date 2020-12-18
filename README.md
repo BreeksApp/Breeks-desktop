@@ -8,6 +8,8 @@
 * [Презентация приложения](https://github.com/BreeksApp/Breeks-presentation)
 * [Статья на хабре]()
 
+## Внешний вид
+
 ## Сборка проекта Qt
 `qmake BreeksApp.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug`
 
