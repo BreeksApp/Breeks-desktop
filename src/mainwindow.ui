@@ -723,7 +723,7 @@ height: 90;</string>
     <widget class="QPushButton" name="logoutButton">
      <property name="geometry">
       <rect>
-       <x>200</x>
+       <x>150</x>
        <y>20</y>
        <width>41</width>
        <height>41</height>
@@ -743,7 +743,7 @@ height: 90;</string>
     <widget class="QPushButton" name="showInfoButton">
      <property name="geometry">
       <rect>
-       <x>250</x>
+       <x>200</x>
        <y>20</y>
        <width>41</width>
        <height>41</height>
@@ -776,6 +776,30 @@ height: 90;</string>
       <string/>
      </property>
     </widget>
+    <widget class="QPushButton" name="hideCalendar">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>20</y>
+       <width>41</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-image:url(:/Images/Front/Images/hide.png);
+background: none;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <zorder>hideCalendar</zorder>
+    <zorder>logoutButton</zorder>
+    <zorder>showInfoButton</zorder>
+    <zorder>infoButton</zorder>
    </widget>
    <widget class="QGroupBox" name="authFrom">
     <property name="geometry">

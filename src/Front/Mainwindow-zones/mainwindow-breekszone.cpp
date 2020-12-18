@@ -234,7 +234,7 @@ void MainWindow::buildBreeksDescriptionZone()
 //GroupBox to describe posibilities of breeks
 	QVBoxLayout *lay1 = new QVBoxLayout;
 
-	QGroupBox *mfc = new QGroupBox;
+	calendarWidget = new QGroupBox;
 
 	const int descriptionWidth = 300;
 	const int descriptionHeight = 480;
@@ -244,10 +244,10 @@ void MainWindow::buildBreeksDescriptionZone()
 	calendarScrollArea->setStyleSheet("QScrollArea{background: #FFFFFF}");
 	calendarScrollArea->setWidgetResizable(true);
 
-	calendarScrollArea->setWidget(mfc);
-	mfc->setFixedSize(descriptionWidth - 25, descriptionHeight - 45);
-	mfc->setStyleSheet("QGroupBox{background: #FFFFFF; border-radius: 6px;}");
-	mfc->setLayout(lay1);
+	calendarScrollArea->setWidget(calendarWidget);
+	calendarWidget->setFixedSize(descriptionWidth - 25, descriptionHeight - 80);
+	calendarWidget->setStyleSheet("QGroupBox{background: #FFFFFF; border-radius: 6px;}");
+	calendarWidget->setLayout(lay1);
 
 	QVBoxLayout *lay2 = new QVBoxLayout;
 	lay1->addLayout(lay2);
@@ -258,7 +258,7 @@ void MainWindow::buildBreeksDescriptionZone()
 	QString prevMonth = "";
 
 	for (int i = 0; i < 53; ++i) { //53 - counts of week in 2021
-		mfc->setFixedHeight(40 * (i + 1));
+		calendarWidget->setFixedHeight(40 * (i + 1));
 		CalendarWeek *week = new CalendarWeek;
 		week->date->setMSecsSinceEpoch(1609113600000); //28.12.2020
 		week->date->setDate(week->date->addDays(7 * i).date());
@@ -751,5 +751,6 @@ void MainWindow::changeWeek(qint64 msecs)
 	QDateTime date;
 	date.setMSecsSinceEpoch(msecs);
 	setDayInfo(date.date());
+	clearAndInitWeekData(server->getUserData()->getAccessToken());
 }
 

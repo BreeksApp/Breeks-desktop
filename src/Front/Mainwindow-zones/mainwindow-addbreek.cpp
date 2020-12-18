@@ -186,7 +186,9 @@ void MainWindow::on_addBreekButton_clicked()
 	bool isCovert;
 	json.insert("conditions", sConditions.toShort(&isCovert, 2));
 
-	json.insert("states", QString("000000").toShort(&isCovert, 4));
+	qDebug() << "COND : " << sConditions;
+
+	json.insert("states", QString("111111").toShort(&isCovert, 4));
 
 	QJsonArray jArrEmojies;
 	for (int i = 0; i < DAYS_COUNT; ++i) {

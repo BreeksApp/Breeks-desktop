@@ -61,7 +61,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	timetableElementsCount_ = 0;
 	setWorkZone();
 
-//	setStatesFromFileLastVisit();
 	setAllElementsEffects();
 
 	ui->note->setContentsMargins(10, 10, 10, 10);
@@ -95,6 +94,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	setShadow(ui->login);
 
 	ui->widget->hide();
+	ui->hideCalendar->hide();
 }
 
 MainWindow::~MainWindow()
@@ -154,7 +154,7 @@ void MainWindow::initBreeksLines(const QList<breeksData_t> & listOfLines)
     bool arrConditions[6] = {false};
     QString sConditions = QString("000000").number(breeksLine.conditions, 2);
     while (sConditions.length() != 6) {
-      sConditions = "0" + sConditions;
+			sConditions = "0" + sConditions;
     }
     for (int i = 0; i < DAYS_COUNT; ++i) {
       arrConditions[i] = sConditions.at(i).digitValue();
@@ -163,7 +163,7 @@ void MainWindow::initBreeksLines(const QList<breeksData_t> & listOfLines)
     int arrStates[6];
     QString sStates = QString("000000").number(breeksLine.states, 4);
     while (sStates.length() != 6) {
-      sStates = "0" + sStates;
+			sStates = "1" + sStates;
     }
 
     for (int i = 0; i < DAYS_COUNT; ++i) {
@@ -181,7 +181,7 @@ void MainWindow::initTTElements(const QList<elementData_t> & listOfTTElements)
     bool arr[6] = {false};
     QDateTime date = QDateTime();
     date.setMSecsSinceEpoch(element.date);
-    int dayOfWeek = date.date().dayOfWeek() - 1;
+		int dayOfWeek = date.date().dayOfWeek() - 1;
 
     arr[dayOfWeek] = true;
 
@@ -542,6 +542,7 @@ void MainWindow::loginReply(bool login)
 		ui->mail->clear();
 		ui->password->clear();
 		ui->demoLable->hide();
+		ui->hideCalendar->show();
 	}
 	else {
 		QMessageBox message;
@@ -600,4 +601,19 @@ void MainWindow::on_nextWeekButton_clicked()
 void MainWindow::on_logoutButton_clicked()
 {
     logout();
+}
+
+void MainWindow::on_hideCalendar_clicked()
+{
+	if (!calendarWidget->isHidden()) {
+		ui->hideCalendar->setStyleSheet("border-image:url(:/Images/Front/Images/show.png); background: none;");
+		calendarWidget->hide();
+		calendarScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	}
+	else {
+		ui->hideCalendar->setStyleSheet("border-image:url(:/Images/Front/Images/hide.png); background: none;");
+		calendarWidget->show();
+		calendarScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+
+	}
 }

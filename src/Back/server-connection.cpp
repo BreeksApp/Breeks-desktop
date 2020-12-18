@@ -208,6 +208,9 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
         emit loginReply(true);
         emit initWeekData(token);
       }
+			else {
+				loginReply(false);
+			}
   }
   else if (url.contains(refreshUrl)) {
     QString username = json.value("userName").toString();
@@ -339,7 +342,7 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
         return;
       }
       else {
-          long date = json.value("date").toVariant().toDate().startOfDay().toMSecsSinceEpoch();
+					long date = json.value("date").toVariant().toDate().startOfDay().toMSecsSinceEpoch();
 
           QJsonArray jsonEffectsArr = jsonArrayFromString(json.value("effects").toString());
 
