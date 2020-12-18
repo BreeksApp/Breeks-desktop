@@ -34,11 +34,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	server = new Network::ServerConnection(new QNetworkAccessManager, new Network::UserData);
 	userData = server->getUserData();
 
-//	QThread::currentThread()->sleep(3);
-//	QUrl url(Network::serverUrl + Network::getAllLinesInWeekUrl + "1606174673000");
-//	qDebug() << "ТОКЕН НА КЛИЕНТЕ СЕЙЧАС: " << server->getUserData()->getAccessToken();
-//	server->sendGetRequestWithBearerToken(url, server->getUserData()->getAccessToken());
-//
 	// init week signals from server
 	connect(server, SIGNAL(initWeekData(const QString&)),
 		this, SLOT(clearAndInitWeekData(const QString&)));
@@ -66,7 +61,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	timetableElementsCount_ = 0;
 	setWorkZone();
 
-	setStatesFromFileLastVisit();
+//	setStatesFromFileLastVisit();
 	setAllElementsEffects();
 
 	ui->note->setContentsMargins(10, 10, 10, 10);
@@ -104,7 +99,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-  ui->note->writeToDB(ui->note->getNumberCurrentFile());
+//  ui->note->writeToDB(ui->note->getNumberCurrentFile());
 
   delete ui;
 }
@@ -115,7 +110,7 @@ void MainWindow::logout()
   server->getUserData()->setAccessToken("");
   server->getUserData()->setRefreshToken("");
   ui->authFrom->show();
-	ui->demoLable->show();
+  ui->demoLable->show();
 }
 
 void MainWindow::clearAndInitWeekData(const QString & token)
@@ -130,7 +125,6 @@ void MainWindow::initWeekData(const QString & token)
 	sDateFirstDayWeek.setNum(QDateTime(arrDays_[0].date).toMSecsSinceEpoch());
 
   // get breeks lines
-  qDebug() << "==================================== ДАТА" << sDateFirstDayWeek;
   QUrl url(Network::serverUrl + Network::getAllLinesInWeekUrl + sDateFirstDayWeek);
   server->sendGetRequestWithBearerToken(url, token);
 
@@ -155,25 +149,6 @@ void MainWindow::initWeekData(const QString & token)
 
 void MainWindow::initBreeksLines(const QList<breeksData_t> & listOfLines)
 {
-  qDebug() << "==================== LINES FROM SERVER: ";
-  for (auto breeksLine : listOfLines) {
-    qDebug() << "START LINE: ";
-    qDebug() << breeksLine.idOnServer;
-    qDebug() << breeksLine.text;
-    for (auto charStyle : breeksLine.charStyleVector) {
-      qDebug() << charStyle.bold;
-    }
-    qDebug() << QString("000000").number(breeksLine.conditions, 2);
-    qDebug() << QString("000000").number(breeksLine.states, 4);
-    int * emojies = breeksLine.arrNEmoji;
-    qDebug() << emojies[0] << " " << emojies[1] << " "
-             << emojies[2] << " " << emojies[3] << " "
-             << emojies[4] << " " << emojies[5] << " ";
-    qDebug() << breeksLine.date;
-    qDebug() << "END LINE";
-  }
-  qDebug() << "==================== END OF LINES FROM SERVER";
-
   for (auto breeksLine : listOfLines) {
 
     bool arrConditions[6] = {false};
@@ -181,7 +156,6 @@ void MainWindow::initBreeksLines(const QList<breeksData_t> & listOfLines)
     while (sConditions.length() != 6) {
       sConditions = "0" + sConditions;
     }
-    qDebug() << sConditions;
     for (int i = 0; i < DAYS_COUNT; ++i) {
       arrConditions[i] = sConditions.at(i).digitValue();
     }
@@ -191,8 +165,6 @@ void MainWindow::initBreeksLines(const QList<breeksData_t> & listOfLines)
     while (sStates.length() != 6) {
       sStates = "0" + sStates;
     }
-
-		qDebug() << "STATES ON SERVER" << sStates << " : " << breeksLine.states;
 
     for (int i = 0; i < DAYS_COUNT; ++i) {
       arrStates[i] = sStates.at(i).digitValue();
@@ -204,23 +176,6 @@ void MainWindow::initBreeksLines(const QList<breeksData_t> & listOfLines)
 
 void MainWindow::initTTElements(const QList<elementData_t> & listOfTTElements)
 {
-  qDebug() << "==================== TTElements FROM SERVER: ";
-  for (auto element : listOfTTElements) {
-    qDebug() << "START TTElement: ";
-    qDebug() << element.idOnServer;
-    qDebug() << element.text;
-    qDebug() << element.tagColor;
-    qDebug() << element.tagColorNum;
-    qDebug() << element.timeStart;
-    qDebug() << element.timeEnd;
-    for (auto charStyle : element.charStyleVector) {
-      qDebug() << charStyle.bold;
-    }
-    qDebug() << element.date;
-    qDebug() << "END TTElement";
-  }
-  qDebug() << "==================== END OF TTElements FROM SERVER";
-
   for (auto element : listOfTTElements) {
 
     bool arr[6] = {false};
@@ -236,35 +191,21 @@ void MainWindow::initTTElements(const QList<elementData_t> & listOfTTElements)
 
 void MainWindow::initNote(note_t & note)
 {
-  qDebug() << "==================== Note FROM SERVER: ";
-  qDebug() << note.text;
-  for (auto charStyle : note.charStyleVector) {
-    qDebug() << charStyle.bold;
-  }
-  qDebug() << note.page;
-  qDebug() << note.date;
-  qDebug() << "==================== END OF Note FROM SERVER";
-
   ui->note->fillCharsAndSetTextt(note.text, note.charStyleVector);
 }
 
 void MainWindow::initImage(const image_t & image)
 {
-  qDebug() << "==================== Image FROM SERVER: ";
-  qDebug() << image.imageLocation;
-  qDebug() << image.date;
-  qDebug() << "==================== END OF Image FROM SERVER";
   setImage(image.imageLocation);
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
-	//qDebug("Pressed");
+
 }
 
 void MainWindow::moveTimetableElement()
 {
-	//qDebug() << ui->groupBox->mapToGlobal(this->cursor().pos());
 	while (isElementDrag_) {
 		QPoint pos = this->mapToGlobal(this->cursor().pos());
 
@@ -291,13 +232,11 @@ void MainWindow::mousePressedByDragElement()
 
 void MainWindow::dropNoChanges()
 {
-	//qDebug("LOCK");
 	isElementDrag_ = false;
 }
 
 void MainWindow::recieveTimeTableZoneData(bool *daysCheck, elementData_t newElement, bool withRequest)
 {
-  qDebug() << "================== ЗДЕСЬ ОН БУДЕТ " << newElement.text;
 	for (int i = 0; i < 6; i++) {
     if (daysCheck[i] == true) {
       //add new element data to array
@@ -569,15 +508,6 @@ void MainWindow::on_reg_clicked()
 		 return;
 	 }
 
-	 QRegExp rx("[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+");
-	 if (!rx.exactMatch(ui->mailReg->text())) {
-		 QMessageBox message;
-		 message.setText("Вы ввели некорректный адрес электронной почты");
-		 message.exec();
-
-		 return;
-	 }
-
 	 QJsonObject json;
 	 json.insert("userName", ui->mailReg->text());
 	 json.insert("password", ui->passwordReg->text());
@@ -646,6 +576,7 @@ void MainWindow::clearWeekData()
 void MainWindow::deleteNotes()
 {
   int pageNum = ui->note->getNumberCurrentFile();
+  ui->note->setCharCounter(0);
   ui->note->clear();
 }
 

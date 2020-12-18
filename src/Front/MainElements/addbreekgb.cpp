@@ -8,7 +8,6 @@ AddBreekGB::AddBreekGB(QWidget *parent) :
 
 void AddBreekGB::keyPressEvent(QKeyEvent *event)
 {
-	qDebug("!");
 	if (event->key() == Qt::Key_Escape) {
 		emit focusOut();
 		this->hide();

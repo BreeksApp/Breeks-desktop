@@ -5,7 +5,6 @@ QUrl MainWindow::createGetNoteUrl(const int numPage)
 {
   QString date = "";
   date.setNum(QDateTime(arrDays_[0].date).toMSecsSinceEpoch());
-  qDebug() << "Notes date in MS: " << date;
   QString sNumPage = "";
   sNumPage.setNum(numPage);
 
@@ -23,8 +22,6 @@ QByteArray MainWindow::createJsonForSendingNote(int page)
 
   QString noteText = ui->note->toPlainText();
   json.insert("text", noteText);
-
-	qDebug() << "PUTREQUEST" << noteText;
 
   QJsonArray jArr;
   foreach(charStyle_t ch, ui->note->getCharStyleVector()) {
@@ -53,38 +50,8 @@ QByteArray MainWindow::createJsonForSendingNote(int page)
 
 void MainWindow::changeNotePage(const int nButton, NoteMark * buttonPage)
 {
-  //  ui->note->writeToDB(ui->note->getNumberCurrentFile());
-
-//  QTimer timer;
-//  timer.setInterval(10000);
-//  timer.setSingleShot(true);
-
-//  QEventLoop loop;
-
-//  QNetworkReply * reply =
-//    server->sendPostRequestWhenSwitchingNotePages(
-//          createPostNoteUrl(),
-//          createJsonForSendingNote(ui->note->getNumberCurrentFile()),
-//          userData->getAccessToken()
-//    );
-
-//  QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-//  QObject::connect(&timer, &QTimer::timeout, reply, &QNetworkReply::abort);
-
-//  timer.start();
-//  loop.exec();
-
-//  if (reply->isFinished() && reply->error() == QNetworkReply::NoError) {
-    noteMakePageButtonSelectable(buttonPage);
-    noteChangePage(nButton);
-
-    writeDataToFileLastVisit();
-//  }
-//  else {
-//    // GUI warning "no connection with server"
-//  }
-
-//  reply->deleteLater();
+  noteMakePageButtonSelectable(buttonPage);
+  noteChangePage(nButton);
 }
 
 void MainWindow::noteMakePageButtonSelectable(NoteMark *button)
@@ -142,8 +109,6 @@ void MainWindow::noteChangePage(const int n)
 {
   ui->note->setNumberCurrentFile(n);
   ui->note->clear();
-
-//  ui->note->readFromDB(ui->note->getNumberCurrentFile());
 
   server->sendGetRequestWithBearerToken(createGetNoteUrl(n), userData->getAccessToken());
 }

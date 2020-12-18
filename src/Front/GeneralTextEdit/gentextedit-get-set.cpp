@@ -91,8 +91,6 @@ void GenTextEdit::fillCharsAndSetText(QString text, const QJsonArray jArr)
 
 void GenTextEdit::fillCharsAndSetTextt(QString & text, QVector<charStyle_t> & styles)
 {
-	qDebug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!PRINT");
-
 		this->clearCharStyleVector();
 		this->setCharCounter(styles.size());
 

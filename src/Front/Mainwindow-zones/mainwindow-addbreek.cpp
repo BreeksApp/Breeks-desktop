@@ -202,7 +202,6 @@ void MainWindow::on_addBreekButton_clicked()
 	QJsonDocument jsonDoc(json);
 
 	server->sendPostRequestWithBearerToken(url , jsonDoc.toJson(), userData->getAccessToken());
-//	qDebug() << userData->getAccessToken();
 	//---------
 
 	emit sendBreekData(arrAddBreekFormDaysCheck_, newElement);
@@ -217,7 +216,6 @@ void MainWindow::setBLIdOnServer(long id)
 	for (int i = 0; i < breeksZonesCount_; ++i ) {
 		if (arrBreeksZones_[i].idOnServer == -1) {
 			arrBreeksZones_[i].idOnServer = id;
-			qDebug() << "SET ID " << arrBreeksZones_[i].idOnServer;
 			return;
 		}
 	}

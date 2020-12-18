@@ -72,7 +72,6 @@ void TimetableTextEdit::fillCharsAndSetText(QString text, const QVector<charStyl
 
 void TimetableTextEdit::keyPressEvent(QKeyEvent *event)
 {
-	//qDebug() << this->document()->size();
 	GenTextEdit::keyPressEvent(event);
 }
 

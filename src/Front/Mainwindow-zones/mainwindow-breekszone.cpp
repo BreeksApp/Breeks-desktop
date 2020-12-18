@@ -731,8 +731,6 @@ void MainWindow::sendPutRequestBl(int zoneIndex)
 	}
 	json.insert("states", sStates.toShort(&isCovert, 4));
 
-	qDebug() << "STATES" << sStates << " : " <<sStates.toShort(&isCovert, 4);
-
 	QJsonArray jArrEmojies;
 	for (int i = 0; i < DAYS_COUNT; ++i) {
 		QJsonObject jObj;

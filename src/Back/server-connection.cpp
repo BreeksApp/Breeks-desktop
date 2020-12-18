@@ -93,8 +93,6 @@ void Network::ServerConnection::sendPutRequestWithBearerToken(const QUrl & url, 
 {
 	qDebug() << url.toString();
 
-	qDebug() << "ГДЕ ТОКЕН БЛЯ" << token;
-
 	QNetworkRequest request(url);
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 	request.setHeader(QNetworkRequest::ContentLengthHeader, QByteArray::number(data.size()));
@@ -139,8 +137,6 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
 {
   const QJsonDocument doc = QJsonDocument::fromJson(reply->readAll());
   const QJsonObject json = doc.object();
-
-	//qDebug() << doc;
 
   int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
@@ -251,7 +247,6 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
         }
   }
   else if (url.contains(getAllLinesInWeekUrl)) {
-      qDebug() << "url " << getAllLinesInWeekUrl << " success";
 
     // парсим jsonarray в ответе
       QJsonArray jsonArrBLines = doc.array();
@@ -264,25 +259,18 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
         for (auto jsonIterator : jsonArrBLines) {
             QJsonObject json = jsonIterator.toObject();
 
-            qDebug() << json;
-
             long date = json.value("date").toVariant().toDate().startOfDay().toMSecsSinceEpoch();
 
             QJsonArray jsonEffectsArr = jsonArrayFromString(json.value("effects").toString());
 
             QVector<charStyle_t> charStyleVector = QVector<charStyle_t>();
             if (!jsonEffectsArr.isEmpty()) {
-              qDebug() << "Effects is array!";
-              qDebug() << jsonEffectsArr;
-
               createCharStyleVector(charStyleVector, jsonEffectsArr);
             }
 
             int arrNEmoji[6] = {0,0,0,0,0,0};
             QJsonValue jsonEmojies = json.value("emojies");
             if (jsonEmojies.isArray()) {
-              qDebug() << "Emojies is array!";
-
               QJsonArray jsonEmojiesArr = jsonEmojies.toArray();
               createArrNEmoji(arrNEmoji, 6, jsonEmojiesArr);
             }
@@ -305,7 +293,6 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
       }
   }
   else if (url.contains(getTTElementsForDayUrl)) {
-      qDebug() << "url " << getTTElementsForDayUrl << " success";
 
     // парсим jsonarray в ответе
       QJsonArray jsonArrTTElements = doc.array();
@@ -318,17 +305,13 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
         for (auto jsonIterator : jsonArrTTElements) {
             QJsonObject json = jsonIterator.toObject();
 
-            qDebug() << json;
-
             long date = json.value("date").toVariant().toDate().startOfDay().toMSecsSinceEpoch();
+            date += 86400000;
 
             QJsonArray jsonEffectsArr = jsonArrayFromString(json.value("effects").toString());
 
             QVector<charStyle_t> charStyleVector = QVector<charStyle_t>();
             if (!jsonEffectsArr.isEmpty()) {
-              qDebug() << "Effects is array!";
-              qDebug() << jsonEffectsArr;
-
               createCharStyleVector(charStyleVector, jsonEffectsArr);
             }
 
@@ -362,9 +345,6 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
 
           QVector<charStyle_t> charStyleVector = QVector<charStyle_t>();
           if (!jsonEffectsArr.isEmpty()) {
-            qDebug() << "Effects is array!";
-            qDebug() << jsonEffectsArr;
-
             createCharStyleVector(charStyleVector, jsonEffectsArr);
           }
 
@@ -379,7 +359,6 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
       }
   }
   else if (url.contains(getImageUrl)) {
-      qDebug() << "url " << getImageUrl << " success";
 
     // парсим jsonvalue в ответе
       if (json.isEmpty()) {

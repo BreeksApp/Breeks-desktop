@@ -26,8 +26,6 @@ GenTextEdit::GenTextEdit(QWidget *parent) :
 	this->setTextColor(QColor(0, 0, 0));
   nCurrentFile_ = 1;
   charCounter_ = 0;
-	//add saved text
-//	readFromDB(nCurrentFile_); this line is old, now we load notes' text from remote server
 	detailsSetCharStyle(globCh);
 
 	this->verticalScrollBar()->setStyleSheet(

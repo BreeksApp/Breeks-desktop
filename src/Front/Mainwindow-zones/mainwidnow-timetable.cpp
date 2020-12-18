@@ -205,9 +205,6 @@ void MainWindow::setDayInfo(QDate date)
 			}
 		}
   }
-
-	qDebug() << currentDate_ << " : " << QDate::currentDate();
-
 	if (currentDate_ == QDate::currentDate()) {
 		if (iCurrentDay_ < DAYS_COUNT) {
 			arrDays_[iCurrentDay_].scrollArea->verticalScrollBar()->setStyleSheet(

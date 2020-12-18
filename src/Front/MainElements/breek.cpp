@@ -120,7 +120,6 @@ void Breek::keyPressEvent(QKeyEvent *event)
 		}
 
 		if (iKey == Qt::Key_F || QKeySequence(iKey).toString() == "А") {
-			qDebug() << dayIndex_;
 			emit doubleClicked();
 		}
 

@@ -31,7 +31,6 @@ void DayWidget::dropEvent(QDropEvent *event)
 	QString sId;
 	out >> sId >> elemData.text >> elemData.timeStart >> elemData.timeEnd >> elemData.tagColorNum >> dragPos_;
 	elemData.idOnServer = sId.toLong();
-	qDebug() << elemData.idOnServer;
 	elemData.tagColor = tag::ARR_COLORS[elemData.tagColorNum];
 
 	QByteArray indexes = event->mimeData()->data("indexes");

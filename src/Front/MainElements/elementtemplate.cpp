@@ -216,7 +216,6 @@ void ElementTemplate::setId(long id)
 {
 	if (idOnServer_ == -1) {
 		idOnServer_ = id;
-		//qDebug() << "SET ID: " << idOnServer_;
 		emit updateId(dayIndex_, elementIndex_, idOnServer_);
 	}
 }
@@ -283,7 +282,6 @@ void ElementTemplate::setTagColor(const QString sColor)
 void ElementTemplate::setIdOnServer(long id)
 {
 	idOnServer_ = id;
-	//qDebug() << "CHANGE ID: " << idOnServer_;
 }
 
 void ElementTemplate::deleteElement()
