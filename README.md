@@ -9,6 +9,11 @@
 * [Статья на хабре]()
 
 ## Внешний вид
+### Демо-режим
+<img src = "https://github.com/BreeksApp/Breeks-presentation/blob/main/pics/login-with-elements.png">
+
+### Пример добавления кубика
+![gif](https://github.com/BreeksApp/Breeks-presentation/blob/main/pics/add-breek.gif)
 
 ## Сборка проекта Qt
 `qmake BreeksApp.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug`
@@ -19,3 +24,4 @@
 `./BreeksApp`
 
 Рекомендуется запуск в Qt Creator.
+
