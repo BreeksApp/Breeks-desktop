@@ -6,6 +6,7 @@
 Ссылки:  
 * [Сервер Breeks](https://github.com/BreeksApp/Breeks-server)
 * [Презентация приложения](https://github.com/BreeksApp/Breeks-presentation)
+* [Статья о приложении на Medium](https://yarpylaev.medium.com/breeks-построй-свою-неделю-333cd15a6c90)
 
 ## Внешний вид
 <img src = "https://github.com/BreeksApp/Breeks-presentation/blob/main/pics/login-with-elements.png">
