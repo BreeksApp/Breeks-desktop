@@ -1191,7 +1191,6 @@ padding-right: 10;
      <string notr="true">background: #FFFFFF;</string>
     </property>
    </widget>
-   <zorder>widget</zorder>
    <zorder>labelImageBackground</zorder>
    <zorder>shadowWidget</zorder>
    <zorder>buttonPage6</zorder>
@@ -1213,6 +1212,7 @@ padding-right: 10;
    <zorder>infoGb</zorder>
    <zorder>authFrom</zorder>
    <zorder>demoLable</zorder>
+   <zorder>widget</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -1220,7 +1220,7 @@ padding-right: 10;
      <x>0</x>
      <y>0</y>
      <width>1913</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

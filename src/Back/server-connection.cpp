@@ -262,7 +262,7 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
         for (auto jsonIterator : jsonArrBLines) {
             QJsonObject json = jsonIterator.toObject();
 
-            long date = json.value("date").toVariant().toDate().startOfDay().toMSecsSinceEpoch();
+						qint64 date = json.value("date").toVariant().toDate().startOfDay().toMSecsSinceEpoch();
 
             QJsonArray jsonEffectsArr = jsonArrayFromString(json.value("effects").toString());
 
@@ -308,8 +308,7 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
         for (auto jsonIterator : jsonArrTTElements) {
             QJsonObject json = jsonIterator.toObject();
 
-            long date = json.value("date").toVariant().toDate().startOfDay().toMSecsSinceEpoch();
-            date += 86400000;
+						qint64 date = json.value("date").toVariant().toDateTime().addDays(1).toMSecsSinceEpoch();
 
             QJsonArray jsonEffectsArr = jsonArrayFromString(json.value("effects").toString());
 
@@ -342,7 +341,7 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
         return;
       }
       else {
-					long date = json.value("date").toVariant().toDate().startOfDay().toMSecsSinceEpoch();
+					qint64 date = json.value("date").toVariant().toDate().startOfDay().toMSecsSinceEpoch();
 
           QJsonArray jsonEffectsArr = jsonArrayFromString(json.value("effects").toString());
 
@@ -368,7 +367,7 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
         return;
       }
       else {
-          long date = json.value("date").toVariant().toDate().startOfDay().toMSecsSinceEpoch();
+					qint64 date = json.value("date").toVariant().toDate().startOfDay().toMSecsSinceEpoch();
 
           image_t image = {
             json.value("linkToImage").toString(),

@@ -49,7 +49,7 @@ struct elementData_t {
 	QString timeEnd;
 	//QString color;
 	QVector<charStyle_t> charStyleVector;
-	long date;
+	qint64 date;
 };
 
 struct breeksData_t {
@@ -59,7 +59,7 @@ struct breeksData_t {
 	int conditions;
 	int states;
 	int arrNEmoji[6];
-	long date;
+	qint64 date;
 };
 
 struct tagElement_t {
@@ -83,12 +83,12 @@ struct note_t {
 	QString text;
 	QVector<charStyle_t> charStyleVector;
 	int page;
-	long date;
+	qint64 date;
 };
 
 struct image_t {
 	QString imageLocation;
-	long date;
+	qint64 date;
 };
 
 enum Directions

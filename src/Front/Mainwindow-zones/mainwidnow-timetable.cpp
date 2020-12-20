@@ -123,10 +123,7 @@ void MainWindow::setDayInfo(QDate date)
 
 	//identify current day of week
 
-	qDebug() << "DDDAAAATEEEE: " << QDate::currentDate().daysTo(date);
-
 	if (QDate::currentDate().daysTo(date) > -6 && QDate::currentDate().daysTo(date) <= 0) {
-		qDebug() << "!!!!";
 		iCurrentDay_ = QDate::currentDate().dayOfWeek() - 1;
 		currentDate_ = QDate::currentDate();
 	}
