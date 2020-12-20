@@ -129,7 +129,6 @@ void MainWindow::initWeekData(const QString & token)
   QUrl url(Network::serverUrl + Network::getAllLinesInWeekUrl + sDateFirstDayWeek);
   server->sendGetRequestWithBearerToken(url, token);
 
-  // 1606396541000
   // get TTElements
   for (auto day : arrDays_) {
     QString sDate = "";
