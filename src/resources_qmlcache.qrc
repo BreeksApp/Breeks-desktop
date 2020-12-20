@@ -134,9 +134,15 @@
         <file alias="Front/Images/Breeks/70.png">Front/Images/Breeks/70.png</file>
         <file alias="Front/Images/Breeks/71.png">Front/Images/Breeks/71.png</file>
         <file alias="Front/Images/logout.png">Front/Images/logout.png</file>
-        <file alias="Front/Images/nextWeek.png">Front/Images/nextWeek.png</file>
-        <file alias="Front/Images/prevWeek.png">Front/Images/prevWeek.png</file>
         <file alias="Front/Images/info.png">Front/Images/info.png</file>
+        <file alias="Front/Images/rewind-left-green.png">Front/Images/rewind-left-green.png</file>
+        <file alias="Front/Images/rewind-left-grey.png">Front/Images/rewind-left-grey.png</file>
+        <file alias="Front/Images/rewind-right-green.png">Front/Images/rewind-right-green.png</file>
+        <file alias="Front/Images/rewind-right-grey.png">Front/Images/rewind-right-grey.png</file>
+        <file alias="Front/Images/hide.svg">Front/Images/hide.svg</file>
+        <file alias="Front/Images/show.svg">Front/Images/show.svg</file>
+        <file alias="Front/Images/hide.png">Front/Images/hide.png</file>
+        <file alias="Front/Images/show.png">Front/Images/show.png</file>
     </qresource>
     <qresource prefix="/qml"/>
 </RCC>

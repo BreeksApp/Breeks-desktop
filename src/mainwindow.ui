@@ -25,6 +25,10 @@
   <property name="windowTitle">
    <string>Breeks</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>eeicon.ico</normaloff>eeicon.ico</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true"/>
   </property>
@@ -1220,7 +1224,7 @@ padding-right: 10;
      <x>0</x>
      <y>0</y>
      <width>1913</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

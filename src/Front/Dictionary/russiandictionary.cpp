@@ -8,7 +8,8 @@ RussianDictionary::RussianDictionary()
 {
 //.DIC
 //	QString path = "C:/Users/ypyla/PROJECTS/Breeks-desktop/src/Front/RusDic/RusDic.txt";
-        QString path = QDir::current().path() + "/Front/RusDic/RusDic.txt";
+//        QString path = QDir::current().path() + "/Front/RusDic/RusDic.txt";
+        QString path = QDir::current().path() + "/RusDic.txt"; //Release
   qDebug() << path;
 
   QFile fDic(path);
