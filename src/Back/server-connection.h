@@ -78,7 +78,7 @@ namespace Network {
   // ===================
   //  API Properties
   //====================
-  const QString serverUrl = "http://13.48.196.216:8080";
+  const QString serverUrl = "https://breeks.cf";
   const QString registrationUrl = "/user/registration";
   const QString authUrl = "/auth/signin";
   const QString refreshUrl = "/auth/refresh";
