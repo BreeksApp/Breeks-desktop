@@ -54,11 +54,11 @@ void Network::ServerConnection::sendPostRefreshRequest(const QString & username,
   json.insert("username", username);
   json.insert("refreshToken", refreshToken);
   QJsonDocument jsonDoc(json);
-  QByteArray jsonData= jsonDoc.toJson();
+  QByteArray jsonData = jsonDoc.toJson();
   request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
   request.setHeader(QNetworkRequest::ContentLengthHeader, QByteArray::number(jsonData.size()));
 
-	networkAccessManager_->post(request, jsonData);
+  networkAccessManager_->post(request, jsonData);
 }
 
 void Network::ServerConnection::sendPostRequest(const QUrl& url, const QByteArray & data)
@@ -207,18 +207,29 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
         emit initSecretData(username, token, tokenRefresh);
         emit loginReply(true);
         emit initWeekData(token);
+        emit sendDataToRfrshFile(tokenRefresh, username);
       }
-			else {
-				loginReply(false);
-			}
+      else {
+        loginReply(false);
+      }
   }
   else if (url.contains(refreshUrl)) {
+    // check if we use refresh method to login automatically
+    bool authMode = false;
+    if (this->userData_->getUsername().isEmpty()) authMode = true;
+
     QString username = json.value("userName").toString();
     QString token = json.value("token").toString();
     QString tokenRefresh = json.value("tokenRefresh").toString();
 
     if (username != "" && token != "" && tokenRefresh != "") {
       emit initSecretData(username, token, tokenRefresh);
+      emit sendDataToRfrshFile(tokenRefresh, username);
+      if (authMode) {
+        emit loginReply(true);
+        emit initWeekData(token);
+        return;
+      }
       mutex = true;
       for (auto request : listOfLastRequests_) {
         if (request.reqType == "PostWithToken") {

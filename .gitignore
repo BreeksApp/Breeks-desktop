@@ -9,3 +9,6 @@ src/.qmake*
 src/Makefile
 src/BreeksApp
 src/ui*
+src/Front_Qml_qml_for_breeks_qml.cpp
+src/RusDic.txt
+src/qmlcache_loader.cpp

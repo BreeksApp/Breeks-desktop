@@ -7,6 +7,7 @@
 #include <QDesktopServices>
 #include <QMessageBox>
 #include <QThread>
+#include <QDebug>
 #include <Front/MainElements/EmojiHub/emojihub.h>
 #include <Back/secret-data.h>
 #include <Back/server-connection.h>
@@ -96,6 +97,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	ui->widget->hide();
 	ui->hideCalendar->hide();
+
+	// connect for writing to refresh file
+	connect(server, SIGNAL(sendDataToRfrshFile(const QString&, const QString&)),
+		this, SLOT(writeToRfrshFile(const QString&, const QString&)));
+
+	// check if we can auto authorize the user
+	checkSavedSession();
 }
 
 MainWindow::~MainWindow()
@@ -112,6 +120,65 @@ void MainWindow::logout()
   server->getUserData()->setRefreshToken("");
   ui->authFrom->show();
   ui->demoLable->show();
+  writeToRfrshFile("", "");
+}
+
+void MainWindow::writeToRfrshFile(const QString & refresh, const QString & email)
+{
+  QJsonObject json;
+  json.insert("refresh", refresh);
+  json.insert("email", email);
+  QJsonDocument jsonDoc(json);
+  QByteArray jsonData = jsonDoc.toJson();
+
+  QFile refreshFile(QDir::current().path() + rfrshPath_);
+  if (!refreshFile.open(QIODevice::ReadWrite)) {
+    qDebug() << "Error. Refresh file is not open!";
+    return;
+  }
+
+  refreshFile.resize(0);
+  refreshFile.write(jsonData);
+}
+
+QJsonObject * MainWindow::openRefreshFile()
+{
+  QFile refreshFile(QDir::current().path() + rfrshPath_);
+
+  if (!refreshFile.open(QIODevice::ReadOnly)) {
+    qDebug() << "Error. Refresh file is not open!";
+    return nullptr;
+  }
+
+  QByteArray data = refreshFile.readAll();
+  QJsonDocument jDoc = QJsonDocument::fromJson(data);
+
+  return new QJsonObject(jDoc.object());
+}
+
+void MainWindow::checkSavedSession()
+{
+  QJsonObject * jsonRfrsh = openRefreshFile();
+  if (jsonRfrsh != nullptr) {
+    QString refreshToken = jsonRfrsh->value("refresh").toString();
+    QString email = jsonRfrsh->value("email").toString();
+    if (refreshToken.isEmpty()) {
+      // registration form, auto-filling email if having the one
+      if (!email.isEmpty()) {
+        ui->mail->setText(email);
+      }
+    }
+    else {
+      // send refresh-request
+      if (!email.isEmpty()) {
+        ui->mail->setText(email);
+        server->sendPostRefreshRequest(email, refreshToken);
+      }
+      else {
+        qDebug() << "Error. There's a refresh but no email.";
+      }
+    }
+  }
 }
 
 void MainWindow::clearAndInitWeekData(const QString & token)

@@ -84,7 +84,13 @@ public slots:
 
 	void logout();
 
+	void writeToRfrshFile(const QString&, const QString&);
+
 private slots:
+// refresh file
+  QJsonObject * openRefreshFile();
+  void checkSavedSession();
+
 // load week from server
 	void clearAndInitWeekData(const QString&);
 
@@ -110,72 +116,72 @@ private slots:
 
 //adding new elements
   void on_buttonAdd_clicked();
-	void on_buttonAdd_2_clicked();
+  void on_buttonAdd_2_clicked();
 
 //slot to fill original breeks positions in layout when they have been added on it(to avoid "position problem")
   void fillBreeksPositions(int);
-        void changeBreeksZoneLilDayState(int, int, int, bool withRequest = true);
-	void setBreeksZoneLilDayShadow(int, int, bool);
-	void setBreeksDescriptionZoneFocus(int, bool);
-	void descriptionZoneDayDobleClick(int, int);
-	void changeLilDayState(int, int);
+  void changeBreeksZoneLilDayState(int, int, int, bool withRequest = true);
+  void setBreeksZoneLilDayShadow(int, int, bool);
+  void setBreeksDescriptionZoneFocus(int, bool);
+  void descriptionZoneDayDobleClick(int, int);
+  void changeLilDayState(int, int);
 
-	void deleteBreeksZone(int);
+  void deleteBreeksZone(int);
 
 //ADD BREEKS
-	void on_mnBreekButton_clicked();
-	void on_tuBreekButton_clicked();
-	void on_weBreekButton_clicked();
-	void on_thBreekButton_clicked();
-	void on_frBreekButton_clicked();
-	void on_stBreekButton_clicked();
+  void on_mnBreekButton_clicked();
+  void on_tuBreekButton_clicked();
+  void on_weBreekButton_clicked();
+  void on_thBreekButton_clicked();
+  void on_frBreekButton_clicked();
+  void on_stBreekButton_clicked();
 
-	void on_addBreekButton_clicked();
+  void on_addBreekButton_clicked();
 
-	void setBLIdOnServer(long);
-	void sendPutRequestBl(int);
+  void setBLIdOnServer(long);
+  void sendPutRequestBl(int);
 
 //ADD TIMETABLE ELEMENT
-	void on_mnTimetableElemnetButton_clicked();
-	void on_tuTimetableElemnetButton_clicked();
-	void on_weTimetableElemnetButton_clicked();
-	void on_thTimetableElemnetButton_clicked();
-	void on_frTimetableElemnetButton_clicked();
-	void on_stTimetableElemnetButton_clicked();
+  void on_mnTimetableElemnetButton_clicked();
+  void on_tuTimetableElemnetButton_clicked();
+  void on_weTimetableElemnetButton_clicked();
+  void on_thTimetableElemnetButton_clicked();
+  void on_frTimetableElemnetButton_clicked();
+  void on_stTimetableElemnetButton_clicked();
 
-	void on_timetableElementTagColor_clicked();
+  void on_timetableElementTagColor_clicked();
 
-	void on_addTimetableElementButton_clicked();
+  void on_addTimetableElementButton_clicked();
 
-	void on_infoButton_clicked();
-	void infoGBEnter();
-	void infoGBLeave();
+  void on_infoButton_clicked();
+  void infoGBEnter();
+  void infoGBLeave();
 
-	void on_reg_clicked();
+  void on_reg_clicked();
 
-	void on_login_clicked();
-	void loginReply(bool);
+  void on_login_clicked();
+  void loginReply(bool);
 
-	void on_prevWeekButton_clicked();
+  void on_prevWeekButton_clicked();
 
-	void on_nextWeekButton_clicked();
+  void on_nextWeekButton_clicked();
 
-	void on_logoutButton_clicked();
+  void on_logoutButton_clicked();
 
-	void on_hideCalendar_clicked();
+  void on_hideCalendar_clicked();
 
-	void on_showInfoButton_clicked();
+  void on_showInfoButton_clicked();
 
 signals:
   void sendUsername(const QString);
-	void sendBreekData(bool *, breeksData_t);
-	void sendTimetableElementData(bool *, elementData_t);
+  void sendBreekData(bool *, breeksData_t);
+  void sendTimetableElementData(bool *, elementData_t);
 
 private:
   Ui::MainWindow *ui;
 
-	Network::UserData *userData;
-	Network::ServerConnection *server;
+  Network::UserData *userData;
+  Network::ServerConnection *server;
 
 //last visit data about image and page in notes
   const QString fileLastVisitName_ = "fileLastVisit.txt";
@@ -199,6 +205,10 @@ private:
   const QString fileThuName_ = "timetableThuStorage.txt";
   const QString fileFriName_ = "timetableFriStorage.txt";
   const QString fileSatName_ = "timetableSatStorage.txt";
+
+// refresh local file RELATIVE path
+  const QString rfrshPath_ = "/Front/RusDic/rfrsh.json"; // Debug version
+//  const QString rfrshPath_ = "/rfrsh.json"; // Release version
 
   QFile fileMon_;
   QFile fileTue_;
