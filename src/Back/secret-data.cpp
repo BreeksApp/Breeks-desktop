@@ -7,9 +7,7 @@ Network::UserData::UserData(QObject *parent) :
   username_(""),
   accessToken_(""),
   refreshToken_("")
-{
-
-}
+{}
 
 Network::UserData::UserData(QString username, QString accessToken,
                             QString refreshToken, QObject *parent) :
@@ -17,17 +15,13 @@ Network::UserData::UserData(QString username, QString accessToken,
   username_(username),
   accessToken_(accessToken),
   refreshToken_(refreshToken)
-{
+{}
 
-}
-
-QString Network::UserData::getUsername()
-{
+QString Network::UserData::getUsername() {
   return username_;
 }
 
-void Network::UserData::setUsername(QString username)
-{
+void Network::UserData::setUsername(QString username) {
   this->username_ = username;
 }
 
@@ -47,8 +41,7 @@ void Network::UserData::setRefreshToken(QString refreshToken) {
   this->refreshToken_ = refreshToken;
 }
 
-void Network::UserData::initSecretData(QString username, QString accessToken, QString refreshToken)
-{
+void Network::UserData::initSecretData(QString username, QString accessToken, QString refreshToken) {
   this->username_ = username;
   this->accessToken_ = accessToken;
   this->refreshToken_ = refreshToken;

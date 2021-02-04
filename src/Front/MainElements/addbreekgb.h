@@ -6,15 +6,16 @@
 
 class AddBreekGB : public QGroupBox
 {
-	Q_OBJECT
-public:
-	AddBreekGB(QWidget *parent = nullptr);
+  Q_OBJECT
 
-	void keyPressEvent(QKeyEvent *event) override;
-	void mouseDoubleClickEvent(QMouseEvent *event) override;
+public:
+  AddBreekGB(QWidget *parent = nullptr);
+
+  void keyPressEvent(QKeyEvent *event) override;
+  void mouseDoubleClickEvent(QMouseEvent *event) override;
 
 signals:
-	void focusOut();
+  void focusOut();
 };
 
 #endif // ADDBREEKGB_H

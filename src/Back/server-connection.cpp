@@ -10,9 +10,7 @@
 Network::ServerConnection::ServerConnection(QObject *parent):
   QObject(parent),
   listOfLastRequests_(QList<lastRequest_t>())
-{
-
-}
+{}
 
 Network::ServerConnection::ServerConnection(QNetworkAccessManager * networkAccessManager,
                                             Network::UserData * userData, QObject *parent):
@@ -26,14 +24,12 @@ Network::ServerConnection::ServerConnection(QNetworkAccessManager * networkAcces
           userData_,SLOT(initSecretData(QString, QString, QString)));
 }
 
-Network::UserData * Network::ServerConnection::getUserData()
-{
+Network::UserData * Network::ServerConnection::getUserData() {
   return userData_;
 }
 
-void Network::ServerConnection::sendAuthRequest(const QString & username, const QString & password)
-{
-	QNetworkRequest request(QUrl(Network::serverUrl + Network::authUrl));
+void Network::ServerConnection::sendAuthRequest(const QString & username, const QString & password) {
+  QNetworkRequest request(QUrl(Network::serverUrl + Network::authUrl));
 
   QJsonObject json;
   json.insert("username", username);
@@ -46,8 +42,7 @@ void Network::ServerConnection::sendAuthRequest(const QString & username, const 
   networkAccessManager_->post(request, jsonData);
 }
 
-void Network::ServerConnection::sendPostRefreshRequest(const QString & username, const QString & refreshToken)
-{
+void Network::ServerConnection::sendPostRefreshRequest(const QString & username, const QString & refreshToken) {
   QNetworkRequest request(QUrl(Network::serverUrl + Network::refreshUrl));
 
   QJsonObject json;
@@ -61,64 +56,59 @@ void Network::ServerConnection::sendPostRefreshRequest(const QString & username,
   networkAccessManager_->post(request, jsonData);
 }
 
-void Network::ServerConnection::sendPostRequest(const QUrl& url, const QByteArray & data)
-{
-	qDebug() << url.toString();
+void Network::ServerConnection::sendPostRequest(const QUrl& url, const QByteArray & data) {
+  qDebug() << url.toString();
 
-	QNetworkRequest request(url);
-	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-	request.setHeader(QNetworkRequest::ContentLengthHeader, QByteArray::number(data.size()));
+  QNetworkRequest request(url);
+  request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+  request.setHeader(QNetworkRequest::ContentLengthHeader, QByteArray::number(data.size()));
 
-	networkAccessManager_->post(request, data);
+  networkAccessManager_->post(request, data);
 }
 
 void Network::ServerConnection::sendPostRequestWithBearerToken(const QUrl & url, const QByteArray & data,
-							       const QString & token)
-{
-	qDebug() << url.toString();
+                                                               const QString & token) {
+  qDebug() << url.toString();
 
-	QNetworkRequest request(url);
-	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-	request.setHeader(QNetworkRequest::ContentLengthHeader, QByteArray::number(data.size()));
-	auto tokenHeader = QString("Bearer %1").arg(token);
-	request.setRawHeader(QByteArray("Authorization"), tokenHeader.toUtf8());
+  QNetworkRequest request(url);
+  request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+  request.setHeader(QNetworkRequest::ContentLengthHeader, QByteArray::number(data.size()));
+  auto tokenHeader = QString("Bearer %1").arg(token);
+  request.setRawHeader(QByteArray("Authorization"), tokenHeader.toUtf8());
 
-	if (!mutex) listOfLastRequests_.append({url, data, "PostWithToken"});
+  if (!mutex) listOfLastRequests_.append({url, data, "PostWithToken"});
 
-	networkAccessManager_->post(request, data);
+  networkAccessManager_->post(request, data);
 }
 
 void Network::ServerConnection::sendPutRequestWithBearerToken(const QUrl & url, const QByteArray & data,
-							      const QString & token)
-{
-	qDebug() << url.toString();
+                                                              const QString & token) {
+  qDebug() << url.toString();
 
-	QNetworkRequest request(url);
-	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-	request.setHeader(QNetworkRequest::ContentLengthHeader, QByteArray::number(data.size()));
-	auto tokenHeader = QString("Bearer %1").arg(token);
-	request.setRawHeader(QByteArray("Authorization"), tokenHeader.toUtf8());
+  QNetworkRequest request(url);
+  request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+  request.setHeader(QNetworkRequest::ContentLengthHeader, QByteArray::number(data.size()));
+  auto tokenHeader = QString("Bearer %1").arg(token);
+  request.setRawHeader(QByteArray("Authorization"), tokenHeader.toUtf8());
 
-	if (!mutex) listOfLastRequests_.append({url, data, "PutWithToken"});
+  if (!mutex) listOfLastRequests_.append({url, data, "PutWithToken"});
 
-	networkAccessManager_->put(request, data);
+  networkAccessManager_->put(request, data);
 }
 
-void Network::ServerConnection::sendDeleteRequestWithBearerToken(const QUrl & url, const QString & token)
-{
-	qDebug() << url.toString();
+void Network::ServerConnection::sendDeleteRequestWithBearerToken(const QUrl & url, const QString & token) {
+  qDebug() << url.toString();
 
-	QNetworkRequest request(url);
-	auto tokenHeader = QString("Bearer %1").arg(token);
-	request.setRawHeader(QByteArray("Authorization"), tokenHeader.toUtf8());
+  QNetworkRequest request(url);
+  auto tokenHeader = QString("Bearer %1").arg(token);
+  request.setRawHeader(QByteArray("Authorization"), tokenHeader.toUtf8());
 
-	if (!mutex) listOfLastRequests_.append({url, QByteArray(), "DeleteWithToken"});
+  if (!mutex) listOfLastRequests_.append({url, QByteArray(), "DeleteWithToken"});
 
-	networkAccessManager_->deleteResource(request);
+  networkAccessManager_->deleteResource(request);
 }
 
-void Network::ServerConnection::sendGetRequestWithBearerToken(const QUrl & url, const QString & token)
-{
+void Network::ServerConnection::sendGetRequestWithBearerToken(const QUrl & url, const QString & token) {
   QNetworkRequest request(url);
   auto tokenHeader = QString("Bearer %1").arg(token);
   request.setRawHeader(QByteArray("Authorization"), tokenHeader.toUtf8());
@@ -133,8 +123,7 @@ void Network::ServerConnection::sendGetRequestWithBearerToken(const QUrl & url, 
   }
 }
 
-void Network::ServerConnection::onfinish(QNetworkReply * reply)
-{
+void Network::ServerConnection::onfinish(QNetworkReply * reply) {
   const QJsonDocument doc = QJsonDocument::fromJson(reply->readAll());
   const QJsonObject json = doc.object();
 
@@ -199,19 +188,19 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
   }
 
   if (url.contains(authUrl)) {
-      QString username = json.value("userName").toString();
-      QString token = json.value("token").toString();
-      QString tokenRefresh = json.value("tokenRefresh").toString();
+    QString username = json.value("userName").toString();
+    QString token = json.value("token").toString();
+    QString tokenRefresh = json.value("tokenRefresh").toString();
 
-      if (username != "" && token != "" && tokenRefresh != "") {
-        emit initSecretData(username, token, tokenRefresh);
-        emit loginReply(true);
-        emit initWeekData(token);
-        emit sendDataToRfrshFile(tokenRefresh, username);
-      }
-      else {
-        loginReply(false);
-      }
+    if (username != "" && token != "" && tokenRefresh != "") {
+      emit initSecretData(username, token, tokenRefresh);
+      emit loginReply(true);
+      emit initWeekData(token);
+      emit sendDataToRfrshFile(tokenRefresh, username);
+    }
+    else {
+      loginReply(false);
+    }
   }
   else if (url.contains(refreshUrl)) {
     // check if we use refresh method to login automatically
@@ -249,144 +238,137 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply)
     }
   }
   else if (url.contains(addTTElementUrl)) {
-      if (json.value("elementId").toInt() != 0) {
-          qDebug("ELEMENT");
-          emit initTEidOnServer(json.value("elementId").toInt());
-        }
+    if (json.value("elementId").toInt() != 0) {
+      qDebug("ELEMENT");
+      emit initTEidOnServer(json.value("elementId").toInt());
+    }
   }
   else if (url.contains(addBreeksLineUrl)) {
-      if (json.value("lineId").toInt() != 0) {
-          qDebug() << "LINE " << json.value("lineId").toInt();
-          emit initBLidOnServer(json.value("lineId").toInt());
-        }
+    if (json.value("lineId").toInt() != 0) {
+      qDebug() << "LINE " << json.value("lineId").toInt();
+      emit initBLidOnServer(json.value("lineId").toInt());
+    }
   }
   else if (url.contains(getAllLinesInWeekUrl)) {
+    QJsonArray jsonArrBLines = doc.array();
+    if (jsonArrBLines.isEmpty()) {
+      return;
+    }
+    else {
+      QList<breeksData_t> listOfBreeksLines = QList<breeksData_t>();
 
-    // парсим jsonarray в ответе
-      QJsonArray jsonArrBLines = doc.array();
-      if (jsonArrBLines.isEmpty()) {
-        return;
-      }
-      else {
-        QList<breeksData_t> listOfBreeksLines = QList<breeksData_t>();
+      for (auto jsonIterator : jsonArrBLines) {
+        QJsonObject json = jsonIterator.toObject();
 
-        for (auto jsonIterator : jsonArrBLines) {
-            QJsonObject json = jsonIterator.toObject();
+        qint64 date = json.value("date").toVariant().toDate().startOfDay().toMSecsSinceEpoch();
 
-						qint64 date = json.value("date").toVariant().toDate().startOfDay().toMSecsSinceEpoch();
+        QJsonArray jsonEffectsArr = jsonArrayFromString(json.value("effects").toString());
 
-            QJsonArray jsonEffectsArr = jsonArrayFromString(json.value("effects").toString());
-
-            QVector<charStyle_t> charStyleVector = QVector<charStyle_t>();
-            if (!jsonEffectsArr.isEmpty()) {
-              createCharStyleVector(charStyleVector, jsonEffectsArr);
-            }
-
-            int arrNEmoji[6] = {0,0,0,0,0,0};
-            QJsonValue jsonEmojies = json.value("emojies");
-            if (jsonEmojies.isArray()) {
-              QJsonArray jsonEmojiesArr = jsonEmojies.toArray();
-              createArrNEmoji(arrNEmoji, 6, jsonEmojiesArr);
-            }
-
-            breeksData_t breeksLine = {
-              json.value("lineId").toInt(),
-              json.value("description").toString(),
-              charStyleVector,
-              json.value("conditions").toInt(),
-              json.value("states").toInt(),
-              {0,0,0,0,0,0},
-              date
-            };
-            for (unsigned i = 0; i < 6; ++i) breeksLine.arrNEmoji[i] = arrNEmoji[i];
-
-            listOfBreeksLines.append(breeksLine);
+        QVector<charStyle_t> charStyleVector = QVector<charStyle_t>();
+        if (!jsonEffectsArr.isEmpty()) {
+          createCharStyleVector(charStyleVector, jsonEffectsArr);
         }
 
-        emit sendBreeksLinesToGUI(listOfBreeksLines);
+        int arrNEmoji[6] = {0,0,0,0,0,0};
+        QJsonValue jsonEmojies = json.value("emojies");
+        if (jsonEmojies.isArray()) {
+          QJsonArray jsonEmojiesArr = jsonEmojies.toArray();
+          createArrNEmoji(arrNEmoji, 6, jsonEmojiesArr);
+        }
+
+        breeksData_t breeksLine = {
+          json.value("lineId").toInt(),
+          json.value("description").toString(),
+          charStyleVector,
+          json.value("conditions").toInt(),
+          json.value("states").toInt(),
+          {0,0,0,0,0,0},
+          date
+        };
+        for (unsigned i = 0; i < 6; ++i) breeksLine.arrNEmoji[i] = arrNEmoji[i];
+
+        listOfBreeksLines.append(breeksLine);
       }
+
+      emit sendBreeksLinesToGUI(listOfBreeksLines);
+    }
   }
   else if (url.contains(getTTElementsForDayUrl)) {
+    QJsonArray jsonArrTTElements = doc.array();
+    if (jsonArrTTElements.isEmpty()) {
+      return;
+    }
+    else {
+      QList<elementData_t> listOfTTElements = QList<elementData_t>();
 
-    // парсим jsonarray в ответе
-      QJsonArray jsonArrTTElements = doc.array();
-      if (jsonArrTTElements.isEmpty()) {
-        return;
-      }
-      else {
-        QList<elementData_t> listOfTTElements = QList<elementData_t>();
+      for (auto jsonIterator : jsonArrTTElements) {
+        QJsonObject json = jsonIterator.toObject();
 
-        for (auto jsonIterator : jsonArrTTElements) {
-            QJsonObject json = jsonIterator.toObject();
+        qint64 date = json.value("date").toVariant().toDateTime().addDays(1).toMSecsSinceEpoch();
 
-						qint64 date = json.value("date").toVariant().toDateTime().addDays(1).toMSecsSinceEpoch();
+        QJsonArray jsonEffectsArr = jsonArrayFromString(json.value("effects").toString());
 
-            QJsonArray jsonEffectsArr = jsonArrayFromString(json.value("effects").toString());
-
-            QVector<charStyle_t> charStyleVector = QVector<charStyle_t>();
-            if (!jsonEffectsArr.isEmpty()) {
-              createCharStyleVector(charStyleVector, jsonEffectsArr);
-            }
-
-            int tagColorNum = json.value("tagColorNum").toInt();
-            elementData_t ttelement = {
-              json.value("elementId").toInt(),
-              json.value("mainText").toString(),
-              tag::ARR_COLORS[tagColorNum],
-              tagColorNum,
-              json.value("timeFrom").toString(),
-              json.value("timeTo").toString(),
-              charStyleVector,
-              date
-            };
-
-            listOfTTElements.append(ttelement);
+        QVector<charStyle_t> charStyleVector = QVector<charStyle_t>();
+        if (!jsonEffectsArr.isEmpty()) {
+          createCharStyleVector(charStyleVector, jsonEffectsArr);
         }
 
-        emit sendTTElementsToGUI(listOfTTElements);
+        int tagColorNum = json.value("tagColorNum").toInt();
+        elementData_t ttelement = {
+          json.value("elementId").toInt(),
+          json.value("mainText").toString(),
+          tag::ARR_COLORS[tagColorNum],
+          tagColorNum,
+          json.value("timeFrom").toString(),
+          json.value("timeTo").toString(),
+          charStyleVector,
+          date
+        };
+
+        listOfTTElements.append(ttelement);
       }
+
+      emit sendTTElementsToGUI(listOfTTElements);
+    }
   }
   else if (url.contains(getNoteByDateAndPageUrl)) {
-    // парсим jsonvalue в ответе
-      if (json.isEmpty()) {
-        return;
+    if (json.isEmpty()) {
+      return;
+    }
+    else {
+      qint64 date = json.value("date").toVariant().toDate().startOfDay().toMSecsSinceEpoch();
+
+      QJsonArray jsonEffectsArr = jsonArrayFromString(json.value("effects").toString());
+
+      QVector<charStyle_t> charStyleVector = QVector<charStyle_t>();
+      if (!jsonEffectsArr.isEmpty()) {
+        createCharStyleVector(charStyleVector, jsonEffectsArr);
       }
-      else {
-					qint64 date = json.value("date").toVariant().toDate().startOfDay().toMSecsSinceEpoch();
 
-          QJsonArray jsonEffectsArr = jsonArrayFromString(json.value("effects").toString());
+      note_t note = {
+        json.value("text").toString(),
+        charStyleVector,
+        json.value("page").toInt(),
+        date
+      };
 
-          QVector<charStyle_t> charStyleVector = QVector<charStyle_t>();
-          if (!jsonEffectsArr.isEmpty()) {
-            createCharStyleVector(charStyleVector, jsonEffectsArr);
-          }
-
-          note_t note = {
-            json.value("text").toString(),
-            charStyleVector,
-            json.value("page").toInt(),
-            date
-          };
-
-          emit sendNoteToGUI(note);
-      }
+      emit sendNoteToGUI(note);
+    }
   }
   else if (url.contains(getImageUrl)) {
+    if (json.isEmpty()) {
+      return;
+    }
+    else {
+      qint64 date = json.value("date").toVariant().toDate().startOfDay().toMSecsSinceEpoch();
 
-    // парсим jsonvalue в ответе
-      if (json.isEmpty()) {
-        return;
-      }
-      else {
-					qint64 date = json.value("date").toVariant().toDate().startOfDay().toMSecsSinceEpoch();
+      image_t image = {
+        json.value("linkToImage").toString(),
+        date
+      };
 
-          image_t image = {
-            json.value("linkToImage").toString(),
-            date
-          };
-
-          emit sendImageToGUI(image);
-      }
+      emit sendImageToGUI(image);
+    }
   }
 
   if (!mutex) listOfLastRequests_.clear();

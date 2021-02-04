@@ -1,5 +1,3 @@
-//VIEW
-
 #ifndef BREEK_H
 #define BREEK_H
 
@@ -19,20 +17,20 @@ public:
   Breek(int width, int height, QWidget *parent = nullptr);
   ~Breek();
 
-	void keyPressEvent(QKeyEvent *event) override;
-	void mouseDoubleClickEvent(QMouseEvent *event) override;
-	void mousePressEvent(QMouseEvent *event) override;
-	void focusInEvent(QFocusEvent *) override;
-	void focusOutEvent(QFocusEvent *) override;
+  void keyPressEvent(QKeyEvent *event) override;
+  void mouseDoubleClickEvent(QMouseEvent *event) override;
+  void mousePressEvent(QMouseEvent *event) override;
+  void focusInEvent(QFocusEvent *) override;
+  void focusOutEvent(QFocusEvent *) override;
 
   bool getState();
   void setState(bool state);
 
-	Conditions getColorState();
-	void setColorState(Conditions cond);
+  Conditions getColorState();
+  void setColorState(Conditions cond);
 
-	void connectToQml(int indexOfEmoji, Conditions cond);
-	void connectToQml(Conditions cond, bool = false);
+  void connectToQml(int indexOfEmoji, Conditions cond);
+  void connectToQml(Conditions cond, bool = false);
   void connectToQml(int indexOfEmoji, Directions dir,
                     Conditions from, Conditions to);
 
@@ -46,8 +44,8 @@ public:
 private:
   bool state_;
 
-	bool isAnimated_;
-	void waitAnimationEnd();
+  bool isAnimated_;
+  void waitAnimationEnd();
 
   Conditions workState_;
   int zoneIndex_;
@@ -59,24 +57,24 @@ private:
   QQuickWidget *quickWidget_;
   QObject *graphObject_;
 
-	bool callHub_;
+  bool callHub_;
 
 signals:
   void moveBreek(int, int, bool);
-	void sendSateToLilDay(int, int, int);
-	void isHere(int, int, bool);
-	void doubleClicked();
-	void setZoneFocus(int, bool);
-	void changeState(int, int);
-	void changeEmojiOnServer(int);
-	void sendPutRequest();
+  void sendSateToLilDay(int, int, int);
+  void isHere(int, int, bool);
+  void doubleClicked();
+  void setZoneFocus(int, bool);
+  void changeState(int, int);
+  void changeEmojiOnServer(int);
+  void sendPutRequest();
 
 public slots:
-	void setZoneIndex(int);
+  void setZoneIndex(int);
   void changeBreekState();
-	void changeEmoji(int);
-	void closeEmojiHub();
-	void openEmojiHub();
+  void changeEmoji(int);
+  void closeEmojiHub();
+  void openEmojiHub();
 };
 
 #endif // BREEK_H

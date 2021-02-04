@@ -3,41 +3,43 @@
 
 #include <QPushButton>
 #include <QQuickWidget>
+
 #include "Front/datastructures.h"
 
 class DemoBreek : public QPushButton
 {
-	Q_OBJECT
+  Q_OBJECT
+
 public:
-	DemoBreek(QWidget *parent = nullptr);
+  DemoBreek(QWidget *parent = nullptr);
 
-	void keyPressEvent(QKeyEvent *event) override;
-	void mousePressEvent(QMouseEvent *event) override;
-	void focusInEvent(QFocusEvent *) override;
-	void focusOutEvent(QFocusEvent *) override;
+  void keyPressEvent(QKeyEvent *event) override;
+  void mousePressEvent(QMouseEvent *event) override;
+  void focusInEvent(QFocusEvent *) override;
+  void focusOutEvent(QFocusEvent *) override;
 
-	void connectToQml(int indexOfEmoji, Conditions cond);
-	void connectToQml(Conditions cond, bool = false);
-	void connectToQml(int indexOfEmoji, Directions dir,
-										Conditions from, Conditions to);
+  void connectToQml(int indexOfEmoji, Conditions cond);
+  void connectToQml(Conditions cond, bool = false);
+  void connectToQml(int indexOfEmoji, Directions dir,
+                    Conditions from, Conditions to);
 
-	int getEmojiIndex();
+  int getEmojiIndex();
 
 public slots:
-	void changeEmoji(int);
+  void changeEmoji(int);
 
 private:
-	int nEmoji_;
-	Conditions workState_;
+  int nEmoji_;
+  Conditions workState_;
 
-	QQuickWidget *quickWidget_;
-	QObject *graphObject_;
+  QQuickWidget *quickWidget_;
+  QObject *graphObject_;
 
-	bool isAnimated_;
-	void waitAnimationEnd();
+  bool isAnimated_;
+  void waitAnimationEnd();
 
-	const int width_;
-	const int height_;
+  const int width_;
+  const int height_;
 };
 
 #endif // DEMOBREEK_H

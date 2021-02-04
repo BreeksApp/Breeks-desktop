@@ -5,27 +5,27 @@
 
 class DescriptionZoneDayButton : public QPushButton
 {
-	Q_OBJECT
+  Q_OBJECT
+
 public:
-	DescriptionZoneDayButton(int, int);
-	void mousePressEvent(QMouseEvent *event) override;
-	int getZoneIndex();
-	void setZoneIndex(int);
+  DescriptionZoneDayButton(int, int);
+  void mousePressEvent(QMouseEvent *event) override;
+  int getZoneIndex();
+  void setZoneIndex(int);
 
 public slots:
-		void sendPutRequestBl();
+  void sendPutRequestBl();
 
 signals:
-	void singleClick();
-	void singleClick(int);
-	void doubleClick(int, int);
+  void singleClick();
+  void singleClick(int);
+  void doubleClick(int, int);
 
-	void changeZoneIndex(int);
-
+  void changeZoneIndex(int);
 
 private:
-	int zoneIndex_;
-	int dayIndex_;
+  int zoneIndex_;
+  int dayIndex_;
 };
 
 #endif // DESCRIPTIONZONEDAYBUTTON_H

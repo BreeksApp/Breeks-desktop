@@ -13,7 +13,7 @@
 #include <QJsonValue>
 #include <QByteArray>
 #include <QtSql>
-//#include "gentextedit.h"
+
 #include "Front/datastructures.h"
 
 class filesystem
@@ -30,7 +30,7 @@ private:
   static QString getDataFromDB(QString queryStr);
 
   static void pushDataToDBTextEdit(QJsonDocument &jDoc, QJsonObject &jObject, QJsonObject &notes, QJsonObject &note,
-                           textInfo_t &info, const int currentFile);
+                                   textInfo_t &info, const int currentFile);
   static void pushDataToDBTimeTable(QJsonDocument &jDoc, QJsonObject &jObject, QJsonObject &timeTable,
                                     QJsonArray &JDayElements, const int index);
 

@@ -15,21 +15,21 @@
 #include <set>
 #include <QDrag>
 
-#include <Front/MainElements/calendarweek.h>
-#include <Front/MainElements/deletebreekszonebutton.h>
-#include <Front/MainElements/descriptionzonedaybutton.h>
-
-#include <Back/secret-data.h>
-#include <Back/server-connection.h>
-
-#include "ui_mainwindow.h"
+#include "Front/MainElements/calendarweek.h"
+#include "Front/MainElements/deletebreekszonebutton.h"
+#include "Front/MainElements/descriptionzonedaybutton.h"
 #include "Front/MainElements/elementtemplate.h"
-#include "Front/GeneralTextEdit/textnewelement.h"
-#include "datastructures.h"
-#include "effects.hpp"
 #include "Front/MainElements/breek.h"
 #include "Front/MainElements/daywidget.h"
 
+#include "Front/GeneralTextEdit/textnewelement.h"
+
+#include "Back/secret-data.h"
+#include "Back/server-connection.h"
+
+#include "ui_mainwindow.h"
+#include "datastructures.h"
+#include "effects.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -43,66 +43,64 @@ public:
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
 
-	void mousePressEvent(QMouseEvent *event);
-
-  //files of timetable
-  //void writeElementsDataToFile(const int index);
-  //void readElementsDataFromFile(const int index);
+  void mousePressEvent(QMouseEvent *event);
 
 public slots:
-//to underline image
+  //to underline image
   void setImageBackgroundView(bool);
 
-//slot to set data which was pronted and selected by user in AddElement form for Time Table Zone
-        void recieveTimeTableZoneData(bool *, elementData_t, bool withRequest = true);
+  //slot to set data which was pronted and selected by user in AddElement form for Time Table Zone
+  void recieveTimeTableZoneData(bool *, elementData_t, bool withRequest = true);
 
-//slot to set data which was pronted and selected by user in AddElement form for Breeks Zone
-	void recieveBreeksZoneData(bool *, breeksData_t, int * states = nullptr);
+  //slot to set data which was pronted and selected by user in AddElement form for Breeks Zone
+  void recieveBreeksZoneData(bool *, breeksData_t, int * states = nullptr);
 
-	void recieveUsername();
+  void recieveUsername();
 
-	void recieveDayAndElementIndex(const int, const int, bool);
-	void recieveDayAndElementIndexAndTagColor(const int, const int, const int);
+  void recieveDayAndElementIndex(const int, const int, bool);
+  void recieveDayAndElementIndexAndTagColor(const int, const int, const int);
   void recieveMimeData(const elementData_t, const QPixmap);
-	void recieveTimetableElementDayAndElemIndexAndTime(int, int, QString, QString);
-	void recieveTimetableDayAndElementIndexAndText(int, int, QString, QVector<charStyle_t>);
+  void recieveTimetableElementDayAndElemIndexAndTime(int, int, QString, QString);
+  void recieveTimetableDayAndElementIndexAndText(int, int, QString, QVector<charStyle_t>);
 
-	void setDayInfo(QDate = QDate::currentDate());
-	void changeWeek(qint64);
+  void setDayInfo(QDate = QDate::currentDate());
+  void changeWeek(qint64);
 
-	void dropNoChanges();
-	void dropElement(const int, const int, const int, const elementData_t);
-	void enterDayArea(int);
-	void leaveDayArea(int);
-	void defineDayMoveFrom(int, QString);
-	void mousePressedByDragElement();
+  void dropNoChanges();
+  void dropElement(const int, const int, const int, const elementData_t);
+  void enterDayArea(int);
+  void leaveDayArea(int);
+  void defineDayMoveFrom(int, QString);
+  void mousePressedByDragElement();
 
-	void sendElementsHeight(const int, const int);
-	void changeElementsLayoutHeight(const int, const int);
+  void sendElementsHeight(const int, const int);
+  void changeElementsLayoutHeight(const int, const int);
 
-	void moveBreek(int, int, bool);
+  void moveBreek(int, int, bool);
 
-	void logout();
+  void logout();
 
-	void writeToRfrshFile(const QString&, const QString&);
+  void writeToRfrshFile(const QString&, const QString&);
 
 private slots:
-// refresh file
+  // refresh file
   QJsonObject * openRefreshFile();
   void checkSavedSession();
 
-// load week from server
-	void clearAndInitWeekData(const QString&);
+  // load week from server
+  void clearAndInitWeekData(const QString&);
 
-	void initBreeksLines(const QList<breeksData_t>&);
-	void initTTElements(const QList<elementData_t>&);
-	void initNote(note_t&);
-	void initImage(const image_t&);
-//timetable
-	void updateTTElementIdOnServer(int, int, long);
-	void sendPutRequestTte(int, int);
-//note
-	void sendPostRequestNote(int);
+  void initBreeksLines(const QList<breeksData_t>&);
+  void initTTElements(const QList<elementData_t>&);
+  void initNote(note_t&);
+  void initImage(const image_t&);
+
+  //timetable
+  void updateTTElementIdOnServer(int, int, long);
+  void sendPutRequestTte(int, int);
+
+  //note
+  void sendPostRequestNote(int);
 
   //buttons to change pages
   void on_buttonPage1_clicked();
@@ -111,14 +109,14 @@ private slots:
   void on_buttonPage4_clicked();
   void on_buttonPage5_clicked();
   void on_buttonPage6_clicked();
-//
+
   void on_buttonImage_clicked();
 
-//adding new elements
+  //adding new elements
   void on_buttonAdd_clicked();
   void on_buttonAdd_2_clicked();
 
-//slot to fill original breeks positions in layout when they have been added on it(to avoid "position problem")
+  //slot to fill original breeks positions in layout when they have been added on it(to avoid "position problem")
   void fillBreeksPositions(int);
   void changeBreeksZoneLilDayState(int, int, int, bool withRequest = true);
   void setBreeksZoneLilDayShadow(int, int, bool);
@@ -128,7 +126,7 @@ private slots:
 
   void deleteBreeksZone(int);
 
-//ADD BREEKS
+  //ADD BREEKS
   void on_mnBreekButton_clicked();
   void on_tuBreekButton_clicked();
   void on_weBreekButton_clicked();
@@ -141,7 +139,7 @@ private slots:
   void setBLIdOnServer(long);
   void sendPutRequestBl(int);
 
-//ADD TIMETABLE ELEMENT
+  //ADD TIMETABLE ELEMENT
   void on_mnTimetableElemnetButton_clicked();
   void on_tuTimetableElemnetButton_clicked();
   void on_weTimetableElemnetButton_clicked();
@@ -183,7 +181,7 @@ private:
   Network::UserData *userData;
   Network::ServerConnection *server;
 
-//last visit data about image and page in notes
+  //last visit data about image and page in notes
   const QString fileLastVisitName_ = "fileLastVisit.txt";
   QFile fileLastVisit_;
 
@@ -196,9 +194,8 @@ private:
 
   void setStatesFromFileLastVisit();
   void writeDataToFileLastVisit();
-//
 
-//last visit data about timetable
+  //last visit data about timetable
   const QString fileMonName_ = "timetableMonStorage.txt";
   const QString fileTueName_ = "timetableTueStorage.txt";
   const QString fileWedName_ = "timetableWedStorage.txt";
@@ -206,7 +203,7 @@ private:
   const QString fileFriName_ = "timetableFriStorage.txt";
   const QString fileSatName_ = "timetableSatStorage.txt";
 
-// refresh local file RELATIVE path
+  // refresh local file RELATIVE path
   const QString rfrshPath_ = "/Front/RusDic/rfrsh.json"; // Debug version
 //  const QString rfrshPath_ = "/rfrsh.json"; // Release version
 
@@ -222,9 +219,8 @@ private:
 
   using iterType = QVector<elementData_t>::iterator;
   QVector<elementData_t> arrDaysData_[6]; //conteiner with elements data by days
-//
 
-//work with effects
+  //work with effects
   QPalette paletteSelectedPageButton_;
   QPalette paletteDefaultElement_;
 
@@ -232,9 +228,8 @@ private:
 
   void setAllElementsColor(); //set color for all elements
   void setAllElementsShadow(); //set shadow
-//
 
-//for work with NOTE
+  //for work with NOTE
   QUrl createGetNoteUrl(const int);
   QUrl createPostNoteUrl();
   QByteArray createJsonForSendingNote(int);
@@ -242,21 +237,19 @@ private:
   void noteMakePageButtonSelectable(NoteMark *button);
   void noteMakePageButtonSelectable(int nPage);
   void noteChangePage(const int n);
-//
 
-//information about IMAGE
+  //information about IMAGE
   QString currentImageName_;
   const QString defaultImageName_ = ":/Images/Images/sharik.jpg";
 
   bool openImageFromDisk(const QString& imageName);
   void setImage(const QString& imageName);
-//
 
 //-------------------------ABOUT WORK ZONE-------------------------
   void setWorkZone();
   int bigWidgetHeight_;
 
-	void setShadow(QWidget *);
+  void setShadow(QWidget *);
 
                    //---------TIMETABLE---------
   enum eDay {
@@ -273,17 +266,17 @@ private:
     Bold,      // = 1
     Italic,    // = 2
     Underline, // = 3
-		Strike,    // = 4
-		Item,      // = 5
-		Star			 // = 6
-	};
+    Strike,    // = 4
+    Item,      // = 5
+    Star       // = 6
+  };
 
   struct day_t {
     QGroupBox *groupBoxDay;
     QVBoxLayout *layoutFullDay;
 
     QHBoxLayout *layoutDayInfo;
-		QDate date;
+    QDate date;
     QLabel *labelDate;
     QLabel *labelElementsCount;
 
@@ -294,12 +287,11 @@ private:
 
     int groupBoxElementsHeight;
     int elementsCount;
-		int elementsScaledCount;
+    int elementsScaledCount;
   };
 
   void buildTimeTable();
   void setDaysStructure();
-	//void setDayInfo();
   void allocateMemoryForDays();
   void initializeDaysParameters();
 
@@ -307,24 +299,24 @@ private:
   const int BREEKS_DESCRIPTION_ZONE_BIG_WIDGET_WIDTH = 305;
 
   const int DAY_WIDTH_ = 260;
-	const int ELEMENT_HEIGHT_ = 115;
+  const int ELEMENT_HEIGHT_ = 115;
 
-	const int DAYS_COUNT = 6;
-	day_t arrDays_[6];
+  const int DAYS_COUNT = 6;
+  day_t arrDays_[6];
 
-	int timetableElementsCount_;
+  int timetableElementsCount_;
 
-	QDate currentDate_;
-	int iCurrentDay_;
-	QTimer *timer_;
+  QDate currentDate_;
+  int iCurrentDay_;
+  QTimer *timer_;
 
-	bool isElementDrag_;
-	QString oldStyle_;
+  bool isElementDrag_;
+  QString oldStyle_;
 
   int addNewElementToArray(const elementData_t& newElement, const int index, bool withRequest);
   void addNewElementToLayout(const int index, const int newElementIndex);
 
-	void moveTimetableElement();
+  void moveTimetableElement();
 //------------------
 
                         //---------BREEKSZONE---------
@@ -332,7 +324,7 @@ private:
   const int MOVE_DURATION = 350;
 
   struct breeksZone_t {
-		long idOnServer;
+    long idOnServer;
 
     QGroupBox *breeksZoneGroupBox;
     QGridLayout *breeksZoneLayout;
@@ -342,16 +334,16 @@ private:
 
     QGroupBox *breeksDescriptionGroupBox;
     QGridLayout *breeksDescriptionLayout;
-		TimetableTextEdit *breekText;
+    TimetableTextEdit *breekText;
 
     QPushButton *buttonBreekDays;
-		DescriptionZoneDayButton *arrBreeksZoneDays[6];
-		DeleteBreeksZoneButton *buttonDelete;
+    DescriptionZoneDayButton *arrBreeksZoneDays[6];
+    DeleteBreeksZoneButton *buttonDelete;
 
     int zoneIndex;
   };
 
-	QTimer *breeksLineTimer_;
+  QTimer *breeksLineTimer_;
 
   QVector<breeksZone_t> arrBreeksZones_;
 
@@ -361,11 +353,11 @@ private:
   QString arrEmojiDroped[11];
   QString arrEmojiProcess[11];
 
-	void setEmoji(const QString emoji);
+  void setEmoji(const QString emoji);
 
   void allocateMemoryForBreeks(breeksZone_t *breeksZone);
   void setBreeksZone(breeksZone_t *breeksZone);
-	void setDaysConnect(breeksZone_t *breeksZone);
+  void setDaysConnect(breeksZone_t *breeksZone);
   void buildBreeksDescriptionZone();
   void delay(int);
 
@@ -382,29 +374,29 @@ private:
   QGridLayout *breeksDescriptionZoneLayout_;
 //------------------
 
-	QGraphicsDropShadowEffect* createShadow();
+  QGraphicsDropShadowEffect* createShadow();
 
-	QVector<CalendarWeek*> calendarWeeks;
-	QGroupBox *calendarWidget;
+  QVector<CalendarWeek*> calendarWeeks;
+  QGroupBox *calendarWidget;
 
 //--------- ADD BREEK-LINE---------
-	void setStyleAddBreeksForm();
-	bool arrAddBreekFormDaysCheck_[6];
+  void setStyleAddBreeksForm();
+  bool arrAddBreekFormDaysCheck_[6];
 //--------- Add TIMETABLE ELEMENT -
-	void setStyleAddTimetableElementForm();
-	bool arrAddTimetableElementFormDaysCheck_[6];
-	int indexCurrentTag_;
+  void setStyleAddTimetableElementForm();
+  bool arrAddTimetableElementFormDaysCheck_[6];
+  int indexCurrentTag_;
 
-// INFO BUTTONS
-	void setInfoButtonsStyle();
-	void setInfoButtonColor(QString sColor);
+  // INFO BUTTONS
+  void setInfoButtonsStyle();
+  void setInfoButtonColor(QString sColor);
 
-	const int TAGS_COUNT = 6;
-	tagElement_t arrTags_[6];
-	int infoButtonColorNum;
+  const int TAGS_COUNT = 6;
+  tagElement_t arrTags_[6];
+  int infoButtonColorNum;
 
-//CALENDAR
-	QScrollArea *calendarScrollArea;
+  //CALENDAR
+  QScrollArea *calendarScrollArea;
 };
 
 #endif // MAINWINDOW_H

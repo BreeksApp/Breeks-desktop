@@ -6,12 +6,14 @@
 
 class DeleteTimetableElementButton : public QPushButton
 {
-	Q_OBJECT
+  Q_OBJECT
+
 public:
-	DeleteTimetableElementButton(QWidget *parent = nullptr);
-	void mouseDoubleClickEvent(QMouseEvent *event) override;
+  DeleteTimetableElementButton(QWidget *parent = nullptr);
+  void mouseDoubleClickEvent(QMouseEvent *event) override;
+
 signals:
-	void deleteElement();
+  void deleteElement();
 };
 
 #endif // DELETETIMETABLEELEMENTBUTTON_H

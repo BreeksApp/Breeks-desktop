@@ -6,17 +6,18 @@
 
 class DeleteBreeksZoneButton : public QPushButton
 {
-	Q_OBJECT
+  Q_OBJECT
+
 public:
-	DeleteBreeksZoneButton(int, QWidget *parent = nullptr);
-	void mouseDoubleClickEvent(QMouseEvent *event);
-	void setZoneIndex(int);
+  DeleteBreeksZoneButton(int, QWidget *parent = nullptr);
+  void mouseDoubleClickEvent(QMouseEvent *event);
+  void setZoneIndex(int);
 
 signals:
-	void deleteZone(int);
+  void deleteZone(int);
 
 private:
-	int zoneIndex_;
+  int zoneIndex_;
 };
 
 #endif // DELETEBREEKSZONEBUTTON_H

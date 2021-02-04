@@ -7,7 +7,7 @@ class TimetableTextEdit : public GenTextEdit
 public:
   TimetableTextEdit(QWidget *parent = nullptr);
   void fillCharsAndSetText(QString text, const QVector<charStyle_t>& arr);
-	void keyPressEvent(QKeyEvent *event);
+  void keyPressEvent(QKeyEvent *event);
 };
 
 #endif // TIMETABLETEXTEDIT_H

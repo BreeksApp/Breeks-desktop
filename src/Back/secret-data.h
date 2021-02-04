@@ -5,7 +5,8 @@
 #include <QString>
 
 namespace Network {
-  class UserData : public QObject {
+  class UserData : public QObject
+  {
     Q_OBJECT
   public:
     UserData(QObject *parent = nullptr);

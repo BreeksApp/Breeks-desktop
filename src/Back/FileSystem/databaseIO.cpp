@@ -1,7 +1,6 @@
 #include "Front/mainwindow.h"
 
-void MainWindow::setStatesFromFileLastVisit()
-{
+void MainWindow::setStatesFromFileLastVisit() {
   if (!fileLastVisit_.open(QIODevice::ReadOnly | QIODevice::Text)) {
     qDebug() << "FILE LAST_VISIT OPENING CRASHED";
   }
@@ -30,19 +29,18 @@ void MainWindow::setStatesFromFileLastVisit()
   fileLastVisit_.close();
 }
 
-void MainWindow::writeDataToFileLastVisit()
-{
+void MainWindow::writeDataToFileLastVisit() {
   if (!fileLastVisit_.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
     qDebug() << "FILE LAST_VISIT OPENING CRASHED";
     return;
   }
   QTextStream out(&fileLastVisit_);
 
-    const int nNotePage = ui->note->getNumberCurrentFile();
+  const int nNotePage = ui->note->getNumberCurrentFile();
   out << nNotePage << " ";
 
-    out << currentImageName_;
+  out << currentImageName_;
 
-    fileLastVisit_.flush();
+  fileLastVisit_.flush();
   fileLastVisit_.close();
 }

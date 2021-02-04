@@ -1,5 +1,3 @@
-//VIEW
-
 #ifndef ADDBUTTONHOVER_H
 #define ADDBUTTONHOVER_H
 
@@ -8,6 +6,7 @@
 class AddButtonHover : public QPushButton
 {
   Q_OBJECT
+
 public:
   AddButtonHover(QWidget *parent = nullptr);
   void enterEvent(QEvent *);

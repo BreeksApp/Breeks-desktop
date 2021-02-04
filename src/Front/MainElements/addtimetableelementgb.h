@@ -5,10 +5,11 @@
 
 class AddTimetableElementGB : public QGroupBox
 {
-	Q_OBJECT
+  Q_OBJECT
+
 public:
-	AddTimetableElementGB(QWidget *parent = nullptr);
-	void mouseDoubleClickEvent(QMouseEvent *event);
+  AddTimetableElementGB(QWidget *parent = nullptr);
+  void mouseDoubleClickEvent(QMouseEvent *event);
 };
 
 #endif // ADDTIMETABLEELEMENTGB_H
