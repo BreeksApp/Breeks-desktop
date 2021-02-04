@@ -1,5 +1,3 @@
-//VIEW
-
 #include "daywidget.h"
 
 DayWidget::DayWidget(QWidget *parent) : QWidget(parent)
@@ -7,33 +5,30 @@ DayWidget::DayWidget(QWidget *parent) : QWidget(parent)
   setAcceptDrops(true);
 }
 
-void DayWidget::dragEnterEvent(QDragEnterEvent *event)
-{
+void DayWidget::dragEnterEvent(QDragEnterEvent *event) {
   event->acceptProposedAction();
-	elementEnterArea(dayNumber_);
-	//this->setStyleSheet("border: 2px solid #111111; border-radius: 9px;");
+  elementEnterArea(dayNumber_);
+  //this->setStyleSheet("border: 2px solid #111111; border-radius: 9px;");
 }
 
-void DayWidget::dragLeaveEvent(QDragLeaveEvent *event)
-{
-	elementLeaveArea(dayNumber_);
-	//this->setStyleSheet("border-radius: 9px;");
+void DayWidget::dragLeaveEvent(QDragLeaveEvent *event) {
+  elementLeaveArea(dayNumber_);
+  //this->setStyleSheet("border-radius: 9px;");
 }
 
-void DayWidget::dropEvent(QDropEvent *event)
-{
-	//emit dropNoChanges();
+void DayWidget::dropEvent(QDropEvent *event) {
+//  emit dropNoChanges();
 
   elementData_t elemData;
   QByteArray data = event->mimeData()->data("elemData");
   QDataStream out(&data, QIODevice::ReadOnly);
 
-	QString sId;
-	out >> sId >> elemData.text >> elemData.timeStart >> elemData.timeEnd >> elemData.tagColorNum >> dragPos_;
-	elemData.idOnServer = sId.toLong();
-	elemData.tagColor = tag::ARR_COLORS[elemData.tagColorNum];
+  QString sId;
+  out >> sId >> elemData.text >> elemData.timeStart >> elemData.timeEnd >> elemData.tagColorNum >> dragPos_;
+  elemData.idOnServer = sId.toLong();
+  elemData.tagColor = tag::ARR_COLORS[elemData.tagColorNum];
 
-	QByteArray indexes = event->mimeData()->data("indexes");
+  QByteArray indexes = event->mimeData()->data("indexes");
   QDataStream outIndexes(&indexes, QIODevice::ReadOnly);
   outIndexes >> dayIndex_ >> elemIndex_;
 
@@ -48,26 +43,23 @@ void DayWidget::dropEvent(QDropEvent *event)
   }
 
   if (dayNumber_ != dayIndex_) {
-		emit dropElement(dayNumber_, dayIndex_, elemIndex_, elemData);
-		emit sendDayAndElementIndex(dayIndex_, elemIndex_, false);
+    emit dropElement(dayNumber_, dayIndex_, elemIndex_, elemData);
+    emit sendDayAndElementIndex(dayIndex_, elemIndex_, false);
   }
-	emit elementLeaveArea(dayNumber_);
+  emit elementLeaveArea(dayNumber_);
 
   event->acceptProposedAction();
 }
 
-void DayWidget::dragMoveEvent(QDragMoveEvent *event)
-{
+void DayWidget::dragMoveEvent(QDragMoveEvent *event) {
   event->acceptProposedAction();
-	emit moveElement();
+  emit moveElement();
 }
 
-int DayWidget::getDayNumber()
-{
+int DayWidget::getDayNumber() {
   return dayNumber_;
 }
 
-void DayWidget::setDayNumber(const int numb)
-{
+void DayWidget::setDayNumber(const int numb) {
   dayNumber_ = numb;
 }

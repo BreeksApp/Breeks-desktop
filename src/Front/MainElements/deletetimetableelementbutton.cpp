@@ -1,12 +1,9 @@
 #include "deletetimetableelementbutton.h"
 
 DeleteTimetableElementButton::DeleteTimetableElementButton(QWidget *parent) :
-	QPushButton(parent)
-{
+  QPushButton(parent)
+{}
 
-}
-
-void DeleteTimetableElementButton::mouseDoubleClickEvent(QMouseEvent *event)
-{
-	emit deleteElement();
+void DeleteTimetableElementButton::mouseDoubleClickEvent(QMouseEvent *event) {
+  emit deleteElement();
 }

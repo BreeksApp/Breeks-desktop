@@ -1,156 +1,147 @@
 #include "gentextedit.h"
 
-void GenTextEdit::recieveUsername(const QString username) //SLOT
-{
+void GenTextEdit::recieveUsername(const QString username) { //SLOT
   username_ = username;
 }
 
-int GenTextEdit::getNumberCurrentFile()
-{
+int GenTextEdit::getNumberCurrentFile() {
     return nCurrentFile_;
 }
 
-void GenTextEdit::clearCharStyleVector()
-{
+void GenTextEdit::clearCharStyleVector() {
   charStyleVector_.clear();
-	charCounter_ = 0;
+  charCounter_ = 0;
 }
 
-QVector<charStyle_t> GenTextEdit::getCharStyleVector()
-{
-    return charStyleVector_;
+QVector<charStyle_t> GenTextEdit::getCharStyleVector() {
+  return charStyleVector_;
 }
-void GenTextEdit::setNumberCurrentFile(const int n)
-{
+void GenTextEdit::setNumberCurrentFile(const int n) {
   if (n >= 1 && n <= 6) {
     nCurrentFile_ = n;
   }
 }
 
-void GenTextEdit::fillCharStyleVector(int cursorPos, int count, charStyle_t ch)
-{
-    charStyleVector_.insert(cursorPos, count, ch);
+void GenTextEdit::fillCharStyleVector(int cursorPos, int count, charStyle_t ch) {
+  charStyleVector_.insert(cursorPos, count, ch);
 }
 
-void GenTextEdit::fillCharsAndSetText(QString text, const QJsonArray jArr)
-{
-		this->clearCharStyleVector();
-		this->setCharCounter(jArr.size());
+void GenTextEdit::fillCharsAndSetText(QString text, const QJsonArray jArr) {
+  this->clearCharStyleVector();
+  this->setCharCounter(jArr.size());
 
-		QTextStream out(&text);
-		QChar tmpChar;
-		charStyle_t ch;
+  QTextStream out(&text);
+  QChar tmpChar;
+  charStyle_t ch;
 
-		for (int i = 0; i < this->getCharCounter(); ++i) {
-			detailsSetCharStyle(ch);
-			QTextCharFormat charFormat;
-			charFormat.setFontWeight(QFont::Normal);
+  for (int i = 0; i < this->getCharCounter(); ++i) {
+    detailsSetCharStyle(ch);
+    QTextCharFormat charFormat;
+    charFormat.setFontWeight(QFont::Normal);
 
-			QJsonObject jChar = jArr[i].toObject();
+    QJsonObject jChar = jArr[i].toObject();
 
-			bool boldStatus = jChar.value("bold").toBool();
-			bool italicStatus = jChar.value("italic").toBool();
-			bool underlineStatus = jChar.value("underline").toBool();
-			bool strikeStatus = jChar.value("strike").toBool();
-			bool itemStatus = jChar.value("item").toBool();
-			bool starStatus = jChar.value("star").toBool();
-			QString color = jChar.value("sColor").toString();
+    bool boldStatus = jChar.value("bold").toBool();
+    bool italicStatus = jChar.value("italic").toBool();
+    bool underlineStatus = jChar.value("underline").toBool();
+    bool strikeStatus = jChar.value("strike").toBool();
+    bool itemStatus = jChar.value("item").toBool();
+    bool starStatus = jChar.value("star").toBool();
+    QString color = jChar.value("sColor").toString();
 
-			if (boldStatus == true) {
-					detailsSetCharStyle(ch, charStyle::Bold);
-					charFormat.setFontWeight(QFont::Bold);
-			}
-			if (italicStatus == true) {
-					detailsSetCharStyle(ch, charStyle::Italic);
-					charFormat.setFontItalic(true);
-			}
-			if (underlineStatus == true) {
-					detailsSetCharStyle(ch, charStyle::Underline);
-					charFormat.setFontUnderline(true);
-			}
-			if (strikeStatus == true) {
-					detailsSetCharStyle(ch, charStyle::Strike);
-					charFormat.setFontStrikeOut(true);
-			}
-			if (itemStatus == true) {
-					detailsSetCharStyle(ch, charStyle::Item);
-					charFormat.setFontWeight(QFont::Normal);
-			}
-			if (starStatus == true) {
-					detailsSetCharStyle(ch, charStyle::Star);
-					charFormat.setFontWeight(QFont::Normal);
-			}
-			ch.sColor = color;
+    if (boldStatus == true) {
+      detailsSetCharStyle(ch, charStyle::Bold);
+      charFormat.setFontWeight(QFont::Bold);
+    }
+    if (italicStatus == true) {
+      detailsSetCharStyle(ch, charStyle::Italic);
+      charFormat.setFontItalic(true);
+    }
+    if (underlineStatus == true) {
+      detailsSetCharStyle(ch, charStyle::Underline);
+      charFormat.setFontUnderline(true);
+    }
+    if (strikeStatus == true) {
+      detailsSetCharStyle(ch, charStyle::Strike);
+      charFormat.setFontStrikeOut(true);
+    }
+    if (itemStatus == true) {
+      detailsSetCharStyle(ch, charStyle::Item);
+      charFormat.setFontWeight(QFont::Normal);
+    }
+    if (starStatus == true) {
+      detailsSetCharStyle(ch, charStyle::Star);
+      charFormat.setFontWeight(QFont::Normal);
+    }
+    ch.sColor = color;
 
-			int cursorPos = this->textCursor().position();
-			this->fillCharStyleVector(cursorPos, 1, ch);
-			out >> tmpChar;
-			this->textCursor().insertText(static_cast<QString>(tmpChar), charFormat);
-		}
+    int cursorPos = this->textCursor().position();
+    this->fillCharStyleVector(cursorPos, 1, ch);
+    out >> tmpChar;
+    this->textCursor().insertText(static_cast<QString>(tmpChar), charFormat);
+  }
 }
 
-void GenTextEdit::fillCharsAndSetTextt(QString & text, QVector<charStyle_t> & styles)
-{
-		this->clearCharStyleVector();
-		this->setCharCounter(styles.size());
+void GenTextEdit::fillCharsAndSetTextt(QString & text, QVector<charStyle_t> & styles) {
+  this->clearCharStyleVector();
+  this->setCharCounter(styles.size());
 
-		QTextStream out(&text);
-		QChar tmpChar;
-		charStyle_t ch;
+  QTextStream out(&text);
+  QChar tmpChar;
+  charStyle_t ch;
 
-		for (int i = 0; i < this->getCharCounter(); ++i) {
-			detailsSetCharStyle(ch);
-			QTextCharFormat charFormat;
-			charFormat.setFontWeight(QFont::Normal);
+  for (int i = 0; i < this->getCharCounter(); ++i) {
+    detailsSetCharStyle(ch);
+    QTextCharFormat charFormat;
+    charFormat.setFontWeight(QFont::Normal);
 
-			bool boldStatus = styles[i].bold;
-			bool italicStatus = styles[i].italic;
-			bool underlineStatus = styles[i].underline;
-			bool strikeStatus = styles[i].strike;
-			bool itemStatus = styles[i].item;
-			bool starStatus = styles[i].star;
-			QString color = styles[i].sColor;
+    bool boldStatus = styles[i].bold;
+    bool italicStatus = styles[i].italic;
+    bool underlineStatus = styles[i].underline;
+    bool strikeStatus = styles[i].strike;
+    bool itemStatus = styles[i].item;
+    bool starStatus = styles[i].star;
+    QString color = styles[i].sColor;
 
-			if (boldStatus == true) {
-					detailsSetCharStyle(ch, charStyle::Bold);
-					charFormat.setFontWeight(QFont::Bold);
-			}
-			if (italicStatus == true) {
-					detailsSetCharStyle(ch, charStyle::Italic);
-					charFormat.setFontItalic(true);
-			}
-			if (underlineStatus == true) {
-					detailsSetCharStyle(ch, charStyle::Underline);
-					charFormat.setFontUnderline(true);
-			}
-			if (strikeStatus == true) {
-					detailsSetCharStyle(ch, charStyle::Strike);
-					charFormat.setFontStrikeOut(true);
-			}
-			if (itemStatus == true) {
-					detailsSetCharStyle(ch, charStyle::Item);
-					charFormat.setFontWeight(QFont::Normal);
-			}
-			if (starStatus == true) {
-					detailsSetCharStyle(ch, charStyle::Star);
-					charFormat.setFontWeight(QFont::Normal);
-			}
-			if (color != "") {
-				charFormat.setBackground(QColor(color));
-			}
-			ch.sColor = color;
+    if (boldStatus == true) {
+      detailsSetCharStyle(ch, charStyle::Bold);
+      charFormat.setFontWeight(QFont::Bold);
+    }
+    if (italicStatus == true) {
+      detailsSetCharStyle(ch, charStyle::Italic);
+      charFormat.setFontItalic(true);
+    }
+    if (underlineStatus == true) {
+      detailsSetCharStyle(ch, charStyle::Underline);
+      charFormat.setFontUnderline(true);
+    }
+    if (strikeStatus == true) {
+      detailsSetCharStyle(ch, charStyle::Strike);
+      charFormat.setFontStrikeOut(true);
+    }
+    if (itemStatus == true) {
+      detailsSetCharStyle(ch, charStyle::Item);
+      charFormat.setFontWeight(QFont::Normal);
+    }
+    if (starStatus == true) {
+      detailsSetCharStyle(ch, charStyle::Star);
+      charFormat.setFontWeight(QFont::Normal);
+    }
+    if (color != "") {
+      charFormat.setBackground(QColor(color));
+    }
+    ch.sColor = color;
 
-			int cursorPos = this->textCursor().position();
-			this->fillCharStyleVector(cursorPos, 1, ch);
-			out >> tmpChar;
-			this->textCursor().insertText(static_cast<QString>(tmpChar), charFormat);
-		}
+    int cursorPos = this->textCursor().position();
+    this->fillCharStyleVector(cursorPos, 1, ch);
+    out >> tmpChar;
+    this->textCursor().insertText(static_cast<QString>(tmpChar), charFormat);
+  }
 }
 
-void GenTextEdit::setStylesToChar(charStyle_t& ch, QTextCharFormat& charFormat, const QJsonObject jChar)
-{
+void GenTextEdit::setStylesToChar(charStyle_t& ch, QTextCharFormat& charFormat, const QJsonObject jChar) {
   GenTextEdit::detailsSetCharStyle(ch);
-	charFormat.setFontWeight(QFont::Normal);
+  charFormat.setFontWeight(QFont::Normal);
 
   bool boldStatus = jChar.value("bold").toBool();
   bool italicStatus = jChar.value("italic").toBool();
@@ -159,7 +150,7 @@ void GenTextEdit::setStylesToChar(charStyle_t& ch, QTextCharFormat& charFormat, 
   bool itemStatus = jChar.value("item").toBool();
   bool starStatus = jChar.value("star").toBool();
   QString color = jChar.value("sColor").toString();
-	bool spellChecker = jChar.value("spellChecker").toBool();
+  bool spellChecker = jChar.value("spellChecker").toBool();
 
   if (boldStatus == true) {
     GenTextEdit::detailsSetCharStyle(ch, charStyle::Bold);
@@ -185,32 +176,29 @@ void GenTextEdit::setStylesToChar(charStyle_t& ch, QTextCharFormat& charFormat, 
     GenTextEdit::detailsSetCharStyle(ch, charStyle::Star);
     charFormat.setFontWeight(QFont::Normal);
   }
-	if (spellChecker == true) {
-		GenTextEdit::detailsSetCharStyle(ch, charStyle::SpellChecker);
-	}
+  if (spellChecker == true) {
+    GenTextEdit::detailsSetCharStyle(ch, charStyle::SpellChecker);
+  }
   ch.sColor = color;
-	if (color != "") {
-		charFormat.setBackground(QColor(color));
-	}
-	else {
-		charFormat.setBackground(Qt::NoBrush);
-	}
+  if (color != "") {
+    charFormat.setBackground(QColor(color));
+  }
+  else {
+    charFormat.setBackground(Qt::NoBrush);
+  }
 }
 
-void GenTextEdit::getCharStyle(const int index, charStyle_t& ch) const
-{
+void GenTextEdit::getCharStyle(const int index, charStyle_t& ch) const {
   if (index < 0 || index >= charCounter_) {
     qDebug() << "Index is out of range!";
-		return;
+    return;
   }
-	ch = charStyleVector_[index];
+  ch = charStyleVector_[index];
 }
 
-int GenTextEdit::getCharCounter() const
-{
+int GenTextEdit::getCharCounter() const {
   return charCounter_;
 }
-void GenTextEdit::setCharCounter(int value)
-{
+void GenTextEdit::setCharCounter(int value) {
   charCounter_ = value;
 }

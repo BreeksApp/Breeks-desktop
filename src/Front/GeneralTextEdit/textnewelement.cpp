@@ -8,8 +8,7 @@ TextNewElement::TextNewElement(QWidget *parent) :
   charCounter_(0)
 {}
 
-void TextNewElement::keyPressEvent(QKeyEvent *event)
-{
+void TextNewElement::keyPressEvent(QKeyEvent *event) {
   QTextEdit::keyPressEvent(event);
 
   int tmpLength = this->toPlainText().length();

@@ -1,11 +1,9 @@
 #include "addtimetableelementgb.h"
 
 AddTimetableElementGB::AddTimetableElementGB(QWidget *parent) :
-	QGroupBox(parent)
-{
-}
+  QGroupBox(parent)
+{}
 
-void AddTimetableElementGB::mouseDoubleClickEvent(QMouseEvent *event)
-{
-	this->hide();
+void AddTimetableElementGB::mouseDoubleClickEvent(QMouseEvent *event) {
+  this->hide();
 }
