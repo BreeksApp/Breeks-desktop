@@ -196,29 +196,18 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply) {
       emit initSecretData(username, token, tokenRefresh);
       emit loginReply(true);
       emit initWeekData(token);
-      emit sendDataToRfrshFile(tokenRefresh, username);
     }
     else {
       loginReply(false);
     }
   }
   else if (url.contains(refreshUrl)) {
-    // check if we use refresh method to login automatically
-    bool authMode = false;
-    if (this->userData_->getUsername().isEmpty()) authMode = true;
-
     QString username = json.value("userName").toString();
     QString token = json.value("token").toString();
     QString tokenRefresh = json.value("tokenRefresh").toString();
 
     if (username != "" && token != "" && tokenRefresh != "") {
       emit initSecretData(username, token, tokenRefresh);
-      emit sendDataToRfrshFile(tokenRefresh, username);
-      if (authMode) {
-        emit loginReply(true);
-        emit initWeekData(token);
-        return;
-      }
       mutex = true;
       for (auto request : listOfLastRequests_) {
         if (request.reqType == "PostWithToken") {
@@ -368,6 +357,20 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply) {
       };
 
       emit sendImageToGUI(image);
+    }
+  }
+  else if (url.contains(authSessionKeyUrl)) {
+    QString username = json.value("userName").toString();
+    QString token = json.value("token").toString();
+    QString tokenRefresh = json.value("tokenRefresh").toString();
+
+    if (username != "" && token != "" && tokenRefresh != "") {
+      emit initSecretData(username, token, tokenRefresh);
+      emit loginReply(true);
+      emit initWeekData(token);
+    }
+    else {
+      loginReply(false);
     }
   }
 

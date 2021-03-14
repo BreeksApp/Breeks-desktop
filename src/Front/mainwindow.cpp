@@ -99,9 +99,9 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->widget->hide();
   ui->hideCalendar->hide();
 
-  // connect for writing to refresh file
-  connect(server, SIGNAL(sendDataToRfrshFile(const QString&, const QString&)),
-        this, SLOT(writeToRfrshFile(const QString&, const QString&)));
+  // connect for writing to session file
+  connect(server, SIGNAL(sendDataToSessionFile(const QString&, const QString&)),
+        this, SLOT(writeToSessionFile(const QString&, const QString&)));
 
   // check if we can auto authorize the user
   checkSavedSession();
@@ -117,59 +117,67 @@ void MainWindow::logout() {
   server->getUserData()->setRefreshToken("");
   ui->authFrom->show();
   ui->demoLable->show();
-  writeToRfrshFile("", "");
+  writeToSessionFile("", "");
 }
 
-void MainWindow::writeToRfrshFile(const QString & refresh, const QString & email) {
+void MainWindow::writeToSessionFile(const QString & key, const QString & email) {
   QJsonObject json;
-  json.insert("refresh", refresh);
+  json.insert("key", key);
   json.insert("email", email);
   QJsonDocument jsonDoc(json);
   QByteArray jsonData = jsonDoc.toJson();
 
-  QFile refreshFile(QDir::current().path() + rfrshPath_);
-  if (!refreshFile.open(QIODevice::ReadWrite)) {
-    qDebug() << "Error. Refresh file is not open!";
+  QFile sessionFile(QDir::current().path() + sessionPath_);
+  if (!sessionFile.open(QIODevice::ReadWrite)) {
+    qDebug() << "Error. Session file is not open!";
     return;
   }
 
-  refreshFile.resize(0);
-  refreshFile.write(jsonData);
+  sessionFile.resize(0);
+  sessionFile.write(jsonData);
 }
 
-QJsonObject * MainWindow::openRefreshFile() {
-  QFile refreshFile(QDir::current().path() + rfrshPath_);
+QJsonObject * MainWindow::openSessionFile() {
+  QFile sessionFile(QDir::current().path() + sessionPath_);
 
-  if (!refreshFile.open(QIODevice::ReadOnly)) {
-    qDebug() << "Error. Refresh file is not open!";
+  if (!sessionFile.open(QIODevice::ReadOnly)) {
+    qDebug() << "Error. Session file is not open!";
     return nullptr;
   }
 
-  QByteArray data = refreshFile.readAll();
+  QByteArray data = sessionFile.readAll();
   QJsonDocument jDoc = QJsonDocument::fromJson(data);
 
   return new QJsonObject(jDoc.object());
 }
 
 void MainWindow::checkSavedSession() {
-  QJsonObject * jsonRfrsh = openRefreshFile();
-  if (jsonRfrsh != nullptr) {
-    QString refreshToken = jsonRfrsh->value("refresh").toString();
-    QString email = jsonRfrsh->value("email").toString();
-    if (refreshToken.isEmpty()) {
+  QJsonObject * jsonSession = openSessionFile();
+  if (jsonSession != nullptr) {
+    QString key = jsonSession->value("key").toString();
+    QString email = jsonSession->value("email").toString();
+    if (key.isEmpty()) {
       // registration form, auto-filling email if having the one
       if (!email.isEmpty()) {
         ui->mail->setText(email);
       }
     }
     else {
-      // send refresh-request
+      // send session-get-request
       if (!email.isEmpty()) {
         ui->mail->setText(email);
-        server->sendPostRefreshRequest(email, refreshToken);
+
+        QUrl url = QUrl(Network::serverUrl + Network::authSessionKeyUrl);
+
+        QJsonObject json;
+        json.insert("key", key);
+
+        QJsonDocument jsonDoc(json);
+
+        server->sendPostRequest(url, jsonDoc.toJson());
       }
       else {
-        qDebug() << "Error. There's a refresh but no email.";
+        qDebug() << "Error. There's a key but no email.";
       }
     }
   }

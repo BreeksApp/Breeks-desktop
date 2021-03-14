@@ -80,11 +80,11 @@ public slots:
 
   void logout();
 
-  void writeToRfrshFile(const QString&, const QString&);
+  void writeToSessionFile(const QString&, const QString&);
 
 private slots:
-  // refresh file
-  QJsonObject * openRefreshFile();
+  // session file
+  QJsonObject * openSessionFile();
   void checkSavedSession();
 
   // load week from server
@@ -203,9 +203,9 @@ private:
   const QString fileFriName_ = "timetableFriStorage.txt";
   const QString fileSatName_ = "timetableSatStorage.txt";
 
-  // refresh local file RELATIVE path
-  const QString rfrshPath_ = "/Front/RusDic/rfrsh.json"; // Debug version
-//  const QString rfrshPath_ = "/rfrsh.json"; // Release version
+  // session local file RELATIVE path
+  const QString sessionPath_ = "/Front/RusDic/session.json"; // Debug version
+//  const QString sessionPath_ = "/session.json"; // Release version
 
   QFile fileMon_;
   QFile fileTue_;

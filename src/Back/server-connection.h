@@ -73,7 +73,7 @@ namespace Network {
 
     void logout();
 
-    void sendDataToRfrshFile(const QString&, const QString&);
+    void sendDataToSessionFile(const QString&, const QString&);
   };
 
 
@@ -84,6 +84,10 @@ namespace Network {
   const QString registrationUrl = "/user/registration";
   const QString authUrl = "/auth/signin";
   const QString refreshUrl = "/auth/refresh";
+  // Session
+  const QString authSessionKeyUrl = "/auth/sessionKey";
+  const QString generateKeyUrl = "/session/generateKey";
+  const QString deleteKeyUrl = "/session/deleteKey";
 
   // TimetableElements
   const QString addTTElementUrl = "/timetableElement/addTimetableElement";
