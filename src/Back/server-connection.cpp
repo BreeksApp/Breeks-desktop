@@ -373,6 +373,13 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply) {
       loginReply(false);
     }
   }
+  else if (url.contains(deleteKeyUrl)) {
+    qDebug() << json;
+  }
+  else if (url.contains(generateKeyUrl)) {
+    QString key = json.value("key").toString();
+    emit sendDataToSessionFile(key, userData_->getUsername());
+  }
 
   if (!mutex) listOfLastRequests_.clear();
 }

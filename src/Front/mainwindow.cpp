@@ -99,7 +99,10 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->widget->hide();
   ui->hideCalendar->hide();
 
-  // connect for writing to session file
+  // connect for writing to session file on app quit event
+  connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(saveSessionBeforeQuit()));
+
+  // connect for writing to session file when a key returned from server
   connect(server, SIGNAL(sendDataToSessionFile(const QString&, const QString&)),
         this, SLOT(writeToSessionFile(const QString&, const QString&)));
 
@@ -117,7 +120,7 @@ void MainWindow::logout() {
   server->getUserData()->setRefreshToken("");
   ui->authFrom->show();
   ui->demoLable->show();
-  writeToSessionFile("", "");
+  clearSessionFile();
 }
 
 void MainWindow::writeToSessionFile(const QString & key, const QString & email) {
@@ -135,6 +138,39 @@ void MainWindow::writeToSessionFile(const QString & key, const QString & email) 
 
   sessionFile.resize(0);
   sessionFile.write(jsonData);
+  sessionFile.close();
+}
+
+void MainWindow::clearSessionFile() {
+  QJsonObject * jsonSession = openSessionFile();
+  if (jsonSession != nullptr) {
+    QString key = jsonSession->value("key").toString();
+    if (!key.isEmpty()) {
+      QUrl url = QUrl(Network::serverUrl + Network::deleteKeyUrl + key);
+      server->sendDeleteRequestWithBearerToken(url, server->getUserData()->getAccessToken());
+    }
+  }
+  writeToSessionFile("", "");
+}
+
+void MainWindow::saveSessionBeforeQuit() {
+  QUrl url = QUrl(Network::serverUrl + Network::generateKeyUrl);
+  QJsonObject json;
+
+  QJsonObject * jsonSession = openSessionFile();
+  if (jsonSession != nullptr) {
+    QString key = jsonSession->value("key").toString();
+    if (!key.isEmpty()) {
+      json.insert("key", key);
+      QJsonDocument jsonDoc(json);
+      server->sendPostRequestWithBearerToken(url, jsonDoc.toJson(), server->getUserData()->getAccessToken());
+      return;
+    }
+  }
+
+  json.insert("key", "");
+  QJsonDocument jsonDoc(json);
+  server->sendPostRequestWithBearerToken(url, jsonDoc.toJson(), server->getUserData()->getAccessToken());
 }
 
 QJsonObject * MainWindow::openSessionFile() {
@@ -146,6 +182,7 @@ QJsonObject * MainWindow::openSessionFile() {
   }
 
   QByteArray data = sessionFile.readAll();
+  sessionFile.close();
   QJsonDocument jDoc = QJsonDocument::fromJson(data);
 
   return new QJsonObject(jDoc.object());

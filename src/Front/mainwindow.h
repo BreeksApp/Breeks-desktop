@@ -81,6 +81,8 @@ public slots:
   void logout();
 
   void writeToSessionFile(const QString&, const QString&);
+  void clearSessionFile();
+  void saveSessionBeforeQuit();
 
 private slots:
   // session file

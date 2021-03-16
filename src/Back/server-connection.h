@@ -87,7 +87,7 @@ namespace Network {
   // Session
   const QString authSessionKeyUrl = "/auth/sessionKey";
   const QString generateKeyUrl = "/session/generateKey";
-  const QString deleteKeyUrl = "/session/deleteKey";
+  const QString deleteKeyUrl = "/session/deleteKey/";
 
   // TimetableElements
   const QString addTTElementUrl = "/timetableElement/addTimetableElement";
