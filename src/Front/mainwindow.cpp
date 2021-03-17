@@ -99,8 +99,8 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->widget->hide();
   ui->hideCalendar->hide();
 
-  // connect for writing to session file on app quit event
-  connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(saveSessionBeforeQuit()));
+  // connect for writing to session file on login event
+  connect(server, SIGNAL(saveSession()), this, SLOT(saveSessionBeforeQuit()));
 
   // connect for writing to session file when a key returned from server
   connect(server, SIGNAL(sendDataToSessionFile(const QString&, const QString&)),

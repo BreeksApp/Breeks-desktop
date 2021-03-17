@@ -196,6 +196,7 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply) {
       emit initSecretData(username, token, tokenRefresh);
       emit loginReply(true);
       emit initWeekData(token);
+      emit saveSession();
     }
     else {
       loginReply(false);
@@ -374,7 +375,7 @@ void Network::ServerConnection::onfinish(QNetworkReply * reply) {
     }
   }
   else if (url.contains(deleteKeyUrl)) {
-    qDebug() << json;
+
   }
   else if (url.contains(generateKeyUrl)) {
     QString key = json.value("key").toString();

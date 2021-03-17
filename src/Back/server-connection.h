@@ -74,6 +74,7 @@ namespace Network {
     void logout();
 
     void sendDataToSessionFile(const QString&, const QString&);
+    void saveSession();
   };
 
 
@@ -81,6 +82,7 @@ namespace Network {
   //  API Properties
   //====================
   const QString serverUrl = "https://breeks.cf";
+//  const QString serverUrl = "http://localhost:8080";
   const QString registrationUrl = "/user/registration";
   const QString authUrl = "/auth/signin";
   const QString refreshUrl = "/auth/refresh";
