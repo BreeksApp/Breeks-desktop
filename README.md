@@ -17,9 +17,9 @@ The application is developed in the cross-platform Qt framework in C ++, belongs
 - Papers about Breeks: [Habr RU](https://habr.com/ru/post/534032/) and [Medium RU](https://yarpylaev.medium.com/breeks-построй-свою-неделю-333cd15a6c90)
 
 ## Demo-mode UI
-<img src = "https://github.com/BreeksApp/Breeks-presentation/blob/main/pics/login-with-elements.png">
+<img src = "https://user-images.githubusercontent.com/55200686/148075593-ade30398-7f6b-480c-a26f-94afe163453b.png">
 
 ## BONUS: example of adding a shark breek :dolphin:
-![gif](https://github.com/BreeksApp/Breeks-presentation/blob/main/pics/add-breek.gif)
+![gif](https://user-images.githubusercontent.com/55200686/148075553-1b1a5bab-78b0-4343-984e-5e4b06367758.gif)
 
 
